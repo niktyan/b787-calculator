@@ -160,7 +160,7 @@ docs(spec): update 05-crosswind-algorithm test cases
     },
     "production": {
       "channel": "production",
-      "autoIncrement": "buildNumber",
+      "autoIncrement": true,
       "ios": {
         "resourceClass": "m-medium"
       }

@@ -24,14 +24,6 @@
       "@features/*": ["src/features/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    "app/**/*",
-    "*.ts",
-    "*.tsx",
-    "*.config.ts",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ],
+  "include": ["src/**/*", "*.ts", "*.tsx", "*.config.ts", ".expo/types/**/*.ts", "expo-env.d.ts"],
   "exclude": ["node_modules", "babel.config.js", "_expo_init"]
 }
