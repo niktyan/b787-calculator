@@ -41,6 +41,7 @@ module.exports = [
       'react-native/no-raw-text': ['error', { skip: ['Trans'] }],
       'react-native/split-platform-components': 'error',
       'react-native/no-single-element-style-arrays': 'error',
+      'react-native/sort-styles': 'error',
 
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',

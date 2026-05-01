@@ -11,17 +11,17 @@ export default function Index(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
     padding: 24,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
   },
   subtitle: {
     fontSize: 14,
     marginTop: 8,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
   },
 });

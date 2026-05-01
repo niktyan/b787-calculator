@@ -31,13 +31,16 @@ jobs:
       - name: Test
         run: npm test -- --watchAll=false --passWithNoTests
 
+      - name: Install EAS CLI
+        run: npm install -g eas-cli@latest
+
       - name: EAS Build production
-        run: npx eas build --profile production --platform ios --non-interactive --no-wait
+        run: eas build --profile production --platform ios --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: EAS Submit to App Store Connect
-        run: npx eas submit --profile production --platform ios --latest --non-interactive
+        run: eas submit --profile production --platform ios --latest --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
