@@ -73,6 +73,22 @@
 
 ---
 
+## Phase B Retrospective (2026-04-29)
+
+Phase B (initial project setup) surfaced **39 documented deviations** между оригинальными драфтами спеки и реальностью running Expo SDK 54 + EAS Build + GitHub Actions. Все они интегрированы в спеку через docs sync PR (`docs/spec-sync-phase-b`), который сопровождал этот retrospective.
+
+### Key learnings для будущих фаз
+
+- **Spec writers cannot fully predict tooling behavior без запуска tools.** Phase B — самая «tooling-shock» фаза; subsequent sprints будут иметь меньше drift, потому что инфраструктура уже стоит и проверена.
+- **The R1–R4 discipline в `AGENTS.md` оправдала себя.** Агент сам нашёл violation своих же правил (бандлирование 4 фиксов в 1 коммит вместо 4-х) и спросил guidance вместо того чтобы push-нуть через. Это критически важно для проекта без построчного code review.
+- **Spec sync PR-ы после крупных implementation milestones — здоровая практика.** Делать ежеквартально или после больших фаз. Не пытаться синхронизировать спеку и код через бесконечные microtasks — accumulate, batch, sync.
+
+### Эта итерация — one-time large doc-sync
+
+После этого PR будущие изменения спеки должны быть **incremental** — в том же PR, что и code change, который их вызвал (Rule 5 из `AGENTS.md`). Больших doc-sync PR-ов как этот ожидать не должно — если они снова накапливаются, это signal что Rule 5 нарушается.
+
+---
+
 ## Соглашения по тексту
 
 - Язык документации — русский. Технические термины и идентификаторы — английский.
