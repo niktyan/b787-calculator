@@ -1,1 +1,1 @@
-npm run typecheck && npm run test -- --bail --findRelatedTests --passWithNoTests
+npm run typecheck && npm run test -- --bail --passWithNoTests
