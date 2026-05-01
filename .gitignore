@@ -1,0 +1,70 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.cer
+*.ipa
+*.apk
+*.aab
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# Environment files — never commit secrets
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.staging
+# Keep .env.example as the documented placeholder structure
+!.env.example
+
+# typescript
+*.tsbuildinfo
+
+# Tests / coverage
+coverage/
+
+# Generated / native
+/ios
+/android
+
+# Tooling caches
+.eslintcache
+.prettiercache
+
+# OS / editor
+.idea/
+*.swp
+Thumbs.db
+
+# Leftover from initial scaffold (Cyrillic-path file-handle issue)
+_expo_init/
+
+# Claude Code local agent state
+.claude/

@@ -1,0 +1,45 @@
+name: Deploy Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'PRIVACY_POLICY.md'
+      - 'TERMS_OF_USE.md'
+      - '.github/workflows/deploy-pages.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate static pages
+        run: |
+          mkdir -p _site
+          if [ -f PRIVACY_POLICY.md ]; then
+            npx --yes markdown-to-html-cli --source PRIVACY_POLICY.md --output _site/privacy-policy.html --title "Privacy Policy"
+          fi
+          if [ -f TERMS_OF_USE.md ]; then
+            npx --yes markdown-to-html-cli --source TERMS_OF_USE.md --output _site/terms-of-use.html --title "Terms of Use"
+          fi
+          cp -r assets/static-pages/* _site/ 2>/dev/null || true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - uses: actions/deploy-pages@v4
+        id: deployment

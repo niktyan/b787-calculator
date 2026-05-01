@@ -1,0 +1,11 @@
+node_modules
+.expo
+dist
+coverage
+_expo_init
+02_Specification
+03_Mockups
+package-lock.json
+*.log
+android
+ios
