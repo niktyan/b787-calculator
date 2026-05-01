@@ -35,3 +35,5 @@ ADR не нужен для:
 | 0002 | React Native + Expo over native Swift | Accepted |
 | 0003 | Bundled JSON with explicit versioning | Accepted |
 | 0004 | Coming Soon modules as config, not modules | Accepted |
+| 0005 | Flat ESLint config (Expo SDK 54+) | Accepted |
+| 0006 | EAS first-build credentials choices | Accepted |
