@@ -110,9 +110,11 @@ Subsequent Launches
             (skip Disclaimer if disclaimerAccepted = true)
 ```
 
-**Реализуется через `expo-router`** с файловой структурой:
+**Реализуется через `expo-router`** с файловой структурой в `src/app/`
+(expo-router auto-detects `src/app/` over root `app/` when present;
+choice aligned with `02-architecture.md`):
 ```
-app/
+src/app/
 ├── _layout.tsx              — root layout с провайдерами
 ├── splash.tsx               — splash route
 ├── disclaimer.tsx           — disclaimer (first launch only)

@@ -41,7 +41,7 @@ You are Claude Code. Perform a comprehensive localization audit.
 5. Validate translations:
    - Check Russian translations make sense (not literal machine translation).
    - Aviation terms (KT, MAC, RWYCC) NOT translated — they remain English.
-   - Disclaimer body text in app/disclaimer.tsx remains FIXED ENGLISH (per spec).
+   - Disclaimer body text in src/app/disclaimer.tsx remains FIXED ENGLISH (per spec).
 
 6. Add unit test that loads both locale files and verifies all keys match
    between EN and RU (no missing keys in either direction).

@@ -34,7 +34,7 @@ After my "go":
 
 1. Create feature branch `feat/splash-disclaimer`.
 
-2. Implement app/splash.tsx (Splash screen):
+2. Implement src/app/splash.tsx (Splash screen):
    - Use components from src/design-system (Screen, Stack, Text).
    - Show "B7" logo placeholder, app name, version, "Electronic Performance Tools".
    - Logic per `06-ui-spec.md`:
@@ -46,7 +46,7 @@ After my "go":
        - If not → /disclaimer
      - On data error → /error
 
-3. Implement app/disclaimer.tsx (Disclaimer screen):
+3. Implement src/app/disclaimer.tsx (Disclaimer screen):
    - Use English fixed text from `07-app-store-compliance.md`:
      "Advisory only. Calculations provide conservative reference values for
      Boeing 787 operations. Final operational decisions must always be based
@@ -57,7 +57,7 @@ After my "go":
    - On press: call core's acceptDisclaimer(), then navigate to /(main).
    - Disable system back gesture on this screen.
 
-4. Implement app/error.tsx (fail-safe error screen) per `06-ui-spec.md` "Экран 7":
+4. Implement src/app/error.tsx (fail-safe error screen) per `06-ui-spec.md` "Экран 7":
    - Title: "Reference data unavailable"
    - Description and Retry/Contact support buttons.
 

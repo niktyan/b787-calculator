@@ -132,7 +132,7 @@ After my "go":
    Coverage MUST be ≥ 90% for src/features/crosswind/domain/**.
 
 6. Update Main Menu navigation:
-   - Replace placeholder app/(main)/crosswind.tsx with re-export of
+   - Replace placeholder src/app/(main)/crosswind.tsx with re-export of
      CrosswindScreen from src/features/crosswind.
 
 7. Verify everything:
