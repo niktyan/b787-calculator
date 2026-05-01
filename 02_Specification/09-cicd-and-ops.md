@@ -322,6 +322,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # required for ncipollo/release-action@v1; without this it fails with 403
     steps:
       - uses: actions/checkout@v4
         with:
@@ -340,17 +342,23 @@ jobs:
       - name: Type check
         run: npm run typecheck
       - name: Test
-        run: npm test -- --watchAll=false
+        run: npm test -- --watchAll=false --passWithNoTests
+
+      # EAS CLI must be installed globally on the runner. `npx eas` pattern fails
+      # because eas-cli is not in our package.json deps and npx can't resolve it
+      # in the GitHub Actions environment.
+      - name: Install EAS CLI
+        run: npm install -g eas-cli@latest
 
       # Production build на серверах Expo
       - name: EAS Build production
-        run: npx eas build --profile production --platform ios --non-interactive --no-wait
+        run: eas build --profile production --platform ios --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       # Ждём, пока EAS build завершится, и сразу submit
       - name: EAS Submit to App Store Connect
-        run: npx eas submit --profile production --platform ios --latest --non-interactive
+        run: eas submit --profile production --platform ios --latest --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
@@ -497,6 +505,11 @@ permissions:
   pages: write
   id-token: write
 
+# GitHub Pages best-practice — prevents concurrent deploys racing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -508,8 +521,12 @@ jobs:
       - name: Generate static pages
         run: |
           mkdir -p _site
-          npx markdown-to-html-cli --source PRIVACY_POLICY.md --output _site/privacy-policy.html --title "Privacy Policy"
-          npx markdown-to-html-cli --source TERMS_OF_USE.md --output _site/terms-of-use.html --title "Terms of Use"
+          if [ -f PRIVACY_POLICY.md ]; then
+            npx --yes markdown-to-html-cli --source PRIVACY_POLICY.md --output _site/privacy-policy.html --title "Privacy Policy"
+          fi
+          if [ -f TERMS_OF_USE.md ]; then
+            npx --yes markdown-to-html-cli --source TERMS_OF_USE.md --output _site/terms-of-use.html --title "Terms of Use"
+          fi
           cp -r assets/static-pages/* _site/ 2>/dev/null || true
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -519,6 +536,21 @@ jobs:
 ```
 
 Любое изменение `PRIVACY_POLICY.md` или `TERMS_OF_USE.md` в main автоматически обновляет публичный сайт. Ссылки в App Store Connect никогда не «протухают».
+
+### Windows-specific: `.gitattributes` for line endings
+
+Разработчик работает на Windows 11. Git по умолчанию конвертирует `LF` → `CRLF` при checkout-е на Windows (через `core.autocrlf=true`). Это **ломает** husky-хуки (`sh` парсер не понимает CRLF) и `scripts/release.sh` (bash на CI runner-е тоже не запустит CRLF-скрипт).
+
+Решение — `.gitattributes` в корне репо с явным форсом `LF` для shell/husky файлов:
+
+```gitattributes
+* text=auto eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+.husky/* text eol=lf
+```
+
+Без этого файла husky pre-commit/pre-push могут молча не исполняться на свежем clone из Windows-окружения, а `scripts/release.sh` упадёт при запуске из CI на Linux.
 
 ### Email-уведомления о статусе релизов
 
@@ -689,8 +721,12 @@ Crash-репорты собираются Apple автоматически. До
 - [ ] Создать в App Store Connect новое приложение «B787 Calculator», получить ASC App ID.
 - [ ] Заполнить базовые метаданные в App Store Connect.
 - [ ] Создать Privacy Policy и Terms of Use на GitHub Pages из шаблонов в `07-app-store-compliance.md`.
-- [ ] Инициализировать Expo проект: `npx create-expo-app b787-calculator --template default-typescript`.
-- [ ] Скопировать `tsconfig.json`, `.eslintrc.js`, `.prettierrc.js`, `eas.json` из `08-quality-gates.md` и `09-cicd-and-ops.md`.
+- [ ] Инициализировать Expo проект: `npx create-expo-app . --template default`. **Note:** `default-typescript` шаблон удалён из `create-expo-app` в 2025+. Шаблон `default` теперь TypeScript-by-default и включает `expo-router`. Удалить из шаблона лишние deps согласно `03-tech-stack.md` секция «Removed from default template».
+- [ ] Скопировать `tsconfig.json`, `eslint.config.js` (flat config — см. ADR-0005), `.prettierrc.js`, `eas.json` из `08-quality-gates.md` и `09-cicd-and-ops.md`.
+- [ ] Создать `babel.config.js` с `babel-preset-expo` + `react-native-worklets/plugin` (последним в plugins; обязателен для `react-native-reanimated@4.x`, который использует `expo-router`).
+- [ ] Создать `metro.config.js` с `getDefaultConfig(__dirname)` из `expo/metro-config`.
+- [ ] Создать `.npmrc` с `legacy-peer-deps=true` и `save-exact=true` (см. `03-tech-stack.md`).
+- [ ] Создать `.gitattributes` с LF-форсингом для shell-скриптов и husky-хуков (см. `08-quality-gates.md` секция «Additional config files»).
 - [ ] Установить Husky и настроить pre-commit/pre-push hooks.
 - [ ] Скопировать GitHub Actions workflows: `ci.yml`, `release.yml`, `deploy-pages.yml`, `dependabot-auto-merge.yml`.
 - [ ] Создать `.github/dependabot.yml`.
@@ -706,11 +742,29 @@ Crash-репорты собираются Apple автоматически. До
 
 ---
 
+## Follow-ups / TODO list (из Phase B exit checkpoint)
+
+Эти пункты не блокируют Phase C, но должны быть адресованы в отдельных PR. Зафиксированы здесь как памятка.
+
+| # | Item | Severity | Когда сделать |
+|---|------|----------|---------------|
+| T1 | `commitlint` для проверки формата Conventional Commits — не добавлен в Phase B по приоритетам. Низко-затратный gate, можно добавить отдельным PR в любой момент. | low | Phase 2 (или раньше при росте числа коммитов / контрибьюторов) |
+| T2 | Dead template assets `assets/images/{partial-react-logo,react-logo,react-logo@2x,react-logo@3x}.png` — оставлены из шаблона `create-expo-app`, не используются нашим кодом. Удалить в chore PR вместе с patch-обновлениями. | low | вместе с `chore(deps)` PR |
+| T3 | 22 transitive npm vulnerabilities (4 low + 16 moderate + 2 в dev-deps) — найдены через `npm audit`. Все в transitive deps Expo CLI / sub-tooling. Dependabot security alerts будут отлавливать high/critical и открывать PR-ы. | monitor | passive — Dependabot driven |
+| T4 | Migration к `eslint-plugin-boundaries` или `dependency-cruiser` для feature→feature import enforcement (см. `08-quality-gates.md` Architecture lint). | medium | Phase 2 при добавлении 2-го feature |
+| T5 | Patch updates: 4 пакета на 1-2 patch отстают (`expo`, `expo-linking`, `@types/react`, `jest-expo`) согласно `expo-doctor`. | low | следующий `chore(deps)` PR |
+| T6 | GitHub Actions Node.js 20 deprecation: warning от GitHub — `actions/checkout@v4` и `actions/setup-node@v4` будут принудительно использовать Node 24 с июня 2026. Обновить версии actions заранее. | medium | до июня 2026 |
+
+---
+
 ## Open questions
 
 1. App-Specific Password vs App Store Connect API Key для EAS Submit: рекомендуется API Key (более безопасный, не привязан к учётной записи). Решение по умолчанию: API Key.
-2. Использование `expo-doctor` в CI как дополнительной проверки совместимости версий зависимостей с Expo SDK. Решение по умолчанию: добавляем как одна команда в CI, не блокирует merge но даёт раннее предупреждение о проблемах.
-3. Стоит ли настроить **Slack-уведомления** через GitHub Actions для важных событий (failed release, security alert)? Решение по умолчанию: пока нет, email-уведомлений GitHub достаточно. Добавляем в Phase 2+ если будет потребность.
+2. Стоит ли настроить **Slack-уведомления** через GitHub Actions для важных событий (failed release, security alert)? Решение по умолчанию: пока нет, email-уведомлений GitHub достаточно. Добавляем в Phase 2+ если будет потребность.
+
+## Closed questions
+
+- ~~Использование `expo-doctor` в CI?~~ → **Resolved (Phase B):** добавлен в `ci.yml` как advisory non-blocking step (`npx expo-doctor || true`). Не блокирует merge, даёт раннее предупреждение о проблемах совместимости.
 
 ---
 

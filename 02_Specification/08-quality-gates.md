@@ -444,10 +444,12 @@ jobs:
         run: npm run lint -- --max-warnings=0
       - name: Type check
         run: npm run typecheck
+      # `--passWithNoTests` — required during Phase B before tests exist (Jest exits 0 with no
+      # test files). Will be REMOVED after Sprint 1 introduces first tests; revisit in Sprint 1 PR.
       - name: Test
-        run: npm test -- --coverage --watchAll=false
-      - name: Coverage threshold check
-        run: npm test -- --coverage --watchAll=false --coverageReporters=text-summary
+        run: npm test -- --coverage --watchAll=false --passWithNoTests
+      - name: Expo doctor (advisory, non-blocking)
+        run: npx expo-doctor || true
   build-preview:
     runs-on: ubuntu-latest
     needs: quality
@@ -457,9 +459,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
       - run: npm ci
+      # EAS CLI must be installed globally on the runner. `npx eas` fails because
+      # eas-cli is not in package.json deps and npx can't resolve it on-the-fly
+      # in the GitHub Actions environment.
+      - name: Install EAS CLI
+        run: npm install -g eas-cli@latest
       - name: EAS Build (preview)
-        run: npx eas build --profile preview --platform ios --non-interactive --no-wait
+        run: eas build --profile preview --platform ios --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 ```
