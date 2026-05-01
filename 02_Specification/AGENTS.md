@@ -309,23 +309,35 @@ What the reviewer (the user) should do in Expo Go to verify functionality. Concr
 
 ---
 
-## How the user reviews your PR
+## How the user reviews your PR — and how YOU finish the merge
 
-The user does **functional review through Expo Go**, not deep code review. Their workflow:
+The user does **functional review through Expo Go on iPhone**, not deep code review or GitHub UI clicks. To minimize their friction, **the agent (you) is responsible for the final merge** after the user confirms the app works.
 
-1. Open the PR URL in the browser.
-2. Read your PR description (especially "Manual testing instructions").
-3. Connect iPhone to computer (or via local network).
-4. Open Expo Go on iPhone.
-5. Scan the QR code from the EAS preview build (linked in CI output) or from `npx expo start --tunnel`.
-6. Test the functionality per your instructions.
-7. If it works as expected — approve and merge via GitHub UI.
-8. If something is off — leave a GitHub PR comment describing what they observed.
+Workflow:
+
+1. **You** create the PR with `gh pr create` and clear "Manual testing instructions".
+2. **CI** runs automatically. Wait for both `quality` and `build-preview` jobs to be green. If anything is red — fix it before notifying the user.
+3. **You** report to the user in chat:
+   - PR URL.
+   - Confirmation that CI is green.
+   - Concise instructions for what to test on iPhone via Expo Go / TestFlight install.
+4. **The user** installs the new build on iPhone, tests per your instructions, and replies in chat with one of:
+   - `"merge it"` / `"merge"` / `"looks good, merge"` / `"всё ок, мердж"` — proceed to step 5.
+   - Description of what's wrong — go back, fix, push to the same branch, wait for CI, repeat from step 3.
+5. **You**, after user confirms, merge:
+   ```bash
+   gh pr merge <PR-number> --squash --delete-branch
+   ```
+   This squash-merges into main and deletes the feature branch automatically.
+6. **You** confirm in chat: "Merged. Branch deleted. Ready for next sprint."
+
+This means YOU drive the entire git workflow except the functional verification. The user's only manual action per sprint is testing the app on iPhone and saying "merge it".
 
 For this to work smoothly:
-- Always include clear, concrete "Manual testing instructions" in the PR description.
-- Always make sure the EAS preview build succeeded (CI is green).
-- Always describe the expected user-visible outcomes.
+- Always include clear, concrete "Manual testing instructions" in the PR description AND in your chat message.
+- Always confirm CI is green before asking the user to test.
+- Always wait for explicit user confirmation before merging — never merge proactively, even if it seems fine.
+- Always confirm the merge happened (in chat) so the user knows the branch is closed and can move to the next prompt.
 
 ---
 

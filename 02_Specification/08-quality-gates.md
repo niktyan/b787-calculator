@@ -27,7 +27,7 @@
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -41,7 +41,7 @@
       "@features/*": ["src/features/*"]
     }
   },
-  "include": ["src/**/*", "app/**/*", "*.ts", "*.tsx", "*.config.ts"],
+  "include": ["src/**/*", "*.ts", "*.tsx", "*.config.ts", ".expo/types/**/*.ts", "expo-env.d.ts"],
   "exclude": ["node_modules", "babel.config.js"]
 }
 ```
@@ -54,49 +54,55 @@
 - `noUnusedLocals/Parameters` — запрещает неиспользуемые переменные. Чище код.
 - `noFallthroughCasesInSwitch` — в `switch` обязателен `break`/`return`/`throw` — нельзя случайно «провалиться» на следующий case.
 - `noPropertyAccessFromIndexSignature` — нельзя обращаться через точку к свойствам с неопределённым ключом, только через `[key]`. Делает явным, где работа идёт с динамическими ключами.
+- **`skipLibCheck: true` — необходимое исключение.** Без него TypeScript падает на конфликте типов между `react-native/src/types/globals.d.ts` (RN-овые `Blob`, `Request`, `WebSocket`, `URL` и т.д.) и `typescript/lib/lib.dom.d.ts` (DOM-овые версии тех же глобалов). Конфликт находится **только** в чужих node_modules — не в нашем коде. Флаг подавляет проверку только third-party `.d.ts` файлов; **наш собственный код по-прежнему полностью type-checked**.
 
 ---
 
-## ESLint конфигурация (`.eslintrc.js`)
+## ESLint конфигурация (`eslint.config.js`)
 
 **Цель:** автоматическая проверка стилевых, архитектурных и accessibility-правил.
 
+**Формат конфига:** **flat config** (`eslint.config.js` экспортирует array конфиг-объектов), **не** legacy `.eslintrc.js`. Это требование `eslint-config-expo@10` (для Expo SDK 54+) и ESLint 9+, которые legacy-формат больше не поддерживают. Решение задокументировано в **ADR-0005 · Flat ESLint config (Expo SDK 54+)**.
+
+Структура реального файла (детали см. в `eslint.config.js` в корне репозитория):
+
 ```javascript
-module.exports = {
-  root: true,
-  extends: [
-    'expo',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:react-native/all',
-    'plugin:jsx-a11y/recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
-    'prettier',
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    ecmaVersion: 2022,
-    sourceType: 'module',
-  },
-  plugins: [
-    '@typescript-eslint',
-    'react',
-    'react-hooks',
-    'react-native',
-    'jsx-a11y',
-    'import',
-  ],
-  settings: {
-    react: { version: 'detect' },
-    'import/resolver': {
-      typescript: { project: './tsconfig.json' },
+const expoConfig = require('eslint-config-expo/flat');
+const tseslintPlugin = require('@typescript-eslint/eslint-plugin');
+const tsParser = require('@typescript-eslint/parser');
+const reactNativePlugin = require('eslint-plugin-react-native');
+const jsxA11y = require('eslint-plugin-jsx-a11y');
+const importPlugin = require('eslint-plugin-import');
+const prettierConfig = require('eslint-config-prettier');
+
+module.exports = [
+  ...expoConfig,
+  importPlugin.flatConfigs.recommended,
+  jsxA11y.flatConfigs.recommended,
+  // ... TypeScript files block with parser, plugins, rules:
+  {
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: './tsconfig.json',
+        ecmaVersion: 2022,
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+      },
     },
-  },
-  rules: {
+    plugins: {
+      '@typescript-eslint': tseslintPlugin,
+      'react-native': reactNativePlugin,
+    },
+    settings: {
+      react: { version: 'detect' },
+      'import/resolver': {
+        typescript: { project: './tsconfig.json' },
+      },
+    },
+    rules: {
+      ...tseslintPlugin.configs['recommended-type-checked'].rules,
     // ===== TypeScript =====
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
@@ -135,14 +141,13 @@ module.exports = {
     'import/no-self-import': 'error',
     'import/no-default-export': 'off',  // expo-router требует default exports
     'import/no-restricted-paths': ['error', {
+      // MVP-simplified zones. eslint-plugin-import не поддерживает glob-синтаксис
+      // `!(index.ts)` (negation pattern) и не имеет `<self>` placeholder в `except`.
+      // Поэтому правило «feature НЕ импортирует другой feature»
+      // (с разрешением self-imports) сейчас не реализуется через no-restricted-paths.
+      // Будет реализовано при появлении 2-го feature (Phase 2 / Crosswind Takeoff)
+      // через миграцию на `eslint-plugin-boundaries` или `dependency-cruiser`.
       zones: [
-        // feature-модули НЕ могут импортировать друг друга
-        {
-          target: './src/features/*/!(index.ts)',
-          from: './src/features/*',
-          except: ['./src/features/<self>/**'],
-          message: 'Features cannot import from other features. Use core for shared code.',
-        },
         // presentation НЕ может импортировать data напрямую — только через domain
         {
           target: './src/features/*/presentation',
@@ -157,7 +162,7 @@ module.exports = {
         },
         {
           target: './src/features/*/domain',
-          from: './node_modules/expo*',
+          from: './node_modules/expo',
           message: 'Domain layer must be pure TypeScript without Expo dependencies.',
         },
       ],
@@ -237,12 +242,12 @@ Prettier работает в связке с ESLint через `eslint-config-pr
 
 ## Test coverage thresholds
 
-Конфиг в `jest.config.js`:
+**Финальная конфигурация** (как должно быть к концу Phase C, после Sprint 1 + Sprint 5):
 
 ```javascript
 module.exports = {
   preset: 'jest-expo',
-  setupFilesAfterEach: ['@testing-library/jest-native/extend-expect'],
+  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
@@ -289,6 +294,20 @@ CI блокирует merge при недостаточном coverage. Аген
 - Barrel-файлы (`index.ts`) — они не содержат логики, только re-export.
 - Storybook-файлы (если будут в Phase 2+).
 
+### Coverage threshold evolution strategy
+
+`coverageThreshold` в `jest.config.js` добавляется **инкрементально** по мере того как соответствующие пути наполняются файлами. Причина: Jest падает с `Coverage data for X was not found` (exit 1), если threshold-путь не матчит ни одного файла. Per-path thresholds защищают код, который существует — они не могут enforce-ить пустые пути.
+
+**Phase B (текущая на момент initial setup):** только global threshold 70% по всем 4 метрикам. Per-path блоки **не** добавлены, потому что `src/core/` и `src/features/*/domain/` ещё пусты (только `ARCHITECTURE_PLACEHOLDER.md`).
+
+**Sprint 1 (Core module):** добавить `'./src/core/**': { branches: 80, functions: 80, lines: 80, statements: 80 }` в `coverageThreshold`. Update `jest.config.js` как часть `feat(core)` PR.
+
+**Sprint 5 (Crosswind):** добавить `'./src/features/*/domain/**': { 90, 90, 90, 90 }`. Update `jest.config.js` как часть `feat(crosswind)` PR.
+
+Это правило фиксируется в спринт-промптах (`prompts/01-sprint-core.md`, `prompts/05-sprint-crosswind.md`) — агент при имплементации соответствующего модуля **обязан** обновить `jest.config.js`.
+
+**Историческая справка по `setupFilesAfterEnv`:** ранее в этом разделе было `setupFilesAfterEach`. Это была опечатка — настоящая опция Jest 29 называется **`setupFilesAfterEnv`** (от «after Jest test framework env initialization»). Опция `setupFilesAfterEach` Jest-ом не распознаётся. Исправлено в Phase B docs sync.
+
 ---
 
 ## Performance budget
@@ -334,13 +353,28 @@ CI блокирует merge при недостаточном coverage. Аген
 
 Архитектурные правила из `02-architecture.md` обеспечиваются `eslint-plugin-import` и кастомными правилами:
 
-- **Feature → Feature импорт запрещён.** Реализуется через `import/no-restricted-paths` (см. ESLint config выше).
-- **Presentation → Data напрямую запрещён.** Аналогично, через `no-restricted-paths`.
+- **Presentation → Data напрямую запрещён.** Через `no-restricted-paths`.
 - **Domain не зависит от React Native / Expo.** Через `no-restricted-paths` запрещены импорты из `react-native` и `expo*` в файлах `src/features/*/domain/*`.
 - **Cycle detection.** `import/no-cycle: error` ловит циклические зависимости.
 - **Self import.** `import/no-self-import: error`.
 
-Если PR пытается нарушить любое из этих правил — ESLint падает на CI, merge заблокирован.
+**Feature → Feature импорт — DEFERRED.** Спека требует это правило, но `eslint-plugin-import@no-restricted-paths` не поддерживает glob `!(...)` (negation pattern) и `<self>` placeholder в `except`. С одним feature-модулем (Crosswind) в MVP правило де-факто dormant — нет других features для нарушения. **Будет реализовано** при появлении 2-го feature (Phase 2 / Crosswind Takeoff) через миграцию на `eslint-plugin-boundaries` или `dependency-cruiser`. До этого момента — code review человеком как safety-net.
+
+Если PR пытается нарушить любое из реализованных правил — ESLint падает на CI, merge заблокирован.
+
+---
+
+## Additional config files (Windows + cleanliness)
+
+Эти файлы не упомянуты в основных секциях выше, но являются обязательной частью проекта:
+
+- **`.gitattributes`** — форсит LF line endings для shell-скриптов, husky-хуков и `release.sh`. Без этого Windows автоматически конвертирует LF → CRLF при checkout, что ломает husky-хуки (sh не парсит CRLF) и `release.sh` (bash на Linux не запускается с CRLF). Конкретные паттерны: `*.sh text eol=lf`, `*.bash text eol=lf`, `.husky/* text eol=lf`.
+
+- **`.prettierignore`** — explicit ignore list. Prettier 3 не имеет автоматического gitignore-наследования — без `.prettierignore` форматирует `node_modules/`, `02_Specification/`, build-артефакты. Содержит как минимум: `node_modules`, `.expo`, `dist`, `coverage`, `02_Specification`, `03_Mockups`, `package-lock.json`, `android`, `ios`.
+
+- **`.vscode/{settings.json,extensions.json}`** — оставлены из дефолтного `create-expo-app` шаблона. Содержат рекомендованные расширения и settings для VS Code/Cursor. Полезны для onboarding новых контрибьюторов и для восстановления окружения; не содержат личных предпочтений.
+
+- **`.npmrc`** — см. `03-tech-stack.md` секция «.npmrc settings» (legacy-peer-deps + save-exact).
 
 ---
 
@@ -376,10 +410,12 @@ npx lint-staged
 ```bash
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-npm run typecheck && npm run test -- --bail --findRelatedTests --passWithNoTests
+npm run typecheck && npm run test -- --bail --passWithNoTests
 ```
 
-На pre-push запускается полная проверка типов и связанные тесты. Если что-то падает — push отклоняется. Это ловит проблемы до того, как они попадут на CI.
+На pre-push запускается полная проверка типов и все тесты с `--bail` (остановка на первом падении). Если что-то падает — push отклоняется. Это ловит проблемы до того, как они попадут на CI.
+
+**Note:** ранее в этом разделе был флаг `--findRelatedTests`. Он был удалён, потому что Jest требует список путей файлов после этого флага, а Husky pre-push hook этих путей не передаёт — без них Jest падает с `--findRelatedTests option requires file paths to be specified`. Запуск всех тестов с `--bail` даёт тот же эффект «быстро упасть на сломанном тесте» без необходимости в file path discovery.
 
 ---
 
@@ -408,10 +444,12 @@ jobs:
         run: npm run lint -- --max-warnings=0
       - name: Type check
         run: npm run typecheck
+      # `--passWithNoTests` — required during Phase B before tests exist (Jest exits 0 with no
+      # test files). Will be REMOVED after Sprint 1 introduces first tests; revisit in Sprint 1 PR.
       - name: Test
-        run: npm test -- --coverage --watchAll=false
-      - name: Coverage threshold check
-        run: npm test -- --coverage --watchAll=false --coverageReporters=text-summary
+        run: npm test -- --coverage --watchAll=false --passWithNoTests
+      - name: Expo doctor (advisory, non-blocking)
+        run: npx expo-doctor || true
   build-preview:
     runs-on: ubuntu-latest
     needs: quality
@@ -421,9 +459,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
       - run: npm ci
+      # EAS CLI must be installed globally on the runner. `npx eas` fails because
+      # eas-cli is not in package.json deps and npx can't resolve it on-the-fly
+      # in the GitHub Actions environment.
+      - name: Install EAS CLI
+        run: npm install -g eas-cli@latest
       - name: EAS Build (preview)
-        run: npx eas build --profile preview --platform ios --non-interactive --no-wait
+        run: eas build --profile preview --platform ios --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 ```
@@ -462,8 +506,12 @@ jobs:
 
 ## Open questions
 
-1. Стоит ли добавить `commitlint` для проверки формата сообщений коммитов (Conventional Commits)? Это даёт единый стиль и автогенерацию changelog. Решение по умолчанию: добавляем — это простой, низкозатратный gate.
-2. Стоит ли использовать `dependency-cruiser` в дополнение к `import/no-restricted-paths`? Он мощнее в проверке архитектурных правил, но добавляет ещё один tool. По умолчанию: пока нет, если простых ESLint-правил хватит.
+1. Стоит ли использовать `dependency-cruiser` в дополнение к `import/no-restricted-paths`? Он мощнее в проверке архитектурных правил, но добавляет ещё один tool. По умолчанию: пока нет, если простых ESLint-правил хватит. **Revisit при добавлении 2-го feature** (см. секцию «Architecture lint» выше — нужно для feature→feature enforcement).
+
+## Closed questions
+
+- ~~Стоит ли добавить `commitlint`?~~ → **Deferred (Phase B):** не добавлен в Phase B по приоритетам; перенесён в TODO список в `09-cicd-and-ops.md` для рассмотрения в Phase 2. Conventional Commits соблюдается дисциплиной агента; при росте контрибьюторов или числа коммитов — возвращаемся.
+- ~~Стоит ли использовать `expo-doctor` в CI?~~ → **Resolved (Phase B):** добавлен в `ci.yml` как advisory non-blocking step (`npx expo-doctor || true`). Не блокирует merge, но даёт раннее предупреждение о проблемах совместимости версий. См. `09-cicd-and-ops.md`.
 
 ---
 

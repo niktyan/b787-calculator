@@ -29,7 +29,7 @@ After my "go":
 
 1. Branch `feat/settings-about`.
 
-2. Implement app/(main)/settings.tsx:
+2. Implement src/app/(main)/settings.tsx:
    - Language: clickable row → bottom sheet with English / Русский.
    - Theme: bottom sheet with Auto / Light / Dark.
    - Weight units: kg only (Pounds disabled with "Available in upcoming release" hint).
@@ -37,7 +37,7 @@ After my "go":
    - Show data source on result: toggle, default ON.
    All settings persist via core/storage and apply immediately (no Save button).
 
-3. Implement app/(main)/about.tsx:
+3. Implement src/app/(main)/about.tsx:
    - Version: from expo-application (X.Y.Z + build N).
    - Aircraft: "Boeing 787-8".
    - Validation: "Active line pilots".

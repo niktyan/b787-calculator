@@ -43,7 +43,7 @@ After my "go":
    Each entry: id, name, description (1 sentence), icon (text label like "TO"),
    phase (e.g., "Phase 2").
 
-3. Implement app/(main)/index.tsx as Main Menu:
+3. Implement src/app/(main)/index.tsx as Main Menu:
    - Header with logo, app title, NavPills (Modules / Settings / About).
    - Grid of cards (responsive: 2x2 on iPad regular, single column on phone compact).
    - First card: "Crosswind · Landing" (active) → navigate to /(main)/crosswind.
@@ -51,20 +51,20 @@ After my "go":
    - Coming-soon cards visually muted (opacity, "Coming soon" badge).
 
 4. Implement Coming Soon Modal:
-   - Component in app/(main)/_components/ComingSoonModal.tsx.
+   - Component in src/app/(main)/_components/ComingSoonModal.tsx.
    - Triggered by tapping inactive card.
    - Slide-up animation (300 ms).
    - Title: module name. Body: "This module is planned for an upcoming
      release. Stay tuned." Button: "OK".
    - Closes on OK / backdrop tap / system gesture.
 
-5. Add placeholder app/(main)/crosswind.tsx that says "Crosswind module —
+5. Add placeholder src/app/(main)/crosswind.tsx that says "Crosswind module —
    implementation in next sprint" (will be replaced).
 
-6. Add placeholder app/(main)/settings.tsx and app/(main)/about.tsx
+6. Add placeholder src/app/(main)/settings.tsx and src/app/(main)/about.tsx
    (will be implemented in sprint 06).
 
-7. Wire navigation in app/(main)/_layout.tsx (expo-router stack).
+7. Wire navigation in src/app/(main)/_layout.tsx (expo-router stack).
 
 8. Snapshot tests for Main Menu, Coming Soon Modal, placeholder screens.
 

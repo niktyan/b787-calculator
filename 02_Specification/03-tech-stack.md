@@ -48,6 +48,28 @@
 | `expo-localization` | соответствующая SDK | Получение языка и региона устройства |
 | `expo-application` | соответствующая SDK | Доступ к версии приложения и build-номеру |
 | `expo-updates` | соответствующая SDK | OTA-обновления через EAS Update (Phase 2+) |
+| `expo-build-properties` | соответствующая SDK | Установка iOS deployment target и других native build-properties через Expo plugin (вместо невалидного `ios.deploymentTarget` поля в `app.json`). Auto-installable via `npx expo install`. |
+
+#### Auto-managed transitive dependencies
+
+Эти пакеты не используются напрямую нашим кодом, но обязаны присутствовать в `package.json`, потому что от них зависят другие пакеты из спеки:
+
+| Пакет | Кем требуется | Зачем оставлен |
+|-------|---------------|----------------|
+| `expo-font` | `@expo/vector-icons` | Загрузка иконочных шрифтов; auto-included в bundle |
+| `expo-linking` | `expo-router` | Deep linking infrastructure для file-based routing |
+
+Удалять их нельзя — `npm install` упадёт с peer-dep ошибкой. Версии управляются через `npx expo install` так же, как остальные SDK-managed пакеты.
+
+#### Removed from default template
+
+Дефолтный `create-expo-app` шаблон (`--template default`) тянет несколько пакетов, которые были **удалены при инициализации Phase B** как не входящие в наш scope:
+
+- `react-dom`, `react-native-web` — нет web-таргета.
+- `expo-haptics`, `expo-image`, `expo-symbols`, `expo-web-browser` — не нужны для MVP функциональности.
+- `@react-navigation/bottom-tabs`, `@react-navigation/elements` — мы используем минимальный expo-router stack без tabs UI; `@react-navigation/native` остаётся как peer-dep expo-router.
+
+Если в будущем какой-то из этих пакетов понадобится — добавление через ADR с обоснованием и явным включением в этот документ.
 
 **Почему Expo, а не голый React Native CLI:** EAS Build (облачная сборка iOS) работает только с Expo. Это критично, потому что мы на Windows и не имеем Mac. Чистый RN CLI требует macOS.
 
@@ -318,6 +340,23 @@ Snapshot-тесты допускаются для статичных design-syst
 
 ---
 
+## `.npmrc` settings
+
+В корне репозитория лежит файл `.npmrc`, который применяется ко всем `npm install` командам — локально и в CI:
+
+```ini
+legacy-peer-deps=true
+save-exact=true
+```
+
+**`legacy-peer-deps=true`** — необходим, потому что `expo-router` имеет peer-dep на `react-dom@19` (для web-таргета), но мы **не устанавливаем `react-dom`** (см. секцию «React Native» выше). Без этого флага `npm install` падает с peer-conflict. Не влияет на корректность установленных пакетов — только подавляет строгую проверку peer-deps, которая в нашем случае ложно-позитивна.
+
+**`save-exact=true`** — enforce-ит правило «точные версии без `^` и `~`» (см. секцию «Версионирование зависимостей»). Любой `npm install <pkg>` автоматически записывает exact-версию в `package.json`, даже без явного флага `--save-exact`.
+
+Файл коммитится в репозиторий и применяется к каждому `npm ci` на CI.
+
+---
+
 ## Конкретные версии (snapshot на момент Phase B)
 
 Точные версии будут указаны в `package.json` при инициализации проекта (Phase B). На момент написания спеки актуальные значения:
@@ -334,8 +373,11 @@ Snapshot-тесты допускаются для статичных design-syst
 
 ## Open questions
 
-1. Какую конкретную версию Expo SDK взять на момент Phase B — последнюю стабильную, или предпоследнюю (для зрелости). Решение принимается в момент инициализации проекта. Рекомендация по умолчанию: предпоследняя стабильная (на 1 минор отставать от bleeding edge для зрелости и совместимости).
-2. Нужен ли `react-native-svg` для будущих визуализаций (графики crosswind)? Сейчас — нет, добавим в Phase 3+, если возникнет.
+1. Нужен ли `react-native-svg` для будущих визуализаций (графики crosswind)? Сейчас — нет, добавим в Phase 3+, если возникнет.
+
+## Closed questions
+
+- ~~Какую конкретную версию Expo SDK взять на момент Phase B?~~ → **Resolved (Phase B):** Expo SDK 54 (последняя стабильная на момент инициализации). Все версии SDK-managed пакетов закреплены в `package.json` точными значениями через `npx expo install`.
 
 ---
 

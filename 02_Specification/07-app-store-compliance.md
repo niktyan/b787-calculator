@@ -88,6 +88,26 @@ Apple одобряет авиационные advisory-калькуляторы 
 
 **Если в Phase 2+ добавится Sentry или другая третья сторона** — Privacy Manifest придётся существенно расширить. Это специально не делается в MVP, чтобы Privacy Label оставался максимально чистым.
 
+### Export compliance flag (`ITSAppUsesNonExemptEncryption`)
+
+App Store Connect требует декларации export compliance для каждой iOS-сборки. У нашего приложения нет custom-крипто (всё полностью офлайн, никаких сетевых запросов / шифрования собственными силами), поэтому декларируется `ITSAppUsesNonExemptEncryption: false` в `Info.plist` через `app.json`:
+
+```json
+{
+  "expo": {
+    "ios": {
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
+  }
+}
+```
+
+Это поле автоматически добавляется EAS Build при первом запуске; **уже сконфигурировано** в `app.json` репозитория (Phase B). Без него App Store Connect требует ручного заполнения формы при каждой загрузке сборки. Со значением `false` — submit идёт без дополнительных шагов.
+
+«false» означает: мы НЕ используем non-exempt cryptography (ATS/HTTPS используется системой iOS, что попадает под exemption; собственного crypto-кода у нас нет).
+
 ---
 
 ## App Privacy Label (App Store Connect)

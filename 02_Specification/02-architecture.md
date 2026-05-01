@@ -94,10 +94,17 @@ b787-calculator/
 │   ├── splash/
 │   └── fonts/
 ├── src/
-│   ├── app/                   — composition root, навигация
-│   │   ├── App.tsx
-│   │   ├── navigation.tsx
-│   │   └── providers.tsx
+│   ├── app/                   — composition root + expo-router routes
+│   │   ├── _layout.tsx        — root layout с провайдерами (theme, i18n, disclaimer)
+│   │   ├── splash.tsx
+│   │   ├── disclaimer.tsx
+│   │   ├── (main)/            — группа главных экранов
+│   │   │   ├── _layout.tsx
+│   │   │   ├── index.tsx      — Main Menu
+│   │   │   ├── crosswind.tsx
+│   │   │   ├── settings.tsx
+│   │   │   └── about.tsx
+│   │   └── error.tsx          — fail-safe экран
 │   ├── core/                  — общие утилиты и сервисы
 │   │   ├── i18n/              — i18next config + locale files
 │   │   ├── theming/           — design tokens, тема, dark/light
