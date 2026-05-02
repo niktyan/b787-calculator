@@ -79,5 +79,5 @@ Report:
 ## После завершения
 
 1. PR review через Expo Go: пройти все экраны на обоих языках.
-2. Approve + Merge.
+2. Напишите `merge it` в чат Claude Code.
 3. Следующий: `08-sprint-accessibility-audit.md`.

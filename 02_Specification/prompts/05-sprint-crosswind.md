@@ -131,14 +131,41 @@ After my "go":
 
    Coverage MUST be ≥ 90% for src/features/crosswind/domain/**.
 
-6. Update Main Menu navigation:
+6. **IMPORTANT: Update jest.config.js with domain coverage threshold.**
+   Per the incremental coverage threshold strategy in
+   02_Specification/08-quality-gates.md ("Coverage threshold evolution
+   strategy"), Sprint 5 (this sprint) is the moment to add the domain
+   threshold:
+
+   In jest.config.js, in the coverageThreshold object, add:
+   ```javascript
+   './src/features/*/domain/**': {
+     branches: 90,
+     functions: 90,
+     lines: 90,
+     statements: 90,
+   },
+   ```
+
+   Keep existing entries (`global: { ... 70 ... }` and
+   `./src/core/**: { ... 80 ... }` from Sprint 1).
+
+   After update, run `npm run test -- --coverage` and verify that:
+   - Coverage report shows features/crosswind/domain/** values.
+   - All metrics are ≥ 90%.
+   - If any domain submodule is below 90% — add more tests, do NOT
+     lower the threshold. The 50+ test cases from Test Set #1-3 should
+     give very high natural coverage; if not, you missed cases.
+
+7. Update Main Menu navigation:
    - Replace placeholder src/app/(main)/crosswind.tsx with re-export of
      CrosswindScreen from src/features/crosswind.
 
-7. Verify everything:
+8. Verify everything:
    - `npm run lint` — 0 errors.
    - `npm run typecheck` — 0 errors.
-   - `npm run test` — ALL tests pass. Coverage thresholds met.
+   - `npm run test` — ALL tests pass. Coverage thresholds met
+     (global ≥70%, core ≥80%, crosswind domain ≥90%).
 
 8. Commit, push, PR.
 
@@ -205,5 +232,5 @@ Report:
    - W=170, CG=42 → 40 KT (Excel quirk, тест-кейс 1.23).
    - W=130, CG=27 → 34 KT (тест-кейс 2.06).
 5. Если что-то не сходится с ожидаемым — оставьте комментарий в PR, попросите Claude Code исправить.
-6. Если всё ОК — Approve + Merge.
+6. Если всё ОК — напишите в чат Claude Code: `merge it`.
 7. Следующий промпт: `06-sprint-settings-about.md`.

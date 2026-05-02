@@ -135,8 +135,11 @@ b787-calculator/
 ├── package.json
 ├── tsconfig.json
 ├── jest.config.js
-├── .eslintrc.js
-├── .prettierrc
+├── eslint.config.js              — flat config (см. ADR-0005)
+├── .prettierrc.js
+├── .prettierignore
+├── .gitattributes                — LF для shell-скриптов на Windows
+├── .npmrc                        — legacy-peer-deps=true, save-exact=true
 ├── CLAUDE.md                  — инструкции для агента-реализатора
 ├── AGENTS.md                  — расширенные правила для AI-агентов
 ├── PRIVACY_POLICY.md          — Privacy Policy (хостится на GitHub Pages)
@@ -202,27 +205,205 @@ features/crosswind/
 
 ---
 
-## Композиция: как модули соединяются в App
+## Композиция: как модули соединяются в App (expo-router)
 
-Точкой композиции является `src/app/App.tsx` — единственное место, где встречаются все провайдеры и навигация. Принципы:
+Точкой композиции является **`src/app/_layout.tsx`** — root layout файл expo-router, единственное место, где регистрируются все провайдеры. Сам routing-список экранов получается автоматически из файловой структуры `src/app/` (см. `06-ui-spec.md` секция «Навигация — общая схема»).
 
-- **Provider-stack для контекстов.** Theme, i18n, disclaimer state, feature-flags, error boundary — каждый как отдельный Provider, иерархически вложены.
-- **Lazy-import feature-screens.** Feature-модули импортируются через React.lazy, чтобы стартовый bundle оставался лёгким.
-- **Декларативная навигация.** React Navigation stack-навигатор с явным списком экранов: Splash → MainMenu → CrosswindScreen / SettingsScreen / AboutScreen.
-- **Никакой бизнес-логики в App.tsx.** Только композиция.
+**Принципы композиции:**
+
+- **Provider-stack в `_layout.tsx`.** Все Context-провайдеры (Theme, i18n, disclaimer state, feature-flags, error boundary) собраны в одном месте, иерархически вложены. Внутри них — `<Stack />` (или `<Slot />`) от expo-router, который рендерит дочерние routes.
+- **File-system routing.** Каждый `.tsx`-файл в `src/app/` (кроме `_layout.tsx`) — отдельный route. Никакого ручного списка экранов; routing вытекает из структуры папок.
+- **Никакой бизнес-логики в `_layout.tsx`.** Только композиция и навигация.
+- **Feature screens — re-exports из feature-модулей.** Например, `src/app/(main)/crosswind.tsx` это файл из 1-2 строк, который делает `export { CrosswindScreen as default } from '@features/crosswind';`. Реальная реализация — в feature-модуле, а route-файл это «тонкая прослойка», подключающая модуль к URL.
+- **Provider-инициализация может быть асинхронной.** I18n загружается, theme определяется по системе, disclaimer-флаг читается из storage. Splash-screen остаётся видимым, пока все провайдеры готовы (через expo-splash-screen API).
+
+**Псевдокод `_layout.tsx`** (для понимания, не финальный код):
+
+```typescript
+export default function RootLayout(): JSX.Element {
+  // Loaders (await before rendering Stack)
+  const i18nReady = useI18nInitialization();
+  const fontsLoaded = useFonts({...});
+  const disclaimerStatus = useDisclaimerStatus();
+
+  if (!i18nReady || !fontsLoaded) return null; // splash остаётся
+
+  return (
+    <ErrorBoundary>
+      <ThemeProvider>
+        <FeatureFlagsProvider>
+          <SafeAreaProvider>
+            <StatusBar />
+            <Stack screenOptions={{ headerShown: false }}>
+              {/* Routes автоматически из src/app/ */}
+            </Stack>
+          </SafeAreaProvider>
+        </FeatureFlagsProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
+}
+```
+
+---
+
+## Domain Purity Rules
+
+Domain-слой каждого feature-модуля (`src/features/<feature>/domain/`) должен оставаться **полностью platform-agnostic**. Это позволяет тестировать его в Node-окружении без mock-ов RN/Expo, а также потенциально портировать на web/Android/CLI без переписывания.
+
+**Что РАЗРЕШЕНО импортировать в domain:**
+- Стандартные TypeScript / ECMAScript встроенные (`Map`, `Set`, `Date`, `JSON`, `Math`, `Intl`).
+- `zod` (только типы и схемы, без I/O).
+- Другие domain-файлы того же модуля (через relative imports).
+- `@core/result`, `@core/types`, `@core/logger` — только тех частей `core`, которые сами platform-agnostic (см. матрицу ниже).
+
+**Что ЗАПРЕЩЕНО импортировать в domain:**
+- `react`, `react-native`, любой `react-native/*`.
+- `expo`, `expo-*` (любые Expo пакеты).
+- `@react-navigation/*`, `expo-router`.
+- React-хуки или React Context напрямую.
+- `AsyncStorage`, `expo-secure-store` (это работа data-слоя через Repository абстракцию).
+- Любой код, требующий runtime browser/RN environment.
+
+**Технически:** ESLint правило `import/no-restricted-paths` блокирует импорты из `react-native` и `expo*` в файлах под путём `src/features/*/domain/`. Любой PR с нарушением падает в CI.
+
+**Тест на «domain-pure»:** если ты можешь импортировать domain-файл в чистом Node-скрипте без полифиллов и моков и вызвать его функции, domain-purity соблюдена. Если требуется `jest-expo` preset для запуска domain-теста — это нарушение.
+
+---
+
+## Error Propagation Rules
+
+Когда и как ошибки переходят между слоями — однозначные правила. Это исключает класс багов «один слой бросает, другой ожидает Result, что-то теряется».
+
+**Правило 1 · Domain operations возвращают `Result<T, E>`, не выбрасывают.**
+
+Любая publicly-exported domain функция, которая может «не получиться», возвращает `Result.ok(value)` или `Result.err(error)`. Никаких `throw` для ожидаемых ошибок. Исключение: невозможные ситуации (programming errors) могут использовать `throw new Error('unreachable')` — это не часть бизнес-логики.
+
+**Правило 2 · Data layer тоже возвращает `Result`, не выбрасывает.**
+
+Repository.load() возвращает `Result<Data, RepositoryError>`. Не бросает ошибку парсинга zod, не бросает «file not found» — оборачивает в Result.
+
+**Правило 3 · Presentation layer обрабатывает Result через явное pattern matching.**
+
+В `useCrosswindCalculator` хуке, при получении `Result.err`, view-model переводит UI в error-state. Никогда не делает `result.unwrap()` без проверки `result.ok`.
+
+**Правило 4 · Promise rejection allowed только в I/O coatings.**
+
+`async` функции в data-слое (например, `AsyncStorage.getItem` обёртки) могут возвращать rejected Promise. Repository ловит promise rejection и преобразует в `Result.err`. Domain никогда не работает с raw Promises напрямую — только с Result.
+
+**Правило 5 · ErrorBoundary в `_layout.tsx` ловит unexpected throws.**
+
+Если что-то всё-таки throws в presentation/data (баг), глобальный ErrorBoundary показывает fail-safe-экран вместо краша приложения. Это последняя линия обороны, не рутинный путь обработки.
+
+**Шпаргалка по слоям:**
+
+| Слой | Возвращает при ошибке | Throws? |
+|------|------------------------|---------|
+| Domain | `Result.err(error)` | Никогда (кроме unreachable) |
+| Data | `Result.err(error)` | Никогда |
+| Presentation | UI-состояние error | Никогда (кроме unreachable) |
+| App Shell (`_layout.tsx`) | ErrorBoundary fallback | — (ловит чужие throws) |
+
+---
+
+## Layer Responsibility Matrix
+
+Матрица того, что может делать каждый слой. При сомнениях «куда положить эту функцию» — смотри сюда.
+
+| Что делать | App Shell | Presentation | Domain | Data | Core | Design System |
+|------------|-----------|--------------|--------|------|------|---------------|
+| Регистрировать routes | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Composition Provider-stack | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Импорт `react`, `react-native` | ✅ | ✅ | ❌ | ⚠️ | ⚠️ | ✅ |
+| Использовать Hooks | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
+| Бизнес-расчёт (чистые функции) | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| Валидация input через Value Objects | ❌ | ⚠️ | ✅ | ❌ | ❌ | ❌ |
+| Чтение/запись JSON/AsyncStorage | ❌ | ❌ | ❌ | ✅ | ⚠️ | ❌ |
+| Локализация строк | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
+| Стилизация / темы | ❌ | ✅ | ❌ | ❌ | ⚠️ | ✅ |
+| Внутрисессионный state (useState) | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ |
+| Persistent state (через storage) | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
+| Public API через barrel | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ |
+
+Легенда: ✅ да · ❌ нет (запрещено) · ⚠️ только в специфичных случаях с обоснованием.
+
+«⚠️» для Data импорта `react-native` — только в Repository, который реально использует AsyncStorage (RN-специфичный). Сама модель данных Repository остаётся pure.
+
+«⚠️» для Core импорта `react-native` — только submodules core, которые exposes hook-ы (theming, disclaimer, feature-flags). Submodules вроде `core/result`, `core/logger` — pure TS.
+
+«⚠️» для Presentation валидации — только UI-валидация (например, число ли это вообще). Domain-валидация (envelope, бизнес-правила) делается в domain.
+
+---
+
+## Module Communication Patterns
+
+Какие способы коммуникации между модулями разрешены, какие нет.
+
+**Разрешённые паттерны:**
+
+1. **Через barrel-export типов и функций.** Module A экспортирует функцию, Module B импортирует через `@core/...` или `@features/.../`. Стандартный путь.
+
+2. **Через React Context, провайдер которого живёт в App Shell.** `ThemeProvider` в `_layout.tsx` → `useTheme()` хук в любом модуле, который зависит от core.
+
+3. **Через bundled JSON-конфиг.** App Shell читает coming-soon-modules.json, передаёт через Context или prop в Main Menu screen. Никакой direct cross-module call.
+
+4. **Через прямой вызов экспортированной функции.** `calculateCrosswindLimit(input, data)` — pure function, может быть вызвана из любого места, разрешённого правилами зависимостей.
+
+**Запрещённые паттерны:**
+
+1. **Module A импортирует приватные внутренности Module B.** Например, `import calculateInternal from '@features/crosswind/domain/calculator'` минуя barrel. ESLint блокирует.
+
+2. **Глобальные mutable singletons.** Не делаем `globalState`, `eventBus`, `appStore` без явного ADR. Состояние управляется через Context или local hook state.
+
+3. **Cross-feature direct import.** `features/crosswind` НЕ может импортировать `features/weight-balance`. Если общий код нужен — выносится в `core/`.
+
+4. **Пересылка событий через DOM-events / RN-event emitters.** Запрещено как механизм coupling между модулями. Используется только через явные API.
 
 ---
 
 ## Стратегия эволюции
 
-### Добавление нового feature-модуля
+### Добавление нового feature-модуля (recipe)
 
-1. Создать contract-документ `02_Specification/module-contracts/<new-module>.md` с описанием публичного API и зависимостей.
-2. Если требуются архитектурные решения, выходящие за рамки текущего документа, — создать ADR.
-3. Скопировать структуру `features/crosswind/` под новое имя.
-4. Реализовать domain → data → presentation в указанном порядке (TDD-friendly).
-5. Зарегистрировать новый screen в `app/navigation.tsx`.
-6. Обновить `comingSoonModules.json` в Main Menu — превратить «coming soon»-карточку в активную.
+Этот рецепт повторяется для каждого нового модуля в Phase 2+ и далее. Шаги обязательны и в указанном порядке.
+
+1. **Создать contract-документ** `02_Specification/module-contracts/<new-module>.md` со структурой по образцу `crosswind.md`: ответственность, submodules, public API, dependencies, side-effects, тестирование, открытые вопросы. Этот документ пишется **до** написания кода — он становится target для имплементации.
+
+2. **Создать ADR при необходимости.** Если новый модуль требует архитектурных решений, выходящих за рамки 02-architecture.md (например, новый паттерн интеграции, новая категория зависимостей), — оформить через ADR в `02_Specification/ADR/`.
+
+3. **Скаффолд папок** под `src/features/<new-module>/` по тому же шаблону:
+   ```
+   src/features/<new-module>/
+   ├── presentation/
+   ├── domain/
+   ├── data/
+   ├── __tests__/
+   └── index.ts            ← barrel-экспорт публичного API
+   ```
+
+4. **Реализовать слои в порядке domain → data → presentation** (TDD-friendly):
+   - Domain первым: types, validators, calculator/strategies — pure TS с тестами.
+   - Data вторым: schemas, repository, JSON-ресурсы — с тестами на корректность парсинга и fail-safe.
+   - Presentation последним: screens, view-models, components — UI поверх готового domain.
+
+5. **Зарегистрировать route в expo-router**, создав соответствующий файл в `src/app/`. Например, для `weight-balance` модуля:
+   ```typescript
+   // src/app/(main)/weight-balance.tsx
+   export { WeightBalanceScreen as default } from '@features/weight-balance';
+   ```
+   Никакой ручной регистрации в `navigation.tsx` — expo-router автоматически подхватывает файл.
+
+6. **Обновить `src/core/coming-soon-modules/data.json`** — удалить запись о новом модуле из coming-soon (он теперь активен) или, если был placeholder в Main Menu, обновить грид активных карточек.
+
+7. **Обновить `comingSoonModules` placeholder** в Main Menu (`src/app/(main)/index.tsx`) — добавить активную карточку, которая рендерит link на новый route.
+
+8. **Расширить тесты:** unit-тесты модуля + интеграционный snapshot Main Menu с новой картой + acceptance-test критичной функциональности.
+
+9. **Обновить `jest.config.js`** при необходимости (если новый модуль требует нестандартного coverage threshold или transform pattern).
+
+10. **Создать PR** через `gh pr create`, в описании указать: ссылку на module-contract, все ADR-ы (если создавались), Manual testing instructions.
+
+Этот recipe гарантирует, что добавление модуля не нарушает архитектурные правила и спека всегда отражает реальное состояние проекта.
 
 ### Обновление bundled JSON-данных
 

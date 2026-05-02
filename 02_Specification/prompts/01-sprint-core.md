@@ -62,14 +62,40 @@ After my "go":
    - src/core/i18n/__tests__/integration.test.ts
    - Coverage MUST be ≥ 80% for src/core/**.
 
-4. Create barrel exports per `module-contracts/core.md`:
+4. **IMPORTANT: Update jest.config.js with per-path coverage threshold.**
+   Per the incremental coverage threshold strategy in
+   02_Specification/08-quality-gates.md ("Coverage threshold evolution
+   strategy"), Phase B has only global 70% threshold. Sprint 1 (this
+   sprint) is the moment to add the Core module threshold:
+
+   In jest.config.js, in the coverageThreshold object, add:
+   ```javascript
+   './src/core/**': {
+     branches: 80,
+     functions: 80,
+     lines: 80,
+     statements: 80,
+   },
+   ```
+
+   Keep the existing `global: { ... 70 ... }` entry. Do NOT add the
+   `./src/features/*/domain/**` entry yet — that comes in Sprint 5
+   (Crosswind module).
+
+   After update, run `npm run test -- --coverage` and verify that:
+   - Coverage report shows core/** values.
+   - All metrics are ≥ 80%.
+   - If any submodule is below 80% — add more tests, do NOT lower the
+     threshold.
+
+5. Create barrel exports per `module-contracts/core.md`:
    - src/core/<submodule>/index.ts for each submodule.
    - src/core/index.ts as the main public API barrel.
 
-5. Verify locally:
+6. Verify locally:
    - `npm run lint` — 0 errors.
    - `npm run typecheck` — 0 errors.
-   - `npm run test -- --coverage` — passes, coverage ≥ 80%.
+   - `npm run test -- --coverage` — passes, core/** coverage ≥ 80%.
 
 6. Commit using Conventional Commits (multiple commits OK, one per submodule):
    - feat(core): add Result pattern
@@ -123,8 +149,9 @@ Report:
 
 ## После завершения
 
-1. Откройте PR в браузере (Claude Code даст ссылку).
-2. Убедитесь, что все CI checks зелёные.
-3. Прочитайте описание PR — Claude должен указать «No UI in this sprint, only library code».
-4. Approve и Squash Merge (через GitHub UI).
-5. Перейдите к следующему промпту: `02-sprint-design-system.md`.
+1. Дождитесь, пока Claude Code сообщит в чате что PR создан и CI зелёный.
+2. Поскольку этот sprint — только library code (нет UI), iPhone-тестирование не требуется. Claude Code в PR description явно укажет «No UI in this sprint, only library code».
+3. Опционально: откройте PR в браузере, бегло посмотрите diff.
+4. Если всё устраивает — напишите в чат Claude Code: **`merge it`**.
+5. Claude Code выполнит `gh pr merge <PR-number> --squash --delete-branch` и подтвердит.
+6. Переходите к следующему промпту: `02-sprint-design-system.md`.
