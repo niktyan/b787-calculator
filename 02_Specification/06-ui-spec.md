@@ -202,15 +202,20 @@ src/app/
 
 ## Экран 3 · Main Menu
 
-**Назначение:** точка входа для пользователя. Список модулей с одним активным и тремя «coming soon» (см. `01-vision.md`).
+**Назначение:** точка входа для пользователя. Список модулей crosswind-семьи: один тизер + одна активная карточка (см. `01-vision.md` § «Что входит в MVP»).
 
 **Структура:**
 - Header: логотип + название приложения + nav-pills (Modules, Settings, About).
-- Content: 2×2 (или 1×4 на узких экранах) сетка карточек:
-  - **Crosswind · Landing** — активная, открывает Crosswind Calculator.
-  - **Crosswind · Takeoff** — Phase 2, неактивная.
-  - **Weight & Balance** — Phase 3, неактивная.
-  - **Performance** — Phase 4, неактивная.
+- Content: 1×2 сетка карточек, render order соответствует хронологии фазы
+  полёта (takeoff предшествует landing):
+  - **Crosswind · Takeoff** — Phase 2, неактивная (тизер). Слот #1.
+  - **Crosswind · Landing** — активная, открывает Crosswind Calculator. Слот #2.
+
+Активная карточка осознанно во втором слоте, не в первом — это
+отражает физический порядок фаз полёта и помогает пилоту читать меню как
+roadmap «что будет дальше → что уже работает». Weight & Balance и
+Performance в MVP не показываются ни в каком виде (см. подсекцию
+«Long-term backlog (post-MVP)» в `01-vision.md`).
 
 **Поведение карточек:**
 - **Активная** — `Pressable` с opacity feedback, навигация на `/crosswind` через `expo-router`.
@@ -233,27 +238,13 @@ src/app/
     "description": "Same crosswind logic applied to the takeoff phase.",
     "icon": "TO",
     "phase": "Phase 2"
-  },
-  {
-    "id": "weight-balance",
-    "name": "Weight & Balance",
-    "description": "CG envelope, MAC%, and load sheet generation.",
-    "icon": "WB",
-    "phase": "Phase 3"
-  },
-  {
-    "id": "performance",
-    "name": "Performance",
-    "description": "V1/VR/V2, LDR, ASDA, and BFL computations.",
-    "icon": "PF",
-    "phase": "Phase 4"
   }
 ]
 ```
 
-При выходе Phase 2 удаляется соответствующая запись из JSON, добавляется
-`src/features/<module>/`, и Main Menu рендерит её как активную карточку
-без изменений в остальном коде.
+При выходе Phase 2 запись удаляется из JSON, добавляется
+`src/features/crosswind-takeoff/`, и Main Menu рендерит её как активную
+карточку без изменений в остальном коде.
 
 **Visual treatment** (см. `03_Mockups/index.html` секция 2 «Main Menu —
 Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
@@ -262,8 +253,20 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
 
 *Header (app-header):*
 
-- Брендовый блок (логотип + название) слева, NavPills справа. Нижний
-  отступ от content — 16 pt; разделитель — 1 pt линия `tokens.colors.border`.
+- **Раскладка зависит от ширины экрана** (порог — 768 pt, ширина
+  iPad-mini portrait):
+  - **Wide (`width >= 768`)** — single-row: брендовый блок (логотип +
+    название) слева, NavPills справа, `justify: space-between`.
+    Применяется на iPad portrait/landscape и iPhone landscape.
+  - **Compact (`width < 768`)** — two-row: row 1 содержит лого + название
+    (left-aligned), row 2 содержит NavPills full-width с равным
+    распределением (каждая pill `flex: 1`, gap 8 pt, `alignSelf:
+    stretch`), отступ row 2 от row 1 — 8 pt. Применяется на любом iPhone
+    portrait. Это нужно потому, что на узкой ширине длинные
+    локализованные лейблы (например русский «О приложении») в одной
+    строке с brand-блоком обрезаются у правого края.
+- Нижний отступ от content — 16 pt; разделитель — 1 pt линия
+  `tokens.colors.border`.
 - App-logo: `28×28` pt, `borderRadius: 6 pt`, фон `tokens.colors.accentSoft`,
   глиф «B7» — variant `mono` (или новый `monoSmall` если тонкого
   monospace-варианта недостаточно), цвет `tokens.colors.accent`, weight 700.
@@ -275,6 +278,11 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
   - Padding `~5 × 10 pt`, `borderRadius: 10 pt`, gap между pill-ами 8 pt.
   - Touch-target ≥ 44×44 pt даже при визуально меньшем чипе (пустой padding
     компенсирует — см. existing «Принцип 2» вверху документа).
+  - В compact-режиме (см. выше) NavPills получают prop `grow=true`,
+    применяющий `flex: 1` к каждой pill, чтобы они равномерно занимали
+    всю ширину строки. Truncate / horizontal scroll **запрещены** —
+    длинные локализованные лейблы должны оставаться полностью
+    читаемыми (см. § «Длинный текст в локализации» в Edge cases).
 
 *Module grid (menu-grid):*
 
@@ -716,6 +724,15 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 При включённой системной опции **Reduce Motion** — все анимации заменяются на мгновенные переходы (длительность 0 ms).
 
 Для всех анимаций используется `react-native-reanimated`.
+
+**Stack container background.** На каждом `<Stack>` в `expo-router`
+(включая root `app/_layout.tsx` и `app/(main)/_layout.tsx`)
+`screenOptions.contentStyle.backgroundColor` ОБЯЗАН быть равен
+`tokens.colors[theme.resolved].bgScreen` — иначе во время slide-from-right
+из-под движущейся карточки экрана просвечивает дефолтный системный белый
+фон контейнера, и в тёмной теме это видно как кратковременная белая
+полоса. Цвет читается через `useTheme()` хук, hardcoded значение
+запрещено: иначе перестанет работать переключение темы.
 
 ---
 

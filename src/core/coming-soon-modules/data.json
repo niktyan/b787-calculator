@@ -5,19 +5,5 @@
     "description": "Same crosswind logic applied to the takeoff phase.",
     "icon": "TO",
     "phase": "Phase 2"
-  },
-  {
-    "id": "weight-balance",
-    "name": "Weight & Balance",
-    "description": "CG envelope, MAC%, and load sheet generation.",
-    "icon": "WB",
-    "phase": "Phase 3"
-  },
-  {
-    "id": "performance",
-    "name": "Performance",
-    "description": "V1/VR/V2, LDR, ASDA, and BFL computations.",
-    "icon": "PF",
-    "phase": "Phase 4"
   }
 ]

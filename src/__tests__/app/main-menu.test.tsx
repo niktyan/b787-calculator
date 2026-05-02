@@ -24,23 +24,31 @@ describe('Main Menu route', () => {
     mockPush.mockClear();
   });
 
-  it('renders the header, NavPills, active card and three coming-soon cards (dark)', () => {
+  it('renders the header, NavPills, the takeoff teaser, and the active landing card (dark)', () => {
     const tree = renderWithTheme(<MainMenu />, { mode: 'dark' });
     expect(tree.getByTestId('main-menu-screen')).toBeTruthy();
     expect(tree.getByTestId('main-menu-logo')).toBeTruthy();
     expect(tree.getByText('B787 Calculator')).toBeTruthy();
     expect(tree.getByTestId('main-menu-tabs')).toBeTruthy();
     expect(tree.getByTestId('main-menu-grid')).toBeTruthy();
-    expect(tree.getByTestId('module-card-crosswind-landing')).toBeTruthy();
+    // MVP scope: only takeoff teaser + landing active. WB/Performance removed.
     expect(tree.getByTestId('module-card-crosswind-takeoff')).toBeTruthy();
-    expect(tree.getByTestId('module-card-weight-balance')).toBeTruthy();
-    expect(tree.getByTestId('module-card-performance')).toBeTruthy();
+    expect(tree.getByTestId('module-card-crosswind-landing')).toBeTruthy();
+    expect(tree.queryByTestId('module-card-weight-balance')).toBeNull();
+    expect(tree.queryByTestId('module-card-performance')).toBeNull();
     expect(tree.toJSON()).toMatchSnapshot();
   });
 
   it('renders correctly in light theme', () => {
     const tree = renderWithTheme(<MainMenu />, { mode: 'light' }).toJSON();
     expect(tree).toMatchSnapshot();
+  });
+
+  it('renders Crosswind · Takeoff before Crosswind · Landing in the grid', () => {
+    const { getAllByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
+    const cards = getAllByTestId(/^module-card-/);
+    const ids = cards.map((c) => (c.props as { testID: string }).testID);
+    expect(ids).toEqual(['module-card-crosswind-takeoff', 'module-card-crosswind-landing']);
   });
 
   it('navigates to /crosswind when the active card is tapped', () => {

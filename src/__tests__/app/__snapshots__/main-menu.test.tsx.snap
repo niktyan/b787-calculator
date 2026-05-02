@@ -60,11 +60,10 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
           style={
             [
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "flexWrap": "nowrap",
+                "alignItems": "stretch",
+                "flexDirection": "column",
                 "gap": 8,
-                "justifyContent": "space-between",
+                "justifyContent": "flex-start",
               },
               undefined,
             ]
@@ -141,10 +140,15 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
           <View
             accessibilityRole="tablist"
             style={
-              {
-                "flexDirection": "row",
-                "gap": 4,
-              }
+              [
+                {
+                  "flexDirection": "row",
+                  "gap": 4,
+                },
+                {
+                  "alignSelf": "stretch",
+                },
+              ]
             }
             testID="main-menu-tabs"
           >
@@ -192,6 +196,9 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   },
                   {
                     "backgroundColor": "#DEF7F3",
+                  },
+                  {
+                    "flex": 1,
                   },
                 ]
               }
@@ -260,6 +267,9 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                     "paddingVertical": 8,
                   },
                   null,
+                  {
+                    "flex": 1,
+                  },
                 ]
               }
               testID="main-menu-tabs-settings"
@@ -327,6 +337,9 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                     "paddingVertical": 8,
                   },
                   null,
+                  {
+                    "flex": 1,
+                  },
                 ]
               }
               testID="main-menu-tabs-about"
@@ -372,145 +385,6 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
         }
         testID="main-menu-grid"
       >
-        <View
-          style={
-            {
-              "width": "48%",
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Crosswind · Landing"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderColor": "#00C2A8",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "padding": 12,
-                },
-                null,
-              ]
-            }
-            testID="module-card-crosswind-landing"
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "stretch",
-                    "flexDirection": "column",
-                    "gap": 8,
-                    "justifyContent": "flex-start",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "backgroundColor": "#DEF7F3",
-                    "borderRadius": 6,
-                    "height": 28,
-                    "justifyContent": "center",
-                    "width": 28,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#00C2A8",
-                        "fontFamily": "Menlo",
-                        "fontSize": 16,
-                        "fontWeight": "500",
-                        "letterSpacing": 0,
-                        "lineHeight": 22,
-                        "textAlign": "auto",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  XW
-                </Text>
-              </View>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#1F2937",
-                      "fontFamily": "System",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Crosswind · Landing
-              </Text>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#4B5563",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                mainMenu.activeModuleDescription
-              </Text>
-            </View>
-          </View>
-        </View>
         <View
           style={
             {
@@ -687,7 +561,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
           }
         >
           <View
-            accessibilityLabel="Weight & Balance"
+            accessibilityLabel="Crosswind · Landing"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -722,7 +596,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
               [
                 {
                   "backgroundColor": "#FFFFFF",
-                  "borderColor": "rgba(0, 0, 0, 0.08)",
+                  "borderColor": "#00C2A8",
                   "borderRadius": 8,
                   "borderWidth": 1,
                   "padding": 12,
@@ -730,37 +604,8 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                 null,
               ]
             }
-            testID="module-card-weight-balance"
+            testID="module-card-crosswind-landing"
           >
-            <View
-              style={
-                {
-                  "position": "absolute",
-                  "right": 8,
-                  "top": 8,
-                }
-              }
-            >
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#6B7280",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "600",
-                      "letterSpacing": 0.44,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Phase 3
-              </Text>
-            </View>
             <View
               style={
                 [
@@ -778,7 +623,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "backgroundColor": "rgba(0, 0, 0, 0.16)",
+                    "backgroundColor": "#DEF7F3",
                     "borderRadius": 6,
                     "height": 28,
                     "justifyContent": "center",
@@ -791,7 +636,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   style={
                     [
                       {
-                        "color": "#6B7280",
+                        "color": "#00C2A8",
                         "fontFamily": "Menlo",
                         "fontSize": 16,
                         "fontWeight": "500",
@@ -803,7 +648,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                     ]
                   }
                 >
-                  WB
+                  XW
                 </Text>
               </View>
               <Text
@@ -823,7 +668,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   ]
                 }
               >
-                Weight & Balance
+                Crosswind · Landing
               </Text>
               <Text
                 allowFontScaling={true}
@@ -842,175 +687,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   ]
                 }
               >
-                CG envelope, MAC%, and load sheet generation.
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            {
-              "width": "48%",
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Performance"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                {
-                  "backgroundColor": "#FFFFFF",
-                  "borderColor": "rgba(0, 0, 0, 0.08)",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "padding": 12,
-                },
-                null,
-              ]
-            }
-            testID="module-card-performance"
-          >
-            <View
-              style={
-                {
-                  "position": "absolute",
-                  "right": 8,
-                  "top": 8,
-                }
-              }
-            >
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#6B7280",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "600",
-                      "letterSpacing": 0.44,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Phase 4
-              </Text>
-            </View>
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "stretch",
-                    "flexDirection": "column",
-                    "gap": 8,
-                    "justifyContent": "flex-start",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(0, 0, 0, 0.16)",
-                    "borderRadius": 6,
-                    "height": 28,
-                    "justifyContent": "center",
-                    "width": 28,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#6B7280",
-                        "fontFamily": "Menlo",
-                        "fontSize": 16,
-                        "fontWeight": "500",
-                        "letterSpacing": 0,
-                        "lineHeight": 22,
-                        "textAlign": "auto",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  PF
-                </Text>
-              </View>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#1F2937",
-                      "fontFamily": "System",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Performance
-              </Text>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#4B5563",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                V1/VR/V2, LDR, ASDA, and BFL computations.
+                mainMenu.activeModuleDescription
               </Text>
             </View>
           </View>
@@ -1021,7 +698,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
 </RNCSafeAreaView>
 `;
 
-exports[`Main Menu route renders the header, NavPills, active card and three coming-soon cards (dark) 1`] = `
+exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and the active landing card (dark) 1`] = `
 <RNCSafeAreaView
   edges={
     {
@@ -1081,11 +758,10 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
           style={
             [
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "flexWrap": "nowrap",
+                "alignItems": "stretch",
+                "flexDirection": "column",
                 "gap": 8,
-                "justifyContent": "space-between",
+                "justifyContent": "flex-start",
               },
               undefined,
             ]
@@ -1162,10 +838,15 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
           <View
             accessibilityRole="tablist"
             style={
-              {
-                "flexDirection": "row",
-                "gap": 4,
-              }
+              [
+                {
+                  "flexDirection": "row",
+                  "gap": 4,
+                },
+                {
+                  "alignSelf": "stretch",
+                },
+              ]
             }
             testID="main-menu-tabs"
           >
@@ -1213,6 +894,9 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                   },
                   {
                     "backgroundColor": "#003C36",
+                  },
+                  {
+                    "flex": 1,
                   },
                 ]
               }
@@ -1281,6 +965,9 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                     "paddingVertical": 8,
                   },
                   null,
+                  {
+                    "flex": 1,
+                  },
                 ]
               }
               testID="main-menu-tabs-settings"
@@ -1348,6 +1035,9 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                     "paddingVertical": 8,
                   },
                   null,
+                  {
+                    "flex": 1,
+                  },
                 ]
               }
               testID="main-menu-tabs-about"
@@ -1393,145 +1083,6 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
         }
         testID="main-menu-grid"
       >
-        <View
-          style={
-            {
-              "width": "48%",
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Crosswind · Landing"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                {
-                  "backgroundColor": "#11161F",
-                  "borderColor": "#00C2A8",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "padding": 12,
-                },
-                null,
-              ]
-            }
-            testID="module-card-crosswind-landing"
-          >
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "stretch",
-                    "flexDirection": "column",
-                    "gap": 8,
-                    "justifyContent": "flex-start",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "backgroundColor": "#003C36",
-                    "borderRadius": 6,
-                    "height": 28,
-                    "justifyContent": "center",
-                    "width": 28,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#00C2A8",
-                        "fontFamily": "Menlo",
-                        "fontSize": 16,
-                        "fontWeight": "500",
-                        "letterSpacing": 0,
-                        "lineHeight": 22,
-                        "textAlign": "auto",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  XW
-                </Text>
-              </View>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#E6EDF3",
-                      "fontFamily": "System",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Crosswind · Landing
-              </Text>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#8B949E",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                mainMenu.activeModuleDescription
-              </Text>
-            </View>
-          </View>
-        </View>
         <View
           style={
             {
@@ -1708,7 +1259,7 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
           }
         >
           <View
-            accessibilityLabel="Weight & Balance"
+            accessibilityLabel="Crosswind · Landing"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1743,7 +1294,7 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
               [
                 {
                   "backgroundColor": "#11161F",
-                  "borderColor": "rgba(255, 255, 255, 0.08)",
+                  "borderColor": "#00C2A8",
                   "borderRadius": 8,
                   "borderWidth": 1,
                   "padding": 12,
@@ -1751,37 +1302,8 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                 null,
               ]
             }
-            testID="module-card-weight-balance"
+            testID="module-card-crosswind-landing"
           >
-            <View
-              style={
-                {
-                  "position": "absolute",
-                  "right": 8,
-                  "top": 8,
-                }
-              }
-            >
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#6E7681",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "600",
-                      "letterSpacing": 0.44,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Phase 3
-              </Text>
-            </View>
             <View
               style={
                 [
@@ -1799,7 +1321,7 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                 style={
                   {
                     "alignItems": "center",
-                    "backgroundColor": "rgba(255, 255, 255, 0.16)",
+                    "backgroundColor": "#003C36",
                     "borderRadius": 6,
                     "height": 28,
                     "justifyContent": "center",
@@ -1812,7 +1334,7 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                   style={
                     [
                       {
-                        "color": "#6E7681",
+                        "color": "#00C2A8",
                         "fontFamily": "Menlo",
                         "fontSize": 16,
                         "fontWeight": "500",
@@ -1824,7 +1346,7 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                     ]
                   }
                 >
-                  WB
+                  XW
                 </Text>
               </View>
               <Text
@@ -1844,7 +1366,7 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                   ]
                 }
               >
-                Weight & Balance
+                Crosswind · Landing
               </Text>
               <Text
                 allowFontScaling={true}
@@ -1863,175 +1385,7 @@ exports[`Main Menu route renders the header, NavPills, active card and three com
                   ]
                 }
               >
-                CG envelope, MAC%, and load sheet generation.
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            {
-              "width": "48%",
-            }
-          }
-        >
-          <View
-            accessibilityLabel="Performance"
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                {
-                  "backgroundColor": "#11161F",
-                  "borderColor": "rgba(255, 255, 255, 0.08)",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "padding": 12,
-                },
-                null,
-              ]
-            }
-            testID="module-card-performance"
-          >
-            <View
-              style={
-                {
-                  "position": "absolute",
-                  "right": 8,
-                  "top": 8,
-                }
-              }
-            >
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#6E7681",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "600",
-                      "letterSpacing": 0.44,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Phase 4
-              </Text>
-            </View>
-            <View
-              style={
-                [
-                  {
-                    "alignItems": "stretch",
-                    "flexDirection": "column",
-                    "gap": 8,
-                    "justifyContent": "flex-start",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(255, 255, 255, 0.16)",
-                    "borderRadius": 6,
-                    "height": 28,
-                    "justifyContent": "center",
-                    "width": 28,
-                  }
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#6E7681",
-                        "fontFamily": "Menlo",
-                        "fontSize": 16,
-                        "fontWeight": "500",
-                        "letterSpacing": 0,
-                        "lineHeight": 22,
-                        "textAlign": "auto",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  PF
-                </Text>
-              </View>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#E6EDF3",
-                      "fontFamily": "System",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Performance
-              </Text>
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#8B949E",
-                      "fontFamily": "System",
-                      "fontSize": 11,
-                      "fontWeight": "400",
-                      "letterSpacing": 0,
-                      "lineHeight": 16,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                V1/VR/V2, LDR, ASDA, and BFL computations.
+                mainMenu.activeModuleDescription
               </Text>
             </View>
           </View>

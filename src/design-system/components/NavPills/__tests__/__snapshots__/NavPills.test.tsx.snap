@@ -4,10 +4,13 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
 <View
   accessibilityRole="tablist"
   style={
-    {
-      "flexDirection": "row",
-      "gap": 4,
-    }
+    [
+      {
+        "flexDirection": "row",
+        "gap": 4,
+      },
+      null,
+    ]
   }
   testID="nav"
 >
@@ -56,6 +59,7 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
         {
           "backgroundColor": "#003C36",
         },
+        null,
       ]
     }
     testID="nav-modules"
@@ -122,6 +126,7 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
           "paddingHorizontal": 12,
           "paddingVertical": 8,
         },
+        null,
         null,
       ]
     }
@@ -190,6 +195,7 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
           "paddingVertical": 8,
         },
         null,
+        null,
       ]
     }
     testID="nav-about"
@@ -221,10 +227,13 @@ exports[`NavPills renders in light theme 1`] = `
 <View
   accessibilityRole="tablist"
   style={
-    {
-      "flexDirection": "row",
-      "gap": 4,
-    }
+    [
+      {
+        "flexDirection": "row",
+        "gap": 4,
+      },
+      null,
+    ]
   }
   testID="nav"
 >
@@ -270,6 +279,7 @@ exports[`NavPills renders in light theme 1`] = `
           "paddingHorizontal": 12,
           "paddingVertical": 8,
         },
+        null,
         null,
       ]
     }
@@ -340,6 +350,7 @@ exports[`NavPills renders in light theme 1`] = `
         {
           "backgroundColor": "#DEF7F3",
         },
+        null,
       ]
     }
     testID="nav-settings"
@@ -406,6 +417,7 @@ exports[`NavPills renders in light theme 1`] = `
           "paddingHorizontal": 12,
           "paddingVertical": 8,
         },
+        null,
         null,
       ]
     }

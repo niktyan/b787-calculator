@@ -17,6 +17,12 @@ export interface NavPillsProps<TId extends string = string> {
   readonly activeId: TId;
   readonly onChange: (next: TId) => void;
   readonly testID?: string;
+  /**
+   * When true, each pill grows to share the parent's width equally
+   * (`flex: 1`). Used by Main Menu on compact widths to fit a full-width
+   * NavPills row below the brand block. Defaults to false (intrinsic width).
+   */
+  readonly grow?: boolean;
 }
 
 export function NavPills<TId extends string = string>({
@@ -24,6 +30,7 @@ export function NavPills<TId extends string = string>({
   activeId,
   onChange,
   testID,
+  grow = false,
 }: NavPillsProps<TId>): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
@@ -42,16 +49,26 @@ export function NavPills<TId extends string = string>({
         pillActive: {
           backgroundColor: palette.accentSoft,
         },
+        pillGrow: {
+          flex: 1,
+        },
         root: {
           flexDirection: 'row',
           gap: tokens.spacing.xs,
+        },
+        rootGrow: {
+          alignSelf: 'stretch',
         },
       }),
     [palette.accentSoft],
   );
 
   return (
-    <View accessibilityRole="tablist" style={styles.root} testID={testID}>
+    <View
+      accessibilityRole="tablist"
+      style={[styles.root, grow ? styles.rootGrow : null]}
+      testID={testID}
+    >
       {items.map((item) => {
         const isActive = item.id === activeId;
         const handlePress = (): void => onChange(item.id);
@@ -62,7 +79,11 @@ export function NavPills<TId extends string = string>({
             accessibilityState={{ selected: isActive }}
             key={item.id}
             onPress={handlePress}
-            style={[styles.pill, isActive ? styles.pillActive : null]}
+            style={[
+              styles.pill,
+              isActive ? styles.pillActive : null,
+              grow ? styles.pillGrow : null,
+            ]}
             testID={testID === undefined ? undefined : `${testID}-${item.id}`}
           >
             <Text variant="caption" color={isActive ? 'accent' : 'textSecondary'}>

@@ -17,17 +17,20 @@ describe('coming-soon-modules loader', () => {
     }
   });
 
-  it('exposes crosswind-takeoff, weight-balance, performance as coming-soon teasers', () => {
+  it('exposes crosswind-takeoff as a coming-soon teaser', () => {
     const modules = loadComingSoonModules();
-    const ids = ['crosswind-takeoff', 'weight-balance', 'performance'] as const;
-    for (const id of ids) {
-      const m = modules.find((x) => x.id === id);
-      expect(m).toBeDefined();
-      expect(m?.phase).toMatch(/^Phase \d+$/);
-      expect((m?.name ?? '').length).toBeGreaterThan(0);
-      expect((m?.description ?? '').length).toBeGreaterThan(0);
-      expect((m?.icon ?? '').length).toBeGreaterThan(0);
-    }
+    const takeoff = modules.find((x) => x.id === 'crosswind-takeoff');
+    expect(takeoff).toBeDefined();
+    expect(takeoff?.phase).toMatch(/^Phase \d+$/);
+    expect((takeoff?.name ?? '').length).toBeGreaterThan(0);
+    expect((takeoff?.description ?? '').length).toBeGreaterThan(0);
+    expect((takeoff?.icon ?? '').length).toBeGreaterThan(0);
+  });
+
+  it('does not surface weight-balance or performance in MVP (post-MVP backlog)', () => {
+    const modules = loadComingSoonModules();
+    expect(modules.find((x) => x.id === 'weight-balance')).toBeUndefined();
+    expect(modules.find((x) => x.id === 'performance')).toBeUndefined();
   });
 
   it('does not include the active landing module (lives under features/, per ADR-0004)', () => {
