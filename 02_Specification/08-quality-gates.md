@@ -217,6 +217,16 @@ module.exports = [
 - **`strict-boolean-expressions`** — нельзя использовать non-boolean в условиях (`if (str)` запрещено, нужно `if (str.length > 0)` или `if (str !== '')`).
 - **`no-magic-numbers`** — числа вне `[0, 1, -1, 2, 100]` должны быть именованными константами.
 
+### Design-system specific ESLint exceptions
+
+Files under `src/design-system/**` may use theme-aware `useMemo + StyleSheet.create()` patterns that defeat `react-native/no-unused-styles` static analysis. The rule produces false positives on dynamically generated style names.
+
+Therefore, `react-native/no-unused-styles` is **DISABLED** specifically for `src/design-system/**` via ESLint overrides. The rule remains **ACTIVE** for all other paths.
+
+**Why this is acceptable:** design-system components are exhaustively tested via snapshot + behavior tests. Unused styles would surface as visual regressions, not silent dead code. The rule's false positive rate in design-system was higher than its detection rate.
+
+**Reconsider when:** `eslint-plugin-react-native` gains better support for theme-aware style generation, OR if we migrate to a different styling approach (e.g., Restyle, NativeWind — currently forbidden per `03-tech-stack.md`).
+
 ---
 
 ## Prettier конфигурация (`.prettierrc.js`)
