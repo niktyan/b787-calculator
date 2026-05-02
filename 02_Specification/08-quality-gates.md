@@ -276,9 +276,11 @@ module.exports = {
   },
   testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/.expo/'],
-  transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|react-native-svg)/)',
-  ],
+  // transformIgnorePatterns intentionally omitted — jest-expo preset
+  // ships the correct default for Expo SDK 54+ (covers
+  // expo-modules-core, expo-modules-autolinking, all @expo/*, etc).
+  // Overriding here historically led to broken tests because the
+  // pattern in old spec drafts didn't include expo-modules-core.
 };
 ```
 
