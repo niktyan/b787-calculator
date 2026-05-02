@@ -567,6 +567,43 @@ Some modules need to expose internal helpers for unit testing (e.g., resetting a
 
 ---
 
+## Test file location for expo-router routes
+
+**Why this is special.** `expo-router` discovers routes by scanning `src/app/`
+and turning every `*.tsx` file there into a navigable route. A co-located
+test file like `src/app/menu.test.tsx` would therefore register a phantom
+route at `/menu.test`: unreachable in normal use, but visible in the typed
+routes generator (`.expo/types/router.d.ts`) and the `_sitemap` debug screen,
+and a likely source of "why does my route list have a `.test` entry?"
+confusion. Sprint 3 hit this empirically.
+
+**Rule.**
+
+- Route source files live in `src/app/<route-path>.tsx`.
+- Route tests live in `src/__tests__/app/<route-path>.test.tsx`, mirroring the
+  route structure (e.g. test for `src/app/(main)/menu.tsx` lives at
+  `src/__tests__/app/(main)/menu.test.tsx` if grouped, or
+  `src/__tests__/app/menu.test.tsx` for top-level routes — pick whichever
+  reflects the source path most clearly).
+- Snapshot files live alongside their tests in
+  `src/__tests__/app/__snapshots__/`, as Jest does by default.
+
+**Non-route code keeps its existing convention.** Anything under `src/core/`,
+`src/design-system/`, or `src/features/` continues to use co-located
+`__tests__/` subfolders next to the source it tests, as documented in
+`module-contracts/design-system.md` (Components section). That convention is
+fine there because Jest's `testMatch` already finds `**/__tests__/**/*.test.{ts,tsx}`
+and there is no router scanning the directory.
+
+**Cross-references.**
+
+- `module-contracts/design-system.md` § "Components" — co-located `__tests__/`
+  convention for non-route code.
+- `02_Specification/06-ui-spec.md` § "Навигация — общая схема" — the
+  `src/app/` route layout this rule protects.
+
+---
+
 ## Open questions
 
 1. Стоит ли использовать `dependency-cruiser` в дополнение к `import/no-restricted-paths`? Он мощнее в проверке архитектурных правил, но добавляет ещё один tool. По умолчанию: пока нет, если простых ESLint-правил хватит. **Revisit при добавлении 2-го feature** (см. секцию «Architecture lint» выше — нужно для feature→feature enforcement).
