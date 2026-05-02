@@ -1,0 +1,6 @@
+[
+  { "id": "crosswind-landing", "active": true, "phase": null },
+  { "id": "crosswind-takeoff", "active": false, "phase": "Phase 2" },
+  { "id": "weight-balance", "active": false, "phase": "Phase 3" },
+  { "id": "performance", "active": false, "phase": "Phase 4" }
+]
