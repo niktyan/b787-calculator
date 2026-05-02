@@ -56,6 +56,27 @@
 - `noPropertyAccessFromIndexSignature` — нельзя обращаться через точку к свойствам с неопределённым ключом, только через `[key]`. Делает явным, где работа идёт с динамическими ключами.
 - **`skipLibCheck: true` — необходимое исключение.** Без него TypeScript падает на конфликте типов между `react-native/src/types/globals.d.ts` (RN-овые `Blob`, `Request`, `WebSocket`, `URL` и т.д.) и `typescript/lib/lib.dom.d.ts` (DOM-овые версии тех же глобалов). Конфликт находится **только** в чужих node_modules — не в нашем коде. Флаг подавляет проверку только third-party `.d.ts` файлов; **наш собственный код по-прежнему полностью type-checked**.
 
+### `exactOptionalPropertyTypes` interaction with forwarded props
+
+With `exactOptionalPropertyTypes: true`, declaring a prop as `propName?: T` does NOT allow passing `undefined` explicitly — it requires either omitting the prop or passing a value of type `T`.
+
+This causes friction when forwarding optional props from a wrapper component to a child:
+
+```typescript
+// ❌ Fails with exactOptionalPropertyTypes:
+function Wrapper(props: { value?: string }) {
+  return <Child value={props.value} />;
+  // Error: Type 'string | undefined' not assignable to '?: string'
+}
+
+// ✅ Correct pattern — widen child's prop type:
+type ChildProps = { value?: string | undefined };
+```
+
+When designing a component that may receive forwarded optional props, declare the prop type as `T | undefined` explicitly (instead of just `?: T`). This preserves type safety while allowing forwarding patterns common in React component composition.
+
+This pattern is used throughout `src/design-system/` for compatibility with parent components that may pass `undefined` deliberately (e.g., conditional rendering with `value={isReady ? data : undefined}`).
+
 ---
 
 ## ESLint конфигурация (`eslint.config.js`)
@@ -131,7 +152,7 @@ module.exports = [
     'react-native/no-unused-styles': 'error',
     'react-native/no-inline-styles': 'error',
     'react-native/no-color-literals': 'error',
-    'react-native/no-raw-text': ['error', { skip: ['Trans'] }],
+    'react-native/no-raw-text': ['error', { skip: ['Trans', 'MonoText'] }],
 
     // ===== Accessibility =====
     'jsx-a11y/no-autofocus': 'error',
@@ -213,9 +234,23 @@ module.exports = [
 - **`react-native/no-inline-styles`** — все стили через `StyleSheet`, никаких `style={{ color: 'red' }}` inline.
 - **`react-native/no-color-literals`** — цвета только через design-system tokens, никаких hex-литералов в JSX.
 - **`react-native/no-raw-text`** — текст только через локализованные компоненты, никакого `<Text>Hello</Text>` в JSX (заставляет идти через `<Trans>` или `t()`).
+
+  `MonoText` is added to the `skip` list because it is a presentation primitive for numerical values, codes, and aviation identifiers (KT, MAC, RWYCC, etc.) that are intentionally NOT localized — they are international aviation conventions that remain English in all languages. Other `Text` variants ARE expected to use `<Trans>` for localized content.
+
+  When adding new components: only add to the `skip` list if the component fundamentally cannot accept localized content. Default is to require localization.
 - **`no-floating-promises`** — все промисы должны быть либо `await`-нуты, либо явно `void`-нуты. Запрещает «забытые» промисы.
 - **`strict-boolean-expressions`** — нельзя использовать non-boolean в условиях (`if (str)` запрещено, нужно `if (str.length > 0)` или `if (str !== '')`).
 - **`no-magic-numbers`** — числа вне `[0, 1, -1, 2, 100]` должны быть именованными константами.
+
+### Design-system specific ESLint exceptions
+
+Files under `src/design-system/**` may use theme-aware `useMemo + StyleSheet.create()` patterns that defeat `react-native/no-unused-styles` static analysis. The rule produces false positives on dynamically generated style names.
+
+Therefore, `react-native/no-unused-styles` is **DISABLED** specifically for `src/design-system/**` via ESLint overrides. The rule remains **ACTIVE** for all other paths.
+
+**Why this is acceptable:** design-system components are exhaustively tested via snapshot + behavior tests. Unused styles would surface as visual regressions, not silent dead code. The rule's false positive rate in design-system was higher than its detection rate.
+
+**Reconsider when:** `eslint-plugin-react-native` gains better support for theme-aware style generation, OR if we migrate to a different styling approach (e.g., Restyle, NativeWind — currently forbidden per `03-tech-stack.md`).
 
 ---
 
