@@ -1,0 +1,315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Splash route renders correctly in light theme 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#F4F6F9",
+      "flex": 1,
+    }
+  }
+  testID="splash-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "column",
+            "gap": 16,
+            "justifyContent": "center",
+          },
+          {
+            "flex": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="B787 logo"
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#00C2A8",
+            "borderRadius": 16,
+            "height": 96,
+            "justifyContent": "center",
+            "width": 96,
+          }
+        }
+        testID="splash-logo"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "Menlo",
+                "fontSize": 48,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 56,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          B7
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "gap": 4,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#1F2937",
+                "fontFamily": "System",
+                "fontSize": 28,
+                "fontWeight": "600",
+                "letterSpacing": 0,
+                "lineHeight": 34,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          B787 Calculator
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#4B5563",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          splash.tagline
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6B7280",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+          testID="splash-version"
+        >
+          v
+          0.1.0
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`Splash route renders the brand placeholder, app name, version and tagline (dark) 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#0A0E14",
+      "flex": 1,
+    }
+  }
+  testID="splash-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "column",
+            "gap": 16,
+            "justifyContent": "center",
+          },
+          {
+            "flex": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityLabel="B787 logo"
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#00C2A8",
+            "borderRadius": 16,
+            "height": 96,
+            "justifyContent": "center",
+            "width": 96,
+          }
+        }
+        testID="splash-logo"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "Menlo",
+                "fontSize": 48,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 56,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          B7
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "gap": 4,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#E6EDF3",
+                "fontFamily": "System",
+                "fontSize": 28,
+                "fontWeight": "600",
+                "letterSpacing": 0,
+                "lineHeight": 34,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          B787 Calculator
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#8B949E",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          splash.tagline
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6E7681",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+          testID="splash-version"
+        >
+          v
+          0.1.0
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
