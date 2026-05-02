@@ -310,6 +310,16 @@ CI блокирует merge при недостаточном coverage. Аген
 
 **Историческая справка по `setupFilesAfterEnv`:** ранее в этом разделе было `setupFilesAfterEach`. Это была опечатка — настоящая опция Jest 29 называется **`setupFilesAfterEnv`** (от «after Jest test framework env initialization»). Опция `setupFilesAfterEach` Jest-ом не распознаётся. Исправлено в Phase B docs sync.
 
+### Phase B coverage exclusion (temporary)
+
+During Phase B + Sprint 1, `src/app/**` is excluded from `collectCoverageFrom` because it contains placeholder route files that have no real logic. These will be replaced by Sprint 3 (Splash + Disclaimer) with meaningful screens.
+
+Sprint 3 PR MUST:
+
+- Remove the `'!src/app/**'` (or equivalent) exclusion from `jest.config.js`.
+- Verify coverage of new screen code (snapshot tests count).
+- Update this section of the spec to reflect the new state.
+
 ---
 
 ## Performance budget
