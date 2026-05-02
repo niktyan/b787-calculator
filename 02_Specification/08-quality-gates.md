@@ -276,9 +276,11 @@ module.exports = {
   },
   testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/.expo/'],
-  transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|react-native-svg)/)',
-  ],
+  // transformIgnorePatterns intentionally omitted — jest-expo preset
+  // ships the correct default for Expo SDK 54+ (covers
+  // expo-modules-core, expo-modules-autolinking, all @expo/*, etc).
+  // Overriding here historically led to broken tests because the
+  // pattern in old spec drafts didn't include expo-modules-core.
 };
 ```
 
@@ -307,6 +309,16 @@ CI блокирует merge при недостаточном coverage. Аген
 Это правило фиксируется в спринт-промптах (`prompts/01-sprint-core.md`, `prompts/05-sprint-crosswind.md`) — агент при имплементации соответствующего модуля **обязан** обновить `jest.config.js`.
 
 **Историческая справка по `setupFilesAfterEnv`:** ранее в этом разделе было `setupFilesAfterEach`. Это была опечатка — настоящая опция Jest 29 называется **`setupFilesAfterEnv`** (от «after Jest test framework env initialization»). Опция `setupFilesAfterEach` Jest-ом не распознаётся. Исправлено в Phase B docs sync.
+
+### Phase B coverage exclusion (temporary)
+
+During Phase B + Sprint 1, `src/app/**` is excluded from `collectCoverageFrom` because it contains placeholder route files that have no real logic. These will be replaced by Sprint 3 (Splash + Disclaimer) with meaningful screens.
+
+Sprint 3 PR MUST:
+
+- Remove the `'!src/app/**'` (or equivalent) exclusion from `jest.config.js`.
+- Verify coverage of new screen code (snapshot tests count).
+- Update this section of the spec to reflect the new state.
 
 ---
 
@@ -501,6 +513,22 @@ jobs:
 - `==` (нужно `===`).
 - Floating promises.
 - Magic numbers вне `[0, 1, -1, 2, 100]`.
+
+---
+
+## Convention: test-only exports
+
+Some modules need to expose internal helpers for unit testing (e.g., resetting a singleton cache, exposing a pure parser used internally). These are exported with a leading underscore:
+
+- `_resetCacheForTesting()` — reset internal state between tests.
+- `_parseFoo()` — exposed pure helper for unit testing.
+
+**Convention rules:**
+
+- Always prefix with underscore `_`.
+- Always include a comment explaining why this is exported.
+- NEVER use these in production code (even from other modules). They are test-only.
+- ESLint rule (future): block imports of `_*` from production code. For now: discipline + code review.
 
 ---
 
