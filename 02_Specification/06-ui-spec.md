@@ -232,6 +232,82 @@ src/app/
 
 При выходе Phase 2 этот JSON обновляется, перевыпускается приложение через App Store update — никаких изменений в коде Main Menu.
 
+**Visual treatment** (см. `03_Mockups/index.html` секция 2 «Main Menu —
+Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
+`.menu-grid`, `.module-card`, `.module-icon`, `.module-name`,
+`.module-desc`, `.coming-badge`):
+
+*Header (app-header):*
+
+- Брендовый блок (логотип + название) слева, NavPills справа. Нижний
+  отступ от content — 16 pt; разделитель — 1 pt линия `tokens.colors.border`.
+- App-logo: `28×28` pt, `borderRadius: 6 pt`, фон `tokens.colors.accentSoft`,
+  глиф «B7» — variant `mono` (или новый `monoSmall` если тонкого
+  monospace-варианта недостаточно), цвет `tokens.colors.accent`, weight 700.
+- App-title: variant `body` weight 600 (sans 16 pt), цвет `textPrimary`. Gap
+  10 pt между логотипом и заголовком.
+- NavPills (Modules / Settings / About): pill-кнопки `~12 pt` лейбл, weight 500.
+  - Активная pill: фон `accentSoft`, цвет текста `accent`.
+  - Неактивная: прозрачный фон, цвет `textSecondary`.
+  - Padding `~5 × 10 pt`, `borderRadius: 10 pt`, gap между pill-ами 8 pt.
+  - Touch-target ≥ 44×44 pt даже при визуально меньшем чипе (пустой padding
+    компенсирует — см. existing «Принцип 2» вверху документа).
+
+*Module grid (menu-grid):*
+
+- Раскладка следует существующей секции «Адаптивность iPad ↔ iPhone»
+  (не переопределяем здесь breakpoint-ы): 2 колонки на iPad regular и
+  iPhone landscape; 1 колонка с увеличенными карточками на iPhone portrait.
+- Gap между карточками — 10–14 pt; верхний margin от header — 14 pt.
+- Card surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
+  (1 pt), `borderRadius: 10 pt`, internal padding 12 pt.
+
+*Активная карточка (`active`):*
+
+- Граница переключается на `tokens.colors.accent`.
+- Фон — линейный градиент `135°` от `bgCard` к `accentSoft`. Реализация в
+  RN: `expo-linear-gradient` (если он уже на allow-list в `03-tech-stack.md`)
+  или однотонная заливка `accentSoft`-tint в качестве визуально
+  эквивалентной деградации — implementation note, не блокер.
+- Tap → навигация на `/(main)/crosswind` (поведение уже описано выше).
+
+*Coming-soon карточка (`coming`):*
+
+- Surface — та же, что у базовой карточки (полная opacity сохраняется ради
+  читаемости текста). Визуальное «приглушение» создаётся muted-иконкой
+  и phase-бейджем — НЕ снижением opacity всей карточки.
+
+*Module icon (module-icon):*
+
+- `28×28` pt, `borderRadius: 6 pt`, mono-глиф 11 pt weight 700 (variant
+  `mono` или новый `monoSmall`).
+- Активная: фон `tokens.colors.accentSoft`, цвет `tokens.colors.accent`,
+  глифы «XW» / etc.
+- Coming-soon: фон `rgba(textSecondary, 0.15)` (≈ 15 % alpha от
+  `tokens.colors.textSecondary`), цвет `tokens.colors.textTertiary`.
+  *design-system to add `colors.iconMuted` token (mockup использует
+  `rgba(139, 148, 158, 0.15)` в dark, симметрично в light).*
+
+*Module name + description:*
+
+- Name: variant `caption` weight 600 (sans 12 pt), цвет `textPrimary`,
+  margin-bottom 2 pt.
+- Description: 10 pt sans 400, line-height 1.4, цвет `textSecondary`. Один
+  предложение, без ожидаемой truncation на стандартных размерах.
+  *design-system to add typography variant `microBody` (sans 10 / 14, 400)
+  если 11 pt `bodySmall` визуально тяжело смотрится в карточке.*
+
+*Coming badge (coming-badge):*
+
+- Абсолютно позиционирован: `top: 8 pt`, `right: 8 pt` от карточки.
+- 8 pt uppercase, letter-spacing 0.06em, цвет `tokens.colors.textTertiary`,
+  weight 400. Текст вида «Phase 2».
+  *design-system to add typography variant `microChip` (sans 8 / 12, 400,
+  letterSpacing 0.06em → ≈0.48 pt) — новый вариант для микро-бейджей.*
+
+*Tap behavior* — поведение уже описано выше («Поведение карточек»); здесь
+визуал не дублируется.
+
 ---
 
 ## Экран 3.1 · Coming Soon Modal
@@ -249,6 +325,31 @@ src/app/
 - Появляется как modal (slide-up animation, 300 ms).
 - Закрывается тапом на «OK», тапом по затемнённой области, или системным жестом.
 - При закрытии — возврат на Main Menu без перехода куда-либо ещё.
+
+**Visual treatment** (см. `03_Mockups/index.html` секция 2, и UX-описание
+выше; конкретного `.modal` класса в мокапе нет — комбинируем визуальные
+правила `.module-card` и `.accept-btn`):
+
+- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
+  (1 pt), `borderRadius: 16 pt`, центрирован по горизонтали с `~24 pt`
+  margin от краёв экрана. Internal padding 16–20 pt.
+- Backdrop: однотонная плашка `rgba(0, 0, 0, 0.55)` поверх остального UI.
+  Tap по backdrop закрывает modal (поведение уже описано выше).
+- Иконка модуля + название: те же токены и размеры, что на module-card в
+  Main Menu (см. выше «Module icon» / «Module name»).
+- Phase-бейдж: тот же стиль, что `.coming-badge` в Main Menu (см.
+  «Coming badge» выше) — но размещён inline (не absolute) внутри
+  modal, рядом с названием.
+- Body text: variant `body` (sans 16 / 22, 400), цвет `textSecondary`,
+  margin-top 8 pt от заголовка.
+- Primary button (OK / Got it): full-width внутри modal, `minHeight: 44 pt`,
+  фон `tokens.colors.accent`, цвет foreground — *design-system to add
+  `colors.accentOnAccent` token (mockup использует `#001A17`,
+  одинаково в обеих темах для контраста на teal-фоне).* Weight 600,
+  variant `caption` или `body` weight 600.
+- Анимация: slide-up 300 ms (см. existing «Анимации»). При включённой
+  системной опции «Reduce Motion» — мгновенный fade (cross-ref
+  «Accessibility checklist» вверху документа).
 
 ---
 
@@ -303,6 +404,145 @@ src/app/
 - Текст с описанием причины (например «Weight 95 t is below minimum 110 t»).
 - Кнопка «Retry» (если применимо) или подсказка «Adjust inputs».
 
+**Visual treatment** (см. `03_Mockups/index.html` секция 3 «Crosswind
+Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
+`.input-label`, `.input-field`, `.segmented`, `.segment`, `.result-panel`,
+`.result-status`, `.result-value`, `.result-label`, `.result-meta`,
+`.meta-item`, `.source-chip`):
+
+*Layout (calc-layout):*
+
+- 2-колонная сетка на iPad landscape и iPhone landscape; вертикальный
+  стек на iPad portrait и iPhone portrait. Конкретные breakpoint-ы — см.
+  существующая секция «Адаптивность iPad ↔ iPhone» внизу документа,
+  здесь не дублируем.
+- Gap между input-колонкой и result-колонкой: 14 pt.
+- Top margin от header: 12 pt.
+
+*Header reset / back actions:*
+
+- «Reset» — NavPill в правой части header-а, тот же визуал, что у
+  Modules/Settings/About pills, но в неактивном состоянии (прозрачный фон,
+  цвет текста `tokens.colors.textSecondary`). Опционально перед
+  лейблом — иконка `rotate-ccw` из `@expo/vector-icons` для лучшей
+  считываемости.
+- «Back» — leftmost pill, лейбл `← Back` или chevron-иконка. Touch-target
+  ≥ 44×44 pt даже если визуальный chip меньше (padding компенсирует, см.
+  «Принцип 2»).
+
+*Input field (input-field):*
+
+- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
+  (1 pt), `borderRadius: 8 pt`.
+- Padding `10 × 12 pt`, `minHeight ≥ 44 pt`.
+- Значение: variant `mono` (mono 16 pt), цвет `tokens.colors.textPrimary`.
+- Unit-суффикс (например «kg», «% MAC»): variant `bodySmall` (sans 11 pt),
+  цвет `tokens.colors.textTertiary`, выровнен по правому краю.
+- Focus state: граница переключается на `tokens.colors.accent`, плюс
+  внешнее свечение `2 pt` цвета `rgba(accent, 0.2)`. Это поведение
+  должно быть отражено в DS-компоненте `NumericInput` —
+  *design-system to add focus-state pattern в NumericInput
+  (`borderColor: accent` + outer ring `rgba(0, 194, 168, 0.2)`).*
+
+*Input label (input-label):*
+
+- 9 pt sans, weight 600, uppercase, letter-spacing 0.06em (≈0.54 pt),
+  цвет `tokens.colors.textSecondary`. Расположен НАД полем, отступ
+  снизу 4–6 pt.
+  *design-system to add typography variant `microUppercase` (sans 9 / 12,
+  600, letterSpacing 0.54 pt) или расширить существующий `chipLabel`
+  поддержкой 9 pt варианта.*
+
+*Segmented control (segmented):*
+
+- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
+  (1 pt), внешний `borderRadius: 8 pt`, internal padding 3 pt
+  (создаёт «track»-эффект); gap между сегментами 2 pt.
+- Inactive segment: прозрачный фон, цвет `tokens.colors.textSecondary`,
+  лейбл 10 pt sans weight 500.
+- Active segment: фон `tokens.colors.accent`, цвет foreground — токен
+  `accentOnAccent` (см. форвард-сигнал в Coming Soon Modal выше).
+  Внутренний `borderRadius: 6 pt`.
+- Disabled segment (Wet, Contaminated в MVP): цвет текста
+  `tokens.colors.textTertiary` с reduced-opacity (≈50%) в сочетании с
+  tap-handler-ом, который показывает короткий toast «Available in
+  upcoming release» (визуал тоста — ниже).
+
+*RWYCC segmented control:*
+
+- Те же визуальные правила, что у runway-condition сегментированного
+  контрола, но с 6 сегментами (1–6). В MVP скрыт (см. поведение выше);
+  визуальные правила применяются, когда Phase 2 раскроет управление.
+
+*Result panel (result-panel):*
+
+- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
+  (1 pt), `borderRadius: 12 pt`, internal padding 14 pt.
+- Контент центрирован: status label, value, sub-label, разделитель,
+  meta-grid.
+- Source chip (source-chip): абсолютно позиционирован `top: 8 pt`,
+  `right: 8 pt`. Surface `tokens.colors.bgScreen` (контрастирует с
+  `bgCard` панели), граница `tokens.colors.border` (1 pt),
+  `borderRadius: 4 pt`, padding `2 × 6 pt`. Лейбл — 8 pt mono,
+  цвет `tokens.colors.textSecondary`. Дефолтный текст «Reference: 787 FCOM»
+  (см. существующий «Принцип 4» и «Содержимое (idle)»).
+- Status label (result-status): 9 pt sans weight 600, uppercase,
+  letter-spacing 0.08em (≈0.72 pt), цвет `tokens.colors.accent`.
+  Например: «Max crosswind · Landing». Margin-bottom 8 pt.
+  *design-system: вписывается в тот же `microUppercase` variant что и
+  input-label (выше); letter-spacing — параметр, переопределяемый
+  через style.*
+- Value (result-value): variant `display` (mono 48 pt, weight 700,
+  letterSpacing -0.5 pt ≈ -0.01em, line-height 56 / 1) — на iPad
+  landscape; на узких ширинах автоматически масштабируется по
+  существующему container query из мокапа. Цвет
+  `tokens.colors.accent`.
+- Суффикс «KT»: 24 pt mono weight 700, цвет `tokens.colors.textSecondary`,
+  `marginLeft: 6 pt`. *design-system to add typography variant
+  `monoMedium` (mono 24 / 28, 700) — текущий `monoLarge` 22 pt и
+  `display` 48 pt оставляют пробел.*
+- Sub-label (result-label): variant `caption` (sans 12 / 16, 400) или
+  10 pt-вариант, цвет `tokens.colors.textSecondary`, margin-bottom 12 pt.
+  Например: «Computed for current inputs».
+- Divider над meta-grid: `borderTopWidth: 1 pt`, `borderTopColor:
+  tokens.colors.border`, `paddingTop: 10 pt`.
+- Meta-grid (result-meta): 2 колонки, gap 6 pt, выровнен по левому краю.
+- Meta-item label: 9 pt sans uppercase, letter-spacing 0.04em (≈0.36 pt),
+  цвет `tokens.colors.textTertiary`. Тот же `microUppercase` variant с
+  переопределённым letter-spacing.
+- Meta-item value: variant `bodySmall` mono (mono 11 / 16, 400) — тот же
+  размер, что и `bodySmall` sans, но monospace; *design-system to add
+  variant `monoSmall` (mono 11 / 16, 500) если для метрик нужен
+  больший weight, чтобы числа читались на фоне лейблов.*
+  Margin-top 2 pt.
+
+*Result panel state mapping* (cross-ref `ResultPanelState` discriminated union
+в `module-contracts/design-system.md`):
+
+- `kind: 'empty'` — value/meta заменены центрированным placeholder-текстом
+  «Enter weight and CG to see result», цвет `tokens.colors.textSecondary`,
+  variant `body` (sans 16 / 22, 400) или `body` weight 500 для лучшей
+  заметности; нейтральная иконка `info-outline` сверху. Source chip скрыт.
+- `kind: 'idle'` — полная раскладка выше.
+- `kind: 'error'` — value-блок заменён 14 pt headline-ом цвета
+  `tokens.colors.danger`; description body — variant `caption` (sans 12)
+  цвета `textSecondary`; опциональная кнопка «Retry» — DS-компонент
+  `Button` variant `secondary`.
+- `kind: 'out-of-envelope'` — та же surface, что у `idle`, но headline
+  цвета `tokens.colors.warn`, body объясняет нарушенную границу
+  (например «Weight 95 t is below minimum 110 t. Adjust input.»).
+
+*Disabled-state toast (Wet/Contaminated tap):*
+
+- Anchored к низу экрана, отступ `24 pt` от safe-area-inset; центрирован
+  горизонтально, `maxWidth: 280 pt`.
+- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.borderStrong`
+  (1 pt), `borderRadius: 8 pt`, padding `12 × 16 pt`.
+- Лейбл: variant `caption` (sans 12 / 16, 400), цвет
+  `tokens.colors.textPrimary`.
+- Auto-dismiss через 2 s, fade-out 200 ms. При системной «Reduce Motion» —
+  instant appear / disappear (cross-ref «Accessibility checklist»).
+
 ---
 
 ## Экран 5 · Settings
@@ -319,6 +559,61 @@ src/app/
 
 **Сохранение:** все изменения сохраняются в AsyncStorage немедленно через debounced write (300 ms).
 
+**Visual treatment** (см. `03_Mockups/index.html` секция 4 (левая половина),
+классы `.settings-list`, `.settings-row`, `.settings-name`,
+`.settings-val`, `.toggle`):
+
+*Settings-list контейнер:*
+
+- Вертикальная колонка, gap 8 pt между строками, `marginTop: 12 pt` от
+  header.
+
+*Settings-row (один пункт):*
+
+- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
+  (1 pt), `borderRadius: 8 pt`, padding `10 × 12 pt`.
+- Раскладка: name слева, value/control справа (`justifyContent:
+  space-between`, `alignItems: center`).
+- Name (settings-name): variant `caption` weight 500 (sans 12), цвет
+  `tokens.colors.textPrimary`.
+- Value (settings-val) для не-toggle строк: variant `bodySmall` mono
+  (mono 11 / 16, 400) — см. `monoSmall` форвард-сигнал из Crosswind
+  выше; цвет `tokens.colors.textSecondary`.
+- Для строк-«navigate to bottom-sheet» (Language, Theme): после value
+  добавляется `›` chevron — sans 12 pt, цвет `tokens.colors.textTertiary`,
+  margin-left 8 pt. Опционально иконка `chevron-right` из
+  `@expo/vector-icons` вместо текстового глифа.
+
+*Toggle (DS-компонент Toggle):*
+
+- Track: `32 × 18 pt`, `borderRadius: 9 pt`.
+- ON state: фон track-а `tokens.colors.accent`; knob — `14 × 14 pt`
+  белый круг (фон `#FFFFFF` — design-system to alias as
+  `colors.toggleKnob` если в светлой теме потребуется иной оттенок),
+  `borderRadius: 7 pt`, inset 2 pt от правого края track-а.
+- OFF state: фон track-а `tokens.colors.textTertiary`; knob inset
+  2 pt от левого края.
+- Disabled toggle (Weight units / Wind units в MVP): track при
+  opacity 40 %; под title строки добавляется caption «Available in
+  upcoming release» — variant `bodySmall` (sans 11), цвет
+  `tokens.colors.textTertiary`.
+
+*Bottom-sheet для Language / Theme:*
+
+- Surface: фон `tokens.colors.bgCard`, верхние углы `borderRadius: 16 pt`,
+  нижние углы — 0 (липнет к нижнему safe-area).
+- Drag-handle: bar `36 × 4 pt`, `borderRadius: 2 pt`, цвет
+  `tokens.colors.textTertiary` при 30 % opacity, `marginTop: 12 pt`,
+  центрирован по горизонтали.
+- Option-row: тот же визуальный язык, что у обычного `settings-row`
+  (фон `bgCard`, `borderRadius: 8 pt`, padding `10 × 12 pt`); на
+  выбранном option — иконка `check` (из `@expo/vector-icons`) цвета
+  `tokens.colors.accent` справа.
+- Tap по option = немедленное применение (поведение уже описано выше) +
+  закрытие bottom-sheet с slide-down 250 ms (cross-ref «Анимации»).
+- При «Reduce Motion» — instant appear / disappear (cross-ref
+  «Accessibility checklist»).
+
 ---
 
 ## Экран 6 · About
@@ -334,6 +629,36 @@ src/app/
 6. **Privacy policy** — кликабельная строка, открывает `PRIVACY_POLICY.md` через WebBrowser API (не WebView!).
 7. **Terms of use** — аналогично.
 8. **Support** — email-ссылка, открывает почтовый клиент.
+
+**Visual treatment** (см. `03_Mockups/index.html` секция 4 (правая половина);
+переиспользуем классы `.settings-row`, `.settings-name`, `.settings-val`):
+
+- Та же row-сетка, что у Settings: surface `tokens.colors.bgCard`,
+  граница `tokens.colors.border` (1 pt), `borderRadius: 8 pt`, padding
+  `10 × 12 pt`, gap 8 pt по вертикали между строками,
+  `marginTop: 12 pt` от header.
+- Row name: variant `caption` weight 500 (sans 12), цвет
+  `tokens.colors.textPrimary`.
+- Row value (read-only данные — Version, Aircraft, Validation,
+  Distribution, Data source): variant `bodySmall` mono (mono 11 / 16,
+  400; см. `monoSmall` форвард-сигнал из Crosswind), цвет
+  `tokens.colors.textSecondary`.
+- Tappable rows (Privacy policy, Terms of use, Support): значение —
+  affordance-лейбл («View →» / «Open →» / email-адрес или
+  локализованный «Open mail»). Mono 11 pt, цвет `tokens.colors.accent`
+  (а не `textSecondary` — accent сигнализирует интерактивность).
+  Дополнительно справа — chevron-иконка `chevron-right` из
+  `@expo/vector-icons`, цвет `accent`.
+- Data source — пример отрисовки: «787 ACAP · public» (актуальная
+  строка определяется `dataVersion` из bundled JSON, см. существующее
+  «Содержимое» выше).
+- Mailto row (Support): использует placeholder из
+  `07-app-store-compliance.md` § «Outstanding placeholders for Phase D»
+  → «Support mailto target». В Sprint 6 при имплементации этого экрана
+  ОБЯЗАТЕЛЬНО оставить этот плейсхолдер закомментированным или
+  лифтнуть в общую константу — ровно тот же placeholder, что в
+  `src/app/error.tsx`. Заменяется на реальный адрес одновременно по
+  всем точкам в Phase D.
 
 ---
 
