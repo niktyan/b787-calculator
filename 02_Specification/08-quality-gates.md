@@ -131,7 +131,7 @@ module.exports = [
     'react-native/no-unused-styles': 'error',
     'react-native/no-inline-styles': 'error',
     'react-native/no-color-literals': 'error',
-    'react-native/no-raw-text': ['error', { skip: ['Trans'] }],
+    'react-native/no-raw-text': ['error', { skip: ['Trans', 'MonoText'] }],
 
     // ===== Accessibility =====
     'jsx-a11y/no-autofocus': 'error',
@@ -213,6 +213,10 @@ module.exports = [
 - **`react-native/no-inline-styles`** — все стили через `StyleSheet`, никаких `style={{ color: 'red' }}` inline.
 - **`react-native/no-color-literals`** — цвета только через design-system tokens, никаких hex-литералов в JSX.
 - **`react-native/no-raw-text`** — текст только через локализованные компоненты, никакого `<Text>Hello</Text>` в JSX (заставляет идти через `<Trans>` или `t()`).
+
+  `MonoText` is added to the `skip` list because it is a presentation primitive for numerical values, codes, and aviation identifiers (KT, MAC, RWYCC, etc.) that are intentionally NOT localized — they are international aviation conventions that remain English in all languages. Other `Text` variants ARE expected to use `<Trans>` for localized content.
+
+  When adding new components: only add to the `skip` list if the component fundamentally cannot accept localized content. Default is to require localization.
 - **`no-floating-promises`** — все промисы должны быть либо `await`-нуты, либо явно `void`-нуты. Запрещает «забытые» промисы.
 - **`strict-boolean-expressions`** — нельзя использовать non-boolean в условиях (`if (str)` запрещено, нужно `if (str.length > 0)` или `if (str !== '')`).
 - **`no-magic-numbers`** — числа вне `[0, 1, -1, 2, 100]` должны быть именованными константами.
