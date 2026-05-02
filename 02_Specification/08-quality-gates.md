@@ -516,6 +516,22 @@ jobs:
 
 ---
 
+## Convention: test-only exports
+
+Some modules need to expose internal helpers for unit testing (e.g., resetting a singleton cache, exposing a pure parser used internally). These are exported with a leading underscore:
+
+- `_resetCacheForTesting()` — reset internal state between tests.
+- `_parseFoo()` — exposed pure helper for unit testing.
+
+**Convention rules:**
+
+- Always prefix with underscore `_`.
+- Always include a comment explaining why this is exported.
+- NEVER use these in production code (even from other modules). They are test-only.
+- ESLint rule (future): block imports of `_*` from production code. For now: discipline + code review.
+
+---
+
 ## Open questions
 
 1. Стоит ли использовать `dependency-cruiser` в дополнение к `import/no-restricted-paths`? Он мощнее в проверке архитектурных правил, но добавляет ещё один tool. По умолчанию: пока нет, если простых ESLint-правил хватит. **Revisit при добавлении 2-го feature** (см. секцию «Architecture lint» выше — нужно для feature→feature enforcement).
