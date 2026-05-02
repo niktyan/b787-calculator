@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Splash route renders correctly in light theme 1`] = `
+exports[`Splash route (mounted at /) renders correctly in light theme 1`] = `
 <RNCSafeAreaView
   edges={
     {
@@ -157,7 +157,7 @@ exports[`Splash route renders correctly in light theme 1`] = `
 </RNCSafeAreaView>
 `;
 
-exports[`Splash route renders the brand placeholder, app name, version and tagline (dark) 1`] = `
+exports[`Splash route (mounted at /) renders the brand placeholder, app name, version and tagline (dark) 1`] = `
 <RNCSafeAreaView
   edges={
     {

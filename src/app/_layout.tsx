@@ -12,10 +12,10 @@ import { ThemeProvider, initI18n, logger } from '../core';
  *   - i18n init        — runs once, gates rendering of children.
  *
  * Routes registered here:
- *   - `splash`     (initial route)
+ *   - `index`      (Splash, mounted at `/` so cold-start hits it)
  *   - `disclaimer` (no swipe-back; locked screen during first launch)
  *   - `error`      (fail-safe; reachable from splash timeout)
- *   - `(main)`     (group with the rest of the app)
+ *   - `(main)`     (group with the rest of the app, e.g. `/menu`)
  */
 
 export default function RootLayout(): ReactNode {
@@ -39,8 +39,8 @@ export default function RootLayout(): ReactNode {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <Stack initialRouteName="splash" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="splash" />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
           <Stack.Screen name="disclaimer" options={{ gestureEnabled: false }} />
           <Stack.Screen name="error" />
           <Stack.Screen name="(main)" />

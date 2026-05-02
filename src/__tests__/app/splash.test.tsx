@@ -1,7 +1,10 @@
+import { act } from '@testing-library/react-native';
+
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
-import Splash from '../../app/splash';
+import Splash from '../../app/index';
 
 const mockReplace = jest.fn();
+const mockUseDisclaimerStatus = jest.fn();
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -21,20 +24,25 @@ jest.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: jest.fn() },
 }));
 
-// Hold the disclaimer hook in 'unknown' for these snapshots so the splash sits
-// in its initial loading state instead of racing the storage-read effect.
+// Drive the disclaimer status from the test so we can simulate every
+// initial state without exercising the AsyncStorage round-trip.
 jest.mock('../../core/disclaimer', () => ({
-  useDisclaimerStatus: (): { status: string; accept: jest.Mock } => ({
-    status: 'unknown',
-    accept: jest.fn(),
-  }),
+  useDisclaimerStatus: (): { status: string; accept: jest.Mock } =>
+    mockUseDisclaimerStatus() as { status: string; accept: jest.Mock },
   acceptDisclaimer: jest.fn().mockResolvedValue(undefined),
   readDisclaimerStatus: jest.fn().mockResolvedValue('pending'),
 }));
 
-describe('Splash route', () => {
+const SPLASH_MIN_MS = 800;
+
+describe('Splash route (mounted at /)', () => {
   beforeEach(() => {
     mockReplace.mockClear();
+    mockUseDisclaimerStatus.mockReturnValue({ status: 'unknown', accept: jest.fn() });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it('renders the brand placeholder, app name, version and tagline (dark)', () => {
@@ -56,5 +64,25 @@ describe('Splash route', () => {
   it('does not navigate before the minimum splash time has elapsed', () => {
     renderWithTheme(<Splash />, { mode: 'dark' });
     expect(mockReplace).not.toHaveBeenCalled();
+  });
+
+  // Regression test for the bug where Splash mounted at /splash never ran on
+  // cold start because the URL `/` resolved to (main)/index.tsx (Main Menu)
+  // directly. With Splash now at `/`, a fresh install with no
+  // `disclaimerAccepted` flag in storage must route to /disclaimer, not /menu.
+  it('routes to /disclaimer on fresh install (no acceptance flag)', () => {
+    jest.useFakeTimers();
+    // Storage with no value resolves to status='pending' via readDisclaimerStatus.
+    mockUseDisclaimerStatus.mockReturnValue({ status: 'pending', accept: jest.fn() });
+
+    renderWithTheme(<Splash />, { mode: 'dark' });
+    act(() => {
+      jest.advanceTimersByTime(SPLASH_MIN_MS);
+    });
+
+    expect(mockReplace).toHaveBeenCalledTimes(1);
+    expect(mockReplace).toHaveBeenCalledWith('/disclaimer');
+    expect(mockReplace).not.toHaveBeenCalledWith('/menu');
+    expect(mockReplace).not.toHaveBeenCalledWith('/');
   });
 });

@@ -24,7 +24,7 @@ export default function ErrorScreen(): ReactNode {
   const { t } = useTranslation();
 
   const onRetry = useCallback((): void => {
-    router.replace('/splash');
+    router.replace('/');
   }, [router]);
 
   const onContactSupport = useCallback((): void => {

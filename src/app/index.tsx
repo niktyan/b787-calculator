@@ -8,9 +8,12 @@ import { useDisclaimerStatus, useTheme, useTranslation } from '../core';
 import { Screen, Stack, Text, tokens } from '../design-system';
 
 /**
- * Splash route. Shows the brand placeholder while providers initialise, then
- * navigates per `02_Specification/06-ui-spec.md` Экран 1:
- *   - data ready & disclaimer accepted  → `/`     (Main Menu)
+ * Splash route, mounted at `/` so the cold-start URL matches it. The previous
+ * placement at `/splash` left expo-router rendering `(main)/index.tsx` (also
+ * `/`) on launch; `initialRouteName` only seeds the back-stack for deep
+ * links, not the cold-start route. Navigation per
+ * `02_Specification/06-ui-spec.md` Экран 1:
+ *   - data ready & disclaimer accepted  → `/menu` (Main Menu)
  *   - data ready & disclaimer pending   → `/disclaimer`
  *   - max wait exceeded with no status  → `/error`
  *
@@ -45,7 +48,7 @@ export default function Splash(): ReactNode {
       return;
     }
     if (minElapsed && status !== 'unknown') {
-      router.replace(status === 'accepted' ? '/' : '/disclaimer');
+      router.replace(status === 'accepted' ? '/menu' : '/disclaimer');
     }
   }, [minElapsed, status, timedOut, router]);
 

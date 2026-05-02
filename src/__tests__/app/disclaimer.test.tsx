@@ -46,12 +46,12 @@ describe('Disclaimer route', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('persists the accepted flag and navigates to "/" on press', async () => {
+  it('persists the accepted flag and navigates to /menu on press', async () => {
     const { getByTestId } = renderWithTheme(<Disclaimer />, { mode: 'dark' });
     fireEvent.press(getByTestId('disclaimer-accept'));
 
     await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith('/');
+      expect(mockReplace).toHaveBeenCalledWith('/menu');
     });
     expect(await AsyncStorage.getItem(STORAGE_KEYS.disclaimerAccepted)).toBe(JSON.stringify(true));
   });

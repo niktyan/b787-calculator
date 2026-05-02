@@ -44,10 +44,10 @@ describe('Error route', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('navigates back to splash on Retry press', () => {
+  it('navigates back to the splash root (/) on Retry press', () => {
     const { getByTestId } = renderWithTheme(<ErrorScreen />, { mode: 'dark' });
     fireEvent.press(getByTestId('error-retry'));
-    expect(mockReplace).toHaveBeenCalledWith('/splash');
+    expect(mockReplace).toHaveBeenCalledWith('/');
   });
 
   it('opens the system mail composer on Contact support press', () => {

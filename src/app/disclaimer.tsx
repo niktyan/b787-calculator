@@ -34,7 +34,7 @@ export default function Disclaimer(): ReactNode {
 
   const onAccept = useCallback((): void => {
     void acceptDisclaimer().then(() => {
-      router.replace('/');
+      router.replace('/menu');
     });
   }, [router]);
 
