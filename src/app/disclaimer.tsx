@@ -1,10 +1,18 @@
+import * as Application from 'expo-application';
 import { Stack as RouterStack, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo } from 'react';
 import type { ReactNode } from 'react';
-import { BackHandler, StyleSheet } from 'react-native';
+import { BackHandler, StyleSheet, View } from 'react-native';
 
-import { acceptDisclaimer, useTranslation } from '../core';
-import { Button, Screen, Stack, Text } from '../design-system';
+import { acceptDisclaimer, useTheme, useTranslation } from '../core';
+import {
+  Button,
+  Disclaimer as DisclaimerCard,
+  Screen,
+  Stack,
+  Text,
+  tokens,
+} from '../design-system';
 
 /**
  * First-launch advisory disclaimer (см. `02_Specification/06-ui-spec.md` Экран 2).
@@ -13,6 +21,10 @@ import { Button, Screen, Stack, Text } from '../design-system';
  * `02_Specification/07-app-store-compliance.md` — legal unambiguity.
  * Title and button label remain on the i18n path so non-legal copy can
  * still be localised; today both locales show the same English wording.
+ *
+ * Layout mirrors `03_Mockups/index.html` "Splash + first-launch" composition:
+ * brand block (B7 logo + heading + subtitle), amber disclaimer card, and the
+ * accept button — all stacked centred.
  */
 
 const DISCLAIMER_TITLE_EN = 'Advisory only';
@@ -23,9 +35,13 @@ const DISCLAIMER_BODY_EN =
   "on official Boeing FCOM/QRH and your operator's procedures. Not for " +
   'primary navigation or operational use.';
 
+const LOGO_SIZE = 56;
+const LOGO_RADIUS = 14;
+
 export default function Disclaimer(): ReactNode {
   const router = useRouter();
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => true);
@@ -38,20 +54,47 @@ export default function Disclaimer(): ReactNode {
     });
   }, [router]);
 
-  const styles = useMemo(() => StyleSheet.create({ fill: { flex: 1 } }), []);
+  const palette = tokens.colors[theme.resolved];
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        fill: {
+          flex: 1,
+        },
+        logo: {
+          alignItems: 'center',
+          backgroundColor: palette.accent,
+          borderRadius: LOGO_RADIUS,
+          height: LOGO_SIZE,
+          justifyContent: 'center',
+          width: LOGO_SIZE,
+        },
+      }),
+    [palette.accent],
+  );
+
+  const version = Application.nativeApplicationVersion ?? '0.0.0';
 
   return (
     <Screen testID="disclaimer-screen">
       <RouterStack.Screen options={{ gestureEnabled: false }} />
-      <Stack gap="xl" justify="space-between" style={styles.fill}>
-        <Stack gap="lg">
-          <Text variant="heading1" testID="disclaimer-title">
-            {DISCLAIMER_TITLE_EN}
+      <Stack gap="lg" justify="center" align="center" style={styles.fill}>
+        <View accessibilityLabel="B787 logo" style={styles.logo} testID="disclaimer-logo">
+          <Text variant="monoLarge" color="textOnAccent">
+            B7
           </Text>
-          <Text variant="body" testID="disclaimer-body">
-            {DISCLAIMER_BODY_EN}
+        </View>
+        <Stack gap="xs" align="center">
+          <Text variant="heading3">B787 Calculator</Text>
+          <Text variant="caption" color="textSecondary">
+            {t('splash.tagline')} · v{version}
           </Text>
         </Stack>
+        <DisclaimerCard
+          title={DISCLAIMER_TITLE_EN}
+          body={DISCLAIMER_BODY_EN}
+          testID="disclaimer-card"
+        />
         <Button label={t('disclaimer.continue')} onPress={onAccept} testID="disclaimer-accept" />
       </Stack>
     </Screen>

@@ -19,11 +19,15 @@ import { Screen, Stack, Text, tokens } from '../design-system';
  *
  * Min display time prevents flicker on warm starts; max wait acts as a
  * fail-safe upper bound on initialization.
+ *
+ * Sizing matches `03_Mockups/index.html` `.splash-logo` / `.splash h2` /
+ * `.splash .subtitle`.
  */
 
 const SPLASH_MIN_MS = 800;
 const SPLASH_MAX_MS = 5000;
-const LOGO_SIZE = 96;
+const LOGO_SIZE = 56;
+const LOGO_RADIUS = 14;
 
 export default function Splash(): ReactNode {
   const router = useRouter();
@@ -62,7 +66,7 @@ export default function Splash(): ReactNode {
         logo: {
           alignItems: 'center',
           backgroundColor: palette.accent,
-          borderRadius: tokens.radii.xl,
+          borderRadius: LOGO_RADIUS,
           height: LOGO_SIZE,
           justifyContent: 'center',
           width: LOGO_SIZE,
@@ -77,13 +81,13 @@ export default function Splash(): ReactNode {
     <Screen testID="splash-screen">
       <Stack gap="lg" justify="center" align="center" style={styles.fill}>
         <View accessibilityLabel="B787 logo" style={styles.logo} testID="splash-logo">
-          <Text variant="display" color="textOnAccent">
+          <Text variant="monoLarge" color="textOnAccent">
             B7
           </Text>
         </View>
         <Stack gap="xs" align="center">
-          <Text variant="heading1">B787 Calculator</Text>
-          <Text variant="body" color="textSecondary">
+          <Text variant="heading3">B787 Calculator</Text>
+          <Text variant="caption" color="textSecondary">
             {t('splash.tagline')}
           </Text>
           <Text variant="caption" color="textTertiary" testID="splash-version">

@@ -34,10 +34,10 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
       style={
         [
           {
-            "alignItems": "stretch",
+            "alignItems": "center",
             "flexDirection": "column",
-            "gap": 24,
-            "justifyContent": "space-between",
+            "gap": 16,
+            "justifyContent": "center",
           },
           {
             "flex": 1,
@@ -46,12 +46,46 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
       }
     >
       <View
+        accessibilityLabel="B787 logo"
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#00C2A8",
+            "borderRadius": 14,
+            "height": 56,
+            "justifyContent": "center",
+            "width": 56,
+          }
+        }
+        testID="disclaimer-logo"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "Menlo",
+                "fontSize": 22,
+                "fontWeight": "700",
+                "letterSpacing": 0,
+                "lineHeight": 28,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          B7
+        </Text>
+      </View>
+      <View
         style={
           [
             {
-              "alignItems": "stretch",
+              "alignItems": "center",
               "flexDirection": "column",
-              "gap": 16,
+              "gap": 4,
               "justifyContent": "flex-start",
             },
             undefined,
@@ -65,39 +99,111 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
               {
                 "color": "#1F2937",
                 "fontFamily": "System",
-                "fontSize": 28,
+                "fontSize": 18,
                 "fontWeight": "600",
-                "letterSpacing": 0,
-                "lineHeight": 34,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
-          }
-          testID="disclaimer-title"
-        >
-          Advisory only
-        </Text>
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "letterSpacing": 0,
+                "letterSpacing": -0.18,
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
               undefined,
             ]
           }
-          testID="disclaimer-body"
         >
-          Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+          B787 Calculator
         </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#4B5563",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          splash.tagline
+           · v
+          0.1.0
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Advisory only"
+        accessibilityRole="alert"
+        style={
+          {
+            "backgroundColor": "#FEF6E7",
+            "borderColor": "#F0C674",
+            "borderRadius": 10,
+            "borderWidth": 1,
+            "maxWidth": 380,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          }
+        }
+        testID="disclaimer-card"
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 4,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#9A6700",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 0.44,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "textTransform": "uppercase",
+                },
+              ]
+            }
+          >
+            ⚠  
+            Advisory only
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#4B5563",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+          </Text>
+        </View>
       </View>
       <View
         accessibilityLabel="disclaimer.continue"
@@ -176,7 +282,7 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
 </RNCSafeAreaView>
 `;
 
-exports[`Disclaimer route renders fixed English title and body, plus localised button (dark) 1`] = `
+exports[`Disclaimer route renders the brand block, the amber disclaimer card, and the accept button (dark) 1`] = `
 <RNCSafeAreaView
   edges={
     {
@@ -210,10 +316,10 @@ exports[`Disclaimer route renders fixed English title and body, plus localised b
       style={
         [
           {
-            "alignItems": "stretch",
+            "alignItems": "center",
             "flexDirection": "column",
-            "gap": 24,
-            "justifyContent": "space-between",
+            "gap": 16,
+            "justifyContent": "center",
           },
           {
             "flex": 1,
@@ -222,12 +328,46 @@ exports[`Disclaimer route renders fixed English title and body, plus localised b
       }
     >
       <View
+        accessibilityLabel="B787 logo"
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#00C2A8",
+            "borderRadius": 14,
+            "height": 56,
+            "justifyContent": "center",
+            "width": 56,
+          }
+        }
+        testID="disclaimer-logo"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "Menlo",
+                "fontSize": 22,
+                "fontWeight": "700",
+                "letterSpacing": 0,
+                "lineHeight": 28,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          B7
+        </Text>
+      </View>
+      <View
         style={
           [
             {
-              "alignItems": "stretch",
+              "alignItems": "center",
               "flexDirection": "column",
-              "gap": 16,
+              "gap": 4,
               "justifyContent": "flex-start",
             },
             undefined,
@@ -241,39 +381,111 @@ exports[`Disclaimer route renders fixed English title and body, plus localised b
               {
                 "color": "#E6EDF3",
                 "fontFamily": "System",
-                "fontSize": 28,
+                "fontSize": 18,
                 "fontWeight": "600",
-                "letterSpacing": 0,
-                "lineHeight": 34,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
-          }
-          testID="disclaimer-title"
-        >
-          Advisory only
-        </Text>
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "letterSpacing": 0,
+                "letterSpacing": -0.18,
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
               undefined,
             ]
           }
-          testID="disclaimer-body"
         >
-          Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+          B787 Calculator
         </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#8B949E",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          splash.tagline
+           · v
+          0.1.0
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Advisory only"
+        accessibilityRole="alert"
+        style={
+          {
+            "backgroundColor": "rgba(255, 176, 32, 0.08)",
+            "borderColor": "rgba(255, 176, 32, 0.3)",
+            "borderRadius": 10,
+            "borderWidth": 1,
+            "maxWidth": 380,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          }
+        }
+        testID="disclaimer-card"
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 4,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#FFB020",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 0.44,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "textTransform": "uppercase",
+                },
+              ]
+            }
+          >
+            ⚠  
+            Advisory only
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+          </Text>
+        </View>
       </View>
       <View
         accessibilityLabel="disclaimer.continue"
