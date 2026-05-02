@@ -220,17 +220,40 @@ src/app/
 - `active` — реализован, доступен для использования.
 - `coming-soon` — показан как тизер, тап вызывает modal.
 
-Состояния модулей читаются из `src/core/coming-soon-modules.json`:
+Активные feature-модули импортируются из `src/features/*` и рендерятся
+явно в Main Menu. Coming-soon тизеры читаются из bundled JSON-конфига
+`src/core/coming-soon-modules/data.json` через хук
+`useComingSoonModules()` (см. ADR-0004). JSON содержит только тизеры — у
+каждого entry есть `id`, `name`, `description`, `icon`, `phase`:
 ```json
 [
-  { "id": "crosswind-landing", "active": true, "phase": null },
-  { "id": "crosswind-takeoff", "active": false, "phase": "Phase 2" },
-  { "id": "weight-balance", "active": false, "phase": "Phase 3" },
-  { "id": "performance", "active": false, "phase": "Phase 4" }
+  {
+    "id": "crosswind-takeoff",
+    "name": "Crosswind · Takeoff",
+    "description": "Same crosswind logic applied to the takeoff phase.",
+    "icon": "TO",
+    "phase": "Phase 2"
+  },
+  {
+    "id": "weight-balance",
+    "name": "Weight & Balance",
+    "description": "CG envelope, MAC%, and load sheet generation.",
+    "icon": "WB",
+    "phase": "Phase 3"
+  },
+  {
+    "id": "performance",
+    "name": "Performance",
+    "description": "V1/VR/V2, LDR, ASDA, and BFL computations.",
+    "icon": "PF",
+    "phase": "Phase 4"
+  }
 ]
 ```
 
-При выходе Phase 2 этот JSON обновляется, перевыпускается приложение через App Store update — никаких изменений в коде Main Menu.
+При выходе Phase 2 удаляется соответствующая запись из JSON, добавляется
+`src/features/<module>/`, и Main Menu рендерит её как активную карточку
+без изменений в остальном коде.
 
 **Visual treatment** (см. `03_Mockups/index.html` секция 2 «Main Menu —
 Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
