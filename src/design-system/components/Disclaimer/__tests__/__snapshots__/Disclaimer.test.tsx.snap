@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Disclaimer renders title and body in dark theme 1`] = `
+<View
+  accessibilityLabel="Advisory only"
+  accessibilityRole="alert"
+  style={
+    {
+      "backgroundColor": "rgba(255, 176, 32, 0.12)",
+      "borderColor": "#FFB020",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "padding": 16,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 8,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#FFB020",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "600",
+            "letterSpacing": 0.6,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Advisory only
+    </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator procedures.
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Disclaimer renders title and body in light theme 1`] = `
+<View
+  accessibilityLabel="Advisory only"
+  accessibilityRole="alert"
+  style={
+    {
+      "backgroundColor": "#FEF6E7",
+      "borderColor": "#9A6700",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "padding": 16,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 8,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#9A6700",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "600",
+            "letterSpacing": 0.6,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Advisory only
+    </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#4B5563",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator procedures.
+    </Text>
+  </View>
+</View>
+`;

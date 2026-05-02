@@ -38,7 +38,7 @@ module.exports = [
       'react-native/no-unused-styles': 'error',
       'react-native/no-inline-styles': 'error',
       'react-native/no-color-literals': 'error',
-      'react-native/no-raw-text': ['error', { skip: ['Trans'] }],
+      'react-native/no-raw-text': ['error', { skip: ['Trans', 'MonoText'] }],
       'react-native/split-platform-components': 'error',
       'react-native/no-single-element-style-arrays': 'error',
       'react-native/sort-styles': 'error',
@@ -117,6 +117,26 @@ module.exports = [
       'no-magic-numbers': 'off',
       'max-lines-per-function': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      // jest.requireActual and the React test renderer's toJSON() are typed as
+      // `any`; the unsafe-* rules flag every snapshot assertion. Test files are
+      // not production paths, so we relax the type-soundness checks here.
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+    },
+  },
+
+  {
+    // Design-system components compose theme-aware styles inside `useMemo`
+    // (palette comes from `useTheme()` at runtime). The static-analysis rule
+    // `react-native/no-unused-styles` cannot trace style usage through that
+    // closure and produces false positives on every component. The other style
+    // rules (no-inline-styles, no-color-literals, sort-styles) still apply.
+    files: ['src/design-system/**/*.{ts,tsx}'],
+    rules: {
+      'react-native/no-unused-styles': 'off',
     },
   },
 

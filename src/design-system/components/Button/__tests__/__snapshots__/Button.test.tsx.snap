@@ -1,0 +1,375 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button renders disabled state with accessibility flag 1`] = `
+<View
+  accessibilityLabel="Confirm"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "backgroundColor": "#00C2A8",
+        "borderColor": "#00C2A8",
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "justifyContent": "center",
+        "minHeight": 44,
+        "paddingHorizontal": 16,
+        "paddingVertical": 8,
+      },
+      {
+        "opacity": 0.5,
+      },
+      null,
+      undefined,
+    ]
+  }
+  testID="btn"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#001A17",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    Confirm
+  </Text>
+</View>
+`;
+
+exports[`Button renders primary variant in dark theme 1`] = `
+<View
+  accessibilityLabel="Continue"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "backgroundColor": "#00C2A8",
+        "borderColor": "#00C2A8",
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "justifyContent": "center",
+        "minHeight": 44,
+        "paddingHorizontal": 16,
+        "paddingVertical": 8,
+      },
+      null,
+      null,
+      undefined,
+    ]
+  }
+  testID="btn"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#001A17",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    Continue
+  </Text>
+</View>
+`;
+
+exports[`Button renders primary variant in light theme 1`] = `
+<View
+  accessibilityLabel="Continue"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "alignItems": "center",
+        "backgroundColor": "#00C2A8",
+        "borderColor": "#00C2A8",
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "justifyContent": "center",
+        "minHeight": 44,
+        "paddingHorizontal": 16,
+        "paddingVertical": 8,
+      },
+      null,
+      null,
+      undefined,
+    ]
+  }
+  testID="btn"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#001A17",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    Continue
+  </Text>
+</View>
+`;
+
+exports[`Button renders secondary and ghost variants 1`] = `
+[
+  <View
+    accessibilityLabel="Cancel"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderColor": "#00C2A8",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 16,
+          "paddingVertical": 8,
+        },
+        null,
+        null,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Cancel
+    </Text>
+  </View>,
+  <View
+    accessibilityLabel="Skip"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderColor": "transparent",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 16,
+          "paddingVertical": 8,
+        },
+        null,
+        null,
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Skip
+    </Text>
+  </View>,
+]
+`;

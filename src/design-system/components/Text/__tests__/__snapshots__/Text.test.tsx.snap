@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text applies display variant with custom color and alignment 1`] = `
+<Text
+  allowFontScaling={false}
+  style={
+    [
+      {
+        "color": "#00C2A8",
+        "fontFamily": "Menlo",
+        "fontSize": 48,
+        "fontWeight": "700",
+        "letterSpacing": -0.5,
+        "lineHeight": 56,
+        "textAlign": "center",
+      },
+      undefined,
+    ]
+  }
+>
+  56
+</Text>
+`;
+
+exports[`Text renders body text by default in dark theme 1`] = `
+<Text
+  allowFontScaling={true}
+  style={
+    [
+      {
+        "color": "#E6EDF3",
+        "fontFamily": "System",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "letterSpacing": 0,
+        "lineHeight": 22,
+        "textAlign": "auto",
+      },
+      undefined,
+    ]
+  }
+>
+  hello
+</Text>
+`;
+
+exports[`Text renders body text by default in light theme 1`] = `
+<Text
+  allowFontScaling={true}
+  style={
+    [
+      {
+        "color": "#1F2937",
+        "fontFamily": "System",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "letterSpacing": 0,
+        "lineHeight": 22,
+        "textAlign": "auto",
+      },
+      undefined,
+    ]
+  }
+>
+  hello
+</Text>
+`;
+
+exports[`Text renders heading1, heading2, caption, label, and mono variants 1`] = `
+[
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 28,
+          "fontWeight": "600",
+          "letterSpacing": 0,
+          "lineHeight": 34,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    heading 1
+  </Text>,
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 22,
+          "fontWeight": "600",
+          "letterSpacing": 0,
+          "lineHeight": 28,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    heading 2
+  </Text>,
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#8B949E",
+          "fontFamily": "System",
+          "fontSize": 12,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 16,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    caption
+  </Text>,
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#6E7681",
+          "fontFamily": "System",
+          "fontSize": 12,
+          "fontWeight": "600",
+          "letterSpacing": 0.6,
+          "lineHeight": 16,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    label
+  </Text>,
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "Menlo",
+          "fontSize": 16,
+          "fontWeight": "500",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    mono
+  </Text>,
+]
+`;
