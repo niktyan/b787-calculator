@@ -6,6 +6,11 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/**/index.ts',
     '!src/**/*.stories.tsx',
+    // src/app/** holds Phase B expo-router placeholders that Sprint 3
+    // (splash + disclaimer) replaces with the real navigation tree and tests.
+    // Including them now reports 0% on code that is about to be deleted.
+    // Re-include this path in Sprint 3 when proper screens land.
+    '!src/app/**',
   ],
   coverageThreshold: {
     global: {
@@ -14,15 +19,18 @@ module.exports = {
       lines: 70,
       statements: 70,
     },
-    // Per-path thresholds intentionally omitted in Phase B since
-    // these paths are empty. They will be added incrementally:
-    // - ./src/core/** with 80% threshold in Sprint 1 (Core module)
-    // - ./src/features/*/domain/** with 90% in Sprint 5 (Crosswind)
-    // See architect's decision Q1 in Phase B exit checkpoint.
+    './src/core/**': {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+    // ./src/features/*/domain/** with 90% threshold will be added in Sprint 5 (Crosswind).
   },
   testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/.expo/'],
-  transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|react-native-svg)/)',
-  ],
+  // transformIgnorePatterns intentionally omitted — jest-expo's preset already
+  // sets a pattern that correctly transforms expo-modules-core and other expo-*
+  // packages required by Expo SDK 54+. Overriding it here previously dropped
+  // expo-modules-core, breaking every test. See PR description for details.
 };
