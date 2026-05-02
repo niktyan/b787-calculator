@@ -56,6 +56,27 @@
 - `noPropertyAccessFromIndexSignature` — нельзя обращаться через точку к свойствам с неопределённым ключом, только через `[key]`. Делает явным, где работа идёт с динамическими ключами.
 - **`skipLibCheck: true` — необходимое исключение.** Без него TypeScript падает на конфликте типов между `react-native/src/types/globals.d.ts` (RN-овые `Blob`, `Request`, `WebSocket`, `URL` и т.д.) и `typescript/lib/lib.dom.d.ts` (DOM-овые версии тех же глобалов). Конфликт находится **только** в чужих node_modules — не в нашем коде. Флаг подавляет проверку только third-party `.d.ts` файлов; **наш собственный код по-прежнему полностью type-checked**.
 
+### `exactOptionalPropertyTypes` interaction with forwarded props
+
+With `exactOptionalPropertyTypes: true`, declaring a prop as `propName?: T` does NOT allow passing `undefined` explicitly — it requires either omitting the prop or passing a value of type `T`.
+
+This causes friction when forwarding optional props from a wrapper component to a child:
+
+```typescript
+// ❌ Fails with exactOptionalPropertyTypes:
+function Wrapper(props: { value?: string }) {
+  return <Child value={props.value} />;
+  // Error: Type 'string | undefined' not assignable to '?: string'
+}
+
+// ✅ Correct pattern — widen child's prop type:
+type ChildProps = { value?: string | undefined };
+```
+
+When designing a component that may receive forwarded optional props, declare the prop type as `T | undefined` explicitly (instead of just `?: T`). This preserves type safety while allowing forwarding patterns common in React component composition.
+
+This pattern is used throughout `src/design-system/` for compatibility with parent components that may pass `undefined` deliberately (e.g., conditional rendering with `value={isReady ? data : undefined}`).
+
 ---
 
 ## ESLint конфигурация (`eslint.config.js`)
