@@ -13,6 +13,14 @@ export interface DisclaimerProps {
   readonly testID?: string;
 }
 
+const CARD_MAX_WIDTH = 380;
+const CARD_PADDING_VERTICAL = 14;
+const CARD_PADDING_HORIZONTAL = 16;
+const CARD_BORDER_RADIUS = 10;
+const TITLE_PREFIX = '⚠  '; // ⚠ + double space (mockup uses prefix glyph + gap)
+
+const titleStyle = { textTransform: 'uppercase' } as const;
+
 export function Disclaimer({ title, body, testID }: DisclaimerProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
@@ -22,22 +30,25 @@ export function Disclaimer({ title, body, testID }: DisclaimerProps): ReactNode 
       StyleSheet.create({
         root: {
           backgroundColor: palette.warnSoft,
-          borderColor: palette.warn,
-          borderRadius: tokens.radii.md,
+          borderColor: palette.warnBorder,
+          borderRadius: CARD_BORDER_RADIUS,
           borderWidth: 1,
-          padding: tokens.spacing.lg,
+          maxWidth: CARD_MAX_WIDTH,
+          paddingHorizontal: CARD_PADDING_HORIZONTAL,
+          paddingVertical: CARD_PADDING_VERTICAL,
         },
       }),
-    [palette.warn, palette.warnSoft],
+    [palette.warnBorder, palette.warnSoft],
   );
 
   return (
     <View accessibilityLabel={title} accessibilityRole="alert" style={styles.root} testID={testID}>
-      <Stack gap="sm">
-        <Text variant="label" color="warn">
+      <Stack gap="xs">
+        <Text variant="chipLabel" color="warn" style={titleStyle}>
+          {TITLE_PREFIX}
           {title}
         </Text>
-        <Text variant="caption" color="textSecondary">
+        <Text variant="bodySmall" color="textSecondary">
           {body}
         </Text>
       </Stack>

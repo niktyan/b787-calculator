@@ -26,26 +26,33 @@ const RADIUS_MD = 8;
 const RADIUS_LG = 12;
 const RADIUS_XL = 16;
 
-// --- Typography sizes (subset of 12 / 14 / 16 / 22 / 28 / 36 / 48 / 64
+// --- Typography sizes (subset of 11 / 12 / 14 / 16 / 18 / 22 / 28 / 36 / 48 / 64
 // from the design-system contract, picked to match `03_Mockups/index.html`). ---
+const FONT_SIZE_MICRO = 11;
 const FONT_SIZE_LABEL = 12;
 const FONT_SIZE_CAPTION = 12;
 const FONT_SIZE_BODY = 16;
+const FONT_SIZE_HEADING_3 = 18;
 const FONT_SIZE_HEADING_2 = 22;
 const FONT_SIZE_HEADING_1 = 28;
 const FONT_SIZE_DISPLAY = 48;
 
 // --- Line heights ---
+const LINE_HEIGHT_MICRO = 16; // 11 * 1.5 ≈ 16.5, rounded to nearest pt
 const LINE_HEIGHT_LABEL = 16;
 const LINE_HEIGHT_CAPTION = 16;
 const LINE_HEIGHT_BODY = 22;
+const LINE_HEIGHT_HEADING_3 = 22;
 const LINE_HEIGHT_HEADING_2 = 28;
 const LINE_HEIGHT_HEADING_1 = 34;
+const LINE_HEIGHT_MONO_LARGE = 28;
 const LINE_HEIGHT_DISPLAY = 56;
 
-// --- Letter spacing ---
-const LETTER_SPACING_TIGHT = -0.5;
+// --- Letter spacing (RN points; em values shown for cross-reference with mockup CSS). ---
+const LETTER_SPACING_TIGHTER = -0.5; // ≈ -0.02em at 28pt; used by display
+const LETTER_SPACING_TIGHT = -0.18; // ≈ -0.01em at 18pt; used by heading3
 const LETTER_SPACING_NORMAL = 0;
+const LETTER_SPACING_CHIP = 0.44; // ≈ 0.04em at 11pt; used by chipLabel (uppercase)
 const LETTER_SPACING_LOOSE = 0.6;
 
 // --- Breakpoints (compact phone, regular tablet) ---
@@ -80,6 +87,7 @@ export interface ColorPalette {
   readonly accentSoft: string;
   readonly warn: string;
   readonly warnSoft: string;
+  readonly warnBorder: string;
   readonly danger: string;
   readonly dangerSoft: string;
   readonly success: string;
@@ -100,7 +108,8 @@ const DARK_PALETTE: ColorPalette = {
   accent: '#00C2A8',
   accentSoft: '#003C36',
   warn: '#FFB020',
-  warnSoft: 'rgba(255, 176, 32, 0.12)',
+  warnSoft: 'rgba(255, 176, 32, 0.08)',
+  warnBorder: 'rgba(255, 176, 32, 0.3)',
   danger: '#E5484D',
   dangerSoft: 'rgba(229, 72, 77, 0.12)',
   success: '#46A758',
@@ -122,6 +131,7 @@ const LIGHT_PALETTE: ColorPalette = {
   accentSoft: '#DEF7F3',
   warn: '#9A6700',
   warnSoft: '#FEF6E7',
+  warnBorder: '#F0C674',
   danger: '#E5484D',
   dangerSoft: 'rgba(229, 72, 77, 0.10)',
   success: '#46A758',
@@ -160,7 +170,7 @@ const typography = {
       fontSize: FONT_SIZE_DISPLAY,
       lineHeight: LINE_HEIGHT_DISPLAY,
       fontWeight: '700',
-      letterSpacing: LETTER_SPACING_TIGHT,
+      letterSpacing: LETTER_SPACING_TIGHTER,
     },
     heading1: {
       fontFamily: fontFamilySans,
@@ -176,10 +186,24 @@ const typography = {
       fontWeight: '600',
       letterSpacing: LETTER_SPACING_NORMAL,
     },
+    heading3: {
+      fontFamily: fontFamilySans,
+      fontSize: FONT_SIZE_HEADING_3,
+      lineHeight: LINE_HEIGHT_HEADING_3,
+      fontWeight: '600',
+      letterSpacing: LETTER_SPACING_TIGHT,
+    },
     body: {
       fontFamily: fontFamilySans,
       fontSize: FONT_SIZE_BODY,
       lineHeight: LINE_HEIGHT_BODY,
+      fontWeight: '400',
+      letterSpacing: LETTER_SPACING_NORMAL,
+    },
+    bodySmall: {
+      fontFamily: fontFamilySans,
+      fontSize: FONT_SIZE_MICRO,
+      lineHeight: LINE_HEIGHT_MICRO,
       fontWeight: '400',
       letterSpacing: LETTER_SPACING_NORMAL,
     },
@@ -197,11 +221,25 @@ const typography = {
       fontWeight: '600',
       letterSpacing: LETTER_SPACING_LOOSE,
     },
+    chipLabel: {
+      fontFamily: fontFamilySans,
+      fontSize: FONT_SIZE_MICRO,
+      lineHeight: LINE_HEIGHT_MICRO,
+      fontWeight: '600',
+      letterSpacing: LETTER_SPACING_CHIP,
+    },
     mono: {
       fontFamily: fontFamilyMono,
       fontSize: FONT_SIZE_BODY,
       lineHeight: LINE_HEIGHT_BODY,
       fontWeight: '500',
+      letterSpacing: LETTER_SPACING_NORMAL,
+    },
+    monoLarge: {
+      fontFamily: fontFamilyMono,
+      fontSize: FONT_SIZE_HEADING_2,
+      lineHeight: LINE_HEIGHT_MONO_LARGE,
+      fontWeight: '700',
       letterSpacing: LETTER_SPACING_NORMAL,
     },
   } satisfies Record<string, TypographyVariant>,
