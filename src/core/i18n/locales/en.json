@@ -1,1 +1,49 @@
-{}
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "back": "Back"
+  },
+  "splash": {
+    "tagline": "Electronic Performance Tools"
+  },
+  "disclaimer": {
+    "continue": "I understand · Continue"
+  },
+  "mainMenu": {
+    "title": "Modules",
+    "comingSoonBadge": "Coming soon"
+  },
+  "comingSoonModal": {
+    "body": "This module is planned for an upcoming release. Stay tuned.",
+    "close": "Got it"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "weightUnits": "Weight units",
+    "windUnits": "Wind units",
+    "showDataSource": "Show data source on result",
+    "themeAuto": "Auto",
+    "themeLight": "Light",
+    "themeDark": "Dark"
+  },
+  "about": {
+    "title": "About",
+    "version": "Version",
+    "aircraft": "Aircraft",
+    "validation": "Validation",
+    "dataSource": "Data source",
+    "distribution": "Distribution",
+    "privacyPolicy": "Privacy policy",
+    "termsOfUse": "Terms of use",
+    "support": "Support"
+  },
+  "error": {
+    "referenceDataUnavailable": "Reference data unavailable",
+    "referenceDataDescription": "The application could not load reference data. Please contact support and reinstall the app.",
+    "contactSupport": "Contact support"
+  }
+}

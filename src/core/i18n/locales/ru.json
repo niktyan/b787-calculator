@@ -1,1 +1,49 @@
-{}
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Отмена",
+    "retry": "Повторить",
+    "back": "Назад"
+  },
+  "splash": {
+    "tagline": "Electronic Performance Tools"
+  },
+  "disclaimer": {
+    "continue": "I understand · Continue"
+  },
+  "mainMenu": {
+    "title": "Модули",
+    "comingSoonBadge": "Скоро"
+  },
+  "comingSoonModal": {
+    "body": "Этот модуль планируется в одном из ближайших обновлений.",
+    "close": "Понятно"
+  },
+  "settings": {
+    "title": "Настройки",
+    "language": "Язык",
+    "theme": "Тема",
+    "weightUnits": "Единицы веса",
+    "windUnits": "Единицы ветра",
+    "showDataSource": "Показывать источник данных",
+    "themeAuto": "Авто",
+    "themeLight": "Светлая",
+    "themeDark": "Тёмная"
+  },
+  "about": {
+    "title": "О приложении",
+    "version": "Версия",
+    "aircraft": "Воздушное судно",
+    "validation": "Проверено",
+    "dataSource": "Источник данных",
+    "distribution": "Распространение",
+    "privacyPolicy": "Политика конфиденциальности",
+    "termsOfUse": "Условия использования",
+    "support": "Поддержка"
+  },
+  "error": {
+    "referenceDataUnavailable": "Справочные данные недоступны",
+    "referenceDataDescription": "Приложение не смогло загрузить справочные данные. Свяжитесь со службой поддержки и переустановите приложение.",
+    "contactSupport": "Связаться с поддержкой"
+  }
+}
