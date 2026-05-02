@@ -65,9 +65,8 @@ npm run ios           # expo start --ios
 b787-calculator/
 ├── 02_Specification/  — единственный источник правды (документация)
 ├── 03_Mockups/        — HTML-мокапы
-├── app/               — expo-router file-based routing
 ├── src/
-│   ├── app/           — composition root (providers, App.tsx)
+│   ├── app/           — expo-router routes + composition root (root _layout.tsx, провайдеры)
 │   ├── core/          — i18n, theming, storage, disclaimer, feature-flags, logger
 │   ├── design-system/ — UI components + tokens
 │   ├── features/      — feature-модули (crosswind, и далее по фазам)
