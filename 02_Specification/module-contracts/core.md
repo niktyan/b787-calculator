@@ -83,6 +83,17 @@ State и логика advisory-дисклеймера.
 - `feature-flags/useFeatureFlag.ts` — хук.
 - `feature-flags/defaults.json` — default-значения флагов.
 
+#### MVP feature-flag keys
+
+The following keys are defined in `src/core/feature-flags/defaults.json` and exposed via the `FeatureFlagKey` type:
+
+| Key | Default | Purpose |
+|-----|---------|---------|
+| `enableDataVersionBanner` | `false` | Show a banner on launch when bundled JSON `dataVersion` is newer than the version last seen by the user. Will be activated in Phase 2 when OTA-update strategy is finalized. |
+| `showCalcTimeOnResult` | `false` | Show calculation duration in the result panel metadata for debugging. Useful in development; stays `false` in production. |
+
+**Adding new feature flags:** append to `defaults.json` with sensible defaults (almost always `false`), update the `FeatureFlagKey` union, document here in this contract.
+
 ### `core/logger/`
 
 Логирование с уровнями.
