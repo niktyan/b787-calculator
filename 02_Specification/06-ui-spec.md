@@ -157,6 +157,13 @@ src/app/
 - Подпись «Electronic Performance Tools».
 - Версия приложения (читается из `expo-application`).
 
+**Стилизация (см. `module-contracts/design-system.md` для значений токенов):**
+- Логотип-квадрат `56 × 56`, `borderRadius: 14`, фон — `accent` (#00C2A8),
+  текст «B7» — variant `monoLarge` цвета `textOnAccent`.
+- Заголовок «B787 Calculator» — variant `heading3` цвета `textPrimary`.
+- Подпись и версия — variant `caption` цвета `textSecondary` / `textTertiary`.
+- Фон экрана — `bgPage` (используется через компонент `<Screen>`).
+
 ---
 
 ## Экран 2 · Disclaimer
@@ -175,6 +182,19 @@ src/app/
 - Кнопка «I understand · Continue» — единственное действие на экране. Размер ≥ 56×56 pt.
 - Свайп назад / Back gesture отключён на этом экране.
 - При повторном запуске после подтверждения — экран не показывается.
+
+**Стилизация (см. `module-contracts/design-system.md` для значений токенов):**
+- Композиция повторяет splash: логотип `56 × 56` (`accent`, radius 14, текст
+  «B7» variant `monoLarge` / цвет `textOnAccent`) + заголовок «B787 Calculator»
+  variant `heading3` + подпись `caption` цвета `textSecondary`.
+- Тело дисклеймера рендерится через DS-компонент `<Disclaimer>` (амбер-карточка):
+  фон `warnSoft`, граница `warnBorder`, `borderRadius: 10`,
+  `padding: 14×16`, `maxWidth: 380`.
+- Заголовок карточки — `⚠ ` + текст «Advisory only», variant `chipLabel`,
+  цвет `warn`, `textTransform: uppercase`.
+- Тело — variant `bodySmall` цвета `textSecondary`.
+- Кнопка «I understand · Continue» — `Button` variant `primary` (фон `accent`,
+  текст `textOnAccent`).
 
 **Edge case:** если `disclaimerAccepted` в AsyncStorage недоступен (corrupted storage) — считается, что disclaimer не принят, экран показывается.
 

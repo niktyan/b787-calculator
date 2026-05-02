@@ -51,10 +51,10 @@ exports[`Splash route (mounted at /) renders correctly in light theme 1`] = `
           {
             "alignItems": "center",
             "backgroundColor": "#00C2A8",
-            "borderRadius": 16,
-            "height": 96,
+            "borderRadius": 14,
+            "height": 56,
             "justifyContent": "center",
-            "width": 96,
+            "width": 56,
           }
         }
         testID="splash-logo"
@@ -66,10 +66,10 @@ exports[`Splash route (mounted at /) renders correctly in light theme 1`] = `
               {
                 "color": "#001A17",
                 "fontFamily": "Menlo",
-                "fontSize": 48,
+                "fontSize": 22,
                 "fontWeight": "700",
-                "letterSpacing": -0.5,
-                "lineHeight": 56,
+                "letterSpacing": 0,
+                "lineHeight": 28,
                 "textAlign": "auto",
               },
               undefined,
@@ -99,10 +99,10 @@ exports[`Splash route (mounted at /) renders correctly in light theme 1`] = `
               {
                 "color": "#1F2937",
                 "fontFamily": "System",
-                "fontSize": 28,
+                "fontSize": 18,
                 "fontWeight": "600",
-                "letterSpacing": 0,
-                "lineHeight": 34,
+                "letterSpacing": -0.18,
+                "lineHeight": 22,
                 "textAlign": "auto",
               },
               undefined,
@@ -118,10 +118,10 @@ exports[`Splash route (mounted at /) renders correctly in light theme 1`] = `
               {
                 "color": "#4B5563",
                 "fontFamily": "System",
-                "fontSize": 16,
+                "fontSize": 12,
                 "fontWeight": "400",
                 "letterSpacing": 0,
-                "lineHeight": 22,
+                "lineHeight": 16,
                 "textAlign": "auto",
               },
               undefined,
@@ -208,10 +208,10 @@ exports[`Splash route (mounted at /) renders the brand placeholder, app name, ve
           {
             "alignItems": "center",
             "backgroundColor": "#00C2A8",
-            "borderRadius": 16,
-            "height": 96,
+            "borderRadius": 14,
+            "height": 56,
             "justifyContent": "center",
-            "width": 96,
+            "width": 56,
           }
         }
         testID="splash-logo"
@@ -223,10 +223,10 @@ exports[`Splash route (mounted at /) renders the brand placeholder, app name, ve
               {
                 "color": "#001A17",
                 "fontFamily": "Menlo",
-                "fontSize": 48,
+                "fontSize": 22,
                 "fontWeight": "700",
-                "letterSpacing": -0.5,
-                "lineHeight": 56,
+                "letterSpacing": 0,
+                "lineHeight": 28,
                 "textAlign": "auto",
               },
               undefined,
@@ -256,10 +256,10 @@ exports[`Splash route (mounted at /) renders the brand placeholder, app name, ve
               {
                 "color": "#E6EDF3",
                 "fontFamily": "System",
-                "fontSize": 28,
+                "fontSize": 18,
                 "fontWeight": "600",
-                "letterSpacing": 0,
-                "lineHeight": 34,
+                "letterSpacing": -0.18,
+                "lineHeight": 22,
                 "textAlign": "auto",
               },
               undefined,
@@ -275,10 +275,10 @@ exports[`Splash route (mounted at /) renders the brand placeholder, app name, ve
               {
                 "color": "#8B949E",
                 "fontFamily": "System",
-                "fontSize": 16,
+                "fontSize": 12,
                 "fontWeight": "400",
                 "letterSpacing": 0,
-                "lineHeight": 22,
+                "lineHeight": 16,
                 "textAlign": "auto",
               },
               undefined,

@@ -16,6 +16,10 @@ jest.mock('expo-router', () => ({
   Stack: { Screen: (): null => null },
 }));
 
+jest.mock('expo-application', () => ({
+  nativeApplicationVersion: '0.1.0',
+}));
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
   initReactI18next: { type: '3rdParty', init: jest.fn() },
@@ -33,10 +37,17 @@ describe('Disclaimer route', () => {
     await AsyncStorage.clear();
   });
 
-  it('renders fixed English title and body, plus localised button (dark)', () => {
+  it('renders the brand block, the amber disclaimer card, and the accept button (dark)', () => {
     const tree = renderWithTheme(<Disclaimer />, { mode: 'dark' });
-    expect(tree.getByTestId('disclaimer-title').props.children).toBe('Advisory only');
-    expect(tree.getByTestId('disclaimer-body').props.children).toBe(SPEC_BODY);
+    expect(tree.getByTestId('disclaimer-screen')).toBeTruthy();
+    expect(tree.getByTestId('disclaimer-logo')).toBeTruthy();
+    expect(tree.getByText('B7')).toBeTruthy();
+    expect(tree.getByText('B787 Calculator')).toBeTruthy();
+    expect(tree.getByTestId('disclaimer-card')).toBeTruthy();
+    // Title carries the ⚠ prefix from the DS component (text-content, not visual);
+    // body is the spec text verbatim.
+    expect(tree.getByText('⚠  Advisory only')).toBeTruthy();
+    expect(tree.getByText(SPEC_BODY)).toBeTruthy();
     expect(tree.getByTestId('disclaimer-accept')).toBeTruthy();
     expect(tree.toJSON()).toMatchSnapshot();
   });
