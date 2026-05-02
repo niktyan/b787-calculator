@@ -1,0 +1,435 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavPills highlights the active pill in dark theme 1`] = `
+<View
+  accessibilityRole="tablist"
+  style={
+    {
+      "flexDirection": "row",
+      "gap": 4,
+    }
+  }
+  testID="nav"
+>
+  <View
+    accessibilityLabel="Modules"
+    accessibilityRole="tab"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": true,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 8,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        {
+          "backgroundColor": "#003C36",
+        },
+      ]
+    }
+    testID="nav-modules"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Modules
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="Settings"
+    accessibilityRole="tab"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": false,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 8,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        null,
+      ]
+    }
+    testID="nav-settings"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Settings
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="About"
+    accessibilityRole="tab"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": false,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 8,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        null,
+      ]
+    }
+    testID="nav-about"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      About
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`NavPills renders in light theme 1`] = `
+<View
+  accessibilityRole="tablist"
+  style={
+    {
+      "flexDirection": "row",
+      "gap": 4,
+    }
+  }
+  testID="nav"
+>
+  <View
+    accessibilityLabel="Modules"
+    accessibilityRole="tab"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": false,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 8,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        null,
+      ]
+    }
+    testID="nav-modules"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#4B5563",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Modules
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="Settings"
+    accessibilityRole="tab"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": true,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 8,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        {
+          "backgroundColor": "#DEF7F3",
+        },
+      ]
+    }
+    testID="nav-settings"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Settings
+    </Text>
+  </View>
+  <View
+    accessibilityLabel="About"
+    accessibilityRole="tab"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": false,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderRadius": 8,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        null,
+      ]
+    }
+    testID="nav-about"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#4B5563",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      About
+    </Text>
+  </View>
+</View>
+`;

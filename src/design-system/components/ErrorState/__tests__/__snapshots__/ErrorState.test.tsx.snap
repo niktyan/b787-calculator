@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorState renders error with retry button in light theme 1`] = `
+<View
+  accessibilityRole="alert"
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+      "padding": 24,
+    }
+  }
+  testID="err"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#1F2937",
+            "fontFamily": "System",
+            "fontSize": 22,
+            "fontWeight": "600",
+            "letterSpacing": 0,
+            "lineHeight": 28,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      Reference data unavailable
+    </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#4B5563",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      The application could not load reference data.
+    </Text>
+    <View
+      accessibilityLabel="Retry"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "backgroundColor": "transparent",
+            "borderColor": "#00C2A8",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 16,
+            "paddingVertical": 8,
+          },
+          null,
+          null,
+          undefined,
+        ]
+      }
+      testID="err-retry"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Retry
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`ErrorState renders error without retry in dark theme 1`] = `
+<View
+  accessibilityRole="alert"
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+      "padding": 24,
+    }
+  }
+  testID="err"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#E6EDF3",
+            "fontFamily": "System",
+            "fontSize": 22,
+            "fontWeight": "600",
+            "letterSpacing": 0,
+            "lineHeight": 28,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      Reference data unavailable
+    </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      The application could not load reference data.
+    </Text>
+  </View>
+</View>
+`;
