@@ -88,7 +88,7 @@ export function ComingSoonModal({ module, onClose, testID }: ComingSoonModalProp
 interface ModalBodyProps {
   readonly module: ComingSoonModule;
   readonly onClose: () => void;
-  readonly testID?: string;
+  readonly testID?: string | undefined;
 }
 
 function ModalBody({ module, onClose, testID }: ModalBodyProps): ReactNode {
