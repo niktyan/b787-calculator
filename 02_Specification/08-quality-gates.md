@@ -334,7 +334,7 @@ Sprint 3 PR MUST:
 | Memory footprint в idle | ≤ 100 MB | Xcode Instruments (через TestFlight build) |
 
 **Что делать при превышении бюджета:**
-- Cold start > 1500 ms → переоценить, что грузится в `app/_layout.tsx`. Lazy-load feature-модулей.
+- Cold start > 1500 ms → переоценить, что грузится в `src/app/_layout.tsx`. Lazy-load feature-модулей.
 - Bundle size > 30 MB → проверить, не подтянулись ли тяжёлые зависимости. `npx expo-doctor` плюс `npm run analyze-bundle`.
 - Memory > 100 MB → искать утечки в `useEffect` и event listeners (часто RN-специфика).
 

@@ -8,6 +8,33 @@
 
 Core — это базовый модуль приложения, предоставляющий общие сервисы и утилиты, которые используются и App Shell-ом, и feature-модулями. Core НЕ содержит бизнес-логики конкретных функций приложения (это работа feature-модулей). Он предоставляет инфраструктуру.
 
+## Layer classification submodules
+
+Не все submodules core имеют одинаковую platform-зависимость. Это важно для тестируемости и потенциальной портабельности (см. `02-architecture.md` секция «Domain Purity Rules»).
+
+| Submodule | Purity | Допустимые импорты |
+|-----------|--------|---------------------|
+| `core/result` | 🟢 **Pure TS** | Только TypeScript встроенные. Никаких RN/React/Expo. |
+| `core/logger` | 🟢 **Pure TS** | Только TypeScript. `__DEV__` гейт через global type declaration, не через RN-импорт. |
+| `core/i18n/types` | 🟢 **Pure TS** | Только TypeScript. Используется feature-модулями для translation keys. |
+| `core/i18n/config` | 🟡 **Library-bound** | i18next, react-i18next (полу-platform-agnostic). |
+| `core/theming/types` | 🟢 **Pure TS** | Только TypeScript. ColorTokens, TypographyTokens, Theme. |
+| `core/theming/ThemeProvider` | 🔵 **React** | React Context + useColorScheme из RN. |
+| `core/storage/keys` | 🟢 **Pure TS** | Список enum-ключей. |
+| `core/storage/schemas` | 🟢 **Pure TS** | Только zod. |
+| `core/storage/storage` | 🔴 **Platform** | AsyncStorage (требует RN runtime). |
+| `core/disclaimer/state` | 🟡 **Library-bound** | Использует storage submodule. |
+| `core/disclaimer/useDisclaimerStatus` | 🔵 **React** | React-хук. |
+| `core/feature-flags/flags` | 🟢 **Pure TS** | In-memory store без React. |
+| `core/feature-flags/useFeatureFlag` | 🔵 **React** | React-хук поверх flags. |
+| `core/coming-soon-modules/types` | 🟢 **Pure TS** | Типы. |
+| `core/coming-soon-modules/data.json` | 🟢 **Data** | Bundled JSON. |
+| `core/coming-soon-modules/useComingSoonModules` | 🔵 **React** | React-хук, читающий JSON. |
+
+**Правило:** при имплементации Sprint 1 — submodules с пометкой 🟢 **Pure TS** не должны иметь импортов из `react`, `react-native`, `expo*`. Если случайно импортировал — это ошибка, ESLint должен поймать (через no-restricted-paths правила).
+
+**Тест на purity:** для каждого 🟢 submodule unit-тесты должны запускаться в чистом Jest без `jest-expo` preset (или с минимальными моками). Если для теста требуется RN-моки — submodule неправильно классифицирован.
+
 ## Submodules и их функции
 
 ### `core/i18n/`

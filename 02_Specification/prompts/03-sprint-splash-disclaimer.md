@@ -61,12 +61,12 @@ After my "go":
    - Title: "Reference data unavailable"
    - Description and Retry/Contact support buttons.
 
-5. Update app/_layout.tsx to register all three routes via expo-router.
+5. Update src/app/_layout.tsx to register all three routes via expo-router.
 
 6. Add appropriate snapshot tests:
-   - app/splash.test.tsx
-   - app/disclaimer.test.tsx
-   - app/error.test.tsx
+   - src/app/splash.test.tsx
+   - src/app/disclaimer.test.tsx
+   - src/app/error.test.tsx
 
 7. Localize Disclaimer screen UI labels (button text, etc.) via i18n,
    BUT keep the disclaimer body text fixed English (per spec rule).
@@ -122,5 +122,5 @@ Report briefly: PR URL + reminder for me to functionally test on iPhone via Expo
    - После «I understand · Continue» переход на placeholder Main Menu.
    - Перезапустите приложение — Disclaimer **не** должен появиться снова.
    - Переключите системную тему (iOS Settings → Display & Brightness) — обе темы должны работать.
-4. Если всё ОК — Approve + Merge.
+4. Если всё ОК — напишите в чат Claude Code: `merge it`.
 5. Следующий промпт: `04-sprint-main-menu.md`.

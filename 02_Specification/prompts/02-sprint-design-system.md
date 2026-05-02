@@ -122,5 +122,5 @@ Report briefly: list of components, total LOC, coverage %, PR URL.
 ## После завершения
 
 1. Открыть PR, проверить зелёный CI.
-2. Approve + Squash Merge.
+2. Напишите в чат Claude Code: `merge it` — он сделает merge сам.
 3. Следующий промпт: `03-sprint-splash-disclaimer.md`.

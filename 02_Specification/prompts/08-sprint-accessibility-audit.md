@@ -124,7 +124,7 @@ SUBMISSION. Next steps will be in `09-cicd-and-ops.md` Phase D-E.
 
 1. Тщательно проверьте все 5 manual testing задач в Expo Go (особенно VoiceOver — это занимает 10 минут, но важно).
 2. Если что-то не работает — оставьте комментарий в PR, попросите Claude Code исправить.
-3. После Approve + Merge — приложение **готово к App Store submission**.
+3. После того как вы напишете `merge it` и Claude Code смерджит — приложение **готово к App Store submission**.
 
 **Следующие шаги** (не sprint, а процедура из `09-cicd-and-ops.md`):
 

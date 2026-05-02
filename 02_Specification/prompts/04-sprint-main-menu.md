@@ -112,5 +112,5 @@ Report briefly + PR URL.
 
 1. PR review через Expo Go: проверьте все 6 пунктов из "Manual testing instructions".
 2. Особенно убедитесь, что layout адаптивно ведёт себя при повороте экрана.
-3. Approve + Merge.
+3. Напишите `merge it` в чат Claude Code.
 4. Следующий промпт: **`05-sprint-crosswind.md`** — самый объёмный sprint, реализация главного модуля.
