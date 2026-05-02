@@ -116,16 +116,24 @@ choice aligned with `02-architecture.md`):
 ```
 src/app/
 ├── _layout.tsx              — root layout с провайдерами
-├── splash.tsx               — splash route
+├── index.tsx                — splash route (URL `/`, cold-start entry)
 ├── disclaimer.tsx           — disclaimer (first launch only)
 ├── (main)/                  — group для главных экранов
 │   ├── _layout.tsx          — нав-стек
-│   ├── index.tsx            — Main Menu
+│   ├── menu.tsx             — Main Menu (URL `/menu`)
 │   ├── crosswind.tsx        — Crosswind Calculator
 │   ├── settings.tsx
 │   └── about.tsx
 └── error.tsx                — fail-safe экран
 ```
+
+**Почему splash живёт в `index.tsx`, а не в `splash.tsx`.** В expo-router URL
+`/` резолвится первым попавшимся маршрутом — если оставить и `splash.tsx`
+(`/splash`), и `(main)/index.tsx` (`/`), то холодный запуск минует splash и
+сразу покажет Main Menu (потому что приложение стартует с URL `/`). Опция
+`initialRouteName` только формирует back-stack для deep-link сценариев, не
+меняет cold-start. Поэтому splash переехал в `index.tsx`, а Main Menu —
+в `(main)/menu.tsx`.
 
 ---
 
@@ -135,7 +143,7 @@ src/app/
 
 **Состояния:**
 - `loading` — показывается логотип + индикатор загрузки. Это default состояние.
-- `data-ready` — переходит на `disclaimer.tsx` (если не принят) или на `(main)/index.tsx` (если принят).
+- `data-ready` — переходит на `disclaimer.tsx` (если не принят) или на `(main)/menu.tsx` (если принят).
 - `data-error` — переходит на `error.tsx` (fail-safe, если bundled JSON повреждён).
 
 **Поведение:**

@@ -134,7 +134,7 @@ module.exports = [
     // `react-native/no-unused-styles` cannot trace style usage through that
     // closure and produces false positives on every component. The other style
     // rules (no-inline-styles, no-color-literals, sort-styles) still apply.
-    files: ['src/design-system/**/*.{ts,tsx}'],
+    files: ['src/design-system/**/*.{ts,tsx}', 'src/app/**/*.{ts,tsx}'],
     rules: {
       'react-native/no-unused-styles': 'off',
     },

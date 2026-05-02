@@ -6,11 +6,12 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/**/index.ts',
     '!src/**/*.stories.tsx',
-    // src/app/** holds Phase B expo-router placeholders that Sprint 3
-    // (splash + disclaimer) replaces with the real navigation tree and tests.
-    // Including them now reports 0% on code that is about to be deleted.
-    // Re-include this path in Sprint 3 when proper screens land.
-    '!src/app/**',
+    // App-shell layouts only compose providers and routes; their behaviour is
+    // covered transitively by the screen tests. Excluded from coverage so the
+    // global threshold reflects logic, not boilerplate.
+    '!src/app/_layout.tsx',
+    '!src/app/**/_layout.tsx',
+    '!src/app/**/index.tsx',
   ],
   coverageThreshold: {
     global: {

@@ -1,0 +1,353 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Disclaimer route renders correctly in light theme 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#F4F6F9",
+      "flex": 1,
+    }
+  }
+  testID="disclaimer-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 24,
+            "justifyContent": "space-between",
+          },
+          {
+            "flex": 1,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 16,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#1F2937",
+                "fontFamily": "System",
+                "fontSize": 28,
+                "fontWeight": "600",
+                "letterSpacing": 0,
+                "lineHeight": 34,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+          testID="disclaimer-title"
+        >
+          Advisory only
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#1F2937",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+          testID="disclaimer-body"
+        >
+          Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="disclaimer.continue"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "backgroundColor": "#00C2A8",
+              "borderColor": "#00C2A8",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "justifyContent": "center",
+              "minHeight": 44,
+              "paddingHorizontal": 16,
+              "paddingVertical": 8,
+            },
+            null,
+            null,
+            undefined,
+          ]
+        }
+        testID="disclaimer-accept"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          disclaimer.continue
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`Disclaimer route renders fixed English title and body, plus localised button (dark) 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#0A0E14",
+      "flex": 1,
+    }
+  }
+  testID="disclaimer-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 24,
+            "justifyContent": "space-between",
+          },
+          {
+            "flex": 1,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 16,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#E6EDF3",
+                "fontFamily": "System",
+                "fontSize": 28,
+                "fontWeight": "600",
+                "letterSpacing": 0,
+                "lineHeight": 34,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+          testID="disclaimer-title"
+        >
+          Advisory only
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#E6EDF3",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+          testID="disclaimer-body"
+        >
+          Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="disclaimer.continue"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "backgroundColor": "#00C2A8",
+              "borderColor": "#00C2A8",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "justifyContent": "center",
+              "minHeight": 44,
+              "paddingHorizontal": 16,
+              "paddingVertical": 8,
+            },
+            null,
+            null,
+            undefined,
+          ]
+        }
+        testID="disclaimer-accept"
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          disclaimer.continue
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
