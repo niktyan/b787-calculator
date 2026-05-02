@@ -2,11 +2,11 @@ import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
-import type { StyleProp, ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { useComingSoonModules, useTheme, useTranslation } from '../../core';
 import type { ComingSoonModule } from '../../core/coming-soon-modules';
-import { NavPills, Row, Screen, Stack, Text, tokens } from '../../design-system';
+import { NavPills, Row, Screen, Stack, Text, tokens, useScaleOnPress } from '../../design-system';
 import type { NavPillsItem } from '../../design-system';
 
 import { ComingSoonModal } from './_components/ComingSoonModal';
@@ -30,7 +30,6 @@ const APP_LOGO_RADIUS = 6;
 const MODULE_ICON_SIZE = 28;
 const MODULE_ICON_RADIUS = 6;
 const HEADER_DIVIDER_HEIGHT = 1;
-const PRESSED_OPACITY = 0.6;
 const GRID_BREAKPOINT = tokens.breakpoints.compact;
 /**
  * Header layout breakpoint: below this width the header collapses into two
@@ -197,6 +196,7 @@ function ActiveModuleCard({ module, onPress }: ActiveModuleCardProps): ReactNode
   const { t } = useTranslation();
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
+  const { animatedStyle, onPressIn, onPressOut } = useScaleOnPress();
 
   const cardStyles = useMemo(
     () =>
@@ -209,9 +209,6 @@ function ActiveModuleCard({ module, onPress }: ActiveModuleCardProps): ReactNode
           justifyContent: 'center',
           width: MODULE_ICON_SIZE,
         },
-        pressed: {
-          opacity: PRESSED_OPACITY,
-        },
         root: {
           backgroundColor: palette.bgCard,
           borderColor: palette.accent,
@@ -223,35 +220,30 @@ function ActiveModuleCard({ module, onPress }: ActiveModuleCardProps): ReactNode
     [palette.accent, palette.accentSoft, palette.bgCard],
   );
 
-  const computeStyle = useCallback(
-    ({ pressed }: { pressed: boolean }): StyleProp<ViewStyle> => [
-      cardStyles.root,
-      pressed ? cardStyles.pressed : null,
-    ],
-    [cardStyles.pressed, cardStyles.root],
-  );
-
   return (
     <Pressable
       accessibilityLabel={module.name}
       accessibilityRole="button"
       onPress={onPress}
-      style={computeStyle}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       testID={`module-card-${module.id}`}
     >
-      <Stack gap="sm">
-        <View style={cardStyles.icon}>
-          <Text variant="mono" color="accent">
-            {module.icon}
+      <Animated.View style={[cardStyles.root, animatedStyle]}>
+        <Stack gap="sm">
+          <View style={cardStyles.icon}>
+            <Text variant="mono" color="accent">
+              {module.icon}
+            </Text>
+          </View>
+          <Text variant="caption" color="textPrimary">
+            {module.name}
           </Text>
-        </View>
-        <Text variant="caption" color="textPrimary">
-          {module.name}
-        </Text>
-        <Text variant="bodySmall" color="textSecondary">
-          {t('mainMenu.activeModuleDescription')}
-        </Text>
-      </Stack>
+          <Text variant="bodySmall" color="textSecondary">
+            {t('mainMenu.activeModuleDescription')}
+          </Text>
+        </Stack>
+      </Animated.View>
     </Pressable>
   );
 }
@@ -264,6 +256,7 @@ interface ComingSoonCardProps {
 function ComingSoonCard({ module, onPress }: ComingSoonCardProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
+  const { animatedStyle, onPressIn, onPressOut } = useScaleOnPress();
 
   const cardStyles = useMemo(
     () =>
@@ -281,9 +274,6 @@ function ComingSoonCard({ module, onPress }: ComingSoonCardProps): ReactNode {
           justifyContent: 'center',
           width: MODULE_ICON_SIZE,
         },
-        pressed: {
-          opacity: PRESSED_OPACITY,
-        },
         root: {
           backgroundColor: palette.bgCard,
           borderColor: palette.border,
@@ -295,40 +285,35 @@ function ComingSoonCard({ module, onPress }: ComingSoonCardProps): ReactNode {
     [palette.bgCard, palette.border, palette.borderStrong],
   );
 
-  const computeStyle = useCallback(
-    ({ pressed }: { pressed: boolean }): StyleProp<ViewStyle> => [
-      cardStyles.root,
-      pressed ? cardStyles.pressed : null,
-    ],
-    [cardStyles.pressed, cardStyles.root],
-  );
-
   return (
     <Pressable
       accessibilityLabel={module.name}
       accessibilityRole="button"
       onPress={onPress}
-      style={computeStyle}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       testID={`module-card-${module.id}`}
     >
-      <View style={cardStyles.badge}>
-        <Text variant="chipLabel" color="textTertiary">
-          {module.phase}
-        </Text>
-      </View>
-      <Stack gap="sm">
-        <View style={cardStyles.icon}>
-          <Text variant="mono" color="textTertiary">
-            {module.icon}
+      <Animated.View style={[cardStyles.root, animatedStyle]}>
+        <View style={cardStyles.badge}>
+          <Text variant="chipLabel" color="textTertiary">
+            {module.phase}
           </Text>
         </View>
-        <Text variant="caption" color="textPrimary">
-          {module.name}
-        </Text>
-        <Text variant="bodySmall" color="textSecondary">
-          {module.description}
-        </Text>
-      </Stack>
+        <Stack gap="sm">
+          <View style={cardStyles.icon}>
+            <Text variant="mono" color="textTertiary">
+              {module.icon}
+            </Text>
+          </View>
+          <Text variant="caption" color="textPrimary">
+            {module.name}
+          </Text>
+          <Text variant="bodySmall" color="textSecondary">
+            {module.description}
+          </Text>
+        </Stack>
+      </Animated.View>
     </Pressable>
   );
 }

@@ -46,43 +46,54 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 8,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        {
-          "backgroundColor": "#003C36",
-        },
-        null,
-      ]
-    }
+    style={null}
     testID="nav-modules"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#00C2A8",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "borderRadius": 8,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
           },
-          undefined,
+          {
+            "backgroundColor": "#003C36",
+          },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Modules
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modules
+      </Text>
+    </View>
   </View>
   <View
     accessibilityLabel="Settings"
@@ -116,41 +127,52 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 8,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        null,
-        null,
-      ]
-    }
+    style={null}
     testID="nav-settings"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "borderRadius": 8,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Settings
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Settings
+      </Text>
+    </View>
   </View>
   <View
     accessibilityLabel="About"
@@ -184,41 +206,52 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 8,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        null,
-        null,
-      ]
-    }
+    style={null}
     testID="nav-about"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "borderRadius": 8,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      About
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        About
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -269,41 +302,52 @@ exports[`NavPills renders in light theme 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 8,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        null,
-        null,
-      ]
-    }
+    style={null}
     testID="nav-modules"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#4B5563",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "borderRadius": 8,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Modules
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#4B5563",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Modules
+      </Text>
+    </View>
   </View>
   <View
     accessibilityLabel="Settings"
@@ -337,43 +381,54 @@ exports[`NavPills renders in light theme 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 8,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        {
-          "backgroundColor": "#DEF7F3",
-        },
-        null,
-      ]
-    }
+    style={null}
     testID="nav-settings"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#00C2A8",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "borderRadius": 8,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
           },
-          undefined,
+          {
+            "backgroundColor": "#DEF7F3",
+          },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Settings
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Settings
+      </Text>
+    </View>
   </View>
   <View
     accessibilityLabel="About"
@@ -407,41 +462,52 @@ exports[`NavPills renders in light theme 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 8,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        },
-        null,
-        null,
-      ]
-    }
+    style={null}
     testID="nav-about"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#4B5563",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "borderRadius": 8,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      About
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#4B5563",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        About
+      </Text>
+    </View>
   </View>
 </View>
 `;

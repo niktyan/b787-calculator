@@ -2,8 +2,10 @@ import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { useTheme } from '../../../core/theming';
+import { useScaleOnPress } from '../../hooks';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
 import { Text } from '../Text/Text';
@@ -48,15 +50,13 @@ export function Button({
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
   const tone = variantTone(variant, palette);
+  const { animatedStyle, onPressIn, onPressOut } = useScaleOnPress();
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
         disabled: {
           opacity: 0.5,
-        },
-        pressed: {
-          opacity: 0.6,
         },
         root: {
           alignItems: 'center',
@@ -80,17 +80,16 @@ export function Button({
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }): StyleProp<ViewStyle> => [
-        styles.root,
-        disabled ? styles.disabled : null,
-        pressed && !disabled ? styles.pressed : null,
-        style,
-      ]}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      style={style}
       testID={testID}
     >
-      <Text variant="body" color={tone.text}>
-        {label}
-      </Text>
+      <Animated.View style={[styles.root, disabled ? styles.disabled : null, animatedStyle]}>
+        <Text variant="body" color={tone.text}>
+          {label}
+        </Text>
+      </Animated.View>
     </Pressable>
   );
 }

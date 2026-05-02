@@ -72,6 +72,18 @@ const ELEVATION_MD = 3;
 // --- Touch target floor ---
 const MIN_TOUCH_TARGET = 44;
 
+// --- Press-feedback motion ---
+//
+// Subtle scale + opacity animation applied to interactive surfaces (Button,
+// NavPills, module cards). See `02_Specification/06-ui-spec.md` § Анимации.
+// Driven by `useScaleOnPress` hook, which respects Reduce Motion.
+const PRESS_SCALE_FROM = 1;
+const PRESS_SCALE_TO = 0.97;
+const PRESS_OPACITY_FROM = 1;
+const PRESS_OPACITY_TO = 0.85;
+const PRESS_DURATION_IN_MS = 100;
+const PRESS_DURATION_OUT_MS = 150;
+
 export interface ColorPalette {
   readonly bgPage: string;
   readonly bgScreen: string;
@@ -295,6 +307,17 @@ const layout = {
   minTouchTarget: MIN_TOUCH_TARGET,
 } as const;
 
+const motion = {
+  press: {
+    scaleFrom: PRESS_SCALE_FROM,
+    scaleTo: PRESS_SCALE_TO,
+    opacityFrom: PRESS_OPACITY_FROM,
+    opacityTo: PRESS_OPACITY_TO,
+    durationInMs: PRESS_DURATION_IN_MS,
+    durationOutMs: PRESS_DURATION_OUT_MS,
+  },
+} as const;
+
 export const tokens = {
   colors,
   typography,
@@ -303,6 +326,7 @@ export const tokens = {
   shadows,
   breakpoints,
   layout,
+  motion,
 } as const;
 
 export type ColorToken = keyof ColorPalette;

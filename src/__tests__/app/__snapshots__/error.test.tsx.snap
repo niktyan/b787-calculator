@@ -142,45 +142,54 @@ exports[`Error route renders correctly in light theme 1`] = `
           onResponderTerminate={[Function]}
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "backgroundColor": "#00C2A8",
-                "borderColor": "#00C2A8",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "justifyContent": "center",
-                "minHeight": 44,
-                "paddingHorizontal": 16,
-                "paddingVertical": 8,
-              },
-              null,
-              null,
-              undefined,
-            ]
-          }
           testID="error-retry"
         >
-          <Text
-            allowFontScaling={true}
+          <View
             style={
               [
                 {
-                  "color": "#001A17",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
                 },
-                undefined,
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
               ]
             }
           >
-            common.retry
-          </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#001A17",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              common.retry
+            </Text>
+          </View>
         </View>
         <View
           accessibilityLabel="error.contactSupport"
@@ -214,45 +223,54 @@ exports[`Error route renders correctly in light theme 1`] = `
           onResponderTerminate={[Function]}
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "backgroundColor": "transparent",
-                "borderColor": "#00C2A8",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "justifyContent": "center",
-                "minHeight": 44,
-                "paddingHorizontal": 16,
-                "paddingVertical": 8,
-              },
-              null,
-              null,
-              undefined,
-            ]
-          }
           testID="error-contact"
         >
-          <Text
-            allowFontScaling={true}
+          <View
             style={
               [
                 {
-                  "color": "#00C2A8",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
+                  "alignItems": "center",
+                  "backgroundColor": "transparent",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
                 },
-                undefined,
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
               ]
             }
           >
-            error.contactSupport
-          </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              error.contactSupport
+            </Text>
+          </View>
         </View>
       </View>
       <Text
@@ -423,45 +441,54 @@ exports[`Error route renders title, description, retry, contact and version (dar
           onResponderTerminate={[Function]}
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "backgroundColor": "#00C2A8",
-                "borderColor": "#00C2A8",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "justifyContent": "center",
-                "minHeight": 44,
-                "paddingHorizontal": 16,
-                "paddingVertical": 8,
-              },
-              null,
-              null,
-              undefined,
-            ]
-          }
           testID="error-retry"
         >
-          <Text
-            allowFontScaling={true}
+          <View
             style={
               [
                 {
-                  "color": "#001A17",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
                 },
-                undefined,
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
               ]
             }
           >
-            common.retry
-          </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#001A17",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              common.retry
+            </Text>
+          </View>
         </View>
         <View
           accessibilityLabel="error.contactSupport"
@@ -495,45 +522,54 @@ exports[`Error route renders title, description, retry, contact and version (dar
           onResponderTerminate={[Function]}
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "backgroundColor": "transparent",
-                "borderColor": "#00C2A8",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "justifyContent": "center",
-                "minHeight": 44,
-                "paddingHorizontal": 16,
-                "paddingVertical": 8,
-              },
-              null,
-              null,
-              undefined,
-            ]
-          }
           testID="error-contact"
         >
-          <Text
-            allowFontScaling={true}
+          <View
             style={
               [
                 {
-                  "color": "#00C2A8",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
+                  "alignItems": "center",
+                  "backgroundColor": "transparent",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
                 },
-                undefined,
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
               ]
             }
           >
-            error.contactSupport
-          </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              error.contactSupport
+            </Text>
+          </View>
         </View>
       </View>
       <Text

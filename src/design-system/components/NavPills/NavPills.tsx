@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { useTheme } from '../../../core/theming';
+import { useScaleOnPress } from '../../hooks';
 import { tokens } from '../../tokens';
 import { Text } from '../Text/Text';
 
@@ -32,8 +35,58 @@ export function NavPills<TId extends string = string>({
   testID,
   grow = false,
 }: NavPillsProps<TId>): ReactNode {
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        root: {
+          flexDirection: 'row',
+          gap: tokens.spacing.xs,
+        },
+        rootGrow: {
+          alignSelf: 'stretch',
+        },
+      }),
+    [],
+  );
+
+  return (
+    <View
+      accessibilityRole="tablist"
+      style={[styles.root, grow ? styles.rootGrow : null]}
+      testID={testID}
+    >
+      {items.map((item) => (
+        <Pill
+          item={item}
+          isActive={item.id === activeId}
+          grow={grow}
+          onPress={onChange}
+          testID={testID === undefined ? undefined : `${testID}-${item.id}`}
+          key={item.id}
+        />
+      ))}
+    </View>
+  );
+}
+
+interface PillProps<TId extends string = string> {
+  readonly item: NavPillsItem<TId>;
+  readonly isActive: boolean;
+  readonly grow: boolean;
+  readonly onPress: (next: TId) => void;
+  readonly testID?: string | undefined;
+}
+
+function Pill<TId extends string = string>({
+  item,
+  isActive,
+  grow,
+  onPress,
+  testID,
+}: PillProps<TId>): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
+  const { animatedStyle, onPressIn, onPressOut } = useScaleOnPress();
 
   const styles = useMemo(
     () =>
@@ -52,46 +105,29 @@ export function NavPills<TId extends string = string>({
         pillGrow: {
           flex: 1,
         },
-        root: {
-          flexDirection: 'row',
-          gap: tokens.spacing.xs,
-        },
-        rootGrow: {
-          alignSelf: 'stretch',
-        },
       }),
     [palette.accentSoft],
   );
 
+  const handlePress = (): void => onPress(item.id);
+  const wrapperStyle: StyleProp<ViewStyle> = grow ? styles.pillGrow : null;
+
   return (
-    <View
-      accessibilityRole="tablist"
-      style={[styles.root, grow ? styles.rootGrow : null]}
+    <Pressable
+      accessibilityLabel={item.accessibilityLabel ?? item.label}
+      accessibilityRole="tab"
+      accessibilityState={{ selected: isActive }}
+      onPress={handlePress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      style={wrapperStyle}
       testID={testID}
     >
-      {items.map((item) => {
-        const isActive = item.id === activeId;
-        const handlePress = (): void => onChange(item.id);
-        return (
-          <Pressable
-            accessibilityLabel={item.accessibilityLabel ?? item.label}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: isActive }}
-            key={item.id}
-            onPress={handlePress}
-            style={[
-              styles.pill,
-              isActive ? styles.pillActive : null,
-              grow ? styles.pillGrow : null,
-            ]}
-            testID={testID === undefined ? undefined : `${testID}-${item.id}`}
-          >
-            <Text variant="caption" color={isActive ? 'accent' : 'textSecondary'}>
-              {item.label}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </View>
+      <Animated.View style={[styles.pill, isActive ? styles.pillActive : null, animatedStyle]}>
+        <Text variant="caption" color={isActive ? 'accent' : 'textSecondary'}>
+          {item.label}
+        </Text>
+      </Animated.View>
+    </Pressable>
   );
 }

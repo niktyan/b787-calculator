@@ -33,47 +33,56 @@ exports[`Button renders disabled state with accessibility flag 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    [
-      {
-        "alignItems": "center",
-        "backgroundColor": "#00C2A8",
-        "borderColor": "#00C2A8",
-        "borderRadius": 8,
-        "borderWidth": 1,
-        "justifyContent": "center",
-        "minHeight": 44,
-        "paddingHorizontal": 16,
-        "paddingVertical": 8,
-      },
-      {
-        "opacity": 0.5,
-      },
-      null,
-      undefined,
-    ]
-  }
   testID="btn"
 >
-  <Text
-    allowFontScaling={true}
+  <View
     style={
       [
         {
-          "color": "#001A17",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "letterSpacing": 0,
-          "lineHeight": 22,
-          "textAlign": "auto",
+          "alignItems": "center",
+          "backgroundColor": "#00C2A8",
+          "borderColor": "#00C2A8",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 16,
+          "paddingVertical": 8,
         },
-        undefined,
+        {
+          "opacity": 0.5,
+        },
+        {
+          "opacity": 1,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
       ]
     }
   >
-    Confirm
-  </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#001A17",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Confirm
+    </Text>
+  </View>
 </View>
 `;
 
@@ -110,45 +119,54 @@ exports[`Button renders primary variant in dark theme 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    [
-      {
-        "alignItems": "center",
-        "backgroundColor": "#00C2A8",
-        "borderColor": "#00C2A8",
-        "borderRadius": 8,
-        "borderWidth": 1,
-        "justifyContent": "center",
-        "minHeight": 44,
-        "paddingHorizontal": 16,
-        "paddingVertical": 8,
-      },
-      null,
-      null,
-      undefined,
-    ]
-  }
   testID="btn"
 >
-  <Text
-    allowFontScaling={true}
+  <View
     style={
       [
         {
-          "color": "#001A17",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "letterSpacing": 0,
-          "lineHeight": 22,
-          "textAlign": "auto",
+          "alignItems": "center",
+          "backgroundColor": "#00C2A8",
+          "borderColor": "#00C2A8",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 16,
+          "paddingVertical": 8,
         },
-        undefined,
+        null,
+        {
+          "opacity": 1,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
       ]
     }
   >
-    Continue
-  </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#001A17",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Continue
+    </Text>
+  </View>
 </View>
 `;
 
@@ -185,45 +203,54 @@ exports[`Button renders primary variant in light theme 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    [
-      {
-        "alignItems": "center",
-        "backgroundColor": "#00C2A8",
-        "borderColor": "#00C2A8",
-        "borderRadius": 8,
-        "borderWidth": 1,
-        "justifyContent": "center",
-        "minHeight": 44,
-        "paddingHorizontal": 16,
-        "paddingVertical": 8,
-      },
-      null,
-      null,
-      undefined,
-    ]
-  }
   testID="btn"
 >
-  <Text
-    allowFontScaling={true}
+  <View
     style={
       [
         {
-          "color": "#001A17",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "letterSpacing": 0,
-          "lineHeight": 22,
-          "textAlign": "auto",
+          "alignItems": "center",
+          "backgroundColor": "#00C2A8",
+          "borderColor": "#00C2A8",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "justifyContent": "center",
+          "minHeight": 44,
+          "paddingHorizontal": 16,
+          "paddingVertical": 8,
         },
-        undefined,
+        null,
+        {
+          "opacity": 1,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
       ]
     }
   >
-    Continue
-  </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#001A17",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Continue
+    </Text>
+  </View>
 </View>
 `;
 
@@ -261,44 +288,53 @@ exports[`Button renders secondary and ghost variants 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "backgroundColor": "transparent",
-          "borderColor": "#00C2A8",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 16,
-          "paddingVertical": 8,
-        },
-        null,
-        null,
-        undefined,
-      ]
-    }
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#00C2A8",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "backgroundColor": "transparent",
+            "borderColor": "#00C2A8",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 16,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Cancel
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Cancel
+      </Text>
+    </View>
   </View>,
   <View
     accessibilityLabel="Skip"
@@ -332,44 +368,53 @@ exports[`Button renders secondary and ghost variants 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      [
-        {
-          "alignItems": "center",
-          "backgroundColor": "transparent",
-          "borderColor": "transparent",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 16,
-          "paddingVertical": 8,
-        },
-        null,
-        null,
-        undefined,
-      ]
-    }
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#00C2A8",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "backgroundColor": "transparent",
+            "borderColor": "transparent",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 16,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Skip
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Skip
+      </Text>
+    </View>
   </View>,
 ]
 `;
