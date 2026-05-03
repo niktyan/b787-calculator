@@ -450,31 +450,47 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 ### Input-секция (левая колонка / верхняя на portrait)
 
 **Поля:**
-1. **Landing weight (kg)** — числовое поле, integer. Range см. в `04-domain-model.md` envelope.
+1. **Landing weight (t)** — числовое поле, integer. Единица — **метрические тонны** (домен использует tons throughout — см. `04-domain-model.md` Принцип «вес всегда в тоннах внутри domain»). Range и валидация — см. ниже.
 2. **Center of gravity (% MAC)** — числовое поле, decimal с 1 знаком после запятой.
 3. **Runway condition** — segmented control с тремя вариантами: Dry / Wet / Contaminated.
    - В MVP активен только Dry. Wet и Contaminated отображаются как **disabled** с подписью «Coming soon» (тап показывает короткий toast «Available in upcoming release»).
 4. **RWYCC** — segmented control 1–6, видим только при `runway condition === 'contaminated'`. В MVP скрыт (т.к. contaminated не активен).
 
+> **Mockup note (kg → t).** В `03_Mockups/index.html` секция 3 поле
+> подписано как «Landing weight (kg)»; это артефакт ранней версии
+> мокапа и **superseded** этой спекой. Реализация в Sprint 5 использует
+> tonnes (`t`) — с unit-суффиксом «t», placeholder «e.g. 170»,
+> сообщениями об ошибке в тоннах. Единицы языка интерфейса
+> синхронизированы с doменом и `b787-8-landing-dry.json`.
+
 **Поведение полей:**
 - При первом открытии экрана **все числовые поля пустые**, отображаются placeholder-ы:
-  - Weight: «e.g. 170»
+  - Weight: «e.g. 170» (тонны)
   - CG: «e.g. 25.5»
 - Runway condition по умолчанию = `Dry` (т.к. это единственный активный вариант в MVP).
 - Live update: после того как **оба** обязательных поля (weight, CG) заполнены валидными числами, результат пересчитывается немедленно при любом изменении.
 - Пока хотя бы одно поле пусто → result-секция в состоянии `empty` (см. ниже), расчёт не производится.
 - Валидация формата: ввод не-числовых символов → клавиатура `numeric-pad` не позволяет; для дробных значений — `decimals-pad`.
-- Валидация диапазона: число вне envelope → поле подсвечивается красной обводкой, под ним появляется короткое описание ошибки («Below minimum 110 t», «Above maximum 35 %MAC»), result-секция переходит в состояние `out-of-envelope`.
+- **Operational envelope валидация — мягкая.** Когда ввод за пределами `operationalEnvelope` (см. `04-domain-model.md` «Two distinct envelope concepts»), поле подсвечивается тёплым (warn-цветом, не danger), под ним появляется короткое описание («Below minimum 110 t», «Above maximum 35 %MAC»), но **расчёт всё равно выполняется** и result-секция переходит в состояние `idle` с warning chip-ом рядом с числом. Так пилот видит advisory-результат, плюс явное напоминание, что вход — за пределами регуляторных лимитов. См. ResultPanelState ниже.
+- **NoLookupData — жёсткая ошибка.** Только когда алгоритм не может произвести расчёт в принципе (NaN / Infinity на входе, или повреждённые данные) — result-секция переходит в `out-of-envelope` без числа.
 - **Кнопка Reset** в header экрана: очищает оба поля (возвращает в состояние «пусто»), runway condition возвращает к `Dry`. Без диалога подтверждения — действие моментальное и немного откатывается через возврат фокуса в первое поле.
 
 ### Result-секция (правая колонка / нижняя на portrait)
 
 **Состояния:**
 - `empty` — отображается при пустых полях ввода. Содержит крупный placeholder-текст «Enter weight and CG to see result» и иконку (нейтральная, например `info-outline`). Никаких чисел.
-- `idle` — отображается результат расчёта (число + метаданные).
-- `error` — показывается explanatory message (не число!).
-- `out-of-envelope` — отдельное сообщение, например «Weight 95 t is below minimum 110 t. Adjust input.».
+- `idle` — отображается результат расчёта (число + метаданные). Может **сосуществовать** с warning chip-ом (когда вход внутри lookup envelope, но за пределами operational envelope) — см. ниже.
+- `error` — показывается explanatory message (не число!). Используется при `DataNotAvailable` или `CalculationFailed`.
+- `out-of-envelope` — отдельное сообщение, например «Inputs cannot be evaluated by the lookup table. Adjust inputs.». **Зарезервировано для случаев, когда алгоритм возвращает `NoLookupData`** (NaN / Infinity на входе, повреждённые данные). Operational-envelope нарушения НЕ переводят панель в это состояние — они показываются как `idle` + warning chip.
 - `data-corrupted` — переход на fail-safe error screen.
+
+**Composition: idle + operational-envelope warning.** Когда `validateOperationalEnvelope` возвращает `EnvelopeViolation`, но алгоритм успешно посчитал (т.е. вход внутри lookup envelope), result-панель остаётся в `idle` и **рядом с числом** показывается warning chip:
+- Текст chip-а: «Outside operational envelope — advisory only» (локализуется).
+- Цвет: `tokens.colors.warn` foreground, фон `tokens.colors.warnSoft`, граница `tokens.colors.warnBorder`.
+- Позиция: под source chip («Reference: 787 FCOM»), отступ 6 pt.
+- Tap: показывает короткий popover с конкретной причиной нарушения (например «Weight 95 t is below operational minimum 110 t»).
+
+Это позволяет пилоту увидеть advisory-результат для любых вычислимых входов, при этом не пропустить регуляторное нарушение.
 
 **Содержимое (idle):**
 - Метка «Max crosswind · Landing» сверху.
@@ -641,7 +657,7 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 
 1. **Language** — кликабельная строка → bottom sheet с выбором (English / Русский). Применяется немедленно.
 2. **Theme** — bottom sheet с выбором (Auto / Light / Dark).
-3. **Weight units** — Kilograms (kg) / Pounds (lbs). MVP — только kg, переключатель disabled с подсказкой «Available in upcoming release».
+3. **Weight units** — Tons (t) / Pounds (lbs). MVP — только tons, переключатель disabled с подсказкой «Available in upcoming release». Mockup-era ярлык «Kilograms (kg)» отменён — domain работает в тоннах, и единица пользовательского ввода в Calculator — тонны (см. § Экран 4 поле «Landing weight (t)»).
 4. **Wind units** — Knots (KT) / m/s. MVP — только KT, disabled.
 5. **Show data source on result** — toggle, по умолчанию ON.
 

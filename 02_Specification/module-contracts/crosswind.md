@@ -67,6 +67,26 @@ export type {
 // Pure calculation function (для тестов или future use cases)
 export { calculateCrosswindLimit } from './domain';
 
+// Use-case validation (operational envelope — отдельно от lookup envelope).
+// См. 04-domain-model.md "Two distinct envelope concepts".
+//
+// signature:
+//   function validateOperationalEnvelope(
+//     input: { weightTons: WeightInTons; cgPercent: CGPercentMAC },
+//     envelope: { weight: { minTons: number; maxTons: number };
+//                 cg:     { minPercent: number; maxPercent: number } },
+//   ): Result<void, EnvelopeViolation>;
+//
+// EnvelopeViolation discriminated union covers the four cases:
+//   weight.below, weight.above, cg.below, cg.above.
+//
+// Use-case calls validateOperationalEnvelope FIRST, then always calls
+// calculateCrosswindLimit. UI shows the algorithm's number unconditionally
+// (assuming it returned a value); the validator's result drives the warning
+// chip next to it.
+export { validateOperationalEnvelope } from './domain';
+export type { EnvelopeViolation } from './domain';
+
 // Repository factory (для DI, если понадобится альтернативная реализация)
 export { createCrosswindRepository } from './data';
 export type { CrosswindRepository } from './data';
@@ -114,8 +134,9 @@ export type { CrosswindRepository } from './data';
 ## Тестирование
 
 **Unit-тесты domain (обязательно):**
-- `calculator.test.ts` — 50+ тест-кейсов из тест-таблицы `05-crosswind-algorithm.md` (Test Sets #1, #2, #3 — ≥ 40 кейсов).
-- `validators.test.ts` — Test Set #4 (out-of-envelope валидация — 7 кейсов).
+- `calculator.test.ts` — Test Sets #1, #2, #3 + algorithm-only NaN/Infinity cases. ≥ 40 кейсов из тест-таблицы `05-crosswind-algorithm.md`. Тестирует `calculateCrosswindLimit`.
+- `valueObjects.test.ts` — Test Set #4 кейсы #4.05–4.07 (NaN / Infinity / negative). Тестирует фабрики `makeWeightInTons` / `makeCGPercentMAC`.
+- `validateOperationalEnvelope.test.ts` — Test Set #4 кейсы #4.01–4.04 (вес/CG вне operational envelope). Тестирует use-case-функцию.
 - Coverage: ≥ 90%.
 
 **Unit-тесты data:**
