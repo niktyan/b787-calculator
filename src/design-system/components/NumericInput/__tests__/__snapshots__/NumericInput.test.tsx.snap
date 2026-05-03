@@ -51,7 +51,9 @@ exports[`NumericInput renders decimal field with value, unit and error 1`] = `
       onBlur={[Function]}
       onChangeText={[MockFunction]}
       onFocus={[Function]}
+      onSubmitEditing={[Function]}
       placeholderTextColor="#6E7681"
+      returnKeyType="done"
       style={
         {
           "color": "#E6EDF3",
@@ -157,8 +159,10 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
       onBlur={[Function]}
       onChangeText={[MockFunction]}
       onFocus={[Function]}
+      onSubmitEditing={[Function]}
       placeholder="e.g. 170"
       placeholderTextColor="#6E7681"
+      returnKeyType="done"
       style={
         {
           "color": "#E6EDF3",
@@ -244,8 +248,10 @@ exports[`NumericInput renders empty integer field with placeholder in light them
       onBlur={[Function]}
       onChangeText={[MockFunction]}
       onFocus={[Function]}
+      onSubmitEditing={[Function]}
       placeholder="e.g. 170"
       placeholderTextColor="#6B7280"
+      returnKeyType="done"
       style={
         {
           "color": "#1F2937",

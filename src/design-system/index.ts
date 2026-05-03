@@ -33,6 +33,7 @@ export {
   SegmentedControl,
   Toggle,
   Button,
+  KeyboardDismissView,
   // Feedback
   Disclaimer,
   ResultPanel,
@@ -60,6 +61,7 @@ export type {
   ToggleProps,
   ButtonProps,
   ButtonVariant,
+  KeyboardDismissViewProps,
   // Feedback
   DisclaimerProps,
   ResultPanelMetaItem,

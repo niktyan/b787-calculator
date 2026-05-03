@@ -20,7 +20,16 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { useTranslation } from '../../../core';
-import { BackButton, ErrorState, Row, Screen, Stack, Text, tokens } from '../../../design-system';
+import {
+  BackButton,
+  ErrorState,
+  KeyboardDismissView,
+  Row,
+  Screen,
+  Stack,
+  Text,
+  tokens,
+} from '../../../design-system';
 import { createCrosswindRepository } from '../data';
 import type { CrosswindDataFile } from '../data/schema';
 import type { RunwayCondition } from '../domain/types';
@@ -71,61 +80,54 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     setRunwayCondition('dry');
   }, []);
 
+  const inputForm = (
+    <CrosswindInputForm
+      weightText={weightText}
+      cgText={cgText}
+      runwayCondition={runwayCondition}
+      weightError={weightFieldError}
+      cgError={cgFieldError}
+      onWeightChange={setWeightText}
+      onCGChange={setCgText}
+      onRunwayConditionChange={setRunwayCondition}
+      testID="crosswind-input-form"
+    />
+  );
+  const resultPanel = <CrosswindResult state={state} testID="crosswind-result" />;
+
   return (
     <Screen testID="crosswind-screen">
-      <Stack gap="lg">
-        <Row align="center" justify="space-between">
-          <BackButton onPress={handleBack} label={t('common.back')} testID="crosswind-back" />
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('crosswind.resetLabel')}
-            hitSlop={tokens.spacing.sm}
-            onPress={handleReset}
-            style={styles.resetButton}
-            testID="crosswind-reset"
-          >
-            <Text variant="body" color="textSecondary">
-              {t('crosswind.resetLabel')}
-            </Text>
-          </Pressable>
-        </Row>
-        <Text variant="heading2">{t('crosswind.title')}</Text>
-        {isTwoColumn ? (
-          <Row align="flex-start" gap="lg">
-            <View style={styles.column}>
-              <CrosswindInputForm
-                weightText={weightText}
-                cgText={cgText}
-                runwayCondition={runwayCondition}
-                weightError={weightFieldError}
-                cgError={cgFieldError}
-                onWeightChange={setWeightText}
-                onCGChange={setCgText}
-                onRunwayConditionChange={setRunwayCondition}
-                testID="crosswind-input-form"
-              />
-            </View>
-            <View style={styles.column}>
-              <CrosswindResult state={state} testID="crosswind-result" />
-            </View>
+      <KeyboardDismissView testID="crosswind-keyboard-dismiss">
+        <Stack gap="lg">
+          <Row align="center" justify="space-between">
+            <BackButton onPress={handleBack} label={t('common.back')} testID="crosswind-back" />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('crosswind.resetLabel')}
+              hitSlop={tokens.spacing.sm}
+              onPress={handleReset}
+              style={styles.resetButton}
+              testID="crosswind-reset"
+            >
+              <Text variant="body" color="textSecondary">
+                {t('crosswind.resetLabel')}
+              </Text>
+            </Pressable>
           </Row>
-        ) : (
-          <Stack gap="lg">
-            <CrosswindInputForm
-              weightText={weightText}
-              cgText={cgText}
-              runwayCondition={runwayCondition}
-              weightError={weightFieldError}
-              cgError={cgFieldError}
-              onWeightChange={setWeightText}
-              onCGChange={setCgText}
-              onRunwayConditionChange={setRunwayCondition}
-              testID="crosswind-input-form"
-            />
-            <CrosswindResult state={state} testID="crosswind-result" />
-          </Stack>
-        )}
-      </Stack>
+          <Text variant="heading2">{t('crosswind.title')}</Text>
+          {isTwoColumn ? (
+            <Row align="flex-start" gap="lg">
+              <View style={styles.column}>{inputForm}</View>
+              <View style={styles.column}>{resultPanel}</View>
+            </Row>
+          ) : (
+            <Stack gap="lg">
+              {inputForm}
+              {resultPanel}
+            </Stack>
+          )}
+        </Stack>
+      </KeyboardDismissView>
     </Screen>
   );
 }

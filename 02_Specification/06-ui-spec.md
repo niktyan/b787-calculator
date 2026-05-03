@@ -475,6 +475,27 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 - **NoLookupData — жёсткая ошибка.** Только когда алгоритм не может произвести расчёт в принципе (NaN / Infinity на входе, или повреждённые данные) — result-секция переходит в `out-of-envelope` без числа.
 - **Кнопка Reset** в header экрана: очищает оба поля (возвращает в состояние «пусто»), runway condition возвращает к `Dry`. Без диалога подтверждения — действие моментальное и немного откатывается через возврат фокуса в первое поле.
 
+### Keyboard behavior
+
+iOS softkeyboard на `numeric-pad` / `decimal-pad` **не имеет встроенной кнопки скрытия**, поэтому экран обеспечивает дисмисс двумя путями:
+
+- **Tap outside-to-dismiss.** Экран обёрнут в `KeyboardDismissView`
+  (DS-компонент, см. `module-contracts/design-system.md`). Любой тап
+  по фону или нечитаемой области (за пределами полей и сегментов)
+  закрывает клавиатуру через `Keyboard.dismiss()`. Тапы по самим
+  TextInput-ам или сегментам не интерпретируются как «вне input» — они
+  обрабатываются adressuemyм компонентом, обёртка не перехватывает.
+- **Done key on keyboard.** Каждый `NumericInput` сконфигурирован с
+  `returnKeyType="done"`; нажатие Done на iOS-клавиатуре триггерит
+  `onSubmitEditing`, который также вызывает `Keyboard.dismiss()`. Это
+  даёт пилоту явную клавишу скрытия без необходимости тапать по
+  свободной области.
+
+Скролл-жесты не перехватываются — `KeyboardDismissView` это
+`Pressable` с `flex: 1`, а не TouchableWithoutFeedback с capturing
+overlay. VoiceOver не объявляет обёртку как тапаемую (`accessible:
+false`), поэтому пилот с VO навигирует напрямую по полям.
+
 ### Result-секция (правая колонка / нижняя на portrait)
 
 **Состояния:**

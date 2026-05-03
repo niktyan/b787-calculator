@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Keyboard, StyleSheet, TextInput, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../core/theming';
@@ -106,8 +106,10 @@ export function NumericInput(props: NumericInputProps): ReactNode {
           onBlur={(): void => setFocused(false)}
           onChangeText={onChange}
           onFocus={(): void => setFocused(true)}
+          onSubmitEditing={(): void => Keyboard.dismiss()}
           placeholder={placeholder}
           placeholderTextColor={palette.textTertiary}
+          returnKeyType="done"
           style={styles.input}
           testID={suffixId(testID, 'input')}
           value={value}

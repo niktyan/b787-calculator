@@ -1,4 +1,5 @@
 import { fireEvent } from '@testing-library/react-native';
+import { Keyboard } from 'react-native';
 
 import { renderWithTheme } from '../../../_testing/renderWithTheme';
 import { NumericInput } from '../NumericInput';
@@ -73,5 +74,25 @@ describe('NumericInput', () => {
       />,
     );
     expect(getByTestId('weight-error')).toBeTruthy();
+  });
+
+  it('configures the underlying TextInput with returnKeyType="done"', () => {
+    const { getByTestId } = renderWithTheme(
+      <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+    );
+    expect(getByTestId('weight-input').props.returnKeyType).toBe('done');
+  });
+
+  it('dismisses the keyboard on submit (Done button)', () => {
+    const dismissSpy = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => undefined);
+    try {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="170" onChange={jest.fn()} testID="weight" />,
+      );
+      fireEvent(getByTestId('weight-input'), 'submitEditing');
+      expect(dismissSpy).toHaveBeenCalledTimes(1);
+    } finally {
+      dismissSpy.mockRestore();
+    }
   });
 });

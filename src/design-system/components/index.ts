@@ -23,6 +23,8 @@ export { Toggle } from './Toggle';
 export type { ToggleProps } from './Toggle';
 export { Button } from './Button';
 export type { ButtonProps, ButtonVariant } from './Button';
+export { KeyboardDismissView } from './KeyboardDismissView';
+export type { KeyboardDismissViewProps } from './KeyboardDismissView';
 
 // Feedback
 export { Disclaimer } from './Disclaimer';
