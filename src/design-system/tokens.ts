@@ -9,9 +9,12 @@
  * Color values come from `03_Mockups/index.html` `:root`/`.light` definitions.
  */
 
-import type { TextStyle, ViewStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
 
 import { BREAKPOINT_REGULAR_HEADER, sizing } from './sizing';
+import { typography } from './typography';
+
+export type { TypographyVariant } from './typography';
 
 // --- Spacing scale (4 / 8 / 12 / 16 / 24 / 32 / 48) ---
 const SPACING_XS = 4;
@@ -27,35 +30,6 @@ const RADIUS_SM = 4;
 const RADIUS_MD = 8;
 const RADIUS_LG = 12;
 const RADIUS_XL = 16;
-
-// --- Typography sizes (subset of 11 / 12 / 14 / 16 / 18 / 22 / 28 / 36 / 48 / 64
-// from the design-system contract, picked to match `03_Mockups/index.html`). ---
-const FONT_SIZE_MICRO = 11;
-const FONT_SIZE_LABEL = 12;
-const FONT_SIZE_CAPTION = 12;
-const FONT_SIZE_BODY = 16;
-const FONT_SIZE_HEADING_3 = 18;
-const FONT_SIZE_HEADING_2 = 22;
-const FONT_SIZE_HEADING_1 = 28;
-const FONT_SIZE_DISPLAY = 48;
-
-// --- Line heights ---
-const LINE_HEIGHT_MICRO = 16; // 11 * 1.5 ≈ 16.5, rounded to nearest pt
-const LINE_HEIGHT_LABEL = 16;
-const LINE_HEIGHT_CAPTION = 16;
-const LINE_HEIGHT_BODY = 22;
-const LINE_HEIGHT_HEADING_3 = 22;
-const LINE_HEIGHT_HEADING_2 = 28;
-const LINE_HEIGHT_HEADING_1 = 34;
-const LINE_HEIGHT_MONO_LARGE = 28;
-const LINE_HEIGHT_DISPLAY = 56;
-
-// --- Letter spacing (RN points; em values shown for cross-reference with mockup CSS). ---
-const LETTER_SPACING_TIGHTER = -0.5; // ≈ -0.02em at 28pt; used by display
-const LETTER_SPACING_TIGHT = -0.18; // ≈ -0.01em at 18pt; used by heading3
-const LETTER_SPACING_NORMAL = 0;
-const LETTER_SPACING_CHIP = 0.44; // ≈ 0.04em at 11pt; used by chipLabel (uppercase)
-const LETTER_SPACING_LOOSE = 0.6;
 
 // --- Breakpoints (compact phone, regular tablet) ---
 const BREAKPOINT_COMPACT = 480;
@@ -99,6 +73,14 @@ export interface ColorPalette {
   readonly borderStrong: string;
   readonly accent: string;
   readonly accentSoft: string;
+  /**
+   * Foreground color for content drawn on a `accent`-colored background
+   * (e.g., active segmented-control segment, primary button label, gradient
+   * active-card icon glyph). Identical in both themes (`#001A17`) for
+   * WCAG-AA contrast on the teal accent. See `06-ui-spec.md` § Экран 3.1
+   * Coming Soon Modal Visual treatment.
+   */
+  readonly accentOnAccent: string;
   readonly warn: string;
   readonly warnSoft: string;
   readonly warnBorder: string;
@@ -107,6 +89,8 @@ export interface ColorPalette {
   readonly success: string;
   readonly overlay: string;
 }
+
+const ACCENT_ON_ACCENT = '#001A17';
 
 const DARK_PALETTE: ColorPalette = {
   bgPage: '#0A0E14',
@@ -121,6 +105,7 @@ const DARK_PALETTE: ColorPalette = {
   borderStrong: 'rgba(255, 255, 255, 0.16)',
   accent: '#00C2A8',
   accentSoft: '#003C36',
+  accentOnAccent: ACCENT_ON_ACCENT,
   warn: '#FFB020',
   warnSoft: 'rgba(255, 176, 32, 0.08)',
   warnBorder: 'rgba(255, 176, 32, 0.3)',
@@ -143,6 +128,7 @@ const LIGHT_PALETTE: ColorPalette = {
   borderStrong: 'rgba(0, 0, 0, 0.16)',
   accent: '#00C2A8',
   accentSoft: '#DEF7F3',
+  accentOnAccent: ACCENT_ON_ACCENT,
   warn: '#9A6700',
   warnSoft: '#FEF6E7',
   warnBorder: '#F0C674',
@@ -161,103 +147,6 @@ const colors: ColorTokens = {
   light: LIGHT_PALETTE,
   dark: DARK_PALETTE,
 };
-
-const fontFamilySans = 'System';
-const fontFamilyMono = 'Menlo';
-
-export interface TypographyVariant {
-  readonly fontFamily: string;
-  readonly fontSize: number;
-  readonly lineHeight: number;
-  readonly fontWeight: TextStyle['fontWeight'];
-  readonly letterSpacing: number;
-}
-
-const typography = {
-  fontFamily: {
-    sans: fontFamilySans,
-    mono: fontFamilyMono,
-  },
-  variants: {
-    display: {
-      fontFamily: fontFamilyMono,
-      fontSize: FONT_SIZE_DISPLAY,
-      lineHeight: LINE_HEIGHT_DISPLAY,
-      fontWeight: '700',
-      letterSpacing: LETTER_SPACING_TIGHTER,
-    },
-    heading1: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_HEADING_1,
-      lineHeight: LINE_HEIGHT_HEADING_1,
-      fontWeight: '600',
-      letterSpacing: LETTER_SPACING_NORMAL,
-    },
-    heading2: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_HEADING_2,
-      lineHeight: LINE_HEIGHT_HEADING_2,
-      fontWeight: '600',
-      letterSpacing: LETTER_SPACING_NORMAL,
-    },
-    heading3: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_HEADING_3,
-      lineHeight: LINE_HEIGHT_HEADING_3,
-      fontWeight: '600',
-      letterSpacing: LETTER_SPACING_TIGHT,
-    },
-    body: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_BODY,
-      lineHeight: LINE_HEIGHT_BODY,
-      fontWeight: '400',
-      letterSpacing: LETTER_SPACING_NORMAL,
-    },
-    bodySmall: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_MICRO,
-      lineHeight: LINE_HEIGHT_MICRO,
-      fontWeight: '400',
-      letterSpacing: LETTER_SPACING_NORMAL,
-    },
-    caption: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_CAPTION,
-      lineHeight: LINE_HEIGHT_CAPTION,
-      fontWeight: '400',
-      letterSpacing: LETTER_SPACING_NORMAL,
-    },
-    label: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_LABEL,
-      lineHeight: LINE_HEIGHT_LABEL,
-      fontWeight: '600',
-      letterSpacing: LETTER_SPACING_LOOSE,
-    },
-    chipLabel: {
-      fontFamily: fontFamilySans,
-      fontSize: FONT_SIZE_MICRO,
-      lineHeight: LINE_HEIGHT_MICRO,
-      fontWeight: '600',
-      letterSpacing: LETTER_SPACING_CHIP,
-    },
-    mono: {
-      fontFamily: fontFamilyMono,
-      fontSize: FONT_SIZE_BODY,
-      lineHeight: LINE_HEIGHT_BODY,
-      fontWeight: '500',
-      letterSpacing: LETTER_SPACING_NORMAL,
-    },
-    monoLarge: {
-      fontFamily: fontFamilyMono,
-      fontSize: FONT_SIZE_HEADING_2,
-      lineHeight: LINE_HEIGHT_MONO_LARGE,
-      fontWeight: '700',
-      letterSpacing: LETTER_SPACING_NORMAL,
-    },
-  } satisfies Record<string, TypographyVariant>,
-} as const;
 
 const spacing = {
   xs: SPACING_XS,

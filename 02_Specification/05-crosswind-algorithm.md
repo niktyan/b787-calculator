@@ -44,14 +44,21 @@
 
 ## Поэтапный алгоритм
 
-### Шаг 0. Валидация входных данных
+### Шаг 0. Валидация data-availability
 
 Перед расчётом проверяется:
-- `weightTons` находится в `[envelope.weight.minTons, envelope.weight.maxTons]`. Иначе → `Result.error({ kind: 'InvalidInput', field: 'weight', reason: 'out-of-envelope' })`.
-- `cgPercent` находится в `[envelope.cg.minPercent, envelope.cg.maxPercent]`. Иначе → `Result.error({ kind: 'InvalidInput', field: 'cg', reason: 'out-of-envelope' })`.
 - `aircraft === 'b787_8'`, `phase === 'landing'`, `runwayCondition === 'dry'`. Иначе → `Result.error({ kind: 'DataNotAvailable', ... })`.
+- Входные значения числовые и конечные. NaN / Infinity → `Result.error({ kind: 'NoLookupData', reason: 'NaN' | 'NotFinite' })`. (Эти случаи на практике не должны возникать — Value Objects `WeightInTons` / `CGPercentMAC` уже отвергают их в фабриках; шаг 0 — defence in depth.)
 
-Если все проверки пройдены — переходим к Шагу 1.
+**Operational-envelope валидация (вес/CG в регуляторных пределах) здесь
+НЕ выполняется.** Алгоритм — это «pure data lookup». Проверка
+operational envelope — отдельная функция use-case layer
+`validateOperationalEnvelope` (см. `module-contracts/crosswind.md`
+Public API). За пределами envelope UI показывает warning chip рядом с
+вычисленным значением, но число остаётся на экране (см. `06-ui-spec.md`
+Экран 4 ResultPanelState).
+
+Если data-availability проверки пройдены — переходим к Шагу 1.
 
 ### Шаг 1. Конвертация веса в kilolbs
 
@@ -173,6 +180,10 @@ return Result.ok({
 
 Эта таблица — единственный источник правды для unit-тестов. Каждая строка — отдельный test case в `crosswind/__tests__/calculator.test.ts`. Все значения CG-порогов вычислены точно: `threshold = 0.0576 × (weightTons × 2.20462) + intercept`.
 
+**Test sets ownership.** Sets #1–#3 + #5 — тесты алгоритма (`calculateCrosswindLimit`); #4 — тесты use-case-функции `validateOperationalEnvelope`. Это разделение явное: алгоритм НЕ проверяет operational envelope (см. Шаг 0 выше), поэтому test cases типа «CG=40 → InvalidInput» относятся к валидатору, а не к алгоритму. То же самое CG=40 при тех же threshold-ах остаётся валидным входом для алгоритма и даёт численный результат.
+
+**Strategy column note.** Колонка «Strategy» в таблицах ниже отражает поведение `CalculationMetadata.calculationStrategy`. Этот enum имеет ровно три значения: `'within-bracket' | 'below-envelope' | 'above-envelope'`. В тест-описаниях встречается ярлык «exact-breakpoint» — это документационная сабкатегория `within-bracket`, когда `cgPercent` совпадает ровно с одним из threshold-ов (тогда `lower = upper`, `E9 = 0`, `result = F7 = F8`). Алгоритм возвращает `within-bracket` для этого случая; runtime-строка enum-а не равна `'exact-breakpoint'`.
+
 ### Test set #1 · Weight = 170 t (W_kilolbs = 374.7854)
 
 Thresholds для этого веса:
@@ -188,24 +199,24 @@ Thresholds для этого веса:
 | 1.02 | 170 | 15.0 | 40 | below-envelope | Тот же сценарий |
 | 1.03 | 170 | 25.0 | 40 | below-envelope | Тот же сценарий |
 | 1.04 | 170 | 27.0 | 40 | below-envelope | CG ниже T₁ (27.6876), но близко |
-| 1.05 | 170 | 27.68763904 | 40 | exact-breakpoint | Ровно на T₁; lower = upper = T₁; F7=F8=40 |
+| 1.05 | 170 | 27.68763904 | 40 | within-bracket | Ровно на T₁; lower = upper = T₁; F7=F8=40 (exact-breakpoint sub-case) |
 | 1.06 | 170 | 27.7 | 39 | within-bracket | Чуть выше T₁; result_raw ≈ 39.992; floor → 39 |
 | 1.07 | 170 | 28.0 | 39 | within-bracket | result_raw ≈ 39.800; floor → 39 |
 | 1.08 | 170 | 30.0 | 38 | within-bracket | result_raw ≈ 38.520; floor → 38 |
 | 1.09 | 170 | 30.886 | 37 | within-bracket | Чуть ниже T₂; разрывность; floor → 37 |
-| 1.10 | 170 | 30.88763904 | 35 | exact-breakpoint | Ровно на T₂; F7=F8=35; result=35 |
+| 1.10 | 170 | 30.88763904 | 35 | within-bracket | Ровно на T₂; F7=F8=35; result=35 (exact-breakpoint sub-case) |
 | 1.11 | 170 | 31.0 | 34 | within-bracket | result_raw ≈ 34.921; floor → 34 |
 | 1.12 | 170 | 32.0 | 34 | within-bracket | result_raw ≈ 34.221; floor → 34 (соответствует видео) |
 | 1.13 | 170 | 33.0 | 33 | within-bracket | result_raw ≈ 33.521; floor → 33 |
 | 1.14 | 170 | 34.387 | 32 | within-bracket | Чуть ниже T₃; floor → 32 |
-| 1.15 | 170 | 34.38763904 | 30 | exact-breakpoint | Ровно на T₃; F7=F8=30 |
+| 1.15 | 170 | 34.38763904 | 30 | within-bracket | Ровно на T₃; F7=F8=30 (exact-breakpoint sub-case) |
 | 1.16 | 170 | 34.4 | 29 | within-bracket | Чуть выше T₃; floor → 29 |
 | 1.17 | 170 | 35.0 | 29 | within-bracket | result_raw ≈ 29.571; floor → 29 |
 | 1.18 | 170 | 36.0 | 28 | within-bracket | result_raw ≈ 28.871; floor → 28 |
-| 1.19 | 170 | 37.88763904 | 25 | exact-breakpoint | Ровно на T₄ |
+| 1.19 | 170 | 37.88763904 | 25 | within-bracket | Ровно на T₄ (exact-breakpoint sub-case) |
 | 1.20 | 170 | 38.0 | 24 | within-bracket | Чуть выше T₄; floor → 24 |
 | 1.21 | 170 | 40.0 | 23 | within-bracket | result_raw ≈ 23.521; floor → 23 |
-| 1.22 | 170 | 41.38763904 | 20 | exact-breakpoint | Ровно на T₅ (последний breakpoint) |
+| 1.22 | 170 | 41.38763904 | 20 | within-bracket | Ровно на T₅ (exact-breakpoint sub-case; последний breakpoint) |
 | 1.23 | 170 | 42.0 | 40 | above-envelope | CG выше T₅; IFNA-fallback (Excel-quirk!) |
 | 1.24 | 170 | 50.0 | 40 | above-envelope | Same |
 
@@ -222,13 +233,13 @@ Thresholds для этого веса:
 |---|------------|-----------|---------------|----------|-------------|
 | 2.01 | 130 | 10.0 | 40 | below-envelope | CG значительно ниже T₁ |
 | 2.02 | 130 | 22.6 | 40 | below-envelope | Чуть ниже T₁ (22.608) |
-| 2.03 | 130 | 22.60819456 | 40 | exact-breakpoint | Ровно на T₁ |
+| 2.03 | 130 | 22.60819456 | 40 | within-bracket | Ровно на T₁ (exact-breakpoint sub-case) |
 | 2.04 | 130 | 23.0 | 39 | within-bracket | result_raw ≈ 39.749; floor → 39 |
 | 2.05 | 130 | 25.0 | 38 | within-bracket | result_raw ≈ 38.469; floor → 38 |
 | 2.06 | 130 | 27.0 | 34 | within-bracket | В бракете [T₂, T₃]; result_raw ≈ 34.166; floor → 34 |
 | 2.07 | 130 | 30.0 | 29 | within-bracket | В бракете [T₃, T₄]; result_raw ≈ 29.516; floor → 29 |
 | 2.08 | 130 | 35.0 | 23 | within-bracket | В бракете [T₄, T₅]; result_raw ≈ 23.466; floor → 23 |
-| 2.09 | 130 | 36.30819456 | 20 | exact-breakpoint | Ровно на T₅ |
+| 2.09 | 130 | 36.30819456 | 20 | within-bracket | Ровно на T₅ (exact-breakpoint sub-case) |
 | 2.10 | 130 | 38.0 | 40 | above-envelope | CG выше T₅; IFNA-fallback |
 
 ### Test set #3 · Weight = 160 t (W_kilolbs = 352.7392)
@@ -243,26 +254,41 @@ Thresholds для этого веса:
 | # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy | Комментарий |
 |---|------------|-----------|---------------|----------|-------------|
 | 3.01 | 160 | 20.0 | 40 | below-envelope | |
-| 3.02 | 160 | 26.41777792 | 40 | exact-breakpoint | Ровно на T₁ |
+| 3.02 | 160 | 26.41777792 | 40 | within-bracket | Ровно на T₁ (exact-breakpoint sub-case) |
 | 3.03 | 160 | 27.0 | 39 | within-bracket | result_raw ≈ 39.627 |
 | 3.04 | 160 | 30.0 | 34 | within-bracket | В бракете [T₂, T₃]; result_raw ≈ 34.732 |
 | 3.05 | 160 | 33.0 | 32 | within-bracket | result_raw ≈ 32.633 |
 | 3.06 | 160 | 35.0 | 28 | within-bracket | В бракете [T₃, T₄]; result_raw ≈ 28.682 |
 | 3.07 | 160 | 40.0 | 22 | within-bracket | В бракете [T₄, T₅]; result_raw ≈ 22.633 |
 
-### Test set #4 · Out-of-envelope (валидация)
+### Test set #4 · Operational-envelope validator (use-case layer, NOT algorithm)
 
-Эти кейсы должны **возвращать ошибку**, а не результат. `envelope` для MVP установлен как `weight ∈ [110, 172] tons`, `cg ∈ [8, 35] %MAC`.
+**Important.** Эти кейсы тестируют функцию `validateOperationalEnvelope`
+из use-case layer (см. `module-contracts/crosswind.md` Public API), а
+НЕ сам алгоритм. Алгоритм (`calculateCrosswindLimit`) для тех же входов
+вернёт численный результат — operational envelope проверяется отдельно.
+`operationalEnvelope` для MVP взят из bundled JSON (`weight ∈ [110, 172]
+tons`, `cg ∈ [8, 35] %MAC`), но эти числа — placeholder, уточняются на
+Phase B (см. Open questions).
 
-| # | Weight (t) | CG (%MAC) | Expected | Reason |
-|---|------------|-----------|----------|--------|
-| 4.01 | 100 | 25 | InvalidInput.weight.below | weight < 110 |
-| 4.02 | 200 | 25 | InvalidInput.weight.above | weight > 172 |
-| 4.03 | 150 | 5 | InvalidInput.cg.below | cg < 8 |
-| 4.04 | 150 | 40 | InvalidInput.cg.above | cg > 35 |
-| 4.05 | 150 | NaN | InvalidInput.cg.notANumber | cg не число |
-| 4.06 | NaN | 25 | InvalidInput.weight.notANumber | weight не число |
-| 4.07 | -5 | 25 | InvalidInput.weight.invalid | weight отрицательный |
+Test cases #4.01–4.04: validator returns `EnvelopeViolation` (не
+`InvalidInput`). UI на эти кейсы реагирует warning chip-ом рядом с
+численным результатом, рассчитанным алгоритмом.
+
+Test cases #4.05–4.07: NaN / Infinity / negative — отсекаются на уровне
+Value Object factories (`makeWeightInTons`, `makeCGPercentMAC`), до
+вызова и алгоритма, и validator-а. Соответствующие ошибки — `WeightError`
+/ `CGError`.
+
+| # | Layer | Weight (t) | CG (%MAC) | Expected | Reason |
+|---|-------|------------|-----------|----------|--------|
+| 4.01 | Validator | 100 | 25 | EnvelopeViolation.weight.below | weight < 110 |
+| 4.02 | Validator | 200 | 25 | EnvelopeViolation.weight.above | weight > 172 |
+| 4.03 | Validator | 150 | 5 | EnvelopeViolation.cg.below | cg < 8 |
+| 4.04 | Validator | 150 | 40 | EnvelopeViolation.cg.above | cg > 35 |
+| 4.05 | Value Object | 150 | NaN | CGError.NotANumber | cg не число |
+| 4.06 | Value Object | NaN | 25 | WeightError.NotANumber | weight не число |
+| 4.07 | Value Object | -5 | 25 | WeightError.Negative | weight отрицательный |
 
 ### Test set #5 · Data integrity (повреждённые данные)
 
@@ -274,7 +300,7 @@ Thresholds для этого веса:
 | 5.02 | JSON с `slope === 0` | CorruptedDataBundle (zero slope невалиден) |
 | 5.03 | JSON с `aircraft === 'b787_9'`, но имя файла `b787-8-...` | CorruptedDataBundle (несоответствие) |
 | 5.04 | JSON с не-возрастающими `intercept` | CorruptedDataBundle |
-| 5.05 | JSON с `envelope.weight.minTons > envelope.weight.maxTons` | CorruptedDataBundle |
+| 5.05 | JSON с `operationalEnvelope.weight.minTons > operationalEnvelope.weight.maxTons` | CorruptedDataBundle |
 
 ---
 
@@ -322,12 +348,18 @@ export function calculateCrosswindLimit(
 // псевдокод тела функции (для понимания, не финальный код)
 
 function calculateCrosswindLimit(input, data) {
-  // Step 0: validate aircraft/phase/runwayCondition match data file
+  // Step 0a: data-availability — aircraft/phase/runwayCondition must match.
   if (input.aircraft !== data.aircraft) return error('DataNotAvailable');
   if (input.phase !== data.phase) return error('DataNotAvailable');
   if (input.runwayCondition !== data.runwayCondition) return error('DataNotAvailable');
 
-  // (Note: weight/cg envelope validation happens earlier, at Value Object construction)
+  // Step 0b: defence-in-depth NaN/Infinity check (Value Object factories
+  // already reject these; we re-check to be safe).
+  if (!Number.isFinite(input.weightTons)) return error('NoLookupData', 'NotFinite');
+  if (!Number.isFinite(input.cgPercent)) return error('NoLookupData', 'NotFinite');
+
+  // (Note: operational-envelope validation is NOT performed here.
+  //  See `validateOperationalEnvelope` in the use-case layer.)
 
   // Step 1: convert weight to kilolbs
   const weightKilolbs = input.weightTons * data.weightConversion.tonsToKilolbsFactor;
