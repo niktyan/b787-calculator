@@ -1,0 +1,563 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ComingSoonModal renders correctly in light theme 1`] = `
+<Modal
+  animationType="slide"
+  onRequestClose={[MockFunction]}
+  testID="coming-soon-modal"
+  transparent={true}
+  visible={true}
+>
+  <View
+    accessibilityLabel="common.cancel"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "rgba(15, 23, 42, 0.4)",
+        "flex": 1,
+        "justifyContent": "center",
+        "paddingHorizontal": 24,
+      }
+    }
+    testID="coming-soon-modal-backdrop"
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderColor": "rgba(0, 0, 0, 0.08)",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "padding": 16,
+          "width": "100%",
+        }
+      }
+      testID="coming-soon-modal-sheet"
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "gap": 12,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#DEF7F3",
+              "borderRadius": 14,
+              "height": 56,
+              "justifyContent": "center",
+              "width": 56,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#00C2A8",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "700",
+                  "letterSpacing": 0,
+                  "lineHeight": 28,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            TO
+          </Text>
+        </View>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#1F2937",
+                "fontFamily": "System",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "letterSpacing": -0.18,
+                "lineHeight": 22,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Crosswind · Takeoff
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6B7280",
+                "fontFamily": "System",
+                "fontSize": 11,
+                "fontWeight": "600",
+                "letterSpacing": 0.44,
+                "lineHeight": 16,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Phase 2
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#4B5563",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          comingSoonModal.body
+        </Text>
+        <View
+          accessibilityLabel="comingSoonModal.close"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          testID="coming-soon-modal-close"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
+                },
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#001A17",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              comingSoonModal.close
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;
+
+exports[`ComingSoonModal renders the module name, phase, body text and OK button when visible (dark) 1`] = `
+<Modal
+  animationType="slide"
+  onRequestClose={[MockFunction]}
+  testID="coming-soon-modal"
+  transparent={true}
+  visible={true}
+>
+  <View
+    accessibilityLabel="common.cancel"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 0.6)",
+        "flex": 1,
+        "justifyContent": "center",
+        "paddingHorizontal": 24,
+      }
+    }
+    testID="coming-soon-modal-backdrop"
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "padding": 16,
+          "width": "100%",
+        }
+      }
+      testID="coming-soon-modal-sheet"
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "gap": 12,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#003C36",
+              "borderRadius": 14,
+              "height": 56,
+              "justifyContent": "center",
+              "width": 56,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#00C2A8",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "700",
+                  "letterSpacing": 0,
+                  "lineHeight": 28,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            TO
+          </Text>
+        </View>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#E6EDF3",
+                "fontFamily": "System",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "letterSpacing": -0.18,
+                "lineHeight": 22,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Crosswind · Takeoff
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6E7681",
+                "fontFamily": "System",
+                "fontSize": 11,
+                "fontWeight": "600",
+                "letterSpacing": 0.44,
+                "lineHeight": 16,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Phase 2
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#8B949E",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          comingSoonModal.body
+        </Text>
+        <View
+          accessibilityLabel="comingSoonModal.close"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          testID="coming-soon-modal-close"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
+                },
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#001A17",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              comingSoonModal.close
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</Modal>
+`;

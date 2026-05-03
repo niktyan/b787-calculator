@@ -38,4 +38,4 @@ export type { ErrorStateProps } from './ErrorState';
 export { BackButton } from './BackButton';
 export type { BackButtonProps } from './BackButton';
 export { NavPills } from './NavPills';
-export type { NavPillsItem, NavPillsProps } from './NavPills';
+export type { NavPillsItem, NavPillsProps, NavPillsSizing } from './NavPills';

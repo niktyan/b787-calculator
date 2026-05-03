@@ -1,9 +1,10 @@
 import { Stack } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { ThemeProvider, initI18n, logger } from '../core';
+import { ThemeProvider, initI18n, logger, useTheme } from '../core';
+import { tokens } from '../design-system';
 
 /**
  * Composition root for the app shell:
@@ -39,13 +40,34 @@ export default function RootLayout(): ReactNode {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="disclaimer" options={{ gestureEnabled: false }} />
-          <Stack.Screen name="error" />
-          <Stack.Screen name="(main)" />
-        </Stack>
+        <ThemedStack />
       </ThemeProvider>
     </SafeAreaProvider>
+  );
+}
+
+/**
+ * Inner Stack that consumes the theme to set a theme-aware
+ * `contentStyle.backgroundColor`. Without this the default white system
+ * container flashes through under our dark screens during slide transitions
+ * (см. `02_Specification/06-ui-spec.md` § "Анимации").
+ */
+function ThemedStack(): ReactNode {
+  const { theme } = useTheme();
+  const screenOptions = useMemo(
+    () => ({
+      headerShown: false,
+      contentStyle: { backgroundColor: tokens.colors[theme.resolved].bgScreen },
+    }),
+    [theme.resolved],
+  );
+
+  return (
+    <Stack screenOptions={screenOptions}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="disclaimer" options={{ gestureEnabled: false }} />
+      <Stack.Screen name="error" />
+      <Stack.Screen name="(main)" />
+    </Stack>
   );
 }

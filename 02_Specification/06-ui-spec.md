@@ -202,15 +202,20 @@ src/app/
 
 ## Экран 3 · Main Menu
 
-**Назначение:** точка входа для пользователя. Список модулей с одним активным и тремя «coming soon» (см. `01-vision.md`).
+**Назначение:** точка входа для пользователя. Список модулей crosswind-семьи: один тизер + одна активная карточка (см. `01-vision.md` § «Что входит в MVP»).
 
 **Структура:**
 - Header: логотип + название приложения + nav-pills (Modules, Settings, About).
-- Content: 2×2 (или 1×4 на узких экранах) сетка карточек:
-  - **Crosswind · Landing** — активная, открывает Crosswind Calculator.
-  - **Crosswind · Takeoff** — Phase 2, неактивная.
-  - **Weight & Balance** — Phase 3, неактивная.
-  - **Performance** — Phase 4, неактивная.
+- Content: 1×2 сетка карточек, render order соответствует хронологии фазы
+  полёта (takeoff предшествует landing):
+  - **Crosswind · Takeoff** — Phase 2, неактивная (тизер). Слот #1.
+  - **Crosswind · Landing** — активная, открывает Crosswind Calculator. Слот #2.
+
+Активная карточка осознанно во втором слоте, не в первом — это
+отражает физический порядок фаз полёта и помогает пилоту читать меню как
+roadmap «что будет дальше → что уже работает». Weight & Balance и
+Performance в MVP не показываются ни в каком виде (см. подсекцию
+«Long-term backlog (post-MVP)» в `01-vision.md`).
 
 **Поведение карточек:**
 - **Активная** — `Pressable` с opacity feedback, навигация на `/crosswind` через `expo-router`.
@@ -220,17 +225,26 @@ src/app/
 - `active` — реализован, доступен для использования.
 - `coming-soon` — показан как тизер, тап вызывает modal.
 
-Состояния модулей читаются из `src/core/coming-soon-modules.json`:
+Активные feature-модули импортируются из `src/features/*` и рендерятся
+явно в Main Menu. Coming-soon тизеры читаются из bundled JSON-конфига
+`src/core/coming-soon-modules/data.json` через хук
+`useComingSoonModules()` (см. ADR-0004). JSON содержит только тизеры — у
+каждого entry есть `id`, `name`, `description`, `icon`, `phase`:
 ```json
 [
-  { "id": "crosswind-landing", "active": true, "phase": null },
-  { "id": "crosswind-takeoff", "active": false, "phase": "Phase 2" },
-  { "id": "weight-balance", "active": false, "phase": "Phase 3" },
-  { "id": "performance", "active": false, "phase": "Phase 4" }
+  {
+    "id": "crosswind-takeoff",
+    "name": "Crosswind · Takeoff",
+    "description": "Same crosswind logic applied to the takeoff phase.",
+    "icon": "TO",
+    "phase": "Phase 2"
+  }
 ]
 ```
 
-При выходе Phase 2 этот JSON обновляется, перевыпускается приложение через App Store update — никаких изменений в коде Main Menu.
+При выходе Phase 2 запись удаляется из JSON, добавляется
+`src/features/crosswind-takeoff/`, и Main Menu рендерит её как активную
+карточку без изменений в остальном коде.
 
 **Visual treatment** (см. `03_Mockups/index.html` секция 2 «Main Menu —
 Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
@@ -239,8 +253,20 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
 
 *Header (app-header):*
 
-- Брендовый блок (логотип + название) слева, NavPills справа. Нижний
-  отступ от content — 16 pt; разделитель — 1 pt линия `tokens.colors.border`.
+- **Раскладка зависит от ширины экрана** (порог — 768 pt, ширина
+  iPad-mini portrait):
+  - **Wide (`width >= 768`)** — single-row: брендовый блок (логотип +
+    название) слева, NavPills справа, `justify: space-between`.
+    Применяется на iPad portrait/landscape и iPhone landscape.
+  - **Compact (`width < 768`)** — two-row: row 1 содержит лого + название
+    (left-aligned), row 2 содержит NavPills full-width с равным
+    распределением (каждая pill `flex: 1`, gap 8 pt, `alignSelf:
+    stretch`), отступ row 2 от row 1 — 8 pt. Применяется на любом iPhone
+    portrait. Это нужно потому, что на узкой ширине длинные
+    локализованные лейблы (например русский «О приложении») в одной
+    строке с brand-блоком обрезаются у правого края.
+- Нижний отступ от content — 16 pt; разделитель — 1 pt линия
+  `tokens.colors.border`.
 - App-logo: `28×28` pt, `borderRadius: 6 pt`, фон `tokens.colors.accentSoft`,
   глиф «B7» — variant `mono` (или новый `monoSmall` если тонкого
   monospace-варианта недостаточно), цвет `tokens.colors.accent`, weight 700.
@@ -252,23 +278,50 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
   - Padding `~5 × 10 pt`, `borderRadius: 10 pt`, gap между pill-ами 8 pt.
   - Touch-target ≥ 44×44 pt даже при визуально меньшем чипе (пустой padding
     компенсирует — см. existing «Принцип 2» вверху документа).
+  - В compact-режиме (см. выше) NavPills получают prop `grow=true`,
+    применяющий `flex: 1` к каждой pill, чтобы они равномерно занимали
+    всю ширину строки. Truncate / horizontal scroll **запрещены** —
+    длинные локализованные лейблы должны оставаться полностью
+    читаемыми (см. § «Длинный текст в локализации» в Edge cases).
 
 *Module grid (menu-grid):*
 
 - Раскладка следует существующей секции «Адаптивность iPad ↔ iPhone»
   (не переопределяем здесь breakpoint-ы): 2 колонки на iPad regular и
   iPhone landscape; 1 колонка с увеличенными карточками на iPhone portrait.
-- Gap между карточками — 10–14 pt; верхний margin от header — 14 pt.
-- Card surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
-  (1 pt), `borderRadius: 10 pt`, internal padding 12 pt.
+- Gap между карточками: **compact 14 pt / regular 18 pt** (см.
+  `tokens.sizing.moduleCard.{compact,regular}.gridGap`).
+- Верхний margin от header — 14 pt.
+
+*Адаптивные размеры (compact phone vs iPad regular).* Все ниже
+перечисленные блоки берут параметры из
+`tokens.sizing.moduleCard.{compact,regular}` и
+`tokens.sizing.header.{compact,regular}`. Consumers Main Menu решают
+какой набор использовать через `useWindowDimensions().width >=
+tokens.breakpoints.regularHeader` (768 pt — порог iPad-mini portrait).
+Compact-набор остаётся на iPhone в любой ориентации, regular-набор
+включается на iPad portrait/landscape.
+
+*Card surface:*
+
+| | compact | regular |
+|---|---|---|
+| Padding | 12 pt | 20 pt |
+| Border radius | 10 pt | 12 pt |
+
+Фон — `tokens.colors.bgCard`, граница `tokens.colors.border` (1 pt).
 
 *Активная карточка (`active`):*
 
 - Граница переключается на `tokens.colors.accent`.
-- Фон — линейный градиент `135°` от `bgCard` к `accentSoft`. Реализация в
-  RN: `expo-linear-gradient` (если он уже на allow-list в `03-tech-stack.md`)
-  или однотонная заливка `accentSoft`-tint в качестве визуально
-  эквивалентной деградации — implementation note, не блокер.
+- Фон — линейный градиент `135°` от `tokens.colors.bgCard` к
+  `tokens.colors.accentSoft`, реализованный через `expo-linear-gradient`
+  (стандартный SDK-модуль, добавлен в `03-tech-stack.md`). В dark-теме
+  это `#11161F → #003C36`; в light — `#FFFFFF → #DEF7F3` — оба варианта
+  один-к-одному с mockup-секцией 2.
+- LinearGradient рендерится как `StyleSheet.absoluteFillObject` под
+  всеми content-нодами карточки; родительский Animated.View имеет
+  `overflow: 'hidden'`, чтобы скруглённые углы клиппировали градиент.
 - Tap → навигация на `/(main)/crosswind` (поведение уже описано выше).
 
 *Coming-soon карточка (`coming`):*
@@ -279,8 +332,13 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
 
 *Module icon (module-icon):*
 
-- `28×28` pt, `borderRadius: 6 pt`, mono-глиф 11 pt weight 700 (variant
-  `mono` или новый `monoSmall`).
+| | compact | regular |
+|---|---|---|
+| Size | 28×28 pt | 40×40 pt |
+| Border radius | 6 pt | 8 pt |
+| Glyph (mono) | 11 pt | 14 pt |
+| Margin-bottom от name | 8 pt | 12 pt |
+
 - Активная: фон `tokens.colors.accentSoft`, цвет `tokens.colors.accent`,
   глифы «XW» / etc.
 - Coming-soon: фон `rgba(textSecondary, 0.15)` (≈ 15 % alpha от
@@ -288,25 +346,55 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
   *design-system to add `colors.iconMuted` token (mockup использует
   `rgba(139, 148, 158, 0.15)` в dark, симметрично в light).*
 
-*Module name + description:*
+*Module name:*
 
-- Name: variant `caption` weight 600 (sans 12 pt), цвет `textPrimary`,
-  margin-bottom 2 pt.
-- Description: 10 pt sans 400, line-height 1.4, цвет `textSecondary`. Один
-  предложение, без ожидаемой truncation на стандартных размерах.
-  *design-system to add typography variant `microBody` (sans 10 / 14, 400)
-  если 11 pt `bodySmall` визуально тяжело смотрится в карточке.*
+| | compact | regular |
+|---|---|---|
+| Font size | 12 pt | 18 pt |
+| Line height | 16 pt | 22 pt |
+| Weight | 600 (caption) | 600 |
+| Color | `textPrimary` | `textPrimary` |
+
+*Module description:*
+
+| | compact | regular |
+|---|---|---|
+| Font size | 10 pt | 14 pt |
+| Line height | 14 pt | 21 pt |
+| Weight | 400 | 400 |
+| Color | `textSecondary` | `textSecondary` |
+
+Один предложение, без ожидаемой truncation на стандартных размерах.
 
 *Coming badge (coming-badge):*
 
 - Абсолютно позиционирован: `top: 8 pt`, `right: 8 pt` от карточки.
-- 8 pt uppercase, letter-spacing 0.06em, цвет `tokens.colors.textTertiary`,
-  weight 400. Текст вида «Phase 2».
-  *design-system to add typography variant `microChip` (sans 8 / 12, 400,
-  letterSpacing 0.06em → ≈0.48 pt) — новый вариант для микро-бейджей.*
+- Uppercase, letter-spacing 0.06em, цвет `tokens.colors.textTertiary`,
+  weight 400.
 
-*Tap behavior* — поведение уже описано выше («Поведение карточек»); здесь
-визуал не дублируется.
+| | compact | regular |
+|---|---|---|
+| Font size | 8 pt | 11 pt |
+
+Текст вида «Phase 2».
+
+*Header sizing (compact / regular):*
+
+| | compact | regular |
+|---|---|---|
+| App-logo size | 28×28 pt | 36×36 pt |
+| App-logo radius | 6 pt | 8 pt |
+| App-title size | 16 pt | 22 pt |
+| NavPill label | 12 pt | 16 pt |
+| NavPill padding | 5 × 10 pt | 8 × 16 pt |
+| NavPill radius | 10 pt | 12 pt |
+
+`Compact` соответствует существующему правилу two-row header (см. выше);
+`regular` совпадает с single-row header.
+
+*Tap behavior* — поведение уже описано выше («Поведение карточек»);
+press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) применяется
+ко всем module cards и NavPills из § «Анимации».
 
 ---
 
@@ -687,12 +775,44 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 - Переход между экранами: стандартный slide-from-right (`expo-router` default), 300 ms.
 - Splash → следующий экран: fade-out 200 ms.
 - Modal (Coming Soon, error dialogs): slide-up 300 ms.
-- Touch feedback: opacity → 0.6 при нажатии, 100 ms.
+- Press-feedback на интерактивных surface-ах (см. ниже).
 - Result panel update: fade-in нового значения 150 ms.
 
-При включённой системной опции **Reduce Motion** — все анимации заменяются на мгновенные переходы (длительность 0 ms).
+**Press-feedback (scale + opacity).** На всех интерактивных surface-ах
+дизайн-системы (`Button` всех вариантов, `NavPills` каждый pill в
+отдельности, активная и coming-soon карточки модулей в Main Menu) при
+нажатии применяется парная анимация:
+
+- Press-in: `scale 1 → 0.97`, `opacity 1 → 0.85`, длительность 100 ms,
+  easing `Easing.out(Easing.ease)`.
+- Press-out: `scale 0.97 → 1`, `opacity 0.85 → 1`, длительность 150 ms,
+  тот же easing.
+
+Реализация — хук `useScaleOnPress` из `src/design-system/hooks/`, который
+держит per-call-site `useSharedValue`-пары и возвращает `animatedStyle`
++ `onPressIn` / `onPressOut`. Каждый consumer оборачивает свой visible
+surface в `<Animated.View style={[..., animatedStyle]}>` и проксирует
+два press-handler-а в `<Pressable>`. Параметры — токены
+`tokens.motion.press.{scaleFrom,scaleTo,opacityFrom,opacityTo,
+durationInMs,durationOutMs}`; никаких inline-чисел.
+
+При включённой системной опции **Reduce Motion** — press-feedback и
+любые экранные/модальные переходы заменяются на мгновенные (длительность
+0 ms). Хук подписан на `AccessibilityInfo.addEventListener
+('reduceMotionChanged', ...)` и возвращает identity-`animatedStyle`,
+press-handler-ы становятся no-op-ами (никаких `withTiming`-вызовов).
+Подписка живёт live — флаг отрабатывает без перезапуска приложения.
 
 Для всех анимаций используется `react-native-reanimated`.
+
+**Stack container background.** На каждом `<Stack>` в `expo-router`
+(включая root `app/_layout.tsx` и `app/(main)/_layout.tsx`)
+`screenOptions.contentStyle.backgroundColor` ОБЯЗАН быть равен
+`tokens.colors[theme.resolved].bgScreen` — иначе во время slide-from-right
+из-под движущейся карточки экрана просвечивает дефолтный системный белый
+фон контейнера, и в тёмной теме это видно как кратковременная белая
+полоса. Цвет читается через `useTheme()` хук, hardcoded значение
+запрещено: иначе перестанет работать переключение темы.
 
 ---
 

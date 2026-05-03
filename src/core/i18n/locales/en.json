@@ -13,11 +13,20 @@
   },
   "mainMenu": {
     "title": "Modules",
-    "comingSoonBadge": "Coming soon"
+    "tabModules": "Modules",
+    "tabSettings": "Settings",
+    "tabAbout": "About",
+    "comingSoonBadge": "Coming soon",
+    "activeModuleDescription": "Maximum crosswind for the landing phase."
   },
   "comingSoonModal": {
     "body": "This module is planned for an upcoming release. Stay tuned.",
     "close": "Got it"
+  },
+  "placeholder": {
+    "crosswindBody": "Crosswind module — implementation in next sprint",
+    "settingsBody": "Settings — implementation in upcoming sprint",
+    "aboutBody": "About — implementation in upcoming sprint"
   },
   "settings": {
     "title": "Settings",

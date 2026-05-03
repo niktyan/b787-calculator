@@ -13,11 +13,20 @@
   },
   "mainMenu": {
     "title": "Модули",
-    "comingSoonBadge": "Скоро"
+    "tabModules": "Модули",
+    "tabSettings": "Настройки",
+    "tabAbout": "О приложении",
+    "comingSoonBadge": "Скоро",
+    "activeModuleDescription": "Максимальный боковой ветер на посадке."
   },
   "comingSoonModal": {
     "body": "Этот модуль планируется в одном из ближайших обновлений.",
     "close": "Понятно"
+  },
+  "placeholder": {
+    "crosswindBody": "Модуль Crosswind — реализация в следующем спринте",
+    "settingsBody": "Настройки — реализация в следующем спринте",
+    "aboutBody": "О приложении — реализация в следующем спринте"
   },
   "settings": {
     "title": "Настройки",

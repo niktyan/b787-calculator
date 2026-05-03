@@ -1,5 +1,9 @@
 // Public API of the design-system module — see 02_Specification/module-contracts/design-system.md.
 
+// Hooks
+export { useScaleOnPress } from './hooks';
+export type { UseScaleOnPressResult } from './hooks';
+
 // Tokens
 export { tokens } from './tokens';
 export type {
@@ -67,4 +71,5 @@ export type {
   BackButtonProps,
   NavPillsItem,
   NavPillsProps,
+  NavPillsSizing,
 } from './components';

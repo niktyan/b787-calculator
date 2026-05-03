@@ -1,6 +1,9 @@
 module.exports = {
   preset: 'jest-expo',
-  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
+  setupFilesAfterEnv: [
+    '@testing-library/jest-native/extend-expect',
+    '<rootDir>/jest-setup.reanimated.js',
+  ],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',

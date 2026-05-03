@@ -10,28 +10,33 @@ describe('coming-soon-modules loader', () => {
     expect(modules.length).toBeGreaterThan(0);
     for (const m of modules) {
       expect(typeof m.id).toBe('string');
-      expect(typeof m.active).toBe('boolean');
-      expect(m.phase === null || typeof m.phase === 'string').toBe(true);
+      expect(typeof m.name).toBe('string');
+      expect(typeof m.description).toBe('string');
+      expect(typeof m.icon).toBe('string');
+      expect(typeof m.phase).toBe('string');
     }
   });
 
-  it('marks crosswind-landing as the active MVP module', () => {
+  it('exposes crosswind-takeoff as a coming-soon teaser', () => {
+    const modules = loadComingSoonModules();
+    const takeoff = modules.find((x) => x.id === 'crosswind-takeoff');
+    expect(takeoff).toBeDefined();
+    expect(takeoff?.phase).toMatch(/^Phase \d+$/);
+    expect((takeoff?.name ?? '').length).toBeGreaterThan(0);
+    expect((takeoff?.description ?? '').length).toBeGreaterThan(0);
+    expect((takeoff?.icon ?? '').length).toBeGreaterThan(0);
+  });
+
+  it('does not surface weight-balance or performance in MVP (post-MVP backlog)', () => {
+    const modules = loadComingSoonModules();
+    expect(modules.find((x) => x.id === 'weight-balance')).toBeUndefined();
+    expect(modules.find((x) => x.id === 'performance')).toBeUndefined();
+  });
+
+  it('does not include the active landing module (lives under features/, per ADR-0004)', () => {
     const modules = loadComingSoonModules();
     const landing = modules.find((m) => m.id === 'crosswind-landing');
-    expect(landing).toBeDefined();
-    expect(landing?.active).toBe(true);
-    expect(landing?.phase).toBeNull();
-  });
-
-  it('marks crosswind-takeoff, weight-balance, performance as coming-soon', () => {
-    const modules = loadComingSoonModules();
-    const ids = ['crosswind-takeoff', 'weight-balance', 'performance'] as const;
-    for (const id of ids) {
-      const m = modules.find((x) => x.id === id);
-      expect(m).toBeDefined();
-      expect(m?.active).toBe(false);
-      expect(m?.phase).not.toBeNull();
-    }
+    expect(landing).toBeUndefined();
   });
 
   it('returns the same cached array on repeat calls', () => {
@@ -53,13 +58,21 @@ describe('coming-soon-modules loader', () => {
     });
 
     it('returns an empty list when input is missing required fields', () => {
-      const result = _parseModules([{ id: 'crosswind-landing' }]);
+      const result = _parseModules([{ id: 'crosswind-takeoff' }]);
       expect(result).toEqual([]);
     });
 
     it('parses a valid array unchanged', () => {
-      const result = _parseModules([{ id: 'x', active: false, phase: 'Phase 9' }]);
-      expect(result).toEqual([{ id: 'x', active: false, phase: 'Phase 9' }]);
+      const valid = [
+        {
+          id: 'x',
+          name: 'X module',
+          description: 'desc',
+          icon: 'X',
+          phase: 'Phase 9',
+        },
+      ];
+      expect(_parseModules(valid)).toEqual(valid);
     });
   });
 });

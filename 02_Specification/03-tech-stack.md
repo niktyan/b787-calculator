@@ -49,6 +49,7 @@
 | `expo-application` | соответствующая SDK | Доступ к версии приложения и build-номеру |
 | `expo-updates` | соответствующая SDK | OTA-обновления через EAS Update (Phase 2+) |
 | `expo-build-properties` | соответствующая SDK | Установка iOS deployment target и других native build-properties через Expo plugin (вместо невалидного `ios.deploymentTarget` поля в `app.json`). Auto-installable via `npx expo install`. |
+| `expo-linear-gradient` | соответствующая SDK | Standard Expo SDK module for native gradient rendering; required by `06-ui-spec.md` § Экран 3 active-card visual treatment. Auto-installable via `npx expo install`. |
 
 #### Auto-managed transitive dependencies
 
