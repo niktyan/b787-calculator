@@ -289,17 +289,39 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
 - Раскладка следует существующей секции «Адаптивность iPad ↔ iPhone»
   (не переопределяем здесь breakpoint-ы): 2 колонки на iPad regular и
   iPhone landscape; 1 колонка с увеличенными карточками на iPhone portrait.
-- Gap между карточками — 10–14 pt; верхний margin от header — 14 pt.
-- Card surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
-  (1 pt), `borderRadius: 10 pt`, internal padding 12 pt.
+- Gap между карточками: **compact 14 pt / regular 18 pt** (см.
+  `tokens.sizing.moduleCard.{compact,regular}.gridGap`).
+- Верхний margin от header — 14 pt.
+
+*Адаптивные размеры (compact phone vs iPad regular).* Все ниже
+перечисленные блоки берут параметры из
+`tokens.sizing.moduleCard.{compact,regular}` и
+`tokens.sizing.header.{compact,regular}`. Consumers Main Menu решают
+какой набор использовать через `useWindowDimensions().width >=
+tokens.breakpoints.regularHeader` (768 pt — порог iPad-mini portrait).
+Compact-набор остаётся на iPhone в любой ориентации, regular-набор
+включается на iPad portrait/landscape.
+
+*Card surface:*
+
+| | compact | regular |
+|---|---|---|
+| Padding | 12 pt | 20 pt |
+| Border radius | 10 pt | 12 pt |
+
+Фон — `tokens.colors.bgCard`, граница `tokens.colors.border` (1 pt).
 
 *Активная карточка (`active`):*
 
 - Граница переключается на `tokens.colors.accent`.
-- Фон — линейный градиент `135°` от `bgCard` к `accentSoft`. Реализация в
-  RN: `expo-linear-gradient` (если он уже на allow-list в `03-tech-stack.md`)
-  или однотонная заливка `accentSoft`-tint в качестве визуально
-  эквивалентной деградации — implementation note, не блокер.
+- Фон — линейный градиент `135°` от `tokens.colors.bgCard` к
+  `tokens.colors.accentSoft`, реализованный через `expo-linear-gradient`
+  (стандартный SDK-модуль, добавлен в `03-tech-stack.md`). В dark-теме
+  это `#11161F → #003C36`; в light — `#FFFFFF → #DEF7F3` — оба варианта
+  один-к-одному с mockup-секцией 2.
+- LinearGradient рендерится как `StyleSheet.absoluteFillObject` под
+  всеми content-нодами карточки; родительский Animated.View имеет
+  `overflow: 'hidden'`, чтобы скруглённые углы клиппировали градиент.
 - Tap → навигация на `/(main)/crosswind` (поведение уже описано выше).
 
 *Coming-soon карточка (`coming`):*
@@ -310,8 +332,13 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
 
 *Module icon (module-icon):*
 
-- `28×28` pt, `borderRadius: 6 pt`, mono-глиф 11 pt weight 700 (variant
-  `mono` или новый `monoSmall`).
+| | compact | regular |
+|---|---|---|
+| Size | 28×28 pt | 40×40 pt |
+| Border radius | 6 pt | 8 pt |
+| Glyph (mono) | 11 pt | 14 pt |
+| Margin-bottom от name | 8 pt | 12 pt |
+
 - Активная: фон `tokens.colors.accentSoft`, цвет `tokens.colors.accent`,
   глифы «XW» / etc.
 - Coming-soon: фон `rgba(textSecondary, 0.15)` (≈ 15 % alpha от
@@ -319,25 +346,55 @@ Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
   *design-system to add `colors.iconMuted` token (mockup использует
   `rgba(139, 148, 158, 0.15)` в dark, симметрично в light).*
 
-*Module name + description:*
+*Module name:*
 
-- Name: variant `caption` weight 600 (sans 12 pt), цвет `textPrimary`,
-  margin-bottom 2 pt.
-- Description: 10 pt sans 400, line-height 1.4, цвет `textSecondary`. Один
-  предложение, без ожидаемой truncation на стандартных размерах.
-  *design-system to add typography variant `microBody` (sans 10 / 14, 400)
-  если 11 pt `bodySmall` визуально тяжело смотрится в карточке.*
+| | compact | regular |
+|---|---|---|
+| Font size | 12 pt | 18 pt |
+| Line height | 16 pt | 22 pt |
+| Weight | 600 (caption) | 600 |
+| Color | `textPrimary` | `textPrimary` |
+
+*Module description:*
+
+| | compact | regular |
+|---|---|---|
+| Font size | 10 pt | 14 pt |
+| Line height | 14 pt | 21 pt |
+| Weight | 400 | 400 |
+| Color | `textSecondary` | `textSecondary` |
+
+Один предложение, без ожидаемой truncation на стандартных размерах.
 
 *Coming badge (coming-badge):*
 
 - Абсолютно позиционирован: `top: 8 pt`, `right: 8 pt` от карточки.
-- 8 pt uppercase, letter-spacing 0.06em, цвет `tokens.colors.textTertiary`,
-  weight 400. Текст вида «Phase 2».
-  *design-system to add typography variant `microChip` (sans 8 / 12, 400,
-  letterSpacing 0.06em → ≈0.48 pt) — новый вариант для микро-бейджей.*
+- Uppercase, letter-spacing 0.06em, цвет `tokens.colors.textTertiary`,
+  weight 400.
 
-*Tap behavior* — поведение уже описано выше («Поведение карточек»); здесь
-визуал не дублируется.
+| | compact | regular |
+|---|---|---|
+| Font size | 8 pt | 11 pt |
+
+Текст вида «Phase 2».
+
+*Header sizing (compact / regular):*
+
+| | compact | regular |
+|---|---|---|
+| App-logo size | 28×28 pt | 36×36 pt |
+| App-logo radius | 6 pt | 8 pt |
+| App-title size | 16 pt | 22 pt |
+| NavPill label | 12 pt | 16 pt |
+| NavPill padding | 5 × 10 pt | 8 × 16 pt |
+| NavPill radius | 10 pt | 12 pt |
+
+`Compact` соответствует существующему правилу two-row header (см. выше);
+`regular` совпадает с single-row header.
+
+*Tap behavior* — поведение уже описано выше («Поведение карточек»);
+press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) применяется
+ко всем module cards и NavPills из § «Анимации».
 
 ---
 
@@ -718,10 +775,33 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 - Переход между экранами: стандартный slide-from-right (`expo-router` default), 300 ms.
 - Splash → следующий экран: fade-out 200 ms.
 - Modal (Coming Soon, error dialogs): slide-up 300 ms.
-- Touch feedback: opacity → 0.6 при нажатии, 100 ms.
+- Press-feedback на интерактивных surface-ах (см. ниже).
 - Result panel update: fade-in нового значения 150 ms.
 
-При включённой системной опции **Reduce Motion** — все анимации заменяются на мгновенные переходы (длительность 0 ms).
+**Press-feedback (scale + opacity).** На всех интерактивных surface-ах
+дизайн-системы (`Button` всех вариантов, `NavPills` каждый pill в
+отдельности, активная и coming-soon карточки модулей в Main Menu) при
+нажатии применяется парная анимация:
+
+- Press-in: `scale 1 → 0.97`, `opacity 1 → 0.85`, длительность 100 ms,
+  easing `Easing.out(Easing.ease)`.
+- Press-out: `scale 0.97 → 1`, `opacity 0.85 → 1`, длительность 150 ms,
+  тот же easing.
+
+Реализация — хук `useScaleOnPress` из `src/design-system/hooks/`, который
+держит per-call-site `useSharedValue`-пары и возвращает `animatedStyle`
++ `onPressIn` / `onPressOut`. Каждый consumer оборачивает свой visible
+surface в `<Animated.View style={[..., animatedStyle]}>` и проксирует
+два press-handler-а в `<Pressable>`. Параметры — токены
+`tokens.motion.press.{scaleFrom,scaleTo,opacityFrom,opacityTo,
+durationInMs,durationOutMs}`; никаких inline-чисел.
+
+При включённой системной опции **Reduce Motion** — press-feedback и
+любые экранные/модальные переходы заменяются на мгновенные (длительность
+0 ms). Хук подписан на `AccessibilityInfo.addEventListener
+('reduceMotionChanged', ...)` и возвращает identity-`animatedStyle`,
+press-handler-ы становятся no-op-ами (никаких `withTiming`-вызовов).
+Подписка живёт live — флаг отрабатывает без перезапуска приложения.
 
 Для всех анимаций используется `react-native-reanimated`.
 
