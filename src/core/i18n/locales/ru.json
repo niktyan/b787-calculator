@@ -28,6 +28,20 @@
     "settingsBody": "Настройки — реализация в следующем спринте",
     "aboutBody": "О приложении — реализация в следующем спринте"
   },
+  "crosswind": {
+    "title": "Crosswind · Landing",
+    "weightLabel": "Посадочный вес",
+    "cgLabel": "Центровка",
+    "runwayConditionLabel": "Состояние ВПП",
+    "resetLabel": "Сброс",
+    "resultEmpty": "Введите вес и центровку, чтобы увидеть результат",
+    "resultStatusLabel": "Max crosswind · Landing",
+    "resultFootnote": "Рассчитано для текущих значений",
+    "metaWeight": "Вес",
+    "metaCG": "CG",
+    "sourceChip": "Reference: 787 FCOM",
+    "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно"
+  },
   "settings": {
     "title": "Настройки",
     "language": "Язык",
