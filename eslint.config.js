@@ -148,7 +148,15 @@ module.exports = [
       'metro.config.js',
       'eslint.config.js',
       'jest.config.js',
+      'jest-setup*.js',
     ],
+    languageOptions: {
+      globals: {
+        jest: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+      },
+    },
     rules: {
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/no-require-imports': 'off',

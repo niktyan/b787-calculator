@@ -54,11 +54,11 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
         [
           {
             "alignItems": "center",
-            "borderRadius": 8,
+            "borderRadius": 10,
             "justifyContent": "center",
             "minHeight": 44,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
+            "paddingHorizontal": 10,
+            "paddingVertical": 5,
           },
           {
             "backgroundColor": "#003C36",
@@ -87,7 +87,9 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
               "lineHeight": 16,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontSize": 12,
+            },
           ]
         }
       >
@@ -135,11 +137,11 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
         [
           {
             "alignItems": "center",
-            "borderRadius": 8,
+            "borderRadius": 10,
             "justifyContent": "center",
             "minHeight": 44,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
+            "paddingHorizontal": 10,
+            "paddingVertical": 5,
           },
           null,
           {
@@ -166,7 +168,9 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
               "lineHeight": 16,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontSize": 12,
+            },
           ]
         }
       >
@@ -214,11 +218,11 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
         [
           {
             "alignItems": "center",
-            "borderRadius": 8,
+            "borderRadius": 10,
             "justifyContent": "center",
             "minHeight": 44,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
+            "paddingHorizontal": 10,
+            "paddingVertical": 5,
           },
           null,
           {
@@ -245,7 +249,9 @@ exports[`NavPills highlights the active pill in dark theme 1`] = `
               "lineHeight": 16,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontSize": 12,
+            },
           ]
         }
       >
@@ -310,11 +316,11 @@ exports[`NavPills renders in light theme 1`] = `
         [
           {
             "alignItems": "center",
-            "borderRadius": 8,
+            "borderRadius": 10,
             "justifyContent": "center",
             "minHeight": 44,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
+            "paddingHorizontal": 10,
+            "paddingVertical": 5,
           },
           null,
           {
@@ -341,7 +347,9 @@ exports[`NavPills renders in light theme 1`] = `
               "lineHeight": 16,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontSize": 12,
+            },
           ]
         }
       >
@@ -389,11 +397,11 @@ exports[`NavPills renders in light theme 1`] = `
         [
           {
             "alignItems": "center",
-            "borderRadius": 8,
+            "borderRadius": 10,
             "justifyContent": "center",
             "minHeight": 44,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
+            "paddingHorizontal": 10,
+            "paddingVertical": 5,
           },
           {
             "backgroundColor": "#DEF7F3",
@@ -422,7 +430,9 @@ exports[`NavPills renders in light theme 1`] = `
               "lineHeight": 16,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontSize": 12,
+            },
           ]
         }
       >
@@ -470,11 +480,11 @@ exports[`NavPills renders in light theme 1`] = `
         [
           {
             "alignItems": "center",
-            "borderRadius": 8,
+            "borderRadius": 10,
             "justifyContent": "center",
             "minHeight": 44,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
+            "paddingHorizontal": 10,
+            "paddingVertical": 5,
           },
           null,
           {
@@ -501,7 +511,9 @@ exports[`NavPills renders in light theme 1`] = `
               "lineHeight": 16,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontSize": 12,
+            },
           ]
         }
       >

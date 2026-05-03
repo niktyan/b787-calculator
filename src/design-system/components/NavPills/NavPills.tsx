@@ -15,6 +15,25 @@ export interface NavPillsItem<TId extends string = string> {
   readonly accessibilityLabel?: string;
 }
 
+/**
+ * Per-pill visual sizing knobs. When omitted, NavPills uses the default
+ * compact set (matches phone portrait). Main Menu passes
+ * `tokens.sizing.header.regular` on iPad to scale up labels and padding.
+ */
+export interface NavPillsSizing {
+  readonly pillLabelSize: number;
+  readonly pillPaddingV: number;
+  readonly pillPaddingH: number;
+  readonly pillRadius: number;
+}
+
+const DEFAULT_PILL_SIZING: NavPillsSizing = {
+  pillLabelSize: tokens.sizing.header.compact.pillLabelSize,
+  pillPaddingV: tokens.sizing.header.compact.pillPaddingV,
+  pillPaddingH: tokens.sizing.header.compact.pillPaddingH,
+  pillRadius: tokens.sizing.header.compact.pillRadius,
+};
+
 export interface NavPillsProps<TId extends string = string> {
   readonly items: readonly NavPillsItem<TId>[];
   readonly activeId: TId;
@@ -26,6 +45,11 @@ export interface NavPillsProps<TId extends string = string> {
    * NavPills row below the brand block. Defaults to false (intrinsic width).
    */
   readonly grow?: boolean;
+  /**
+   * Optional sizing override (label font size, padding, radius). Defaults
+   * to the compact phone size set.
+   */
+  readonly sizing?: NavPillsSizing;
 }
 
 export function NavPills<TId extends string = string>({
@@ -34,6 +58,7 @@ export function NavPills<TId extends string = string>({
   onChange,
   testID,
   grow = false,
+  sizing = DEFAULT_PILL_SIZING,
 }: NavPillsProps<TId>): ReactNode {
   const styles = useMemo(
     () =>
@@ -60,6 +85,7 @@ export function NavPills<TId extends string = string>({
           item={item}
           isActive={item.id === activeId}
           grow={grow}
+          sizing={sizing}
           onPress={onChange}
           testID={testID === undefined ? undefined : `${testID}-${item.id}`}
           key={item.id}
@@ -73,6 +99,7 @@ interface PillProps<TId extends string = string> {
   readonly item: NavPillsItem<TId>;
   readonly isActive: boolean;
   readonly grow: boolean;
+  readonly sizing: NavPillsSizing;
   readonly onPress: (next: TId) => void;
   readonly testID?: string | undefined;
 }
@@ -81,6 +108,7 @@ function Pill<TId extends string = string>({
   item,
   isActive,
   grow,
+  sizing,
   onPress,
   testID,
 }: PillProps<TId>): ReactNode {
@@ -91,13 +119,16 @@ function Pill<TId extends string = string>({
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        label: {
+          fontSize: sizing.pillLabelSize,
+        },
         pill: {
           alignItems: 'center',
-          borderRadius: tokens.radii.md,
+          borderRadius: sizing.pillRadius,
           justifyContent: 'center',
           minHeight: tokens.layout.minTouchTarget,
-          paddingHorizontal: tokens.spacing.md,
-          paddingVertical: tokens.spacing.sm,
+          paddingHorizontal: sizing.pillPaddingH,
+          paddingVertical: sizing.pillPaddingV,
         },
         pillActive: {
           backgroundColor: palette.accentSoft,
@@ -106,7 +137,13 @@ function Pill<TId extends string = string>({
           flex: 1,
         },
       }),
-    [palette.accentSoft],
+    [
+      palette.accentSoft,
+      sizing.pillLabelSize,
+      sizing.pillPaddingH,
+      sizing.pillPaddingV,
+      sizing.pillRadius,
+    ],
   );
 
   const handlePress = (): void => onPress(item.id);
@@ -124,7 +161,7 @@ function Pill<TId extends string = string>({
       testID={testID}
     >
       <Animated.View style={[styles.pill, isActive ? styles.pillActive : null, animatedStyle]}>
-        <Text variant="caption" color={isActive ? 'accent' : 'textSecondary'}>
+        <Text variant="caption" color={isActive ? 'accent' : 'textSecondary'} style={styles.label}>
           {item.label}
         </Text>
       </Animated.View>

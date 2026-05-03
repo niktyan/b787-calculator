@@ -11,6 +11,8 @@
 
 import type { TextStyle, ViewStyle } from 'react-native';
 
+import { BREAKPOINT_REGULAR_HEADER, sizing } from './sizing';
+
 // --- Spacing scale (4 / 8 / 12 / 16 / 24 / 32 / 48) ---
 const SPACING_XS = 4;
 const SPACING_SM = 8;
@@ -301,6 +303,13 @@ const shadows: Record<'none' | 'sm' | 'md', ViewStyle> = {
 const breakpoints = {
   compact: BREAKPOINT_COMPACT,
   regular: BREAKPOINT_REGULAR,
+  /**
+   * Threshold (≥ 768 pt) above which the Main Menu uses the iPad-regular
+   * size set: larger module cards/icons/typography and a single-row header.
+   * Matches iPad-mini portrait width — anything narrower is considered a
+   * compact phone layout.
+   */
+  regularHeader: BREAKPOINT_REGULAR_HEADER,
 } as const;
 
 const layout = {
@@ -327,6 +336,7 @@ export const tokens = {
   breakpoints,
   layout,
   motion,
+  sizing,
 } as const;
 
 export type ColorToken = keyof ColorPalette;

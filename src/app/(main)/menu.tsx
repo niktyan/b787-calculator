@@ -1,53 +1,37 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { useComingSoonModules, useTheme, useTranslation } from '../../core';
 import type { ComingSoonModule } from '../../core/coming-soon-modules';
-import { NavPills, Row, Screen, Stack, Text, tokens, useScaleOnPress } from '../../design-system';
+import { NavPills, Row, Screen, Stack, Text, tokens } from '../../design-system';
 import type { NavPillsItem } from '../../design-system';
 
 import { ComingSoonModal } from './_components/ComingSoonModal';
+import { ActiveModuleCard, ComingSoonCard } from './_components/ModuleCards';
+import type { ActiveModule } from './_components/ModuleCards';
 
 /**
  * Main Menu — entry point after disclaimer (см. `02_Specification/06-ui-spec.md`
- * Экран 3 + ADR-0004). Renders coming-soon teaser cards loaded from
- * `src/core/coming-soon-modules/data.json` followed by the active feature card
- * (Crosswind · Landing). Render order matches the chronological flight phase:
- * Takeoff (teaser) precedes Landing (active).
+ * Экран 3 + ADR-0004). Renders coming-soon teasers from
+ * `src/core/coming-soon-modules/data.json` followed by the active feature
+ * card. Render order matches the chronological flight phase: Takeoff
+ * (teaser) precedes Landing (active).
  *
  * Tapping the active card → `/crosswind` (placeholder this sprint).
  * Tapping a coming-soon card → ComingSoonModal (no navigation away).
  *
- * Module names are NOT localized per spec § "Что НЕ локализуется".
- * Description text and surrounding UI strings ARE localized.
+ * Sizing follows two parallel sets keyed by `tokens.breakpoints.regularHeader`
+ * (768 pt). Below it: compact phone layout, two-row header. At/above it:
+ * iPad-regular layout, larger cards/icons/typography, single-row header.
  */
 
-const APP_LOGO_SIZE = 28;
-const APP_LOGO_RADIUS = 6;
-const MODULE_ICON_SIZE = 28;
-const MODULE_ICON_RADIUS = 6;
 const HEADER_DIVIDER_HEIGHT = 1;
 const GRID_BREAKPOINT = tokens.breakpoints.compact;
-/**
- * Header layout breakpoint: below this width the header collapses into two
- * rows (logo + title on row 1, NavPills full-width on row 2). At/above it,
- * the header stays single-row with NavPills aligned right.
- *
- * 768 pt is the iPad-mini portrait width — anything narrower (every iPhone
- * portrait orientation) needs the wrap to keep "О приложении" readable.
- */
-const HEADER_WRAP_BREAKPOINT = 768;
+const REGULAR_BREAKPOINT = tokens.breakpoints.regularHeader;
 
 type TabId = 'modules' | 'settings' | 'about';
-
-interface ActiveModule {
-  readonly id: string;
-  readonly name: string;
-  readonly icon: string;
-}
 
 const ACTIVE_MODULE: ActiveModule = {
   id: 'crosswind-landing',
@@ -84,20 +68,35 @@ export default function MainMenu(): ReactNode {
   );
 
   const isTwoColumn = width >= GRID_BREAKPOINT;
-  const isWideHeader = width >= HEADER_WRAP_BREAKPOINT;
+  const isRegular = width >= REGULAR_BREAKPOINT;
+  const gridGap = isRegular
+    ? tokens.sizing.moduleCard.regular.gridGap
+    : tokens.sizing.moduleCard.compact.gridGap;
+  const gridStyle = useMemo(
+    () => ({ flexDirection: 'row' as const, flexWrap: 'wrap' as const, gap: gridGap }),
+    [gridGap],
+  );
 
   return (
     <Screen testID="main-menu-screen">
       <Stack gap="md">
-        <MenuHeader tabs={tabs} onTabChange={handleTabChange} isWide={isWideHeader} />
-        <View style={styles.grid} testID="main-menu-grid">
+        <MenuHeader tabs={tabs} onTabChange={handleTabChange} isRegular={isRegular} />
+        <View style={gridStyle} testID="main-menu-grid">
           {modules.map((m) => (
             <CardSlot isTwoColumn={isTwoColumn} key={m.id}>
-              <ComingSoonCard module={m} onPress={(): void => setOpenedModule(m)} />
+              <ComingSoonCard
+                module={m}
+                onPress={(): void => setOpenedModule(m)}
+                isRegular={isRegular}
+              />
             </CardSlot>
           ))}
           <CardSlot isTwoColumn={isTwoColumn}>
-            <ActiveModuleCard module={ACTIVE_MODULE} onPress={handleActivePress} />
+            <ActiveModuleCard
+              module={ACTIVE_MODULE}
+              onPress={handleActivePress}
+              isRegular={isRegular}
+            />
           </CardSlot>
         </View>
       </Stack>
@@ -113,12 +112,13 @@ export default function MainMenu(): ReactNode {
 interface MenuHeaderProps {
   readonly tabs: readonly NavPillsItem<TabId>[];
   readonly onTabChange: (next: TabId) => void;
-  readonly isWide: boolean;
+  readonly isRegular: boolean;
 }
 
-function MenuHeader({ tabs, onTabChange, isWide }: MenuHeaderProps): ReactNode {
+function MenuHeader({ tabs, onTabChange, isRegular }: MenuHeaderProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
+  const sizing = isRegular ? tokens.sizing.header.regular : tokens.sizing.header.compact;
 
   const headerStyles = useMemo(
     () =>
@@ -130,13 +130,16 @@ function MenuHeader({ tabs, onTabChange, isWide }: MenuHeaderProps): ReactNode {
         logo: {
           alignItems: 'center',
           backgroundColor: palette.accentSoft,
-          borderRadius: APP_LOGO_RADIUS,
-          height: APP_LOGO_SIZE,
+          borderRadius: sizing.logoRadius,
+          height: sizing.logoSize,
           justifyContent: 'center',
-          width: APP_LOGO_SIZE,
+          width: sizing.logoSize,
+        },
+        title: {
+          fontSize: sizing.titleSize,
         },
       }),
-    [palette.accentSoft, palette.border],
+    [palette.accentSoft, palette.border, sizing.logoRadius, sizing.logoSize, sizing.titleSize],
   );
 
   const brand = (
@@ -146,7 +149,9 @@ function MenuHeader({ tabs, onTabChange, isWide }: MenuHeaderProps): ReactNode {
           B7
         </Text>
       </View>
-      <Text variant="body">B787 Calculator</Text>
+      <Text variant="body" style={headerStyles.title}>
+        B787 Calculator
+      </Text>
     </Row>
   );
 
@@ -156,13 +161,14 @@ function MenuHeader({ tabs, onTabChange, isWide }: MenuHeaderProps): ReactNode {
       activeId="modules"
       onChange={onTabChange}
       testID="main-menu-tabs"
-      grow={!isWide}
+      grow={!isRegular}
+      sizing={sizing}
     />
   );
 
   return (
     <Stack gap="md">
-      {isWide ? (
+      {isRegular ? (
         <Row align="center" justify="space-between">
           {brand}
           {navPills}
@@ -187,143 +193,7 @@ function CardSlot({ isTwoColumn, children }: CardSlotProps): ReactNode {
   return <View style={isTwoColumn ? styles.slotTwoColumn : styles.slotOneColumn}>{children}</View>;
 }
 
-interface ActiveModuleCardProps {
-  readonly module: ActiveModule;
-  readonly onPress: () => void;
-}
-
-function ActiveModuleCard({ module, onPress }: ActiveModuleCardProps): ReactNode {
-  const { t } = useTranslation();
-  const { theme } = useTheme();
-  const palette = tokens.colors[theme.resolved];
-  const { animatedStyle, onPressIn, onPressOut } = useScaleOnPress();
-
-  const cardStyles = useMemo(
-    () =>
-      StyleSheet.create({
-        icon: {
-          alignItems: 'center',
-          backgroundColor: palette.accentSoft,
-          borderRadius: MODULE_ICON_RADIUS,
-          height: MODULE_ICON_SIZE,
-          justifyContent: 'center',
-          width: MODULE_ICON_SIZE,
-        },
-        root: {
-          backgroundColor: palette.bgCard,
-          borderColor: palette.accent,
-          borderRadius: tokens.radii.md,
-          borderWidth: 1,
-          padding: tokens.spacing.md,
-        },
-      }),
-    [palette.accent, palette.accentSoft, palette.bgCard],
-  );
-
-  return (
-    <Pressable
-      accessibilityLabel={module.name}
-      accessibilityRole="button"
-      onPress={onPress}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
-      testID={`module-card-${module.id}`}
-    >
-      <Animated.View style={[cardStyles.root, animatedStyle]}>
-        <Stack gap="sm">
-          <View style={cardStyles.icon}>
-            <Text variant="mono" color="accent">
-              {module.icon}
-            </Text>
-          </View>
-          <Text variant="caption" color="textPrimary">
-            {module.name}
-          </Text>
-          <Text variant="bodySmall" color="textSecondary">
-            {t('mainMenu.activeModuleDescription')}
-          </Text>
-        </Stack>
-      </Animated.View>
-    </Pressable>
-  );
-}
-
-interface ComingSoonCardProps {
-  readonly module: ComingSoonModule;
-  readonly onPress: () => void;
-}
-
-function ComingSoonCard({ module, onPress }: ComingSoonCardProps): ReactNode {
-  const { theme } = useTheme();
-  const palette = tokens.colors[theme.resolved];
-  const { animatedStyle, onPressIn, onPressOut } = useScaleOnPress();
-
-  const cardStyles = useMemo(
-    () =>
-      StyleSheet.create({
-        badge: {
-          position: 'absolute',
-          right: tokens.spacing.sm,
-          top: tokens.spacing.sm,
-        },
-        icon: {
-          alignItems: 'center',
-          backgroundColor: palette.borderStrong,
-          borderRadius: MODULE_ICON_RADIUS,
-          height: MODULE_ICON_SIZE,
-          justifyContent: 'center',
-          width: MODULE_ICON_SIZE,
-        },
-        root: {
-          backgroundColor: palette.bgCard,
-          borderColor: palette.border,
-          borderRadius: tokens.radii.md,
-          borderWidth: 1,
-          padding: tokens.spacing.md,
-        },
-      }),
-    [palette.bgCard, palette.border, palette.borderStrong],
-  );
-
-  return (
-    <Pressable
-      accessibilityLabel={module.name}
-      accessibilityRole="button"
-      onPress={onPress}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
-      testID={`module-card-${module.id}`}
-    >
-      <Animated.View style={[cardStyles.root, animatedStyle]}>
-        <View style={cardStyles.badge}>
-          <Text variant="chipLabel" color="textTertiary">
-            {module.phase}
-          </Text>
-        </View>
-        <Stack gap="sm">
-          <View style={cardStyles.icon}>
-            <Text variant="mono" color="textTertiary">
-              {module.icon}
-            </Text>
-          </View>
-          <Text variant="caption" color="textPrimary">
-            {module.name}
-          </Text>
-          <Text variant="bodySmall" color="textSecondary">
-            {module.description}
-          </Text>
-        </Stack>
-      </Animated.View>
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: tokens.spacing.md,
-  },
   slotOneColumn: {
     width: '100%',
   },
