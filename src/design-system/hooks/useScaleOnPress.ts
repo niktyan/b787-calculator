@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import { AccessibilityInfo } from 'react-native';
+import { useCallback } from 'react';
 import { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import type { AnimatedStyle } from 'react-native-reanimated';
 import type { ViewStyle } from 'react-native';
 
 import { tokens } from '../tokens';
+
+import { useReduceMotion } from './useReduceMotion';
 
 /**
  * Press-feedback animation shared across interactive design-system surfaces.
@@ -30,21 +31,7 @@ export interface UseScaleOnPressResult {
 }
 
 export function useScaleOnPress(): UseScaleOnPressResult {
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-    void AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
-      if (mounted) setReduceMotion(enabled);
-    });
-    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', (enabled) => {
-      setReduceMotion(enabled);
-    });
-    return (): void => {
-      mounted = false;
-      sub.remove();
-    };
-  }, []);
+  const reduceMotion = useReduceMotion();
 
   const scale = useSharedValue<number>(tokens.motion.press.scaleFrom);
   const opacity = useSharedValue<number>(tokens.motion.press.opacityFrom);

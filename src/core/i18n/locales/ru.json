@@ -35,12 +35,13 @@
     "runwayConditionLabel": "Состояние ВПП",
     "resetLabel": "Сброс",
     "resultEmpty": "Введите вес и центровку, чтобы увидеть результат",
+    "emptyIconLabel": "Информация",
     "resultStatusLabel": "Max crosswind · Landing",
     "resultFootnote": "Рассчитано для текущих значений",
-    "metaWeight": "Вес",
     "metaCG": "CG",
-    "sourceChip": "Reference: 787 FCOM",
-    "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно"
+    "metaRange": "Диапазон",
+    "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно",
+    "envelopeBarLabel": "Положение центровки в эксплуатационном диапазоне"
   },
   "settings": {
     "title": "Настройки",
@@ -57,6 +58,7 @@
     "title": "О приложении",
     "version": "Версия",
     "aircraft": "Воздушное судно",
+    "aircraftValue": "Boeing 787-8",
     "validation": "Проверено",
     "dataSource": "Источник данных",
     "distribution": "Распространение",

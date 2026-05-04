@@ -1,0 +1,1209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`About route renders correctly in dark theme (snapshot) 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#0A0E14",
+      "flex": 1,
+    }
+  }
+  testID="about-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 12,
+            "justifyContent": "flex-start",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 12,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 8,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="B787 logo"
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#003C36",
+                  "borderRadius": 6,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "width": 28,
+                }
+              }
+              testID="about-logo"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#00C2A8",
+                      "fontFamily": "Menlo",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                B7
+              </Text>
+            </View>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              about.title
+            </Text>
+          </View>
+          <View
+            accessibilityRole="tablist"
+            style={
+              [
+                {
+                  "flexDirection": "row",
+                  "gap": 4,
+                },
+                {
+                  "alignSelf": "stretch",
+                },
+              ]
+            }
+            testID="about-tabs"
+          >
+            <View
+              accessibilityLabel="mainMenu.tabModules"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": false,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="about-tabs-modules"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#8B949E",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  mainMenu.tabModules
+                </Text>
+              </View>
+            </View>
+            <View
+              accessibilityLabel="mainMenu.tabSettings"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": false,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="about-tabs-settings"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#8B949E",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  mainMenu.tabSettings
+                </Text>
+              </View>
+            </View>
+            <View
+              accessibilityLabel="mainMenu.tabAbout"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": true,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="about-tabs-about"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    {
+                      "backgroundColor": "#003C36",
+                    },
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#00C2A8",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  mainMenu.tabAbout
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "backgroundColor": "rgba(255, 255, 255, 0.08)",
+              "height": 1,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 8,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-version"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.version
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "Menlo",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            mock
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-aircraft"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.aircraft
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "Menlo",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.aircraftValue
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-data-source"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.dataSource
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "Menlo",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            Boeing 787 FCOM · 2026-05-03.001
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`About route renders correctly in light theme (snapshot) 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#F4F6F9",
+      "flex": 1,
+    }
+  }
+  testID="about-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 12,
+            "justifyContent": "flex-start",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 12,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 8,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="B787 logo"
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#DEF7F3",
+                  "borderRadius": 6,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "width": 28,
+                }
+              }
+              testID="about-logo"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#00C2A8",
+                      "fontFamily": "Menlo",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                B7
+              </Text>
+            </View>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#1F2937",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              about.title
+            </Text>
+          </View>
+          <View
+            accessibilityRole="tablist"
+            style={
+              [
+                {
+                  "flexDirection": "row",
+                  "gap": 4,
+                },
+                {
+                  "alignSelf": "stretch",
+                },
+              ]
+            }
+            testID="about-tabs"
+          >
+            <View
+              accessibilityLabel="mainMenu.tabModules"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": false,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="about-tabs-modules"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#4B5563",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  mainMenu.tabModules
+                </Text>
+              </View>
+            </View>
+            <View
+              accessibilityLabel="mainMenu.tabSettings"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": false,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="about-tabs-settings"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#4B5563",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  mainMenu.tabSettings
+                </Text>
+              </View>
+            </View>
+            <View
+              accessibilityLabel="mainMenu.tabAbout"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": true,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="about-tabs-about"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    {
+                      "backgroundColor": "#DEF7F3",
+                    },
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#00C2A8",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  mainMenu.tabAbout
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "backgroundColor": "rgba(0, 0, 0, 0.08)",
+              "height": 1,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 8,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-version"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.version
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#4B5563",
+                  "fontFamily": "Menlo",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            mock
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-aircraft"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.aircraft
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#4B5563",
+                  "fontFamily": "Menlo",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.aircraftValue
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-data-source"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            about.dataSource
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#4B5563",
+                  "fontFamily": "Menlo",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            Boeing 787 FCOM · 2026-05-03.001
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
