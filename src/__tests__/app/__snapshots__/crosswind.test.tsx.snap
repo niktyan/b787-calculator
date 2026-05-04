@@ -833,51 +833,75 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
             </View>
           </View>
           <View
-            accessibilityRole="summary"
-            style={
-              {
-                "backgroundColor": "#11161F",
-                "borderColor": "rgba(255, 255, 255, 0.08)",
-                "borderRadius": 12,
-                "borderWidth": 1,
-                "minHeight": 160,
-                "padding": 16,
-              }
-            }
+            layout={BaseAnimationMock {}}
             testID="crosswind-result"
           >
             <View
+              accessibilityRole="summary"
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flexDirection": "column",
-                    "gap": 8,
-                    "justifyContent": "flex-start",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#11161F",
+                  "borderColor": "rgba(255, 255, 255, 0.08)",
+                  "borderRadius": 12,
+                  "borderWidth": 1,
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "minHeight": 140,
+                  "padding": 16,
+                }
               }
+              testID="crosswind-result-panel-empty"
             >
               <Text
-                allowFontScaling={true}
+                accessibilityLabel="crosswind.emptyIconLabel"
+                allowFontScaling={false}
+                selectable={false}
                 style={
                   [
                     {
-                      "color": "#8B949E",
-                      "fontFamily": "System",
-                      "fontSize": 22,
-                      "fontWeight": "600",
-                      "letterSpacing": 0,
-                      "lineHeight": 28,
-                      "textAlign": "center",
+                      "color": "#6E7681",
+                      "fontSize": 32,
                     },
                     undefined,
+                    {
+                      "fontFamily": "material",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
                   ]
                 }
               >
-                crosswind.resultEmpty
+                
               </Text>
+              <View
+                style={
+                  {
+                    "maxWidth": 240,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#8B949E",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "center",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  crosswind.resultEmpty
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -1720,51 +1744,75 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
             </View>
           </View>
           <View
-            accessibilityRole="summary"
-            style={
-              {
-                "backgroundColor": "#FFFFFF",
-                "borderColor": "rgba(0, 0, 0, 0.08)",
-                "borderRadius": 12,
-                "borderWidth": 1,
-                "minHeight": 160,
-                "padding": 16,
-              }
-            }
+            layout={BaseAnimationMock {}}
             testID="crosswind-result"
           >
             <View
+              accessibilityRole="summary"
               style={
-                [
-                  {
-                    "alignItems": "center",
-                    "flexDirection": "column",
-                    "gap": 8,
-                    "justifyContent": "flex-start",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "rgba(0, 0, 0, 0.08)",
+                  "borderRadius": 12,
+                  "borderWidth": 1,
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "minHeight": 140,
+                  "padding": 16,
+                }
               }
+              testID="crosswind-result-panel-empty"
             >
               <Text
-                allowFontScaling={true}
+                accessibilityLabel="crosswind.emptyIconLabel"
+                allowFontScaling={false}
+                selectable={false}
                 style={
                   [
                     {
-                      "color": "#4B5563",
-                      "fontFamily": "System",
-                      "fontSize": 22,
-                      "fontWeight": "600",
-                      "letterSpacing": 0,
-                      "lineHeight": 28,
-                      "textAlign": "center",
+                      "color": "#6B7280",
+                      "fontSize": 32,
                     },
                     undefined,
+                    {
+                      "fontFamily": "material",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
                   ]
                 }
               >
-                crosswind.resultEmpty
+                
               </Text>
+              <View
+                style={
+                  {
+                    "maxWidth": 240,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#4B5563",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "center",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  crosswind.resultEmpty
+                </Text>
+              </View>
             </View>
           </View>
         </View>

@@ -35,11 +35,11 @@
     "runwayConditionLabel": "Runway condition",
     "resetLabel": "Reset",
     "resultEmpty": "Enter weight and CG to see result",
+    "emptyIconLabel": "Information",
     "resultStatusLabel": "Max crosswind · Landing",
     "resultFootnote": "Computed for current inputs",
-    "metaWeight": "Weight",
     "metaCG": "CG",
-    "sourceChip": "Reference: 787 FCOM",
+    "metaRange": "Range",
     "warningOutsideEnvelope": "Outside operational envelope — advisory only"
   },
   "settings": {
@@ -57,6 +57,7 @@
     "title": "About",
     "version": "Version",
     "aircraft": "Aircraft",
+    "aircraftValue": "Boeing 787-8",
     "validation": "Validation",
     "dataSource": "Data source",
     "distribution": "Distribution",

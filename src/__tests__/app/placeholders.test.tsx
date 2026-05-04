@@ -1,5 +1,4 @@
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
-import AboutPlaceholder from '../../app/(main)/about';
 import SettingsPlaceholder from '../../app/(main)/settings';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -12,7 +11,8 @@ jest.mock('react-i18next', () => ({
 }));
 
 describe('placeholder screens', () => {
-  // Crosswind is no longer a placeholder — see src/__tests__/app/crosswind.test.tsx.
+  // Crosswind and About are no longer placeholders —
+  // see src/__tests__/app/crosswind.test.tsx and about.test.tsx.
 
   it('renders Settings placeholder (dark + light)', () => {
     const dark = renderWithTheme(<SettingsPlaceholder />, { mode: 'dark' });
@@ -20,15 +20,6 @@ describe('placeholder screens', () => {
     expect(dark.getByText('placeholder.settingsBody')).toBeTruthy();
     expect(dark.toJSON()).toMatchSnapshot();
     const light = renderWithTheme(<SettingsPlaceholder />, { mode: 'light' }).toJSON();
-    expect(light).toMatchSnapshot();
-  });
-
-  it('renders About placeholder (dark + light)', () => {
-    const dark = renderWithTheme(<AboutPlaceholder />, { mode: 'dark' });
-    expect(dark.getByTestId('about-screen')).toBeTruthy();
-    expect(dark.getByText('placeholder.aboutBody')).toBeTruthy();
-    expect(dark.toJSON()).toMatchSnapshot();
-    const light = renderWithTheme(<AboutPlaceholder />, { mode: 'light' }).toJSON();
     expect(light).toMatchSnapshot();
   });
 });

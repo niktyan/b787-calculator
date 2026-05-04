@@ -38,7 +38,8 @@ describe('Crosswind route', () => {
     fireEvent.changeText(getByTestId('crosswind-weight-input'), '170');
     fireEvent.changeText(getByTestId('crosswind-cg-input'), '32');
     expect(getByText('34')).toBeTruthy();
-    expect(getByText('crosswind.sourceChip')).toBeTruthy();
+    // Source chip moved to About per Принцип 4 — should NOT appear on result panel.
+    expect(() => getByText('crosswind.sourceChip')).toThrow();
   });
 
   it('above-envelope: W=170, CG=42 → 40 KT (Excel quirk)', () => {
