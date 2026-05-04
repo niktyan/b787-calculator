@@ -11,12 +11,31 @@ export type AircraftVariant = (typeof AIRCRAFT_VARIANTS)[number];
 export const FLIGHT_PHASES = ['takeoff', 'landing'] as const;
 export type FlightPhase = (typeof FLIGHT_PHASES)[number];
 
-export const RUNWAY_CONDITIONS = ['dry', 'wet', 'contaminated'] as const;
+/**
+ * Boeing 787 FCOM landing-performance runway-condition codes — Polish-3
+ * expansion from the MVP umbrella `'contaminated'` to four explicit
+ * states (`slipperyWet`, `compactedSnow`, `drySnow`, `wetSnow`). Spec:
+ * `02_Specification/04-domain-model.md` § RunwayCondition.
+ *
+ * Only `'dry'` ships with bundled lookup data in this PR; the other
+ * five states return `DataNotAvailable` via the algorithm's existing
+ * Step-0a check (`input.runwayCondition !== data.runwayCondition`).
+ */
+export const RUNWAY_CONDITIONS = [
+  'dry',
+  'wet',
+  'slipperyWet',
+  'compactedSnow',
+  'drySnow',
+  'wetSnow',
+] as const;
 export type RunwayCondition = (typeof RUNWAY_CONDITIONS)[number];
 
 /**
- * ICAO Runway Condition Code (1–6). Used only when
- * `RunwayCondition === 'contaminated'`. Not active in MVP (Dry only).
+ * ICAO Runway Condition Code (1–6). Used for non-dry runway conditions
+ * where FCOM prescribes a RWYCC sub-classification (especially
+ * `slipperyWet`, `compactedSnow`, `drySnow`, `wetSnow`). Not active in
+ * MVP (Dry only).
  */
 // eslint-disable-next-line no-magic-numbers
 export type RunwayConditionCode = 1 | 2 | 3 | 4 | 5 | 6;

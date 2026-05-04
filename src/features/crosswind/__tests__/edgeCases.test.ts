@@ -212,7 +212,14 @@ describe('Runtime const arrays (types.ts)', () => {
     expect(FLIGHT_PHASES).toEqual(['takeoff', 'landing']);
   });
 
-  it('exports RUNWAY_CONDITIONS', () => {
-    expect(RUNWAY_CONDITIONS).toEqual(['dry', 'wet', 'contaminated']);
+  it('exports RUNWAY_CONDITIONS (Polish-3 6-state)', () => {
+    expect(RUNWAY_CONDITIONS).toEqual([
+      'dry',
+      'wet',
+      'slipperyWet',
+      'compactedSnow',
+      'drySnow',
+      'wetSnow',
+    ]);
   });
 });

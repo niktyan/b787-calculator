@@ -241,15 +241,34 @@ describe('Calculator metadata', () => {
     expect(r.error.kind).toBe('DataNotAvailable');
   });
 
-  it('returns DataNotAvailable when runwayCondition mismatches', () => {
-    const { w, cg } = vo(170, 32);
-    const r = calculateCrosswindLimit(
-      { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: 'wet' },
-      data,
-    );
-    if (r.ok) {
-      throw new Error('expected error');
-    }
-    expect(r.error.kind).toBe('DataNotAvailable');
+  // Polish-3: each non-dry condition must surface as DataNotAvailable
+  // because the bundled JSON only ships 'dry' lookup data. The
+  // algorithm's existing Step-0a check (`input.runwayCondition !==
+  // data.runwayCondition`) handles all five.
+  const nonDryConditions: readonly RunwayCondition[] = [
+    'wet',
+    'slipperyWet',
+    'compactedSnow',
+    'drySnow',
+    'wetSnow',
+  ];
+  nonDryConditions.forEach((condition) => {
+    it(`returns DataNotAvailable for non-dry condition '${condition}'`, () => {
+      const { w, cg } = vo(170, 32);
+      const r = calculateCrosswindLimit(
+        {
+          weightTons: w,
+          cgPercent: cg,
+          aircraft: AIRCRAFT,
+          phase: PHASE,
+          runwayCondition: condition,
+        },
+        data,
+      );
+      if (r.ok) {
+        throw new Error(`expected DataNotAvailable for '${condition}', got ok`);
+      }
+      expect(r.error.kind).toBe('DataNotAvailable');
+    });
   });
 });

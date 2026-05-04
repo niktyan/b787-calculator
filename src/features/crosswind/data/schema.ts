@@ -18,7 +18,17 @@ const MAX_CROSSWIND_KT = 50;
 
 const aircraftVariantSchema = z.enum(['b787_8', 'b787_9']);
 const flightPhaseSchema = z.enum(['takeoff', 'landing']);
-const runwayConditionSchema = z.enum(['dry', 'wet', 'contaminated']);
+// Polish-3 expansion: 6 explicit FCOM runway-condition codes.
+// Bundled JSON keeps `runwayCondition: 'dry'`; the other 5 states
+// surface as `DataNotAvailable` via the algorithm's Step-0a check.
+const runwayConditionSchema = z.enum([
+  'dry',
+  'wet',
+  'slipperyWet',
+  'compactedSnow',
+  'drySnow',
+  'wetSnow',
+]);
 
 const breakpointSchema = z.object({
   crosswindKnots: z.number().int().min(0).max(MAX_CROSSWIND_KT),
@@ -66,7 +76,13 @@ export type CrosswindDataFile = z.infer<typeof crosswindDataFileSchema>;
 export interface BusinessRuleContext {
   readonly expectedAircraft?: 'b787_8' | 'b787_9';
   readonly expectedPhase?: 'takeoff' | 'landing';
-  readonly expectedRunwayCondition?: 'dry' | 'wet' | 'contaminated';
+  readonly expectedRunwayCondition?:
+    | 'dry'
+    | 'wet'
+    | 'slipperyWet'
+    | 'compactedSnow'
+    | 'drySnow'
+    | 'wetSnow';
 }
 
 function checkEnvelopeAndSlope(data: CrosswindDataFile): string | null {

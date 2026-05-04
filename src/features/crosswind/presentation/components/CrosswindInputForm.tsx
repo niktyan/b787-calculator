@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 import { useTranslation } from '../../../../core';
@@ -31,11 +32,24 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
   } = props;
   const { t } = useTranslation();
 
-  const runwayOptions: readonly SegmentedControlOption<RunwayCondition>[] = [
-    { value: 'dry', label: 'Dry' },
-    { value: 'wet', label: 'Wet', disabled: true },
-    { value: 'contaminated', label: 'Contaminated', disabled: true },
-  ];
+  // Polish-3: 6 explicit FCOM runway-condition codes (см.
+  // 04-domain-model.md § RunwayCondition). Only `dry` is active in MVP;
+  // the other 5 are disabled until lookup data is added in a future
+  // sprint. Aviation terms ("Dry", "Wet", "Slippery Wet",
+  // "Compacted Snow", "Dry Snow", "Wet Snow") are not localized
+  // per CLAUDE.md Rule 9 — t() resolves to identical English strings
+  // in both en/ru locales.
+  const runwayOptions = useMemo<readonly SegmentedControlOption<RunwayCondition>[]>(
+    () => [
+      { value: 'dry', label: t('crosswind.runway.dry') },
+      { value: 'wet', label: t('crosswind.runway.wet'), disabled: true },
+      { value: 'slipperyWet', label: t('crosswind.runway.slipperyWet'), disabled: true },
+      { value: 'compactedSnow', label: t('crosswind.runway.compactedSnow'), disabled: true },
+      { value: 'drySnow', label: t('crosswind.runway.drySnow'), disabled: true },
+      { value: 'wetSnow', label: t('crosswind.runway.wetSnow'), disabled: true },
+    ],
+    [t],
+  );
 
   return (
     <Stack gap="lg" {...(testID === undefined ? {} : { testID })}>

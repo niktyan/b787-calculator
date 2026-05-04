@@ -617,7 +617,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                 testID="crosswind-runway"
               >
                 <View
-                  accessibilityLabel="Dry"
+                  accessibilityLabel="crosswind.runway.dry"
                   accessibilityRole="radio"
                   accessibilityState={
                     {
@@ -684,11 +684,11 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                       ]
                     }
                   >
-                    Dry
+                    crosswind.runway.dry
                   </Text>
                 </View>
                 <View
-                  accessibilityLabel="Wet"
+                  accessibilityLabel="crosswind.runway.wet"
                   accessibilityRole="radio"
                   accessibilityState={
                     {
@@ -755,11 +755,11 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                       ]
                     }
                   >
-                    Wet
+                    crosswind.runway.wet
                   </Text>
                 </View>
                 <View
-                  accessibilityLabel="Contaminated"
+                  accessibilityLabel="crosswind.runway.slipperyWet"
                   accessibilityRole="radio"
                   accessibilityState={
                     {
@@ -807,7 +807,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                       },
                     ]
                   }
-                  testID="crosswind-runway-contaminated"
+                  testID="crosswind-runway-slipperyWet"
                 >
                   <Text
                     allowFontScaling={true}
@@ -826,7 +826,220 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                       ]
                     }
                   >
-                    Contaminated
+                    crosswind.runway.slipperyWet
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="crosswind.runway.compactedSnow"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-compactedSnow"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6E7681",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    crosswind.runway.compactedSnow
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="crosswind.runway.drySnow"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-drySnow"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6E7681",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    crosswind.runway.drySnow
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="crosswind.runway.wetSnow"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-wetSnow"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6E7681",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    crosswind.runway.wetSnow
                   </Text>
                 </View>
               </View>
@@ -1529,7 +1742,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                 testID="crosswind-runway"
               >
                 <View
-                  accessibilityLabel="Dry"
+                  accessibilityLabel="crosswind.runway.dry"
                   accessibilityRole="radio"
                   accessibilityState={
                     {
@@ -1596,11 +1809,11 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                       ]
                     }
                   >
-                    Dry
+                    crosswind.runway.dry
                   </Text>
                 </View>
                 <View
-                  accessibilityLabel="Wet"
+                  accessibilityLabel="crosswind.runway.wet"
                   accessibilityRole="radio"
                   accessibilityState={
                     {
@@ -1667,11 +1880,11 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                       ]
                     }
                   >
-                    Wet
+                    crosswind.runway.wet
                   </Text>
                 </View>
                 <View
-                  accessibilityLabel="Contaminated"
+                  accessibilityLabel="crosswind.runway.slipperyWet"
                   accessibilityRole="radio"
                   accessibilityState={
                     {
@@ -1719,7 +1932,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                       },
                     ]
                   }
-                  testID="crosswind-runway-contaminated"
+                  testID="crosswind-runway-slipperyWet"
                 >
                   <Text
                     allowFontScaling={true}
@@ -1738,7 +1951,220 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                       ]
                     }
                   >
-                    Contaminated
+                    crosswind.runway.slipperyWet
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="crosswind.runway.compactedSnow"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-compactedSnow"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6B7280",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    crosswind.runway.compactedSnow
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="crosswind.runway.drySnow"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-drySnow"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6B7280",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    crosswind.runway.drySnow
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="crosswind.runway.wetSnow"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-wetSnow"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6B7280",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    crosswind.runway.wetSnow
                   </Text>
                 </View>
               </View>
