@@ -662,13 +662,55 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
   больший weight, чтобы числа читались на фоне лейблов.*
   Margin-top 2 pt.
 
+*iPad result panel scaling (regular variant, PR `feat/crosswind-polish-2`):*
+
+На iPad в landscape (2-колонная раскладка, см. § «Адаптивность iPad ↔
+iPhone» → «Layout matrix · Crosswind result panel») result-panel
+переключается в крупный вариант:
+
+- Value (result-value): variant `displayLarge` (mono 72 / 80, 700,
+  letterSpacing -1 pt). Цвет `tokens.colors.accent` сохраняется.
+- Суффикс «KT»: variant `monoXL` (mono 36 / 40, 700, letterSpacing 0).
+  Цвет `tokens.colors.textSecondary`, `marginLeft: 6 pt`.
+- Meta-item value переключается с `bodySmall` mono на `mono` (16 pt).
+- Панель растягивается по высоте контейнера через `flex: 1` chain
+  (root wrapper + DS surface + inner Stack), заполняя правую колонку
+  целиком. Это требует, чтобы родительский `<Row>` поставлял
+  растягиваемый column-View — поэтому вариант активен **только** в
+  2-колоночной раскладке (см. iPad portrait fix ниже).
+- Imageementация: вариант рендерится отдельным компонентом
+  `RegularIdleBody` внутри Crosswind-модуля. DS-компонент
+  `<ResultPanel>` и его sealed `ResultPanelState` discriminated union
+  не расширены — compact-вариант продолжает использовать `<ResultPanel>`
+  без изменений.
+- Compact-вариант (iPhone любая ориентация, iPad portrait) сохраняет
+  `display` 48 pt + `monoMedium` 24 pt + `bodySmall` mono 11 pt — как
+  было до polish-2.
+
 *Result panel state mapping* (cross-ref `ResultPanelState` discriminated union
 в `module-contracts/design-system.md`):
 
-- `kind: 'empty'` — value/meta заменены центрированным placeholder-текстом
-  «Enter weight and CG to see result», цвет `tokens.colors.textSecondary`,
-  variant `body` (sans 16 / 22, 400) или `body` weight 500 для лучшей
-  заметности; нейтральная иконка `info-outline` сверху. Source chip скрыт.
+- `kind: 'empty'` — value/meta заменены компактной плашкой: иконка
+  `info-outline` 32 pt (`tokens.colors.textTertiary`) + однострочная
+  caption-подпись `tokens.colors.textSecondary`, `maxWidth: 240 pt`,
+  выравнивание по центру. Surface — `tokens.colors.bgCard` с
+  `borderColor: tokens.colors.border` (1 pt) и
+  `borderRadius: tokens.radii.lg`. **Минимальная высота:** 140 pt в
+  compact-варианте, 200 pt в regular-варианте (тот же gating, что у
+  iPad result panel scaling выше). На regular панель дополнительно
+  получает `flex: 1`, чтобы растягиваться вместе с соседней
+  input-колонкой. Source chip скрыт. Обновлено в PR
+  `feat/crosswind-polish-2`.
+- **Empty ↔ idle переход.** Wrapper-компонент `<CrosswindResult>`
+  оборачивает содержимое в `Animated.View` с
+  `LinearTransition.duration(200ms).easing(Easing.out(Easing.ease))` из
+  `react-native-reanimated`, чтобы переключение empty → idle проходило
+  плавным height-tween-ом, а не «прыжком». При системной опции
+  «Reduce Motion» обёртка возвращается к статичному `Animated.View`
+  без `layout`-prop — переход мгновенный (cross-ref «Accessibility
+  checklist» → Reduce Motion). Подписка на состояние Reduce Motion —
+  через DS-хук `useReduceMotion` (см.
+  `module-contracts/design-system.md`).
 - `kind: 'idle'` — полная раскладка выше.
 - `kind: 'error'` — value-блок заменён 14 pt headline-ом цвета
   `tokens.colors.danger`; description body — variant `caption` (sans 12)
@@ -677,6 +719,52 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 - `kind: 'out-of-envelope'` — та же surface, что у `idle`, но headline
   цвета `tokens.colors.warn`, body объясняет нарушенную границу
   (например «Weight 95 t is below minimum 110 t. Adjust input.»).
+
+*Envelope-position bar (PR `feat/crosswind-polish-2`):*
+
+Под result-панелью (compact) или внутри regular-блока (iPad landscape)
+рендерится горизонтальный 3-зонный индикатор положения текущего CG на
+оси `[axisMin, axisMax] = [operationalEnvelope.cg.minPercent, 50]`
+%MAC. 50 — верхний бэкстоп оси, документированный отдельной константой
+`ENVELOPE_BAR_CG_MAX_PERCENT` (см. ниже § «Decisions»); он держит
+out-of-lookup зону всегда видимой даже для above-envelope Excel-quirk
+кейсов (CG 42–50). Реализация — компонент
+`EnvelopePositionBar` внутри Crosswind feature-модуля (не в
+design-system; узкое назначение, не переиспользуемый виджет).
+
+- **Track:** `flexDirection: 'row'`, `borderRadius: 4 pt`,
+  `overflow: 'hidden'`. Высота — 8 pt в compact, 12 pt в regular.
+- **3 зоны** (flex-children в порядке слева → направо):
+  - `safe`: `[operationalMin, operationalMax]` — фон
+    `tokens.colors.accentSoft`.
+  - `boundary`: `(operationalMax, lookupMax]` — фон
+    `tokens.colors.envelopeBarBoundary` (rgba warn 20 %, см.
+    `module-contracts/design-system.md`).
+  - `outOfLookup`: `(lookupMax, axisMax]` — фон
+    `tokens.colors.envelopeBarOutOfLookup` (rgba danger 20 %).
+  - `flexGrow` каждой зоны = ширина в %MAC, так что суммарная ширина
+    равна `axisMax - axisMin` без gap-ов.
+- **Marker:** вертикальная полоска 2 pt, цвет
+  `tokens.colors.accent`. Позиция через `Animated.View` с
+  `useSharedValue` + `withTiming(200ms, Easing.out(Easing.ease))` по
+  `left: '<percent>%'`. При смене input-веса/CG marker плавно
+  скользит. **Reduce Motion bypass:** при включённом флаге
+  `useReduceMotion()` вместо `withTiming` пишется `progress.value =
+  targetProgress` синхронно — marker «прыгает» без анимации.
+- **Bounds row:** под track-ом — две microUppercase-подписи `<axisMin>%`
+  слева, `<axisMax>%` справа (`tokens.colors.textTertiary`).
+- **Accessibility:** `accessibilityRole="adjustable"`,
+  `accessibilityLabel` локализован (`crosswind.envelopeBarLabel`),
+  `accessibilityValue: { min, max, now: round(currentCG) }`.
+- **Расположение:**
+  - **Compact:** под result-панелью с `marginTop: tokens.spacing.sm`
+    (см. `compactEnvelopeBar` styles в `CrosswindResult.tsx`).
+  - **Regular:** внутри `RegularIdleBody`, как часть column-stack,
+    выше meta-grid.
+
+В Polish-3 этот компонент **удаляется** и заменяется полноценной
+chart-визуализацией (см. § «Visualization · CG / Crosswind chart»
+ниже — пред-Polish-3 prep).
 
 *Disabled-state toast (Wet/Contaminated tap):*
 
@@ -891,6 +979,31 @@ press-handler-ы становятся no-op-ами (никаких `withTiming`-
 - **iPhone portrait** (compact width): калькулятор стек-вертикально; Main Menu в 1 колонку с увеличенными карточками.
 
 Реализация через `useWindowDimensions()` хук + media-предикаты в design-system. Все компоненты разрабатываются как «адаптивные» с одной кодовой базой, без отдельных iPhone/iPad-версий.
+
+**Layout matrix · Crosswind result panel.** Polish-2 добавил крупный
+вариант result-панели (см. § Экран 4 → «iPad result panel scaling»).
+Чтобы избежать ловушки PR `feat/crosswind-polish-2` hot-fix-а, гейтинг
+крупного варианта **жёстко привязан к 2-колоночной раскладке**, а не к
+breakpoint-у `regularHeader` (768 pt):
+
+| Viewport | Layout | Result-panel typography |
+|----------|--------|-------------------------|
+| iPhone any orientation (`< 1024`) | stacked vertical | compact (`display` 48 / `monoMedium` 24) |
+| iPad portrait (regular width, `< 1024`) | stacked vertical | compact |
+| iPad landscape (regular width, `≥ 1024`) | 2-column (input \| result) | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) |
+| iPhone landscape (compact height) | 2-column compact-spaced | compact |
+
+Причина: regular-вариант полагается на flex-fill height chain, который
+схлопывается до 0, если родительский контейнер сам auto-sized
+(вертикальный Stack column). Только `<Row>` с column-View поставляет
+растягиваемый контейнер, и только в iPad landscape Crosswind-screen
+переходит в `<Row>`-раскладку (порог `tokens.breakpoints.regular = 1024
+pt`). Поэтому булева переменная `isRegular` в `CrosswindScreen`
+вычисляется как `isTwoColumn = width >= 1024`, а не как `width >=
+regularHeader`. Эта зависимость ОБЯЗАТЕЛЬНА; пере-сцепка `isRegular` с
+другим breakpoint-ом без сопутствующего рефакторинга layout-chain
+схлопнет result-панель в ноль на iPad portrait. Полный кейс описан в
+коммите PR #31 (`fix(crosswind): correct iPad portrait layout`).
 
 В App Store Listing указываются supported devices: iPhone и iPad. Скриншоты готовятся под оба класса (минимум 6.7" iPhone и 12.9" iPad — обязательные по требованиям App Store Connect).
 
