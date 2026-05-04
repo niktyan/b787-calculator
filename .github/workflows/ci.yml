@@ -35,7 +35,11 @@ jobs:
   build-preview:
     runs-on: ubuntu-latest
     needs: quality
-    if: github.event_name == 'pull_request'
+    # Opt-in via PR label to avoid burning EAS build minutes on every push.
+    # See 02_Specification/09-cicd-and-ops.md § "Build-preview opt-in".
+    if: |
+      github.event_name == 'pull_request' &&
+      contains(github.event.pull_request.labels.*.name, 'preview')
     steps:
       - uses: actions/checkout@v4
 

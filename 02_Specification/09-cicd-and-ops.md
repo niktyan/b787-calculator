@@ -25,7 +25,9 @@
 - Require approvals: 1 (вы как owner).
 - Dismiss stale approvals when new commits are pushed.
 - Require review from Code Owners (если будет настроен `CODEOWNERS`).
-- Require status checks to pass: `quality`, `build-preview`.
+- Require status checks to pass: `quality`. (`build-preview` is
+  opt-in via the `preview` PR label and therefore NOT a required
+  check — см. секцию «Build-preview opt-in» ниже.)
 - Require branches to be up to date before merging.
 - Require linear history (нет merge-коммитов, только squash или rebase).
 - Disallow force pushes.
@@ -58,9 +60,45 @@ gh pr create --title "feat(core): initial Core module" --body-file .github/pull_
 ```
 
 **Шаг 4.** GitHub Actions автоматически запускает CI:
-- `quality` job: lint, typecheck, tests.
-- `build-preview` job: EAS Build preview-профиль.
+- `quality` job: lint, typecheck, tests. Запускается на каждом PR и
+  каждом push в `main`.
+- `build-preview` job: EAS Build preview-профиль. **Opt-in по
+  лейблу** — см. ниже «Build-preview opt-in».
 - Каждый commit в PR → CI прогоняется заново.
+
+### Build-preview opt-in
+
+Job `build-preview` запускается **только если на PR навешен лейбл
+`preview`**. Без лейбла CI ограничивается одним job-ом `quality`
+(lint + typecheck + tests + advisory expo-doctor) — никакой EAS Build
+не уходит в очередь, EAS квота не тратится.
+
+Когда добавлять лейбл:
+
+- Перед TestFlight — финальная функциональная проверка перед запросом
+  пилотного фидбека.
+- Перед финальным pre-submission прогоном — последний preview-build
+  до production-релиза.
+- При изменении нативных модулей или зависимостей, требующих
+  пересборки (Expo SDK bumps, новые expo-* пакеты с native-кодом,
+  правки `app.json` / `eas.json`).
+- Реже — для разовой проверки UX на физическом устройстве, если
+  unit-тестов недостаточно.
+
+Когда лейбл НЕ нужен (типичный случай):
+
+- Документационные PR, refactor-ы, изменения только в JSON / TS-коде
+  без новых нативных deps. Quality job достаточно.
+- Спека, README, ADR, prompts — purely doc-only PR-ы.
+
+**Branch-protection update (manual user action).** До этого изменения
+`build-preview` был обязательной required check для merge в `main`.
+После opt-in перехода required-check список ОБЯЗАН быть обновлён
+вручную через GitHub UI: **Settings → Branches → main → Edit
+required checks → uncheck `build-preview`**. Без этого PR-ы без лейбла
+не смогут merge-иться (required check будет «expected» вечно).
+Агент-реализатор не имеет доступа к branch protection и не может
+сделать это автоматически.
 
 **Шаг 5.** Разработчик функционально проверяет:
 - Открывает Expo Go на iPhone.
@@ -732,7 +770,7 @@ Crash-репорты собираются Apple автоматически. До
 - [ ] Создать `.github/dependabot.yml`.
 - [ ] Создать `scripts/release.sh` и сделать `chmod +x`.
 - [ ] Включить GitHub Pages: Settings → Pages → Source: GitHub Actions.
-- [ ] Настроить branch protection в Settings → Branches: required CI checks (`quality`, `build-preview`).
+- [ ] Настроить branch protection в Settings → Branches: required CI check `quality`. (Не добавлять `build-preview` — он opt-in via the `preview` PR label, см. § «Build-preview opt-in».)
 - [ ] Включить email notifications: Settings → Notifications → Watching → выбрать «All Activity» для своего репозитория.
 - [ ] Создать первый коммит, push в main.
 - [ ] Запустить первый EAS preview build, протестировать загрузку в Expo Go.
