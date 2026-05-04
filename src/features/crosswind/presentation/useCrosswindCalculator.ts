@@ -17,6 +17,7 @@ import { useMemo } from 'react';
 
 import { isOk } from '../../../core/result';
 import { calculateCrosswindLimit } from '../domain/calculator';
+import { getLookupCGRange } from '../domain/lookupRange';
 import type {
   CGPercentMAC,
   CrosswindCalculationOutput,
@@ -27,6 +28,8 @@ import type {
 import { validateOperationalEnvelope } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import type { CrosswindDataFile } from '../data/schema';
+
+import { ENVELOPE_BAR_CG_MAX_PERCENT } from './constants';
 
 export interface EnvelopeBarInputs {
   readonly currentCG: number;
@@ -135,39 +138,26 @@ function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is Pa
 }
 
 /**
- * CG axis upper bound for the envelope-position bar. Chosen so the
- * "out-of-lookup" zone is always visible to the right of the lookup
- * envelope at any operationally-realistic weight (lookupMax for
- * W=110 t ≈ 33.8 % MAC; for W=172 t ≈ 41.5 % MAC). 50 % MAC keeps the
- * marker comfortably inside the bar even for the above-envelope
- * Excel-quirk cases (CG = 42–50).
- */
-const ENVELOPE_AXIS_MAX = 50;
-
-/**
  * Compute the envelope-position bar inputs from the bundled JSON +
- * the user's current weight/CG. This is straight arithmetic on
- * documented data fields — not domain business logic — so it lives in
- * the view-model rather than touching the sealed domain layer.
+ * the user's current weight/CG. The CG-axis upper bound and the
+ * lookup-range derivation are extracted to dedicated helpers
+ * (`ENVELOPE_BAR_CG_MAX_PERCENT` in `./constants` and
+ * `getLookupCGRange` in `../domain/lookupRange`) so the bar's two
+ * non-spec defaults are individually testable and documented.
  */
 function buildEnvelopeBarInputs(
   data: CrosswindDataFile,
-  weightTons: number,
+  weightTons: WeightInTons,
   cgPercent: number,
 ): EnvelopeBarInputs {
-  const weightKilolbs = weightTons * data.weightConversion.tonsToKilolbsFactor;
-  const lastBreakpoint = data.interpolation.breakpoints[data.interpolation.breakpoints.length - 1];
-  const lookupMax =
-    lastBreakpoint === undefined
-      ? data.operationalEnvelope.cg.maxPercent
-      : data.interpolation.slope * weightKilolbs + lastBreakpoint.intercept;
+  const lookupRange = getLookupCGRange(data, weightTons);
   return {
     currentCG: cgPercent,
     axisMin: data.operationalEnvelope.cg.minPercent,
-    axisMax: ENVELOPE_AXIS_MAX,
+    axisMax: ENVELOPE_BAR_CG_MAX_PERCENT,
     operationalMin: data.operationalEnvelope.cg.minPercent,
     operationalMax: data.operationalEnvelope.cg.maxPercent,
-    lookupMax,
+    lookupMax: lookupRange.max,
   };
 }
 

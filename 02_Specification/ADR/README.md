@@ -37,3 +37,4 @@ ADR не нужен для:
 | 0004 | Coming Soon modules as config, not modules | Accepted |
 | 0005 | Flat ESLint config (Expo SDK 54+) | Accepted |
 | 0006 | EAS first-build credentials choices | Accepted |
+| 0007 | Adopt react-native-svg for crosswind visualization | Accepted |

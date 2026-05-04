@@ -27,6 +27,7 @@ src/features/crosswind/
 │   ├── calculator.ts                — чистая функция расчёта
 │   ├── strategies.ts                — implementation для 'piecewise-linear-excel-equivalent'
 │   ├── validators.ts                — валидация входных данных
+│   ├── lookupRange.ts               — getLookupCGRange query helper (envelope-bar driver)
 │   └── errors.ts                    — типы ошибок
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
@@ -86,6 +87,28 @@ export { calculateCrosswindLimit } from './domain';
 // chip next to it.
 export { validateOperationalEnvelope } from './domain';
 export type { EnvelopeViolation } from './domain';
+
+// Lookup-range query.
+//
+// signature:
+//   interface LookupCGRange { readonly min: number; readonly max: number }
+//   function getLookupCGRange(
+//     data: CrosswindDataFile,
+//     weightTons: WeightInTons,
+//   ): LookupCGRange;
+//
+// Returns the CG (% MAC) interval at the given weight for which the
+// lookup table produces an interpolated number rather than the
+// IFNA-fallback 40 KT (см. 05-crosswind-algorithm.md Шаг 3 lower /
+// upper bound search). Endpoints = `slope × weightKilolbs + intercept`
+// for the first and last breakpoints. Pure data introspection — no
+// business decisions, no side effects.
+//
+// Used by the presentation layer to drive the EnvelopePositionBar
+// zones (см. 06-ui-spec.md § Экран 4 → "Envelope-position bar"); not
+// consumed by `calculateCrosswindLimit` itself.
+export { getLookupCGRange } from './domain';
+export type { LookupCGRange } from './domain';
 
 // Repository factory (для DI, если понадобится альтернативная реализация)
 export { createCrosswindRepository } from './data';
@@ -173,6 +196,23 @@ export type { CrosswindRepository } from './data';
 - **Уровень 4** (структура данных) — major schema bump, новый формат JSON, новая ветка алгоритма. Старая поддерживается до полной миграции.
 
 Strategy dispatcher уже имплементирован с MVP. Это значит, что добавить новую strategy = добавить функцию + ветку в switch.
+
+### Polish-3 forward signal
+
+Polish-3 расширит `RunwayCondition` с 3 значений (`'dry' | 'wet' |
+'contaminated'`) до 6 (`'dry' | 'wet' | 'slipperyWet' |
+'compactedSnow' | 'drySnow' | 'wetSnow'`) и переключит bundled JSON с
+flat-структуры на per-aircraft × phase файл с map-полем `datasets`,
+ключи которого — все 6 runway-condition значений. Каждый ключ
+содержит либо полный lookup-entry, либо `{ status: 'comingSoon' }` —
+последний триггерит `Result.err({ kind: 'DataNotAvailable', reason:
+'comingSoon' })` без обращения к алгоритму. Это **уровень 4** по
+классификации выше — major schema bump. Public API модуля при этом
+остаётся стабильным: сигнатуры `calculateCrosswindLimit`,
+`validateOperationalEnvelope`, `getLookupCGRange` не меняются;
+расширяется только value-set входного `runwayCondition`. Полная
+спека — `04-domain-model.md` § "JSON Schema · Polish-3 expansion
+(forward signal)".
 
 ## Открытые вопросы
 

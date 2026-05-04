@@ -21,6 +21,10 @@ export { calculateCrosswindLimit } from './domain';
 // Use-case validator
 export { validateOperationalEnvelope } from './domain';
 
+// Lookup-range query (drives the envelope-position bar; see module contract)
+export { getLookupCGRange } from './domain';
+export type { LookupCGRange } from './domain';
+
 // Repository factory
 export { createCrosswindRepository } from './data';
 export type { CrosswindRepository } from './data';
