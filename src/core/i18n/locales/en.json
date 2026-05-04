@@ -40,7 +40,8 @@
     "resultFootnote": "Computed for current inputs",
     "metaCG": "CG",
     "metaRange": "Range",
-    "warningOutsideEnvelope": "Outside operational envelope — advisory only"
+    "warningOutsideEnvelope": "Outside operational envelope — advisory only",
+    "envelopeBarLabel": "Center of gravity envelope position"
   },
   "settings": {
     "title": "Settings",

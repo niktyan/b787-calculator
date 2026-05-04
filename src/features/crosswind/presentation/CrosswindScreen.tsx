@@ -62,6 +62,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const isTwoColumn = width >= TWO_COLUMN_BREAKPOINT;
+  const isRegular = width >= tokens.breakpoints.regularHeader;
 
   const [weightText, setWeightText] = useState('');
   const [cgText, setCgText] = useState('');
@@ -95,7 +96,9 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
       testID="crosswind-input-form"
     />
   );
-  const resultPanel = <CrosswindResult state={state} testID="crosswind-result" />;
+  const resultPanel = (
+    <CrosswindResult state={state} isRegular={isRegular} testID="crosswind-result" />
+  );
 
   return (
     <Screen testID="crosswind-screen">

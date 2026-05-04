@@ -28,12 +28,22 @@ import { validateOperationalEnvelope } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import type { CrosswindDataFile } from '../data/schema';
 
+export interface EnvelopeBarInputs {
+  readonly currentCG: number;
+  readonly axisMin: number;
+  readonly axisMax: number;
+  readonly operationalMin: number;
+  readonly operationalMax: number;
+  readonly lookupMax: number;
+}
+
 export type CrosswindUIState =
   | { readonly kind: 'empty' }
   | {
       readonly kind: 'idle';
       readonly output: CrosswindCalculationOutput;
       readonly warning: EnvelopeViolation | null;
+      readonly envelopeBar: EnvelopeBarInputs;
     }
   | { readonly kind: 'out-of-envelope'; readonly reason: string }
   | { readonly kind: 'error'; readonly headline: string; readonly description?: string };
@@ -124,6 +134,43 @@ function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is Pa
   return 'weight' in x;
 }
 
+/**
+ * CG axis upper bound for the envelope-position bar. Chosen so the
+ * "out-of-lookup" zone is always visible to the right of the lookup
+ * envelope at any operationally-realistic weight (lookupMax for
+ * W=110 t ≈ 33.8 % MAC; for W=172 t ≈ 41.5 % MAC). 50 % MAC keeps the
+ * marker comfortably inside the bar even for the above-envelope
+ * Excel-quirk cases (CG = 42–50).
+ */
+const ENVELOPE_AXIS_MAX = 50;
+
+/**
+ * Compute the envelope-position bar inputs from the bundled JSON +
+ * the user's current weight/CG. This is straight arithmetic on
+ * documented data fields — not domain business logic — so it lives in
+ * the view-model rather than touching the sealed domain layer.
+ */
+function buildEnvelopeBarInputs(
+  data: CrosswindDataFile,
+  weightTons: number,
+  cgPercent: number,
+): EnvelopeBarInputs {
+  const weightKilolbs = weightTons * data.weightConversion.tonsToKilolbsFactor;
+  const lastBreakpoint = data.interpolation.breakpoints[data.interpolation.breakpoints.length - 1];
+  const lookupMax =
+    lastBreakpoint === undefined
+      ? data.operationalEnvelope.cg.maxPercent
+      : data.interpolation.slope * weightKilolbs + lastBreakpoint.intercept;
+  return {
+    currentCG: cgPercent,
+    axisMin: data.operationalEnvelope.cg.minPercent,
+    axisMax: ENVELOPE_AXIS_MAX,
+    operationalMin: data.operationalEnvelope.cg.minPercent,
+    operationalMax: data.operationalEnvelope.cg.maxPercent,
+    lookupMax,
+  };
+}
+
 function compute(
   parsed: ParsedInputs,
   inputs: CrosswindCalculatorInputs,
@@ -148,8 +195,9 @@ function compute(
   );
 
   if (calc.ok) {
+    const envelopeBar = buildEnvelopeBarInputs(data, parsed.weight, parsed.cg);
     return {
-      state: { kind: 'idle', output: calc.value, warning: violation },
+      state: { kind: 'idle', output: calc.value, warning: violation, envelopeBar },
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
     };

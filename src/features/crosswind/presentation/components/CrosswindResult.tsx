@@ -9,17 +9,23 @@ import { useTheme, useTranslation } from '../../../../core';
 import { ResultPanel, Text, tokens, useReduceMotion } from '../../../../design-system';
 import type { ResultPanelMetaItem, ResultPanelState } from '../../../../design-system';
 import type { CrosswindCalculationOutput, EnvelopeViolation } from '../../domain/types';
-import type { CrosswindUIState } from '../useCrosswindCalculator';
+import type { CrosswindUIState, EnvelopeBarInputs } from '../useCrosswindCalculator';
+
+import { EnvelopePositionBar } from './EnvelopePositionBar';
+import { RegularIdleBody } from './RegularIdleBody';
 
 export interface CrosswindResultProps {
   readonly state: CrosswindUIState;
+  readonly isRegular?: boolean;
   readonly testID?: string | undefined;
 }
 
 const KT_UNIT = 'KT';
 const EMPTY_ICON_SIZE = 32;
 const EMPTY_TEXT_MAX_WIDTH = 240;
-const EMPTY_PANEL_MIN_HEIGHT = 140;
+const EMPTY_PANEL_MIN_HEIGHT_COMPACT = 140;
+const EMPTY_PANEL_MIN_HEIGHT_REGULAR = 200;
+const EMPTY_PANEL_BORDER_WIDTH = 1;
 const TRANSITION_DURATION_MS = 200;
 
 function formatBracket(bracket: { readonly lower: number; readonly upper: number }): string {
@@ -59,21 +65,12 @@ function buildMeta(
   rangeLabel: string,
 ): readonly ResultPanelMetaItem[] {
   const items: ResultPanelMetaItem[] = [
-    {
-      label: cgLabel,
-      value: `${formatBracket(output.metadata.cgBracket)} %MAC`,
-    },
-    {
-      label: 'RWY',
-      value: 'Dry',
-    },
+    { label: cgLabel, value: `${formatBracket(output.metadata.cgBracket)} %MAC` },
+    { label: 'RWY', value: 'Dry' },
   ];
   const range = output.metadata.bracketCrosswindRange;
   if (range.lower !== range.upper) {
-    items.push({
-      label: rangeLabel,
-      value: `${range.lower} – ${range.upper} ${KT_UNIT}`,
-    });
+    items.push({ label: rangeLabel, value: `${range.lower} – ${range.upper} ${KT_UNIT}` });
   }
   return items;
 }
@@ -81,6 +78,8 @@ function buildMeta(
 interface IdleViewProps {
   readonly output: CrosswindCalculationOutput;
   readonly warning: EnvelopeViolation | null;
+  readonly envelopeBar: EnvelopeBarInputs;
+  readonly isRegular: boolean;
   readonly statusLabel: string;
   readonly footnote: string;
   readonly cgLabel: string;
@@ -89,18 +88,55 @@ interface IdleViewProps {
 }
 
 function IdleView(props: IdleViewProps): ReactNode {
-  const { output, warning, statusLabel, footnote, cgLabel, rangeLabel, warningText } = props;
+  const {
+    output,
+    warning,
+    envelopeBar,
+    isRegular,
+    statusLabel,
+    footnote,
+    cgLabel,
+    rangeLabel,
+    warningText,
+  } = props;
+  const meta = buildMeta(output, cgLabel, rangeLabel);
+
+  if (isRegular) {
+    return (
+      <RegularIdleBody
+        output={output}
+        warning={warning}
+        envelopeBar={envelopeBar}
+        meta={meta}
+        statusLabel={statusLabel}
+        footnote={footnote}
+        warningText={warningText}
+      />
+    );
+  }
+  // Compact width keeps the existing DS ResultPanel rendering.
   const idleState: ResultPanelState = {
     kind: 'idle',
     label: statusLabel,
     value: String(output.maxCrosswindKnots),
     unit: KT_UNIT,
     footnote,
-    meta: buildMeta(output, cgLabel, rangeLabel),
+    meta,
   };
   return (
     <View>
       <ResultPanel state={idleState} testID="crosswind-result-panel" />
+      <View style={styles.compactEnvelopeBar} testID="crosswind-envelope-bar">
+        <EnvelopePositionBar
+          currentCG={envelopeBar.currentCG}
+          axisMin={envelopeBar.axisMin}
+          axisMax={envelopeBar.axisMax}
+          operationalMin={envelopeBar.operationalMin}
+          operationalMax={envelopeBar.operationalMax}
+          lookupMax={envelopeBar.lookupMax}
+          isRegular={false}
+        />
+      </View>
       {warning !== null ? (
         <View style={styles.warningChip} testID="crosswind-warning-chip">
           <Text variant="caption" color="warn">
@@ -115,25 +151,26 @@ function IdleView(props: IdleViewProps): ReactNode {
 interface EmptyViewProps {
   readonly message: string;
   readonly iconLabel: string;
+  readonly isRegular: boolean;
 }
 
-function EmptyView({ message, iconLabel }: EmptyViewProps): ReactNode {
+function EmptyView({ message, iconLabel, isRegular }: EmptyViewProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-
   const containerStyle = useMemo<ViewStyle>(
     () => ({
       alignItems: 'center',
       backgroundColor: palette.bgCard,
       borderColor: palette.border,
       borderRadius: tokens.radii.lg,
-      borderWidth: 1,
+      borderWidth: EMPTY_PANEL_BORDER_WIDTH,
+      flex: isRegular ? 1 : 0,
       gap: tokens.spacing.sm,
       justifyContent: 'center',
-      minHeight: EMPTY_PANEL_MIN_HEIGHT,
+      minHeight: isRegular ? EMPTY_PANEL_MIN_HEIGHT_REGULAR : EMPTY_PANEL_MIN_HEIGHT_COMPACT,
       padding: tokens.spacing.lg,
     }),
-    [palette.bgCard, palette.border],
+    [isRegular, palette.bgCard, palette.border],
   );
   const messageStyle = useMemo<ViewStyle>(() => ({ maxWidth: EMPTY_TEXT_MAX_WIDTH }), []);
 
@@ -155,17 +192,23 @@ function EmptyView({ message, iconLabel }: EmptyViewProps): ReactNode {
 }
 
 export function CrosswindResult(props: CrosswindResultProps): ReactNode {
-  const { state, testID } = props;
+  const { state, isRegular = false, testID } = props;
   const { t } = useTranslation();
   const reduceMotion = useReduceMotion();
-  const content = renderContent(state, t);
+  const content = renderContent(state, isRegular, t);
+  const wrapperStyle = isRegular ? styles.fillHeight : undefined;
 
   if (reduceMotion) {
-    return <Animated.View testID={testID}>{content}</Animated.View>;
+    return (
+      <Animated.View style={wrapperStyle} testID={testID}>
+        {content}
+      </Animated.View>
+    );
   }
   return (
     <Animated.View
       layout={LinearTransition.duration(TRANSITION_DURATION_MS).easing(Easing.out(Easing.ease))}
+      style={wrapperStyle}
       testID={testID}
     >
       {content}
@@ -173,10 +216,18 @@ export function CrosswindResult(props: CrosswindResultProps): ReactNode {
   );
 }
 
-function renderContent(state: CrosswindUIState, t: (key: string) => string): ReactNode {
+function renderContent(
+  state: CrosswindUIState,
+  isRegular: boolean,
+  t: (key: string) => string,
+): ReactNode {
   if (state.kind === 'empty') {
     return (
-      <EmptyView message={t('crosswind.resultEmpty')} iconLabel={t('crosswind.emptyIconLabel')} />
+      <EmptyView
+        message={t('crosswind.resultEmpty')}
+        iconLabel={t('crosswind.emptyIconLabel')}
+        isRegular={isRegular}
+      />
     );
   }
   if (state.kind === 'out-of-envelope') {
@@ -198,6 +249,8 @@ function renderContent(state: CrosswindUIState, t: (key: string) => string): Rea
     <IdleView
       output={state.output}
       warning={state.warning}
+      envelopeBar={state.envelopeBar}
+      isRegular={isRegular}
       statusLabel={t('crosswind.resultStatusLabel')}
       footnote={t('crosswind.resultFootnote')}
       cgLabel={t('crosswind.metaCG')}
@@ -208,6 +261,12 @@ function renderContent(state: CrosswindUIState, t: (key: string) => string): Rea
 }
 
 const styles = StyleSheet.create({
+  compactEnvelopeBar: {
+    marginTop: tokens.spacing.sm,
+  },
+  fillHeight: {
+    flex: 1,
+  },
   warningChip: {
     marginTop: tokens.spacing.sm,
   },

@@ -14,7 +14,7 @@
 
 import type { TextStyle } from 'react-native';
 
-// --- Typography sizes (subset of 8 / 9 / 10 / 11 / 12 / 14 / 16 / 18 / 22 / 24 / 28 / 36 / 48 / 64). ---
+// --- Typography sizes (subset of 8 / 9 / 10 / 11 / 12 / 14 / 16 / 18 / 22 / 24 / 28 / 36 / 48 / 72). ---
 const FONT_SIZE_MONO_MICRO = 8;
 const FONT_SIZE_MICRO_UPPERCASE = 9;
 const FONT_SIZE_SEGMENT_LABEL = 10;
@@ -26,7 +26,9 @@ const FONT_SIZE_HEADING_3 = 18;
 const FONT_SIZE_HEADING_2 = 22;
 const FONT_SIZE_MONO_MEDIUM = 24;
 const FONT_SIZE_HEADING_1 = 28;
+const FONT_SIZE_MONO_XL = 36;
 const FONT_SIZE_DISPLAY = 48;
+const FONT_SIZE_DISPLAY_LARGE = 72;
 
 // --- Line heights ---
 const LINE_HEIGHT_MONO_MICRO = 12; // 8 × 1.5; small monoglyph chip readout
@@ -41,9 +43,12 @@ const LINE_HEIGHT_HEADING_2 = 28;
 const LINE_HEIGHT_MONO_MEDIUM = 28;
 const LINE_HEIGHT_HEADING_1 = 34;
 const LINE_HEIGHT_MONO_LARGE = 28;
+const LINE_HEIGHT_MONO_XL = 40; // 36 × 1.11
 const LINE_HEIGHT_DISPLAY = 56;
+const LINE_HEIGHT_DISPLAY_LARGE = 80; // 72 × 1.11
 
 // --- Letter spacing (RN points; em values shown for cross-reference with mockup CSS). ---
+const LETTER_SPACING_TIGHTEST = -1; // ≈ -0.014em at 72pt; used by displayLarge
 const LETTER_SPACING_TIGHTER = -0.5; // ≈ -0.02em at 24pt + 28pt + 48pt; used by monoMedium / display
 const LETTER_SPACING_TIGHT = -0.18; // ≈ -0.01em at 18pt; used by heading3
 const LETTER_SPACING_NORMAL = 0;
@@ -207,6 +212,36 @@ export const typography = {
       lineHeight: LINE_HEIGHT_SEGMENT_LABEL,
       fontWeight: '500',
       letterSpacing: LETTER_SPACING_NORMAL,
+    },
+    /**
+     * Extra-large monospace — used as the iPad-regular variant of the
+     * "KT" suffix on the Crosswind result value (paired with
+     * `displayLarge`). `monoMedium` (24 pt) is the compact-width
+     * default; this 36 pt variant scales up proportionally on
+     * regular-width devices. Per `06-ui-spec.md` Экран 4 § "iPad
+     * result panel scaling" (PR `feat/crosswind-polish-2`).
+     */
+    monoXL: {
+      fontFamily: fontFamilyMono,
+      fontSize: FONT_SIZE_MONO_XL,
+      lineHeight: LINE_HEIGHT_MONO_XL,
+      fontWeight: '700',
+      letterSpacing: LETTER_SPACING_NORMAL,
+    },
+    /**
+     * Extra-large display — used as the iPad-regular variant of the
+     * Crosswind result value. `display` (48 pt) is the compact-width
+     * default; this 72 pt variant fills the larger result panel on
+     * regular-width devices for at-a-glance readability at viewing
+     * distance. Per `06-ui-spec.md` Экран 4 § "iPad result panel
+     * scaling" (PR `feat/crosswind-polish-2`).
+     */
+    displayLarge: {
+      fontFamily: fontFamilyMono,
+      fontSize: FONT_SIZE_DISPLAY_LARGE,
+      lineHeight: LINE_HEIGHT_DISPLAY_LARGE,
+      fontWeight: '700',
+      letterSpacing: LETTER_SPACING_TIGHTEST,
     },
   } satisfies Record<string, TypographyVariant>,
 } as const;
