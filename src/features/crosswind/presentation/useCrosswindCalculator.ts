@@ -17,7 +17,6 @@ import { useMemo } from 'react';
 
 import { isOk } from '../../../core/result';
 import { calculateCrosswindLimit } from '../domain/calculator';
-import { getLookupCGRange } from '../domain/lookupRange';
 import type {
   CGPercentMAC,
   CrosswindCalculationOutput,
@@ -29,15 +28,13 @@ import { validateOperationalEnvelope } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import type { CrosswindDataFile } from '../data/schema';
 
-import { ENVELOPE_BAR_CG_MAX_PERCENT } from './constants';
+const NO_ACTIVE_BRACKET = -1;
 
-export interface EnvelopeBarInputs {
-  readonly currentCG: number;
-  readonly axisMin: number;
-  readonly axisMax: number;
-  readonly operationalMin: number;
-  readonly operationalMax: number;
-  readonly lookupMax: number;
+export interface ChartInputs {
+  readonly data: CrosswindDataFile | null;
+  readonly weightTons: number;
+  readonly cgPercent: number;
+  readonly activeBracketIndex: number;
 }
 
 export type CrosswindUIState =
@@ -46,7 +43,6 @@ export type CrosswindUIState =
       readonly kind: 'idle';
       readonly output: CrosswindCalculationOutput;
       readonly warning: EnvelopeViolation | null;
-      readonly envelopeBar: EnvelopeBarInputs;
     }
   | { readonly kind: 'out-of-envelope'; readonly reason: string }
   | { readonly kind: 'error'; readonly headline: string; readonly description?: string };
@@ -64,6 +60,12 @@ export interface UseCrosswindCalculatorArgs {
 
 export interface UseCrosswindCalculatorResult {
   readonly state: CrosswindUIState;
+  /**
+   * Inputs for the CrosswindChart. Null when the user hasn't entered
+   * valid numbers yet (chart isn't shown). When non-null, `data` may
+   * still be null (non-dry runway condition → chart shows empty state).
+   */
+  readonly chart: ChartInputs | null;
   readonly weightFieldError: string | null;
   readonly cgFieldError: string | null;
 }
@@ -112,12 +114,18 @@ function parseInputs(
   const weightNum = parseFloatStrict(inputs.weightText);
   const cgNum = parseFloatStrict(inputs.cgText);
   if (weightNum === null || cgNum === null) {
-    return { state: { kind: 'empty' }, weightFieldError: null, cgFieldError: null };
+    return {
+      state: { kind: 'empty' },
+      chart: null,
+      weightFieldError: null,
+      cgFieldError: null,
+    };
   }
   const weightVO = makeWeightInTons(weightNum);
   if (!weightVO.ok) {
     return {
       state: { kind: 'error', headline: 'Calculation unavailable', description: 'Invalid weight' },
+      chart: null,
       weightFieldError: 'Invalid weight',
       cgFieldError: null,
     };
@@ -126,6 +134,7 @@ function parseInputs(
   if (!cgVO.ok) {
     return {
       state: { kind: 'error', headline: 'Calculation unavailable', description: 'Invalid CG' },
+      chart: null,
       weightFieldError: null,
       cgFieldError: 'Invalid CG',
     };
@@ -138,26 +147,41 @@ function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is Pa
 }
 
 /**
- * Compute the envelope-position bar inputs from the bundled JSON +
- * the user's current weight/CG. The CG-axis upper bound and the
- * lookup-range derivation are extracted to dedicated helpers
- * (`ENVELOPE_BAR_CG_MAX_PERCENT` in `./constants` and
- * `getLookupCGRange` in `../domain/lookupRange`) so the bar's two
- * non-spec defaults are individually testable and documented.
+ * Compute the chart's `activeBracketIndex` from algorithm metadata.
+ *
+ * - `within-bracket` strategy → index of the breakpoint matching
+ *   `bracketCrosswindRange.upper` (the lowerBound's crosswind value
+ *   in the algorithm; visually the bracket's upper edge in CG space).
+ * - `below-envelope` / `above-envelope` (IFNA-fallback cases) → -1
+ *   (no specific line is "active"; the marker sits outside the
+ *   bracket grid).
  */
-function buildEnvelopeBarInputs(
+function deriveActiveBracketIndex(
+  output: CrosswindCalculationOutput,
   data: CrosswindDataFile,
-  weightTons: WeightInTons,
-  cgPercent: number,
-): EnvelopeBarInputs {
-  const lookupRange = getLookupCGRange(data, weightTons);
+): number {
+  if (output.metadata.calculationStrategy !== 'within-bracket') {
+    return NO_ACTIVE_BRACKET;
+  }
+  const target = output.metadata.bracketCrosswindRange.upper;
+  return data.interpolation.breakpoints.findIndex((bp) => bp.crosswindKnots === target);
+}
+
+function buildChartInputs(args: {
+  readonly parsed: ParsedInputs;
+  readonly data: CrosswindDataFile;
+  readonly runwayCondition: RunwayCondition;
+  readonly output: CrosswindCalculationOutput | null;
+}): ChartInputs {
+  const { parsed, data, runwayCondition, output } = args;
+  const hasLookupData = runwayCondition === data.runwayCondition;
+  const activeBracketIndex =
+    output === null || !hasLookupData ? NO_ACTIVE_BRACKET : deriveActiveBracketIndex(output, data);
   return {
-    currentCG: cgPercent,
-    axisMin: data.operationalEnvelope.cg.minPercent,
-    axisMax: ENVELOPE_BAR_CG_MAX_PERCENT,
-    operationalMin: data.operationalEnvelope.cg.minPercent,
-    operationalMax: data.operationalEnvelope.cg.maxPercent,
-    lookupMax: lookupRange.max,
+    data: hasLookupData ? data : null,
+    weightTons: parsed.weight as number,
+    cgPercent: parsed.cg as number,
+    activeBracketIndex,
   };
 }
 
@@ -185,13 +209,28 @@ function compute(
   );
 
   if (calc.ok) {
-    const envelopeBar = buildEnvelopeBarInputs(data, parsed.weight, parsed.cg);
+    const chart = buildChartInputs({
+      parsed,
+      data,
+      runwayCondition: inputs.runwayCondition,
+      output: calc.value,
+    });
     return {
-      state: { kind: 'idle', output: calc.value, warning: violation, envelopeBar },
+      state: { kind: 'idle', output: calc.value, warning: violation },
+      chart,
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
     };
   }
+
+  // Below paths: no algorithm result. Chart still renders so the pilot
+  // sees the visual context (or empty state for non-dry conditions).
+  const chart = buildChartInputs({
+    parsed,
+    data,
+    runwayCondition: inputs.runwayCondition,
+    output: null,
+  });
 
   if (calc.error.kind === 'NoLookupData') {
     return {
@@ -199,6 +238,7 @@ function compute(
         kind: 'out-of-envelope',
         reason: 'Inputs cannot be evaluated by the lookup table. Adjust inputs.',
       },
+      chart,
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
     };
@@ -210,6 +250,7 @@ function compute(
         headline: 'Data unavailable',
         description: 'This combination is not yet supported.',
       },
+      chart,
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
     };
@@ -220,6 +261,7 @@ function compute(
       headline: 'Calculation unavailable',
       description: 'Verify inputs and try again.',
     },
+    chart,
     weightFieldError: fieldErrors.weight,
     cgFieldError: fieldErrors.cg,
   };

@@ -9,13 +9,14 @@ import { useTheme, useTranslation } from '../../../../core';
 import { ResultPanel, Text, tokens, useReduceMotion } from '../../../../design-system';
 import type { ResultPanelMetaItem, ResultPanelState } from '../../../../design-system';
 import type { CrosswindCalculationOutput, EnvelopeViolation } from '../../domain/types';
-import type { CrosswindUIState, EnvelopeBarInputs } from '../useCrosswindCalculator';
+import type { ChartInputs, CrosswindUIState } from '../useCrosswindCalculator';
 
-import { EnvelopePositionBar } from './EnvelopePositionBar';
+import { CrosswindChart } from './CrosswindChart';
 import { RegularIdleBody } from './RegularIdleBody';
 
 export interface CrosswindResultProps {
   readonly state: CrosswindUIState;
+  readonly chart: ChartInputs | null;
   readonly isRegular?: boolean;
   readonly testID?: string | undefined;
 }
@@ -78,7 +79,7 @@ function buildMeta(
 interface IdleViewProps {
   readonly output: CrosswindCalculationOutput;
   readonly warning: EnvelopeViolation | null;
-  readonly envelopeBar: EnvelopeBarInputs;
+  readonly chart: ChartInputs | null;
   readonly isRegular: boolean;
   readonly statusLabel: string;
   readonly footnote: string;
@@ -91,7 +92,7 @@ function IdleView(props: IdleViewProps): ReactNode {
   const {
     output,
     warning,
-    envelopeBar,
+    chart,
     isRegular,
     statusLabel,
     footnote,
@@ -106,7 +107,7 @@ function IdleView(props: IdleViewProps): ReactNode {
       <RegularIdleBody
         output={output}
         warning={warning}
-        envelopeBar={envelopeBar}
+        chart={chart}
         meta={meta}
         statusLabel={statusLabel}
         footnote={footnote}
@@ -126,17 +127,17 @@ function IdleView(props: IdleViewProps): ReactNode {
   return (
     <View>
       <ResultPanel state={idleState} testID="crosswind-result-panel" />
-      <View style={styles.compactEnvelopeBar} testID="crosswind-envelope-bar">
-        <EnvelopePositionBar
-          currentCG={envelopeBar.currentCG}
-          axisMin={envelopeBar.axisMin}
-          axisMax={envelopeBar.axisMax}
-          operationalMin={envelopeBar.operationalMin}
-          operationalMax={envelopeBar.operationalMax}
-          lookupMax={envelopeBar.lookupMax}
-          isRegular={false}
-        />
-      </View>
+      {chart !== null ? (
+        <View style={styles.compactChart}>
+          <CrosswindChart
+            data={chart.data}
+            weightTons={chart.weightTons}
+            cgPercent={chart.cgPercent}
+            activeBracketIndex={chart.activeBracketIndex}
+            testID="crosswind-chart"
+          />
+        </View>
+      ) : null}
       {warning !== null ? (
         <View style={styles.warningChip} testID="crosswind-warning-chip">
           <Text variant="caption" color="warn">
@@ -192,10 +193,10 @@ function EmptyView({ message, iconLabel, isRegular }: EmptyViewProps): ReactNode
 }
 
 export function CrosswindResult(props: CrosswindResultProps): ReactNode {
-  const { state, isRegular = false, testID } = props;
+  const { state, chart, isRegular = false, testID } = props;
   const { t } = useTranslation();
   const reduceMotion = useReduceMotion();
-  const content = renderContent(state, isRegular, t);
+  const content = renderContent(state, chart, isRegular, t);
   const wrapperStyle = isRegular ? styles.fillHeight : undefined;
 
   if (reduceMotion) {
@@ -218,6 +219,7 @@ export function CrosswindResult(props: CrosswindResultProps): ReactNode {
 
 function renderContent(
   state: CrosswindUIState,
+  chart: ChartInputs | null,
   isRegular: boolean,
   t: (key: string) => string,
 ): ReactNode {
@@ -243,13 +245,29 @@ function renderContent(
       state.description === undefined
         ? { kind: 'error', headline: state.headline }
         : { kind: 'error', headline: state.headline, description: state.description };
-    return <ResultPanel state={errorState} testID="crosswind-result-panel" />;
+    return (
+      <View>
+        <ResultPanel state={errorState} testID="crosswind-result-panel" />
+        {chart !== null ? (
+          <View style={styles.compactChart}>
+            <CrosswindChart
+              data={chart.data}
+              weightTons={chart.weightTons}
+              cgPercent={chart.cgPercent}
+              activeBracketIndex={chart.activeBracketIndex}
+              isRegular={isRegular}
+              testID="crosswind-chart"
+            />
+          </View>
+        ) : null}
+      </View>
+    );
   }
   return (
     <IdleView
       output={state.output}
       warning={state.warning}
-      envelopeBar={state.envelopeBar}
+      chart={chart}
       isRegular={isRegular}
       statusLabel={t('crosswind.resultStatusLabel')}
       footnote={t('crosswind.resultFootnote')}
@@ -261,7 +279,7 @@ function renderContent(
 }
 
 const styles = StyleSheet.create({
-  compactEnvelopeBar: {
+  compactChart: {
     marginTop: tokens.spacing.sm,
   },
   fillHeight: {

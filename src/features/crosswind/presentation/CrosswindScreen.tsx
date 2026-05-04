@@ -81,7 +81,10 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     () => ({ weightText, cgText, runwayCondition }),
     [weightText, cgText, runwayCondition],
   );
-  const { state, weightFieldError, cgFieldError } = useCrosswindCalculator({ inputs, data });
+  const { state, chart, weightFieldError, cgFieldError } = useCrosswindCalculator({
+    inputs,
+    data,
+  });
 
   const handleBack = useCallback((): void => {
     router.back();
@@ -106,7 +109,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     />
   );
   const resultPanel = (
-    <CrosswindResult state={state} isRegular={isRegular} testID="crosswind-result" />
+    <CrosswindResult state={state} chart={chart} isRegular={isRegular} testID="crosswind-result" />
   );
 
   return (

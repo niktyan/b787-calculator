@@ -41,7 +41,6 @@
     "metaCG": "CG",
     "metaRange": "Range",
     "warningOutsideEnvelope": "Outside operational envelope — advisory only",
-    "envelopeBarLabel": "Center of gravity envelope position",
     "chartLabel": "Crosswind limit chart",
     "chartEmpty": "No data for this runway condition",
     "runway": {

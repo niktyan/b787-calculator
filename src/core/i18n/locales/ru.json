@@ -41,7 +41,6 @@
     "metaCG": "CG",
     "metaRange": "Диапазон",
     "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно",
-    "envelopeBarLabel": "Положение центровки в эксплуатационном диапазоне",
     "chartLabel": "График ограничений crosswind",
     "chartEmpty": "Нет данных для этого состояния ВПП",
     "runway": {

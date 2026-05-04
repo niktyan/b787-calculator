@@ -9,8 +9,8 @@
  * `slope × weightKilolbs + intercept`.
  *
  * Pure data introspection — no business decisions, no side effects.
- * Used by the presentation layer to drive the `EnvelopePositionBar`
- * zones; not consumed by `calculateCrosswindLimit` itself.
+ * Reserved for the presentation layer (chart axis bounds, future
+ * zone affordances); not consumed by `calculateCrosswindLimit` itself.
  *
  * The bundled JSON schema requires `breakpoints.length === 5`, so the
  * defensive fallbacks below are unreachable in production and exist

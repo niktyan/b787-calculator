@@ -19,7 +19,8 @@ src/features/crosswind/
 │   ├── components/
 │   │   ├── CrosswindInputForm.tsx   — форма ввода (weight, CG, runway condition)
 │   │   ├── CrosswindResult.tsx      — отображение результата
-│   │   └── CrosswindSourceChip.tsx  — chip "Reference: 787 FCOM"
+│   │   ├── RegularIdleBody.tsx      — iPad regular result-panel (72/36 typography)
+│   │   └── CrosswindChart/          — Polish-3 visualization (5 lines + marker)
 │   └── useCrosswindCalculator.ts    — view-model хук
 ├── domain/
 │   ├── types.ts                     — domain-типы
@@ -27,7 +28,7 @@ src/features/crosswind/
 │   ├── calculator.ts                — чистая функция расчёта
 │   ├── strategies.ts                — implementation для 'piecewise-linear-excel-equivalent'
 │   ├── validators.ts                — валидация входных данных
-│   ├── lookupRange.ts               — getLookupCGRange query helper (envelope-bar driver)
+│   ├── lookupRange.ts               — getLookupCGRange query helper (chart driver)
 │   └── errors.ts                    — типы ошибок
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
@@ -104,9 +105,11 @@ export type { EnvelopeViolation } from './domain';
 // for the first and last breakpoints. Pure data introspection — no
 // business decisions, no side effects.
 //
-// Used by the presentation layer to drive the EnvelopePositionBar
-// zones (см. 06-ui-spec.md § Экран 4 → "Envelope-position bar"); not
-// consumed by `calculateCrosswindLimit` itself.
+// Used by the presentation layer (currently the CrosswindChart's
+// future axis-extent computations and the lookup envelope semantics
+// surfaced in PR #32; см. 06-ui-spec.md § Экран 4 →
+// "Visualization · CG / Crosswind chart"). Not consumed by
+// `calculateCrosswindLimit` itself.
 export { getLookupCGRange } from './domain';
 export type { LookupCGRange } from './domain';
 

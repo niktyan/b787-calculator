@@ -21,9 +21,9 @@ import { useTheme } from '../../../../core';
 import { Text, tokens } from '../../../../design-system';
 import type { ResultPanelMetaItem } from '../../../../design-system';
 import type { CrosswindCalculationOutput, EnvelopeViolation } from '../../domain/types';
-import type { EnvelopeBarInputs } from '../useCrosswindCalculator';
+import type { ChartInputs } from '../useCrosswindCalculator';
 
-import { EnvelopePositionBar } from './EnvelopePositionBar';
+import { CrosswindChart } from './CrosswindChart';
 
 const KT_UNIT = 'KT';
 const REGULAR_BORDER_WIDTH = 1;
@@ -46,7 +46,7 @@ const META_LABEL_STYLE: TextStyle = {
 export interface RegularIdleBodyProps {
   readonly output: CrosswindCalculationOutput;
   readonly warning: EnvelopeViolation | null;
-  readonly envelopeBar: EnvelopeBarInputs;
+  readonly chart: ChartInputs | null;
   readonly meta: readonly ResultPanelMetaItem[];
   readonly statusLabel: string;
   readonly footnote: string;
@@ -101,25 +101,26 @@ function TopGroup({
 }
 
 interface BottomGroupProps {
-  readonly envelopeBar: EnvelopeBarInputs;
+  readonly chart: ChartInputs | null;
   readonly meta: readonly ResultPanelMetaItem[];
   readonly dividerStyle: ViewStyle;
 }
 
-function BottomGroup({ envelopeBar, meta, dividerStyle }: BottomGroupProps): ReactNode {
+function BottomGroup({ chart, meta, dividerStyle }: BottomGroupProps): ReactNode {
   return (
     <View style={styles.bottomGroup}>
-      <View style={styles.envelopeBar} testID="crosswind-envelope-bar">
-        <EnvelopePositionBar
-          currentCG={envelopeBar.currentCG}
-          axisMin={envelopeBar.axisMin}
-          axisMax={envelopeBar.axisMax}
-          operationalMin={envelopeBar.operationalMin}
-          operationalMax={envelopeBar.operationalMax}
-          lookupMax={envelopeBar.lookupMax}
-          isRegular
-        />
-      </View>
+      {chart !== null ? (
+        <View style={styles.chart} testID="crosswind-chart-slot">
+          <CrosswindChart
+            data={chart.data}
+            weightTons={chart.weightTons}
+            cgPercent={chart.cgPercent}
+            activeBracketIndex={chart.activeBracketIndex}
+            isRegular
+            testID="crosswind-chart"
+          />
+        </View>
+      ) : null}
       <View style={dividerStyle}>
         <View style={styles.metaGrid} testID="crosswind-meta-grid">
           {meta.map((item) => (
@@ -139,7 +140,7 @@ function BottomGroup({ envelopeBar, meta, dividerStyle }: BottomGroupProps): Rea
 }
 
 export function RegularIdleBody(props: RegularIdleBodyProps): ReactNode {
-  const { output, warning, envelopeBar, meta, statusLabel, footnote, warningText } = props;
+  const { output, warning, chart, meta, statusLabel, footnote, warningText } = props;
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
 
@@ -181,7 +182,7 @@ export function RegularIdleBody(props: RegularIdleBodyProps): ReactNode {
         footnote={footnote}
         warningText={warningText}
       />
-      <BottomGroup envelopeBar={envelopeBar} meta={meta} dividerStyle={dividerStyle} />
+      <BottomGroup chart={chart} meta={meta} dividerStyle={dividerStyle} />
     </View>
   );
 }
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
   bottomGroup: {
     gap: tokens.spacing.sm,
   },
-  envelopeBar: {
+  chart: {
     paddingHorizontal: tokens.spacing.sm,
   },
   ktSuffix: {
