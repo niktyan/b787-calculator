@@ -27,3 +27,6 @@ export { validateAlgorithmInput, validateOperationalEnvelope } from './validator
 
 export { calculateCrosswindLimit } from './calculator';
 export type { CalculatorInput } from './calculator';
+
+export { getLookupCGRange } from './lookupRange';
+export type { LookupCGRange } from './lookupRange';

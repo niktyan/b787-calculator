@@ -27,6 +27,7 @@ src/features/crosswind/
 │   ├── calculator.ts                — чистая функция расчёта
 │   ├── strategies.ts                — implementation для 'piecewise-linear-excel-equivalent'
 │   ├── validators.ts                — валидация входных данных
+│   ├── lookupRange.ts               — getLookupCGRange query helper (envelope-bar driver)
 │   └── errors.ts                    — типы ошибок
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
@@ -86,6 +87,28 @@ export { calculateCrosswindLimit } from './domain';
 // chip next to it.
 export { validateOperationalEnvelope } from './domain';
 export type { EnvelopeViolation } from './domain';
+
+// Lookup-range query.
+//
+// signature:
+//   interface LookupCGRange { readonly min: number; readonly max: number }
+//   function getLookupCGRange(
+//     data: CrosswindDataFile,
+//     weightTons: WeightInTons,
+//   ): LookupCGRange;
+//
+// Returns the CG (% MAC) interval at the given weight for which the
+// lookup table produces an interpolated number rather than the
+// IFNA-fallback 40 KT (см. 05-crosswind-algorithm.md Шаг 3 lower /
+// upper bound search). Endpoints = `slope × weightKilolbs + intercept`
+// for the first and last breakpoints. Pure data introspection — no
+// business decisions, no side effects.
+//
+// Used by the presentation layer to drive the EnvelopePositionBar
+// zones (см. 06-ui-spec.md § Экран 4 → "Envelope-position bar"); not
+// consumed by `calculateCrosswindLimit` itself.
+export { getLookupCGRange } from './domain';
+export type { LookupCGRange } from './domain';
 
 // Repository factory (для DI, если понадобится альтернативная реализация)
 export { createCrosswindRepository } from './data';
