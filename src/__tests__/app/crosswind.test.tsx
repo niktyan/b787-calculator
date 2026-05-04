@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react-native';
+import { fireEvent, within } from '@testing-library/react-native';
 
 import CrosswindRoute from '../../app/(main)/crosswind';
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
@@ -157,6 +157,59 @@ describe('Crosswind route', () => {
       // landscape so the user-visible scale-up isn't silently lost.
       expect(json).toContain('"fontSize":72');
       expect(json).toContain('"fontSize":36');
+    });
+  });
+
+  describe('Range row containment (Block 0 fix)', () => {
+    afterEach(() => {
+      clearViewport();
+    });
+
+    // iPad regular landscape, W=170 t, CG=34 % MAC: gives Range 30–35 KT
+    // (within-bracket case where lower !== upper). Before the fix the
+    // Range row escaped the result-panel container on iPad regular and
+    // floated below its bottom border. This guard asserts the Range
+    // text is a DESCENDANT of crosswind-result-panel.
+    it('iPad regular: Range row stays inside result panel when min !== max', () => {
+      mockViewport(IPAD_MINI_LANDSCAPE);
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
+      fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '34');
+      const panel = tree.getByTestId('crosswind-result-panel');
+      const metaGrid = tree.getByTestId('crosswind-meta-grid');
+      // Both Range row halves (label + value) must live inside the
+      // panel via the meta-grid container.
+      expect(within(panel).getByTestId('crosswind-meta-grid')).toBe(metaGrid);
+      expect(within(metaGrid).getByText('crosswind.metaRange')).toBeTruthy();
+      expect(within(metaGrid).getByText(/30 – 35 KT/)).toBeTruthy();
+    });
+
+    // CG=42 → above-envelope IFNA fallback; algorithm returns 40 KT
+    // with bracketCrosswindRange = [40, 40] (degenerate). buildMeta
+    // omits the Range row in that case. Verify panel renders only CG +
+    // RWY (2 items) without leaving an empty placeholder slot.
+    it('iPad regular: Range row hidden cleanly when min === max (above-envelope)', () => {
+      mockViewport(IPAD_MINI_LANDSCAPE);
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
+      fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '42');
+      const metaGrid = tree.getByTestId('crosswind-meta-grid');
+      expect(within(metaGrid).queryByText('crosswind.metaRange')).toBeNull();
+      // CG and RWY rows still present.
+      expect(within(metaGrid).getByText('crosswind.metaCG')).toBeTruthy();
+      expect(within(metaGrid).getByText('RWY')).toBeTruthy();
+    });
+
+    it('iPhone compact: Range row stays inside result panel when min !== max', () => {
+      // Default viewport (width = 0) takes compact path through
+      // ResultPanel; meta-grid Row carries testID `result-panel-meta-grid`.
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
+      fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '34');
+      const panel = tree.getByTestId('crosswind-result-panel');
+      const metaGrid = within(panel).getByTestId('result-panel-meta-grid');
+      expect(within(metaGrid).getByText('crosswind.metaRange')).toBeTruthy();
+      expect(within(metaGrid).getByText(/30 – 35 KT/)).toBeTruthy();
     });
   });
 });

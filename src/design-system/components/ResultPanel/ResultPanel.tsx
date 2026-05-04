@@ -124,7 +124,7 @@ function IdleBody(props: {
       ) : null}
       {state.meta !== undefined && state.meta.length > 0 ? (
         <View style={styles.meta}>
-          <Row wrap gap="sm">
+          <Row wrap gap="sm" testID="result-panel-meta-grid">
             {state.meta.map((item) => (
               <View key={item.label} style={styles.metaItem}>
                 <Text variant="microUppercase" color="textTertiary" style={META_LABEL_STYLE}>

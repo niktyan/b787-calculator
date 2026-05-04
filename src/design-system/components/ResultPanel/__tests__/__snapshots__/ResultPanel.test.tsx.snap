@@ -376,6 +376,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
             undefined,
           ]
         }
+        testID="result-panel-meta-grid"
       >
         <View
           style={
