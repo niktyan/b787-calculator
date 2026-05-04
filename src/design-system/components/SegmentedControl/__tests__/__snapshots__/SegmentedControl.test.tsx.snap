@@ -59,6 +59,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         {
           "backgroundColor": "#00C2A8",
         },
@@ -131,6 +132,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
           "paddingVertical": 4,
         },
         null,
+        null,
         {
           "opacity": 0.5,
         },
@@ -201,6 +203,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         null,
         {
           "opacity": 0.5,
@@ -291,6 +294,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         {
           "backgroundColor": "#00C2A8",
         },
@@ -363,6 +367,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
           "paddingVertical": 4,
         },
         null,
+        null,
         {
           "opacity": 0.5,
         },
@@ -433,6 +438,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         null,
         {
           "opacity": 0.5,
