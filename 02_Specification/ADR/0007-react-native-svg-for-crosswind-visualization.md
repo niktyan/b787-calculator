@@ -1,7 +1,7 @@
 # ADR-0007 · Adopt react-native-svg for crosswind visualization
 
 **Status:** Accepted
-**Date:** 2026-05-04 (forward signal — to be installed at the start of Polish-3)
+**Date:** 2026-05-04 (forward signal); installed 2026-05-04 in Polish-3 (`feat/crosswind-polish-3`).
 **Related:** `02_Specification/03-tech-stack.md`, `02_Specification/06-ui-spec.md` § Экран 4 → "Visualization · CG / Crosswind chart"
 
 ## Context

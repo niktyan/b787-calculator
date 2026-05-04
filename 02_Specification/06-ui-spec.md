@@ -745,114 +745,86 @@ iPhone» → «Layout matrix · Crosswind result panel») result-panel
   цвета `tokens.colors.warn`, body объясняет нарушенную границу
   (например «Weight 95 t is below minimum 110 t. Adjust input.»).
 
-*Envelope-position bar (PR `feat/crosswind-polish-2`):*
+*Visualization · CG / Crosswind chart (Polish-3):*
 
 Под result-панелью (compact) или внутри regular-блока (iPad landscape)
-рендерится горизонтальный 3-зонный индикатор положения текущего CG на
-оси `[axisMin, axisMax] = [operationalEnvelope.cg.minPercent, 50]`
-%MAC. 50 — верхний бэкстоп оси, документированный отдельной константой
-`ENVELOPE_BAR_CG_MAX_PERCENT` (см. ниже § «Decisions»); он держит
-out-of-lookup зону всегда видимой даже для above-envelope Excel-quirk
-кейсов (CG 42–50). Реализация — компонент
-`EnvelopePositionBar` внутри Crosswind feature-модуля (не в
-design-system; узкое назначение, не переиспользуемый виджет).
+рендерится визуализация — полноценный CG / Crosswind график,
+отрисовываемый через `react-native-svg` (см. ADR-0007). График
+визуализирует ту же piecewise-linear модель, которая лежит в основе
+алгоритма (`05-crosswind-algorithm.md`). Реализация — компонент
+`CrosswindChart` внутри Crosswind feature-модуля
+(`presentation/components/CrosswindChart/`).
 
-- **Track:** `flexDirection: 'row'`, `borderRadius: 4 pt`,
-  `overflow: 'hidden'`. Высота — 8 pt в compact, 12 pt в regular.
-- **3 зоны** (flex-children в порядке слева → направо):
-  - `safe`: `[operationalMin, operationalMax]` — фон
-    `tokens.colors.accentSoft`.
-  - `boundary`: `(operationalMax, lookupMax]` — фон
-    `tokens.colors.envelopeBarBoundary` (rgba warn 20 %, см.
-    `module-contracts/design-system.md`).
-  - `outOfLookup`: `(lookupMax, axisMax]` — фон
-    `tokens.colors.envelopeBarOutOfLookup` (rgba danger 20 %).
-  - `flexGrow` каждой зоны = ширина в %MAC, так что суммарная ширина
-    равна `axisMax - axisMin` без gap-ов.
-- **`lookupMax` derivation:** возвращается доменным помощником
-  `getLookupCGRange(data, weightTons).max` (см.
-  `module-contracts/crosswind.md` Public API). Это
-  `slope × weightKilolbs + last_intercept` — последний XLOOKUP-порог
-  на текущем весе; выше него алгоритм переходит к IFNA-fallback 40 KT.
-- **Marker:** вертикальная полоска 2 pt, цвет
-  `tokens.colors.accent`. Позиция через `Animated.View` с
-  `useSharedValue` + `withTiming(200ms, Easing.out(Easing.ease))` по
-  `left: '<percent>%'`. При смене input-веса/CG marker плавно
-  скользит. **Reduce Motion bypass:** при включённом флаге
-  `useReduceMotion()` вместо `withTiming` пишется `progress.value =
-  targetProgress` синхронно — marker «прыгает» без анимации.
-- **Bounds row:** под track-ом — две microUppercase-подписи `<axisMin>%`
-  слева, `<axisMax>%` справа (`tokens.colors.textTertiary`).
-- **Accessibility:** `accessibilityRole="adjustable"`,
-  `accessibilityLabel` локализован (`crosswind.envelopeBarLabel`),
-  `accessibilityValue: { min, max, now: round(currentCG) }`.
-- **Расположение:**
-  - **Compact:** под result-панелью с `marginTop: tokens.spacing.sm`
-    (см. `compactEnvelopeBar` styles в `CrosswindResult.tsx`).
-  - **Regular:** внутри `RegularIdleBody`, как часть column-stack,
-    выше meta-grid.
-
-В Polish-3 этот компонент **удаляется** и заменяется полноценной
-chart-визуализацией (см. § «Visualization · CG / Crosswind chart»
-ниже — пред-Polish-3 prep).
-
-*Visualization · CG / Crosswind chart (Polish-3 forward signal):*
-
-Polish-3 заменяет `EnvelopePositionBar` на полноценный CG / Crosswind
-график, отрисовываемый через `react-native-svg` (см. ADR-0007).
-График визуализирует ту же piecewise-linear модель, которая лежит в
-основе алгоритма (`05-crosswind-algorithm.md`). Spec-only forward
-signal — реализация в Polish-3.
+> **Историческая заметка.** Polish-2 (PR #31) использовал упрощённый
+> 3-зонный `EnvelopePositionBar`. Polish-3 (этот раздел) заменил его на
+> полноценный график; компонент удалён вместе с
+> `tokens.colors.envelopeBarBoundary`. `tokens.colors.envelopeBarOutOfLookup`
+> сохранён — графики его reusуют для dashed-вертикалей operational
+> envelope.
 
 - **Геометрия.** Пять параллельных линий в плоскости (Weight, CG),
-  каждая описывает «потолок» для одного из дискретных значений
+  каждая описывает CG-порог для одного из дискретных значений
   crosswind (40 / 35 / 30 / 25 / 20 KT). Slope общий и равен `≈ 0.0576
   KT/kip` (см. `interpolation.slope` в bundled JSON; формула линии —
   `cgPercent = slope × weightKilolbs + intercept[i]` при фиксированном
-  KT). Линии параллельные и эквидистантные по `intercept`.
+  KT). Линии — straight segments, **не** bezier-сглаженные (данные
+  piecewise-linear).
 - **Оси.**
-  - X-axis: landing weight в тоннах. Диапазон выбирается компактным
-    под фактический app-input (≈ 100–180 t для B787-8); конвертация
-    из kips в тонны для подписей делается в render-слое.
-  - Y-axis: max crosswind в KT. Диапазон 0–50 (10-pt grid).
-  - Подписи осей — `microUppercase` / `monoSmall`, цвет
-    `tokens.colors.textTertiary`.
-- **Активная линия.** Линия для CG-брекета, в который попадает
-  текущий ввод (`metadata.bracketCrosswindRange.upper` алгоритма) —
-  full opacity, цвет `tokens.colors.accent`, толщина 2 pt.
-  Остальные линии — opacity ≈ 0.3, цвет
-  `tokens.colors.textSecondary`, толщина 1 pt.
-- **Marker.** Filled circle (radius 6 pt, fill
-  `tokens.colors.accent`) на активной линии в позиции текущего веса.
-  Анимируется по той же 200 ms `withTiming` схеме, что и
-  envelope-bar marker сейчас (см. выше).
-- **Vertical operational-envelope bound.** Тонкая вертикальная линия
-  цвета `tokens.colors.warn` (1 pt, dashed `[4, 4]`) на позиции
-  `operationalEnvelope.weight.maxTons`; за ней — лёгкий fill
-  `tokens.colors.envelopeBarBoundary` (rgba warn 20 %) до правого
-  края оси, чтобы отметить outside-operational область. Аналогично
-  для `minTons` слева — без fill, только пунктир.
-- **Анимации.**
-  - Plus opacity transition при смене активной линии (CG переключает
-    брекет): 200 ms `withTiming`, `Easing.out(Easing.ease)`.
-  - Marker movement (изменение weight или CG): 200 ms `withTiming`.
-  - Line-draw анимация на первый рендер: ≈ 500 ms staged
-    `stroke-dasharray` pattern (линии «прорисовываются» слева
-    направо).
-  - Reduce-Motion bypass для всех трёх через `useReduceMotion`:
-    opacity-переходы и marker-движения мгновенны, line-draw
-    отключается (линии появляются полностью отрисованными).
-- **Compact-вариант (iPhone, compact width).** Только активная линия
-  + marker. Faded inactive lines, vertical bound и dashed minTons —
-  скрыты ради читабельности в узком viewport. Высота графика — 160 pt.
-- **Regular-вариант (iPad regular landscape).** Полная версия — все
-  5 линий, оба operational bound-а, vertical guide. Высота графика
-  — 240 pt; ширина растягивается под column.
-- **Замена envelope-bar.** В Polish-3 компонент
-  `EnvelopePositionBar` (и его файлы) удаляется; preserves только
-  color-tokens `envelopeBarBoundary` / `envelopeBarOutOfLookup` для
-  возможного переиспользования fill-зоной графика. Это **не**
-  parallel-feature toggle — переход atomic.
+  - X-axis: landing weight в тоннах. Диапазон = `operationalEnvelope ±
+    5 t` (envelope-маркеры остаются видимы внутри plot area).
+  - Y-axis: **CG в % MAC** (исправление документации после
+    Polish-2 prep). Диапазон покрывает все CG-пороги между
+    `cgAtMinW(firstBp)` и `cgAtMaxW(lastBp)` ± 2 % MAC. Y-axis line
+    не рисуется — clean look без grid.
+  - Подписи осей — variant `microUppercase`, цвет
+    `tokens.colors.textTertiary`. На regular — 5 tick-меток на X
+    (например 110/126/141/157/172 t); на compact — только первая и
+    последняя.
+- **Активная линия.** Линия CG-брекета, чей `crosswindKnots ===
+  metadata.bracketCrosswindRange.upper` (вычислено в
+  `useCrosswindCalculator.deriveActiveBracketIndex`). Stroke
+  `tokens.colors.accent`, толщина 2.5 pt. Под линией — линейный
+  градиент-fill (через `<LinearGradient>` + `<Path>`) от 18 % opacity
+  у линии до 0 % внизу — даёт «highlight» без визуального шума.
+- **Inactive линии.** Stroke `tokens.colors.textSecondary`, толщина
+  1.25 pt, opacity 0.18 — видны как контекст, но не доминируют.
+- **Marker.** SVG-circle radius 6 pt, fill `tokens.colors.accent`,
+  stroke 2.5 pt `tokens.colors.bgCard` (контраст против линии).
+  Halo-glow — второй circle radius 12 pt, fill `accent` opacity 0.12.
+  Позиция = `(currentWeightTons, currentCGPercent)` на screen-coords
+  через `useSharedValue` + `useAnimatedProps` + `withTiming(250 ms,
+  Easing.inOut(Easing.quad))`.
+- **Operational envelope bounds.** На regular — две вертикальные
+  dashed-линии (`stroke-dasharray "4 4"`, толщина 1 pt) на
+  `operationalEnvelope.weight.minTons` и `maxTons`. Stroke получает
+  vertical fade: `<LinearGradient>` с `stopOpacity 0` на 0 % и 100 %,
+  и `1` на 10 % / 90 % высоты — линия видима только в средней части.
+  На compact эти линии не рендерятся (visual noise).
+- **Empty state.** Когда runwayCondition mismatches
+  `data.runwayCondition` (любое не-`dry` значение в Polish-3),
+  `ChartInputs.data === null` — компонент рендерит fallback с
+  иконкой `inbox` (32 pt, `textTertiary`) и подписью «No data for
+  this runway condition» (variant `caption`, `textSecondary`,
+  максимум 240 pt ширины).
+- **Высота графика.**
+  - Compact (iPhone, любая ориентация): 140 pt. Только active line
+    + marker. Без axis-меток (кроме первой/последней) и без
+    operational verticals.
+  - Regular (iPad landscape ≥ 1024 pt): 280 pt. Все 5 линий +
+    envelope verticals + полные axis-tick-метки.
+- **Расположение.**
+  - Compact: под result-панелью с `marginTop: tokens.spacing.sm` (см.
+    `styles.compactChart` в `CrosswindResult.tsx`).
+  - Regular: внутри `RegularIdleBody.BottomGroup` — между
+    valueBlock и meta-grid.
+- **Range row containment (Block 0 fix).** Result-panel контент
+  разделён на TopGroup (status, value, warning, footnote) и
+  BottomGroup (chart, divider+meta-grid); panel-обёртка использует
+  `flex: 1` + `justifyContent: 'space-between'` ровно для двух
+  групп. Это гарантирует, что 3-я строка meta-grid (`Range`, видна
+  при `bracketCrosswindRange.lower !== upper`) **остаётся внутри**
+  panel-границы. До Polish-3 (Block 0) она вырывалась за нижнюю
+  границу при frap-е flex-children.
 
 *Disabled-state toast (Wet/Contaminated tap):*
 
@@ -1043,6 +1015,36 @@ press-handler-ы становятся no-op-ами (никаких `withTiming`-
 Подписка живёт live — флаг отрабатывает без перезапуска приложения.
 
 Для всех анимаций используется `react-native-reanimated`.
+
+**CrosswindChart choreography (Polish-3).** SVG-анимации графика
+управляются через `useSharedValue` + `useAnimatedProps` из
+`react-native-reanimated`. Каждая фаза игнорируется, если
+`useReduceMotion()` возвращает `true` — соответствующая sharedValue
+устанавливается синхронно (без `withTiming`/`withDelay`):
+
+- **A · First mount (~200 ms).** Surface fade-in через
+  `Animated.View entering={FadeIn.duration(200)}`. На Reduce Motion
+  prop `entering` опускается — компонент появляется мгновенно.
+- **B · Bracket swap.** Когда `activeBracketIndex` меняется (CG
+  пересекает порог), активная линия и градиент-fill переезжают на
+  новую линию (re-render с обновлённым stroke-width / opacity). В
+  текущей реализации переход instant; brightness-swell overlay
+  оставлен на потенциальный future polish.
+- **C · Weight change within bracket.** Marker — два animated SVG
+  circles (halo + dot) — sliding через `withTiming(250 ms,
+  Easing.inOut(Easing.quad))` по cx/cy через `useAnimatedProps`.
+- **D · CG change.** Тот же marker-translate path как (C); при
+  пересечении бракет-порога дополнительно срабатывает (B).
+- **E · Theme change.** Цвета stroke / fill не анимированы во
+  времени — palette переключается через `useTheme()` reactive
+  re-render (мгновенно, тот же re-mount path что у остальных
+  компонентов design-system).
+- **F · Reduce Motion.** Все вышеуказанные фазы interrupt-аются
+  через `useReduceMotion()` shared hook (`design-system/hooks`):
+  marker `progress.value = target` без `withTiming`, surface
+  rendering без `entering` prop. Subscription к
+  `AccessibilityInfo.reduceMotionChanged` обновляет состояние
+  live — toggle в Settings ↔ instant flip.
 
 **Stack container background.** На каждом `<Stack>` в `expo-router`
 (включая root `app/_layout.tsx` и `app/(main)/_layout.tsx`)

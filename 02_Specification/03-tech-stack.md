@@ -50,7 +50,7 @@
 | `expo-updates` | соответствующая SDK | OTA-обновления через EAS Update (Phase 2+) |
 | `expo-build-properties` | соответствующая SDK | Установка iOS deployment target и других native build-properties через Expo plugin (вместо невалидного `ios.deploymentTarget` поля в `app.json`). Auto-installable via `npx expo install`. |
 | `expo-linear-gradient` | соответствующая SDK | Standard Expo SDK module for native gradient rendering; required by `06-ui-spec.md` § Экран 3 active-card visual treatment. Auto-installable via `npx expo install`. |
-| `react-native-svg` | соответствующая Expo SDK (added in Polish-3) | SVG primitives for the CG / Crosswind chart in `06-ui-spec.md` § Экран 4 → "Visualization · CG / Crosswind chart". Decision recorded in **ADR-0007**. Auto-installable via `npx expo install react-native-svg`. Currently NOT yet installed (Polish-3 will run the install command); listed here so the allowlist matches the post-Polish-3 state. |
+| `react-native-svg` | соответствующая Expo SDK | SVG primitives for the CG / Crosswind chart in `06-ui-spec.md` § Экран 4 → "Visualization · CG / Crosswind chart". Decision recorded in **ADR-0007**. Installed in Polish-3 via `npx expo install react-native-svg`. Used directly with low-level primitives (`<Svg>`, `<Line>`, `<Path>`, `<Circle>`, `<G>`, `<LinearGradient>`, `<Stop>`, `<Text>`); no chart library on top. |
 
 #### Auto-managed transitive dependencies
 
@@ -380,7 +380,7 @@ save-exact=true
 ## Closed questions
 
 - ~~Какую конкретную версию Expo SDK взять на момент Phase B?~~ → **Resolved (Phase B):** Expo SDK 54 (последняя стабильная на момент инициализации). Все версии SDK-managed пакетов закреплены в `package.json` точными значениями через `npx expo install`.
-- ~~Нужен ли `react-native-svg` для будущих визуализаций (графики crosswind)?~~ → **Resolved (pre-Polish-3, 2026-05-04):** да, через ADR-0007. Pakage устанавливается в Polish-3 при имплементации CG / Crosswind chart. Allowlist обновлён.
+- ~~Нужен ли `react-native-svg` для будущих визуализаций (графики crosswind)?~~ → **Resolved (Polish-3, 2026-05-04):** да, через ADR-0007. Установлен; реализован `CrosswindChart` поверх low-level SVG-примитивов (Path, Line, Circle, LinearGradient).
 
 ---
 
