@@ -77,4 +77,18 @@ describe('getLookupCGRange', () => {
     const range = getLookupCGRange(data, weight(W_150));
     expect(range.max - range.min).toBeCloseTo(expectedSpan, PRECISION_DIGITS);
   });
+
+  // Defensive narrowing for noUncheckedIndexedAccess. zod-validated bundled
+  // data always has breakpoints.length === 5, so this branch is unreachable
+  // in production — we cover it with a synthetic dataset to satisfy the
+  // domain-layer 90 % branch threshold.
+  it('falls back to operationalEnvelope.cg when breakpoints is empty', () => {
+    const synthetic: CrosswindDataFile = {
+      ...data,
+      interpolation: { ...data.interpolation, breakpoints: [] as never },
+    };
+    const range = getLookupCGRange(synthetic, weight(W_170));
+    expect(range.min).toBe(data.operationalEnvelope.cg.minPercent);
+    expect(range.max).toBe(data.operationalEnvelope.cg.maxPercent);
+  });
 });
