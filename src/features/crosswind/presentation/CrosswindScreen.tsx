@@ -62,7 +62,16 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const isTwoColumn = width >= TWO_COLUMN_BREAKPOINT;
-  const isRegular = width >= tokens.breakpoints.regularHeader;
+  // The iPad-regular result panel (72 pt value + 36 pt KT + flex-fill
+  // height) is only safe inside the 2-column landscape layout: the
+  // landscape Row's column View stretches to provide a height
+  // container for the panel's flex:1 chain. In single-column mode
+  // (iPad portrait, iPhone any orientation) the inner Stack is
+  // auto-sized, the flex:1 chain collapses to 0 height, and the
+  // result panel disappears (см. PR feat/crosswind-polish-2 fix
+  // commit). Tying isRegular to isTwoColumn ensures the regular
+  // typography scales up only when there's a column View to host it.
+  const isRegular = isTwoColumn;
 
   const [weightText, setWeightText] = useState('');
   const [cgText, setCgText] = useState('');
