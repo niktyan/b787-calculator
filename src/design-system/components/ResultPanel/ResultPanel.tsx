@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import type { ViewStyle } from 'react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
@@ -36,6 +36,23 @@ export interface ResultPanelProps {
 
 const PANEL_MIN_HEIGHT = 160;
 const META_BASIS_PERCENT = '48%';
+const RESULT_STATUS_LETTER_SPACING = 0.72; // ≈ 0.08em at 9pt — mockup .result-status
+const META_LABEL_LETTER_SPACING = 0.36; // ≈ 0.04em at 9pt — mockup .meta-item .meta-label
+const KT_SUFFIX_MARGIN_LEFT = 6; // mockup .result-value KT span
+const META_VALUE_MARGIN_TOP = 2; // mockup .meta-item .meta-val
+const SOURCE_CHIP_PADDING_VERTICAL = 2; // mockup .source-chip
+const SOURCE_CHIP_PADDING_HORIZONTAL = 6; // mockup .source-chip
+
+const RESULT_STATUS_STYLE: TextStyle = {
+  letterSpacing: RESULT_STATUS_LETTER_SPACING,
+  textTransform: 'uppercase',
+};
+const META_LABEL_STYLE: TextStyle = {
+  letterSpacing: META_LABEL_LETTER_SPACING,
+  textTransform: 'uppercase',
+};
+const KT_SUFFIX_STYLE: TextStyle = { marginLeft: KT_SUFFIX_MARGIN_LEFT };
+const META_VALUE_STYLE: TextStyle = { marginTop: META_VALUE_MARGIN_TOP };
 
 interface Styles {
   readonly chip: ViewStyle;
@@ -51,11 +68,11 @@ function buildStyles(palette: ColorPalette): Styles {
       borderColor: palette.border,
       borderRadius: tokens.radii.sm,
       borderWidth: 1,
-      paddingHorizontal: tokens.spacing.sm,
-      paddingVertical: tokens.spacing.xs,
+      paddingHorizontal: SOURCE_CHIP_PADDING_HORIZONTAL,
+      paddingVertical: SOURCE_CHIP_PADDING_VERTICAL,
       position: 'absolute',
-      right: tokens.spacing.md,
-      top: tokens.spacing.md,
+      right: tokens.spacing.sm,
+      top: tokens.spacing.sm,
     },
     meta: {
       borderTopColor: palette.border,
@@ -64,7 +81,7 @@ function buildStyles(palette: ColorPalette): Styles {
     },
     metaItem: {
       flexBasis: META_BASIS_PERCENT,
-      gap: tokens.spacing.xs,
+      gap: 0,
     },
     root: {
       backgroundColor: palette.bgCard,
@@ -72,7 +89,7 @@ function buildStyles(palette: ColorPalette): Styles {
       borderRadius: tokens.radii.lg,
       borderWidth: 1,
       minHeight: PANEL_MIN_HEIGHT,
-      padding: tokens.spacing.xl,
+      padding: tokens.spacing.lg,
     },
   });
 }
@@ -84,10 +101,10 @@ function IdleBody(props: {
   const { state, styles } = props;
   return (
     <Stack gap="md">
-      <Text variant="label" color="accent">
+      <Text variant="microUppercase" color="accent" style={RESULT_STATUS_STYLE}>
         {state.label}
       </Text>
-      <Row gap="sm" align="baseline" justify="center">
+      <Row gap="xs" align="baseline" justify="center">
         <Text
           variant="display"
           color="accent"
@@ -96,24 +113,24 @@ function IdleBody(props: {
         >
           {state.value}
         </Text>
-        <Text variant="heading2" color="accent">
+        <Text variant="monoMedium" color="textSecondary" style={KT_SUFFIX_STYLE}>
           {state.unit}
         </Text>
       </Row>
       {state.footnote !== undefined ? (
-        <Text variant="caption" color="textTertiary" align="center">
+        <Text variant="caption" color="textSecondary" align="center">
           {state.footnote}
         </Text>
       ) : null}
       {state.meta !== undefined && state.meta.length > 0 ? (
         <View style={styles.meta}>
-          <Row wrap gap="md">
+          <Row wrap gap="sm">
             {state.meta.map((item) => (
               <View key={item.label} style={styles.metaItem}>
-                <Text variant="label" color="textTertiary">
+                <Text variant="microUppercase" color="textTertiary" style={META_LABEL_STYLE}>
                   {item.label}
                 </Text>
-                <Text variant="mono" color="textPrimary">
+                <Text variant="monoSmall" color="textPrimary" style={META_VALUE_STYLE}>
                   {item.value}
                 </Text>
               </View>
@@ -123,7 +140,7 @@ function IdleBody(props: {
       ) : null}
       {state.sourceChip !== undefined ? (
         <View style={styles.chip}>
-          <Text variant="caption" color="textSecondary">
+          <Text variant="monoMicro" color="textSecondary">
             {state.sourceChip}
           </Text>
         </View>

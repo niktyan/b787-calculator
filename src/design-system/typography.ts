@@ -14,8 +14,10 @@
 
 import type { TextStyle } from 'react-native';
 
-// --- Typography sizes (subset of 9 / 11 / 12 / 14 / 16 / 18 / 22 / 24 / 28 / 36 / 48 / 64). ---
+// --- Typography sizes (subset of 8 / 9 / 10 / 11 / 12 / 14 / 16 / 18 / 22 / 24 / 28 / 36 / 48 / 64). ---
+const FONT_SIZE_MONO_MICRO = 8;
 const FONT_SIZE_MICRO_UPPERCASE = 9;
+const FONT_SIZE_SEGMENT_LABEL = 10;
 const FONT_SIZE_MICRO = 11;
 const FONT_SIZE_LABEL = 12;
 const FONT_SIZE_CAPTION = 12;
@@ -27,7 +29,9 @@ const FONT_SIZE_HEADING_1 = 28;
 const FONT_SIZE_DISPLAY = 48;
 
 // --- Line heights ---
+const LINE_HEIGHT_MONO_MICRO = 12; // 8 × 1.5; small monoglyph chip readout
 const LINE_HEIGHT_MICRO_UPPERCASE = 12; // 9 × 1.33; matches mockup uppercase labels
+const LINE_HEIGHT_SEGMENT_LABEL = 14; // 10 × 1.4; SegmentedControl segment label
 const LINE_HEIGHT_MICRO = 16; // 11 × 1.5 ≈ 16.5, rounded to nearest pt
 const LINE_HEIGHT_LABEL = 16;
 const LINE_HEIGHT_CAPTION = 16;
@@ -175,6 +179,33 @@ export const typography = {
       fontSize: FONT_SIZE_HEADING_2,
       lineHeight: LINE_HEIGHT_MONO_LARGE,
       fontWeight: '700',
+      letterSpacing: LETTER_SPACING_NORMAL,
+    },
+    /**
+     * Tiny mono — used by the source chip on the Crosswind result panel
+     * («Reference: 787 FCOM», 8 pt mono per `06-ui-spec.md` Экран 4
+     * Visual treatment "Source chip"). Smaller than `monoSmall` (11 pt);
+     * intentionally compact to avoid drawing the eye away from the
+     * primary value.
+     */
+    monoMicro: {
+      fontFamily: fontFamilyMono,
+      fontSize: FONT_SIZE_MONO_MICRO,
+      lineHeight: LINE_HEIGHT_MONO_MICRO,
+      fontWeight: '400',
+      letterSpacing: LETTER_SPACING_NORMAL,
+    },
+    /**
+     * Segmented-control segment label — sans 10 pt weight 500. Per
+     * `06-ui-spec.md` Экран 4 Visual treatment "Segmented control".
+     * Smaller than `caption` (12 pt) to keep the track compact while
+     * the active-segment background stays visually distinct.
+     */
+    segmentLabel: {
+      fontFamily: fontFamilySans,
+      fontSize: FONT_SIZE_SEGMENT_LABEL,
+      lineHeight: LINE_HEIGHT_SEGMENT_LABEL,
+      fontWeight: '500',
       letterSpacing: LETTER_SPACING_NORMAL,
     },
   } satisfies Record<string, TypographyVariant>,

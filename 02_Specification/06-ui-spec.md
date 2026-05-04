@@ -561,13 +561,18 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
   (1 pt), `borderRadius: 8 pt`.
 - Padding `10 × 12 pt`, `minHeight ≥ 44 pt`.
 - Значение: variant `mono` (mono 16 pt), цвет `tokens.colors.textPrimary`.
-- Unit-суффикс (например «kg», «% MAC»): variant `bodySmall` (sans 11 pt),
-  цвет `tokens.colors.textTertiary`, выровнен по правому краю.
-- Focus state: граница переключается на `tokens.colors.accent`, плюс
-  внешнее свечение `2 pt` цвета `rgba(accent, 0.2)`. Это поведение
-  должно быть отражено в DS-компоненте `NumericInput` —
-  *design-system to add focus-state pattern в NumericInput
-  (`borderColor: accent` + outer ring `rgba(0, 194, 168, 0.2)`).*
+- Unit-суффикс (например «t», «% MAC»): variant `monoSmall` (mono 11 pt),
+  цвет `tokens.colors.textTertiary`, выровнен по правому краю. **Источник
+  правды для типографики — `module-contracts/design-system.md` § Typography
+  variants** (там unit-суффикс закреплён за `monoSmall`); эта строка
+  раньше указывала `bodySmall` — расхождение исправлено в Sprint 5 polish-PR
+  одновременно с применением реализации.
+- Focus state: граница `1 pt` `tokens.colors.accent` + внешнее свечение
+  `2 pt` цвета `tokens.colors.accentRing` (`rgba(0, 194, 168, 0.2)`).
+  Реализуется в DS-компоненте `NumericInput` через wrapping-View вокруг
+  field-View: при `focused && !hasError` ring-обёртка получает
+  `padding: 2` и `backgroundColor: accentRing`; в остальных состояниях
+  `padding: 0` (ring невидим). Закреплено в Sprint 5 polish-PR.
 
 *Input label (input-label):*
 

@@ -18,10 +18,10 @@ import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
-import { useTranslation } from '../../../core';
+import { useTheme, useTranslation } from '../../../core';
 import {
-  BackButton,
   ErrorState,
   KeyboardDismissView,
   Row,
@@ -40,6 +40,8 @@ import { useCrosswindCalculator } from './useCrosswindCalculator';
 
 const COLUMN_BASIS = '48%';
 const TWO_COLUMN_BREAKPOINT = tokens.breakpoints.regular;
+const HEADER_DIVIDER_HEIGHT = 1;
+const PILL_PRESSED_OPACITY = 0.6;
 
 const repository = createCrosswindRepository();
 
@@ -99,22 +101,13 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     <Screen testID="crosswind-screen">
       <KeyboardDismissView testID="crosswind-keyboard-dismiss">
         <Stack gap="lg">
-          <Row align="center" justify="space-between">
-            <BackButton onPress={handleBack} label={t('common.back')} testID="crosswind-back" />
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={t('crosswind.resetLabel')}
-              hitSlop={tokens.spacing.sm}
-              onPress={handleReset}
-              style={styles.resetButton}
-              testID="crosswind-reset"
-            >
-              <Text variant="body" color="textSecondary">
-                {t('crosswind.resetLabel')}
-              </Text>
-            </Pressable>
-          </Row>
-          <Text variant="heading2">{t('crosswind.title')}</Text>
+          <CrosswindHeader
+            title={t('crosswind.title')}
+            backLabel={`← ${t('common.back')}`}
+            resetLabel={t('crosswind.resetLabel')}
+            onBack={handleBack}
+            onReset={handleReset}
+          />
           {isTwoColumn ? (
             <Row align="flex-start" gap="lg">
               <View style={styles.column}>{inputForm}</View>
@@ -129,6 +122,108 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
         </Stack>
       </KeyboardDismissView>
     </Screen>
+  );
+}
+
+interface CrosswindHeaderProps {
+  readonly title: string;
+  readonly backLabel: string;
+  readonly resetLabel: string;
+  readonly onBack: () => void;
+  readonly onReset: () => void;
+}
+
+function CrosswindHeader(props: CrosswindHeaderProps): ReactNode {
+  const { title, backLabel, resetLabel, onBack, onReset } = props;
+  const { theme } = useTheme();
+  const palette = tokens.colors[theme.resolved];
+  const sizing = tokens.sizing.header.compact;
+
+  const dividerStyle = useMemo<ViewStyle>(
+    () => ({
+      backgroundColor: palette.border,
+      height: HEADER_DIVIDER_HEIGHT,
+    }),
+    [palette.border],
+  );
+  const logoStyle = useMemo<ViewStyle>(
+    () => ({
+      alignItems: 'center',
+      backgroundColor: palette.accentSoft,
+      borderRadius: sizing.logoRadius,
+      height: sizing.logoSize,
+      justifyContent: 'center',
+      width: sizing.logoSize,
+    }),
+    [palette.accentSoft, sizing.logoRadius, sizing.logoSize],
+  );
+  const titleStyle = useMemo<TextStyle>(() => ({ fontSize: sizing.titleSize }), [sizing.titleSize]);
+
+  return (
+    <Stack gap="md">
+      <Row align="center" justify="space-between">
+        <Row align="center" gap="sm">
+          <View accessibilityLabel="B787 logo" style={logoStyle} testID="crosswind-logo">
+            <Text variant="mono" color="accent">
+              B7
+            </Text>
+          </View>
+          <Text variant="body" style={titleStyle}>
+            {title}
+          </Text>
+        </Row>
+        <Row align="center" gap="xs">
+          <HeaderPill label={backLabel} onPress={onBack} sizing={sizing} testID="crosswind-back" />
+          <HeaderPill
+            label={resetLabel}
+            onPress={onReset}
+            sizing={sizing}
+            testID="crosswind-reset"
+          />
+        </Row>
+      </Row>
+      <View style={dividerStyle} />
+    </Stack>
+  );
+}
+
+interface HeaderPillProps {
+  readonly label: string;
+  readonly onPress: () => void;
+  readonly sizing: typeof tokens.sizing.header.compact;
+  readonly testID: string;
+}
+
+function HeaderPill(props: HeaderPillProps): ReactNode {
+  const { label, onPress, sizing, testID } = props;
+  const pillStyle = useMemo<ViewStyle>(
+    () => ({
+      alignItems: 'center',
+      borderRadius: sizing.pillRadius,
+      justifyContent: 'center',
+      minHeight: tokens.layout.minTouchTarget,
+      paddingHorizontal: sizing.pillPaddingH,
+      paddingVertical: sizing.pillPaddingV,
+    }),
+    [sizing.pillPaddingH, sizing.pillPaddingV, sizing.pillRadius],
+  );
+  const labelStyle = useMemo<TextStyle>(
+    () => ({ fontSize: sizing.pillLabelSize }),
+    [sizing.pillLabelSize],
+  );
+  return (
+    <Pressable
+      accessibilityLabel={label}
+      accessibilityRole="button"
+      hitSlop={tokens.spacing.sm}
+      onPress={onPress}
+      style={({ pressed }): StyleProp<ViewStyle> => [pillStyle, pressed ? styles.pressed : null]}
+      testID={testID}
+    >
+      <Text variant="caption" color="textSecondary" style={labelStyle}>
+        {label}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -150,10 +245,7 @@ const styles = StyleSheet.create({
     flexBasis: COLUMN_BASIS,
     flexGrow: 1,
   },
-  resetButton: {
-    minHeight: tokens.layout.minTouchTarget,
-    minWidth: tokens.layout.minTouchTarget,
-    paddingHorizontal: tokens.spacing.md,
-    paddingVertical: tokens.spacing.sm,
+  pressed: {
+    opacity: PILL_PRESSED_OPACITY,
   },
 });

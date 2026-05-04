@@ -10,7 +10,7 @@ exports[`ResultPanel renders empty state 1`] = `
       "borderRadius": 12,
       "borderWidth": 1,
       "minHeight": 160,
-      "padding": 24,
+      "padding": 16,
     }
   }
   testID="result"
@@ -61,7 +61,7 @@ exports[`ResultPanel renders error state 1`] = `
       "borderRadius": 12,
       "borderWidth": 1,
       "minHeight": 160,
-      "padding": 24,
+      "padding": 16,
     }
   }
 >
@@ -130,7 +130,7 @@ exports[`ResultPanel renders idle state in light theme 1`] = `
       "borderRadius": 12,
       "borderWidth": 1,
       "minHeight": 160,
-      "padding": 24,
+      "padding": 16,
     }
   }
 >
@@ -154,13 +154,16 @@ exports[`ResultPanel renders idle state in light theme 1`] = `
           {
             "color": "#00C2A8",
             "fontFamily": "System",
-            "fontSize": 12,
+            "fontSize": 9,
             "fontWeight": "600",
-            "letterSpacing": 0.6,
-            "lineHeight": 16,
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
             "textAlign": "auto",
           },
-          undefined,
+          {
+            "letterSpacing": 0.72,
+            "textTransform": "uppercase",
+          },
         ]
       }
     >
@@ -173,7 +176,7 @@ exports[`ResultPanel renders idle state in light theme 1`] = `
             "alignItems": "baseline",
             "flexDirection": "row",
             "flexWrap": "nowrap",
-            "gap": 8,
+            "gap": 4,
             "justifyContent": "center",
           },
           undefined,
@@ -205,15 +208,17 @@ exports[`ResultPanel renders idle state in light theme 1`] = `
         style={
           [
             {
-              "color": "#00C2A8",
-              "fontFamily": "System",
-              "fontSize": 22,
-              "fontWeight": "600",
-              "letterSpacing": 0,
+              "color": "#4B5563",
+              "fontFamily": "Menlo",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
               "lineHeight": 28,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "marginLeft": 6,
+            },
           ]
         }
       >
@@ -234,7 +239,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
       "borderRadius": 12,
       "borderWidth": 1,
       "minHeight": 160,
-      "padding": 24,
+      "padding": 16,
     }
   }
   testID="result"
@@ -259,13 +264,16 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           {
             "color": "#00C2A8",
             "fontFamily": "System",
-            "fontSize": 12,
+            "fontSize": 9,
             "fontWeight": "600",
-            "letterSpacing": 0.6,
-            "lineHeight": 16,
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
             "textAlign": "auto",
           },
-          undefined,
+          {
+            "letterSpacing": 0.72,
+            "textTransform": "uppercase",
+          },
         ]
       }
     >
@@ -278,7 +286,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
             "alignItems": "baseline",
             "flexDirection": "row",
             "flexWrap": "nowrap",
-            "gap": 8,
+            "gap": 4,
             "justifyContent": "center",
           },
           undefined,
@@ -310,15 +318,17 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
         style={
           [
             {
-              "color": "#00C2A8",
-              "fontFamily": "System",
-              "fontSize": 22,
-              "fontWeight": "600",
-              "letterSpacing": 0,
+              "color": "#8B949E",
+              "fontFamily": "Menlo",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
               "lineHeight": 28,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "marginLeft": 6,
+            },
           ]
         }
       >
@@ -330,7 +340,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
       style={
         [
           {
-            "color": "#6E7681",
+            "color": "#8B949E",
             "fontFamily": "System",
             "fontSize": 12,
             "fontWeight": "400",
@@ -360,7 +370,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
               "alignItems": "center",
               "flexDirection": "row",
               "flexWrap": "wrap",
-              "gap": 12,
+              "gap": 8,
               "justifyContent": "flex-start",
             },
             undefined,
@@ -371,7 +381,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           style={
             {
               "flexBasis": "48%",
-              "gap": 4,
+              "gap": 0,
             }
           }
         >
@@ -382,13 +392,16 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#6E7681",
                   "fontFamily": "System",
-                  "fontSize": 12,
+                  "fontSize": 9,
                   "fontWeight": "600",
-                  "letterSpacing": 0.6,
-                  "lineHeight": 16,
+                  "letterSpacing": 0.54,
+                  "lineHeight": 12,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "letterSpacing": 0.36,
+                  "textTransform": "uppercase",
+                },
               ]
             }
           >
@@ -401,13 +414,15 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#E6EDF3",
                   "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
+                  "fontSize": 11,
+                  "fontWeight": "400",
                   "letterSpacing": 0,
-                  "lineHeight": 22,
+                  "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "marginTop": 2,
+                },
               ]
             }
           >
@@ -418,7 +433,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           style={
             {
               "flexBasis": "48%",
-              "gap": 4,
+              "gap": 0,
             }
           }
         >
@@ -429,13 +444,16 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#6E7681",
                   "fontFamily": "System",
-                  "fontSize": 12,
+                  "fontSize": 9,
                   "fontWeight": "600",
-                  "letterSpacing": 0.6,
-                  "lineHeight": 16,
+                  "letterSpacing": 0.54,
+                  "lineHeight": 12,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "letterSpacing": 0.36,
+                  "textTransform": "uppercase",
+                },
               ]
             }
           >
@@ -448,13 +466,15 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#E6EDF3",
                   "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
+                  "fontSize": 11,
+                  "fontWeight": "400",
                   "letterSpacing": 0,
-                  "lineHeight": 22,
+                  "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "marginTop": 2,
+                },
               ]
             }
           >
@@ -465,7 +485,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           style={
             {
               "flexBasis": "48%",
-              "gap": 4,
+              "gap": 0,
             }
           }
         >
@@ -476,13 +496,16 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#6E7681",
                   "fontFamily": "System",
-                  "fontSize": 12,
+                  "fontSize": 9,
                   "fontWeight": "600",
-                  "letterSpacing": 0.6,
-                  "lineHeight": 16,
+                  "letterSpacing": 0.54,
+                  "lineHeight": 12,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "letterSpacing": 0.36,
+                  "textTransform": "uppercase",
+                },
               ]
             }
           >
@@ -495,13 +518,15 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#E6EDF3",
                   "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
+                  "fontSize": 11,
+                  "fontWeight": "400",
                   "letterSpacing": 0,
-                  "lineHeight": 22,
+                  "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "marginTop": 2,
+                },
               ]
             }
           >
@@ -512,7 +537,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           style={
             {
               "flexBasis": "48%",
-              "gap": 4,
+              "gap": 0,
             }
           }
         >
@@ -523,13 +548,16 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#6E7681",
                   "fontFamily": "System",
-                  "fontSize": 12,
+                  "fontSize": 9,
                   "fontWeight": "600",
-                  "letterSpacing": 0.6,
-                  "lineHeight": 16,
+                  "letterSpacing": 0.54,
+                  "lineHeight": 12,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "letterSpacing": 0.36,
+                  "textTransform": "uppercase",
+                },
               ]
             }
           >
@@ -542,13 +570,15 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
                 {
                   "color": "#E6EDF3",
                   "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
+                  "fontSize": 11,
+                  "fontWeight": "400",
                   "letterSpacing": 0,
-                  "lineHeight": 22,
+                  "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "marginTop": 2,
+                },
               ]
             }
           >
@@ -564,11 +594,11 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           "borderColor": "rgba(255, 255, 255, 0.08)",
           "borderRadius": 4,
           "borderWidth": 1,
-          "paddingHorizontal": 8,
-          "paddingVertical": 4,
+          "paddingHorizontal": 6,
+          "paddingVertical": 2,
           "position": "absolute",
-          "right": 12,
-          "top": 12,
+          "right": 8,
+          "top": 8,
         }
       }
     >
@@ -578,11 +608,11 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           [
             {
               "color": "#8B949E",
-              "fontFamily": "System",
-              "fontSize": 12,
+              "fontFamily": "Menlo",
+              "fontSize": 8,
               "fontWeight": "400",
               "letterSpacing": 0,
-              "lineHeight": 16,
+              "lineHeight": 12,
               "textAlign": "auto",
             },
             undefined,
@@ -606,7 +636,7 @@ exports[`ResultPanel renders out-of-envelope state 1`] = `
       "borderRadius": 12,
       "borderWidth": 1,
       "minHeight": 160,
-      "padding": 24,
+      "padding": 16,
     }
   }
 >
