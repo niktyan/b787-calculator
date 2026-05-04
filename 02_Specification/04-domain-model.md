@@ -151,22 +151,46 @@ type AircraftVariant = typeof AIRCRAFT_VARIANTS[number];
 
 ### `RunwayCondition`
 
+**Polish-3 expansion** (forward signal, реализация в Polish-3):
+
 ```typescript
-const RUNWAY_CONDITIONS = ['dry', 'wet', 'contaminated'] as const;
+const RUNWAY_CONDITIONS = [
+  'dry',
+  'wet',
+  'slipperyWet',
+  'compactedSnow',
+  'drySnow',
+  'wetSnow',
+] as const;
 type RunwayCondition = typeof RUNWAY_CONDITIONS[number];
 ```
 
-В MVP активен только `dry`. `wet` и `contaminated` появятся в Phase 2.
+Это 6 явных runway-state кодов из FCOM landing performance таблиц,
+заменяющих собой umbrella-значение `'contaminated'` из MVP-редакции
+(`['dry', 'wet', 'contaminated']`). Причина расширения: B787 FCOM
+оперирует пятью non-dry состояниями явно, сводя `contaminated` в
+полезный enum невозможно — каждое состояние имеет свою таблицу
+лимитов. Spec-only в этом PR; код, JSON-bundle и UI остаются на
+MVP-варианте до Polish-3.
+
+В **MVP** (текущий код) активен только `dry`. После Polish-3 активен
+останется только `dry`, остальные 5 — `comingSoon` (см. § "JSON Schema
+bundled данных" → "Polish-3 expansion: map-shaped lookup data").
 
 ### `RunwayConditionCode` (RWYCC)
 
-ICAO-стандарт. Используется только при `RunwayCondition === 'contaminated'`.
+ICAO-стандарт. После Polish-3 expansion используется для non-dry
+runway-conditions, где FCOM предписывает RWYCC sub-classification
+(особенно `slipperyWet`, `compactedSnow`, `drySnow`, `wetSnow`).
+В MVP-редакции (до Polish-3) был привязан только к
+`RunwayCondition === 'contaminated'`.
 
 ```typescript
 type RunwayConditionCode = 1 | 2 | 3 | 4 | 5 | 6;
 ```
 
-В MVP не используется (Dry only). Тип определён заранее, чтобы Phase 2 добавлялась без изменения сигнатур.
+В MVP не используется (Dry only). Тип определён заранее, чтобы
+Polish-3 (и далее Phase 2) добавлялись без изменения сигнатур.
 
 ### `FlightPhase`
 
@@ -190,7 +214,7 @@ interface CrosswindCalculationInput {
   readonly aircraft: AircraftVariant;
   readonly phase: FlightPhase;
   readonly runwayCondition: RunwayCondition;
-  readonly rwyccCode?: RunwayConditionCode; // только если runwayCondition === 'contaminated'
+  readonly rwyccCode?: RunwayConditionCode; // non-dry conditions, см. RWYCC выше
   readonly weightTons: WeightInTons;
   readonly cgPercent: CGPercentMAC;
 }
@@ -316,6 +340,7 @@ import { z } from 'zod';
 
 const aircraftVariantSchema = z.enum(['b787_8', 'b787_9']);
 const flightPhaseSchema = z.enum(['takeoff', 'landing']);
+// MVP редакция; Polish-3 расширяет до 6-state enum (см. RunwayCondition выше):
 const runwayConditionSchema = z.enum(['dry', 'wet', 'contaminated']);
 
 const breakpointSchema = z.object({
@@ -371,6 +396,110 @@ type CrosswindDataFile = z.infer<typeof crosswindDataFileSchema>;
 3. `breakpoints` отсортированы по убыванию `crosswindKnots` (40, 35, 30, 25, 20) — иначе `CorruptedDataBundle`.
 4. `breakpoints` отсортированы по возрастанию `intercept` — иначе `CorruptedDataBundle`.
 5. `aircraft`, `phase`, `runwayCondition` соответствуют ожидаемым значениям файла-репозитория (например, `b787-8-landing-dry.json` обязан содержать `aircraft: 'b787_8'`).
+
+---
+
+## JSON Schema · Polish-3 expansion (forward signal)
+
+Polish-3 переключает Crosswind-модуль с одного flat-файла на one-file-
+per-aircraft / per-phase, в котором lookup-данные представлены **map-
+ой, ключ которой — `RunwayCondition`** (см. § Entities выше). Это
+spec-only forward signal: код, JSON-bundle и repository остаются на
+MVP-варианте до Polish-3.
+
+Новая структура (один файл на пару aircraft × phase):
+
+```json
+{
+  "schemaVersion": "2.0.0",
+  "dataVersion": "2026-XX-YY.001",
+  "aircraft": "b787_8",
+  "phase": "landing",
+  "operationalEnvelope": { /* как сейчас */ },
+  "weightConversion": { /* как сейчас */ },
+  "datasets": {
+    "dry":           { "interpolation": { … }, "fallback": { … }, "metadata": { … } },
+    "wet":           { "status": "comingSoon" },
+    "slipperyWet":   { "status": "comingSoon" },
+    "compactedSnow": { "status": "comingSoon" },
+    "drySnow":       { "status": "comingSoon" },
+    "wetSnow":       { "status": "comingSoon" }
+  }
+}
+```
+
+**Дискриминированный формат значений `datasets[k]`:**
+
+```typescript
+type DatasetEntry =
+  | { status: 'comingSoon' }
+  | { interpolation: InterpolationConfig; fallback: FallbackConfig; metadata: DatasetMetadata };
+```
+
+**Правила:**
+
+- `datasets` — обязательное поле, содержащее **все 6** ключей из
+  `RUNWAY_CONDITIONS` (zod-схема `z.object({ dry: …, wet: …, …
+  }).strict()`). Отсутствие ключа = `CorruptedDataBundle`.
+- Явный `{ status: 'comingSoon' }` распознаётся UI и алгоритмом как
+  «не реализовано», результат — `Result.err({ kind:
+  'DataNotAvailable', ..., reason: 'comingSoon' })`. Сегмент в UI
+  становится disabled с подсказкой «Available in upcoming release»
+  (см. `06-ui-spec.md` § Экран 4).
+- Полная запись (без `status`-маркера) даёт обычный lookup-расчёт.
+- В Polish-3 заполняется только `dry` (та же таблица что сейчас).
+  Остальные 5 — `comingSoon`.
+
+**Обновлённая zod-схема (spec snippet, не код):**
+
+```typescript
+const runwayConditionSchema = z.enum([
+  'dry', 'wet', 'slipperyWet', 'compactedSnow', 'drySnow', 'wetSnow',
+]);
+
+const datasetEntrySchema = z.discriminatedUnion('status', [
+  z.object({ status: z.literal('comingSoon') }),
+  z.object({
+    status: z.undefined(),  // или omit-вариант
+    interpolation: interpolationSchema,
+    fallback: fallbackSchema,
+    metadata: datasetMetadataSchema,
+  }),
+]);
+
+const crosswindDataFileSchema = z.object({
+  schemaVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
+  dataVersion: z.string().min(1),
+  aircraft: aircraftVariantSchema,
+  phase: flightPhaseSchema,
+  operationalEnvelope: /* как сейчас */,
+  weightConversion: /* как сейчас */,
+  datasets: z.object({
+    dry:           datasetEntrySchema,
+    wet:           datasetEntrySchema,
+    slipperyWet:   datasetEntrySchema,
+    compactedSnow: datasetEntrySchema,
+    drySnow:       datasetEntrySchema,
+    wetSnow:       datasetEntrySchema,
+  }).strict(),
+});
+```
+
+**Алгоритм-uplift в Polish-3.** `calculateCrosswindLimit` принимает
+`runwayCondition` и проверяет `datasets[runwayCondition]`:
+- `{ status: 'comingSoon' }` → `Result.err({ kind: 'DataNotAvailable',
+  reason: 'comingSoon' })`.
+- Полный entry → существующая XLOOKUP-логика на его `interpolation` /
+  `fallback`.
+Step 0a из `05-crosswind-algorithm.md` дополняется этой проверкой;
+отдельные функции / strategy dispatcher не меняются (модель остаётся
+`piecewise-linear-excel-equivalent`).
+
+**Версионирование.** Структурный переход (flat → map) — major
+schema-bump: `schemaVersion` 1.x → 2.0.0. Старая flat-структура
+остаётся валидной только для приложений до Polish-3 (фактически —
+заменяется одной MVP-сборкой; OTA не задействован для structural
+changes).
 
 ---
 

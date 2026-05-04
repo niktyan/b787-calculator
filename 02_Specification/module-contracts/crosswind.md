@@ -197,6 +197,23 @@ export type { CrosswindRepository } from './data';
 
 Strategy dispatcher уже имплементирован с MVP. Это значит, что добавить новую strategy = добавить функцию + ветку в switch.
 
+### Polish-3 forward signal
+
+Polish-3 расширит `RunwayCondition` с 3 значений (`'dry' | 'wet' |
+'contaminated'`) до 6 (`'dry' | 'wet' | 'slipperyWet' |
+'compactedSnow' | 'drySnow' | 'wetSnow'`) и переключит bundled JSON с
+flat-структуры на per-aircraft × phase файл с map-полем `datasets`,
+ключи которого — все 6 runway-condition значений. Каждый ключ
+содержит либо полный lookup-entry, либо `{ status: 'comingSoon' }` —
+последний триггерит `Result.err({ kind: 'DataNotAvailable', reason:
+'comingSoon' })` без обращения к алгоритму. Это **уровень 4** по
+классификации выше — major schema bump. Public API модуля при этом
+остаётся стабильным: сигнатуры `calculateCrosswindLimit`,
+`validateOperationalEnvelope`, `getLookupCGRange` не меняются;
+расширяется только value-set входного `runwayCondition`. Полная
+спека — `04-domain-model.md` § "JSON Schema · Polish-3 expansion
+(forward signal)".
+
 ## Открытые вопросы
 
 1. Точные значения envelope (weight 110–172 t, CG 8–35 %MAC) — отложены до Phase B. При уточнении JSON и тест-таблица обновляются.
