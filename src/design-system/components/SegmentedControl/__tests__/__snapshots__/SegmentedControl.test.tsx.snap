@@ -10,7 +10,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
       "borderRadius": 8,
       "borderWidth": 1,
       "flexDirection": "row",
-      "gap": 3,
+      "gap": 2,
       "padding": 3,
     }
   }
@@ -74,10 +74,10 @@ exports[`SegmentedControl renders in light theme 1`] = `
           {
             "color": "#001A17",
             "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
+            "fontSize": 10,
+            "fontWeight": "500",
             "letterSpacing": 0,
-            "lineHeight": 16,
+            "lineHeight": 14,
             "textAlign": "center",
           },
           undefined,
@@ -132,7 +132,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
         },
         null,
         {
-          "opacity": 0.4,
+          "opacity": 0.5,
         },
       ]
     }
@@ -143,12 +143,12 @@ exports[`SegmentedControl renders in light theme 1`] = `
       style={
         [
           {
-            "color": "#4B5563",
+            "color": "#6B7280",
             "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
+            "fontSize": 10,
+            "fontWeight": "500",
             "letterSpacing": 0,
-            "lineHeight": 16,
+            "lineHeight": 14,
             "textAlign": "center",
           },
           undefined,
@@ -203,7 +203,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
         },
         null,
         {
-          "opacity": 0.4,
+          "opacity": 0.5,
         },
       ]
     }
@@ -214,12 +214,12 @@ exports[`SegmentedControl renders in light theme 1`] = `
       style={
         [
           {
-            "color": "#4B5563",
+            "color": "#6B7280",
             "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
+            "fontSize": 10,
+            "fontWeight": "500",
             "letterSpacing": 0,
-            "lineHeight": 16,
+            "lineHeight": 14,
             "textAlign": "center",
           },
           undefined,
@@ -242,7 +242,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
       "borderRadius": 8,
       "borderWidth": 1,
       "flexDirection": "row",
-      "gap": 3,
+      "gap": 2,
       "padding": 3,
     }
   }
@@ -306,10 +306,10 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
           {
             "color": "#001A17",
             "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
+            "fontSize": 10,
+            "fontWeight": "500",
             "letterSpacing": 0,
-            "lineHeight": 16,
+            "lineHeight": 14,
             "textAlign": "center",
           },
           undefined,
@@ -364,7 +364,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
         },
         null,
         {
-          "opacity": 0.4,
+          "opacity": 0.5,
         },
       ]
     }
@@ -375,12 +375,12 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
       style={
         [
           {
-            "color": "#8B949E",
+            "color": "#6E7681",
             "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
+            "fontSize": 10,
+            "fontWeight": "500",
             "letterSpacing": 0,
-            "lineHeight": 16,
+            "lineHeight": 14,
             "textAlign": "center",
           },
           undefined,
@@ -435,7 +435,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
         },
         null,
         {
-          "opacity": 0.4,
+          "opacity": 0.5,
         },
       ]
     }
@@ -446,12 +446,12 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
       style={
         [
           {
-            "color": "#8B949E",
+            "color": "#6E7681",
             "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
+            "fontSize": 10,
+            "fontWeight": "500",
             "letterSpacing": 0,
-            "lineHeight": 16,
+            "lineHeight": 14,
             "textAlign": "center",
           },
           undefined,

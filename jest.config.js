@@ -29,7 +29,12 @@ module.exports = {
       lines: 80,
       statements: 80,
     },
-    // ./src/features/*/domain/** with 90% threshold will be added in Sprint 5 (Crosswind).
+    './src/features/*/domain/**': {
+      branches: 90,
+      functions: 90,
+      lines: 90,
+      statements: 90,
+    },
   },
   testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/.expo/'],

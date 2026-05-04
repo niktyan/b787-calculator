@@ -1,0 +1,1775 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#0A0E14",
+      "flex": 1,
+    }
+  }
+  testID="crosswind-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={false}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "flex": 1,
+          },
+          undefined,
+        ]
+      }
+      testID="crosswind-keyboard-dismiss"
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 16,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 8,
+                  "justifyContent": "space-between",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 8,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityLabel="B787 logo"
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#003C36",
+                    "borderRadius": 6,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
+                }
+                testID="crosswind-logo"
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#00C2A8",
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "letterSpacing": 0,
+                        "lineHeight": 22,
+                        "textAlign": "auto",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  B7
+                </Text>
+              </View>
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#E6EDF3",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 16,
+                    },
+                  ]
+                }
+              >
+                crosswind.title
+              </Text>
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityLabel="← common.back"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                hitSlop={8}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                  ]
+                }
+                testID="crosswind-back"
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#8B949E",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  ← common.back
+                </Text>
+              </View>
+              <View
+                accessibilityLabel="crosswind.resetLabel"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                hitSlop={8}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                  ]
+                }
+                testID="crosswind-reset"
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#8B949E",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  crosswind.resetLabel
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "backgroundColor": "rgba(255, 255, 255, 0.08)",
+                "height": 1,
+              }
+            }
+          />
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 16,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "stretch",
+                  "flexDirection": "column",
+                  "gap": 16,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+            testID="crosswind-input-form"
+          >
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+              testID="crosswind-weight"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "System",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.54,
+                      "lineHeight": 12,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "textTransform": "uppercase",
+                    },
+                  ]
+                }
+              >
+                crosswind.weightLabel
+              </Text>
+              <View
+                style={
+                  {
+                    "backgroundColor": "rgba(0, 194, 168, 0.2)",
+                    "borderRadius": 10,
+                    "padding": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#11161F",
+                      "borderColor": "rgba(255, 255, 255, 0.08)",
+                      "borderRadius": 8,
+                      "borderWidth": 1,
+                      "flexDirection": "row",
+                      "minHeight": 44,
+                      "opacity": 1,
+                      "paddingHorizontal": 12,
+                      "paddingVertical": 8,
+                    }
+                  }
+                >
+                  <TextInput
+                    accessibilityLabel="crosswind.weightLabel"
+                    editable={true}
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="e.g. 170"
+                    placeholderTextColor="#6E7681"
+                    returnKeyType="done"
+                    style={
+                      {
+                        "color": "#E6EDF3",
+                        "flex": 1,
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                      }
+                    }
+                    testID="crosswind-weight-input"
+                    value=""
+                  />
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6E7681",
+                          "fontFamily": "Menlo",
+                          "fontSize": 11,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    t
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+              testID="crosswind-cg"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "System",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.54,
+                      "lineHeight": 12,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "textTransform": "uppercase",
+                    },
+                  ]
+                }
+              >
+                crosswind.cgLabel
+              </Text>
+              <View
+                style={
+                  {
+                    "backgroundColor": "rgba(0, 194, 168, 0.2)",
+                    "borderRadius": 10,
+                    "padding": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#11161F",
+                      "borderColor": "rgba(255, 255, 255, 0.08)",
+                      "borderRadius": 8,
+                      "borderWidth": 1,
+                      "flexDirection": "row",
+                      "minHeight": 44,
+                      "opacity": 1,
+                      "paddingHorizontal": 12,
+                      "paddingVertical": 8,
+                    }
+                  }
+                >
+                  <TextInput
+                    accessibilityLabel="crosswind.cgLabel"
+                    editable={true}
+                    keyboardType="decimal-pad"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="e.g. 25.5"
+                    placeholderTextColor="#6E7681"
+                    returnKeyType="done"
+                    style={
+                      {
+                        "color": "#E6EDF3",
+                        "flex": 1,
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                      }
+                    }
+                    testID="crosswind-cg-input"
+                    value=""
+                  />
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6E7681",
+                          "fontFamily": "Menlo",
+                          "fontSize": 11,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    %MAC
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "stretch",
+                    "flexDirection": "column",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.6,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                crosswind.runwayConditionLabel
+              </Text>
+              <View
+                accessibilityLabel="crosswind.runwayConditionLabel"
+                accessibilityRole="radiogroup"
+                style={
+                  {
+                    "backgroundColor": "#11161F",
+                    "borderColor": "rgba(255, 255, 255, 0.08)",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 3,
+                  }
+                }
+                testID="crosswind-runway"
+              >
+                <View
+                  accessibilityLabel="Dry"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": false,
+                      "expanded": undefined,
+                      "selected": true,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      {
+                        "backgroundColor": "#00C2A8",
+                      },
+                      null,
+                    ]
+                  }
+                  testID="crosswind-runway-dry"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#001A17",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    Dry
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="Wet"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-wet"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6E7681",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    Wet
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="Contaminated"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-contaminated"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6E7681",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    Contaminated
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityRole="summary"
+            style={
+              {
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 12,
+                "borderWidth": 1,
+                "minHeight": 160,
+                "padding": 16,
+              }
+            }
+            testID="crosswind-result"
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "gap": 8,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "System",
+                      "fontSize": 22,
+                      "fontWeight": "600",
+                      "letterSpacing": 0,
+                      "lineHeight": 28,
+                      "textAlign": "center",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                crosswind.resultEmpty
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#F4F6F9",
+      "flex": 1,
+    }
+  }
+  testID="crosswind-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={false}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "flex": 1,
+          },
+          undefined,
+        ]
+      }
+      testID="crosswind-keyboard-dismiss"
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 16,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 8,
+                  "justifyContent": "space-between",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 8,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityLabel="B787 logo"
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#DEF7F3",
+                    "borderRadius": 6,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
+                }
+                testID="crosswind-logo"
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#00C2A8",
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "letterSpacing": 0,
+                        "lineHeight": 22,
+                        "textAlign": "auto",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  B7
+                </Text>
+              </View>
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#1F2937",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 16,
+                    },
+                  ]
+                }
+              >
+                crosswind.title
+              </Text>
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityLabel="← common.back"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                hitSlop={8}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                  ]
+                }
+                testID="crosswind-back"
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#4B5563",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  ← common.back
+                </Text>
+              </View>
+              <View
+                accessibilityLabel="crosswind.resetLabel"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                hitSlop={8}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                  ]
+                }
+                testID="crosswind-reset"
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#4B5563",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
+                  crosswind.resetLabel
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "backgroundColor": "rgba(0, 0, 0, 0.08)",
+                "height": 1,
+              }
+            }
+          />
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 16,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "stretch",
+                  "flexDirection": "column",
+                  "gap": 16,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+            testID="crosswind-input-form"
+          >
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+              testID="crosswind-weight"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#4B5563",
+                      "fontFamily": "System",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.54,
+                      "lineHeight": 12,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "textTransform": "uppercase",
+                    },
+                  ]
+                }
+              >
+                crosswind.weightLabel
+              </Text>
+              <View
+                style={
+                  {
+                    "backgroundColor": "rgba(0, 194, 168, 0.2)",
+                    "borderRadius": 10,
+                    "padding": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "rgba(0, 0, 0, 0.08)",
+                      "borderRadius": 8,
+                      "borderWidth": 1,
+                      "flexDirection": "row",
+                      "minHeight": 44,
+                      "opacity": 1,
+                      "paddingHorizontal": 12,
+                      "paddingVertical": 8,
+                    }
+                  }
+                >
+                  <TextInput
+                    accessibilityLabel="crosswind.weightLabel"
+                    editable={true}
+                    keyboardType="numeric"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="e.g. 170"
+                    placeholderTextColor="#6B7280"
+                    returnKeyType="done"
+                    style={
+                      {
+                        "color": "#1F2937",
+                        "flex": 1,
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                      }
+                    }
+                    testID="crosswind-weight-input"
+                    value=""
+                  />
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6B7280",
+                          "fontFamily": "Menlo",
+                          "fontSize": 11,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    t
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+              testID="crosswind-cg"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#4B5563",
+                      "fontFamily": "System",
+                      "fontSize": 9,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.54,
+                      "lineHeight": 12,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "textTransform": "uppercase",
+                    },
+                  ]
+                }
+              >
+                crosswind.cgLabel
+              </Text>
+              <View
+                style={
+                  {
+                    "backgroundColor": "rgba(0, 194, 168, 0.2)",
+                    "borderRadius": 10,
+                    "padding": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "rgba(0, 0, 0, 0.08)",
+                      "borderRadius": 8,
+                      "borderWidth": 1,
+                      "flexDirection": "row",
+                      "minHeight": 44,
+                      "opacity": 1,
+                      "paddingHorizontal": 12,
+                      "paddingVertical": 8,
+                    }
+                  }
+                >
+                  <TextInput
+                    accessibilityLabel="crosswind.cgLabel"
+                    editable={true}
+                    keyboardType="decimal-pad"
+                    onBlur={[Function]}
+                    onChangeText={[Function]}
+                    onFocus={[Function]}
+                    onSubmitEditing={[Function]}
+                    placeholder="e.g. 25.5"
+                    placeholderTextColor="#6B7280"
+                    returnKeyType="done"
+                    style={
+                      {
+                        "color": "#1F2937",
+                        "flex": 1,
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                      }
+                    }
+                    testID="crosswind-cg-input"
+                    value=""
+                  />
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6B7280",
+                          "fontFamily": "Menlo",
+                          "fontSize": 11,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    %MAC
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "stretch",
+                    "flexDirection": "column",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#4B5563",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "600",
+                      "letterSpacing": 0.6,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                crosswind.runwayConditionLabel
+              </Text>
+              <View
+                accessibilityLabel="crosswind.runwayConditionLabel"
+                accessibilityRole="radiogroup"
+                style={
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "rgba(0, 0, 0, 0.08)",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 3,
+                  }
+                }
+                testID="crosswind-runway"
+              >
+                <View
+                  accessibilityLabel="Dry"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": false,
+                      "expanded": undefined,
+                      "selected": true,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      {
+                        "backgroundColor": "#00C2A8",
+                      },
+                      null,
+                    ]
+                  }
+                  testID="crosswind-runway-dry"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#001A17",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    Dry
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="Wet"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-wet"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6B7280",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    Wet
+                  </Text>
+                </View>
+                <View
+                  accessibilityLabel="Contaminated"
+                  accessibilityRole="radio"
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": true,
+                      "expanded": undefined,
+                      "selected": false,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 4,
+                        "flex": 1,
+                        "justifyContent": "center",
+                        "minHeight": 38,
+                        "paddingHorizontal": 8,
+                        "paddingVertical": 4,
+                      },
+                      null,
+                      {
+                        "opacity": 0.5,
+                      },
+                    ]
+                  }
+                  testID="crosswind-runway-contaminated"
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#6B7280",
+                          "fontFamily": "System",
+                          "fontSize": 10,
+                          "fontWeight": "500",
+                          "letterSpacing": 0,
+                          "lineHeight": 14,
+                          "textAlign": "center",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    Contaminated
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityRole="summary"
+            style={
+              {
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 12,
+                "borderWidth": 1,
+                "minHeight": 160,
+                "padding": 16,
+              }
+            }
+            testID="crosswind-result"
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "column",
+                    "gap": 8,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#4B5563",
+                      "fontFamily": "System",
+                      "fontSize": 22,
+                      "fontWeight": "600",
+                      "letterSpacing": 0,
+                      "lineHeight": 28,
+                      "textAlign": "center",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                crosswind.resultEmpty
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;

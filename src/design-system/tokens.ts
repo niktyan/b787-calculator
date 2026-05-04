@@ -81,6 +81,15 @@ export interface ColorPalette {
    * Coming Soon Modal Visual treatment.
    */
   readonly accentOnAccent: string;
+  /**
+   * 20%-alpha accent ring used as the focus-state outer glow on
+   * `NumericInput` (mirrors mockup `box-shadow: 0 0 0 2px rgba(0, 194,
+   * 168, 0.2)`). Identical in both themes — the teal ring reads
+   * correctly on both dark and light input surfaces, verified for WCAG
+   * AA contrast against the focused border. See `06-ui-spec.md` §
+   * Экран 4 Visual treatment "Focus state".
+   */
+  readonly accentRing: string;
   readonly warn: string;
   readonly warnSoft: string;
   readonly warnBorder: string;
@@ -91,6 +100,7 @@ export interface ColorPalette {
 }
 
 const ACCENT_ON_ACCENT = '#001A17';
+const ACCENT_RING = 'rgba(0, 194, 168, 0.2)';
 
 const DARK_PALETTE: ColorPalette = {
   bgPage: '#0A0E14',
@@ -106,6 +116,7 @@ const DARK_PALETTE: ColorPalette = {
   accent: '#00C2A8',
   accentSoft: '#003C36',
   accentOnAccent: ACCENT_ON_ACCENT,
+  accentRing: ACCENT_RING,
   warn: '#FFB020',
   warnSoft: 'rgba(255, 176, 32, 0.08)',
   warnBorder: 'rgba(255, 176, 32, 0.3)',
@@ -129,6 +140,7 @@ const LIGHT_PALETTE: ColorPalette = {
   accent: '#00C2A8',
   accentSoft: '#DEF7F3',
   accentOnAccent: ACCENT_ON_ACCENT,
+  accentRing: ACCENT_RING,
   warn: '#9A6700',
   warnSoft: '#FEF6E7',
   warnBorder: '#F0C674',

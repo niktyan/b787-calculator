@@ -475,6 +475,27 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 - **NoLookupData — жёсткая ошибка.** Только когда алгоритм не может произвести расчёт в принципе (NaN / Infinity на входе, или повреждённые данные) — result-секция переходит в `out-of-envelope` без числа.
 - **Кнопка Reset** в header экрана: очищает оба поля (возвращает в состояние «пусто»), runway condition возвращает к `Dry`. Без диалога подтверждения — действие моментальное и немного откатывается через возврат фокуса в первое поле.
 
+### Keyboard behavior
+
+iOS softkeyboard на `numeric-pad` / `decimal-pad` **не имеет встроенной кнопки скрытия**, поэтому экран обеспечивает дисмисс двумя путями:
+
+- **Tap outside-to-dismiss.** Экран обёрнут в `KeyboardDismissView`
+  (DS-компонент, см. `module-contracts/design-system.md`). Любой тап
+  по фону или нечитаемой области (за пределами полей и сегментов)
+  закрывает клавиатуру через `Keyboard.dismiss()`. Тапы по самим
+  TextInput-ам или сегментам не интерпретируются как «вне input» — они
+  обрабатываются adressuemyм компонентом, обёртка не перехватывает.
+- **Done key on keyboard.** Каждый `NumericInput` сконфигурирован с
+  `returnKeyType="done"`; нажатие Done на iOS-клавиатуре триггерит
+  `onSubmitEditing`, который также вызывает `Keyboard.dismiss()`. Это
+  даёт пилоту явную клавишу скрытия без необходимости тапать по
+  свободной области.
+
+Скролл-жесты не перехватываются — `KeyboardDismissView` это
+`Pressable` с `flex: 1`, а не TouchableWithoutFeedback с capturing
+overlay. VoiceOver не объявляет обёртку как тапаемую (`accessible:
+false`), поэтому пилот с VO навигирует напрямую по полям.
+
 ### Result-секция (правая колонка / нижняя на portrait)
 
 **Состояния:**
@@ -540,13 +561,18 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
   (1 pt), `borderRadius: 8 pt`.
 - Padding `10 × 12 pt`, `minHeight ≥ 44 pt`.
 - Значение: variant `mono` (mono 16 pt), цвет `tokens.colors.textPrimary`.
-- Unit-суффикс (например «kg», «% MAC»): variant `bodySmall` (sans 11 pt),
-  цвет `tokens.colors.textTertiary`, выровнен по правому краю.
-- Focus state: граница переключается на `tokens.colors.accent`, плюс
-  внешнее свечение `2 pt` цвета `rgba(accent, 0.2)`. Это поведение
-  должно быть отражено в DS-компоненте `NumericInput` —
-  *design-system to add focus-state pattern в NumericInput
-  (`borderColor: accent` + outer ring `rgba(0, 194, 168, 0.2)`).*
+- Unit-суффикс (например «t», «% MAC»): variant `monoSmall` (mono 11 pt),
+  цвет `tokens.colors.textTertiary`, выровнен по правому краю. **Источник
+  правды для типографики — `module-contracts/design-system.md` § Typography
+  variants** (там unit-суффикс закреплён за `monoSmall`); эта строка
+  раньше указывала `bodySmall` — расхождение исправлено в Sprint 5 polish-PR
+  одновременно с применением реализации.
+- Focus state: граница `1 pt` `tokens.colors.accent` + внешнее свечение
+  `2 pt` цвета `tokens.colors.accentRing` (`rgba(0, 194, 168, 0.2)`).
+  Реализуется в DS-компоненте `NumericInput` через wrapping-View вокруг
+  field-View: при `focused && !hasError` ring-обёртка получает
+  `padding: 2` и `backgroundColor: accentRing`; в остальных состояниях
+  `padding: 0` (ring невидим). Закреплено в Sprint 5 polish-PR.
 
 *Input label (input-label):*
 

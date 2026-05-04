@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Keyboard, StyleSheet, TextInput, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../core/theming';
@@ -23,11 +23,14 @@ export interface NumericInputProps {
   readonly testID?: string;
 }
 
-const FOCUS_BORDER_WIDTH = 2;
+const BORDER_WIDTH = 1;
+const FOCUS_RING_WIDTH = 2;
 const DISABLED_OPACITY = 0.5;
+const LABEL_UPPERCASE: TextStyle = { textTransform: 'uppercase' };
 
 interface Styles {
   readonly field: ViewStyle;
+  readonly fieldRing: ViewStyle;
   readonly input: TextStyle;
   readonly root: ViewStyle;
 }
@@ -40,18 +43,24 @@ function buildStyles(args: {
 }): Styles {
   const { palette, hasError, focused, disabled } = args;
   const fieldBorderColor = hasError ? palette.danger : focused ? palette.accent : palette.border;
+  const showRing = focused && !hasError;
   return StyleSheet.create({
     field: {
       alignItems: 'center',
       backgroundColor: palette.bgInput,
       borderColor: fieldBorderColor,
       borderRadius: tokens.radii.md,
-      borderWidth: focused || hasError ? FOCUS_BORDER_WIDTH : 1,
+      borderWidth: BORDER_WIDTH,
       flexDirection: 'row',
       minHeight: tokens.layout.minTouchTarget,
       opacity: disabled ? DISABLED_OPACITY : 1,
       paddingHorizontal: tokens.spacing.md,
       paddingVertical: tokens.spacing.sm,
+    },
+    fieldRing: {
+      backgroundColor: palette.accentRing,
+      borderRadius: tokens.radii.md + FOCUS_RING_WIDTH,
+      padding: showRing ? FOCUS_RING_WIDTH : 0,
     },
     input: {
       color: palette.textPrimary,
@@ -95,28 +104,32 @@ export function NumericInput(props: NumericInputProps): ReactNode {
 
   return (
     <View style={styles.root} testID={testID}>
-      <Text variant="label" color="textSecondary">
+      <Text variant="microUppercase" color="textSecondary" style={LABEL_UPPERCASE}>
         {label}
       </Text>
-      <View style={styles.field}>
-        <TextInput
-          accessibilityLabel={accessibilityLabel ?? label}
-          editable={!disabled}
-          keyboardType={decimal ? 'decimal-pad' : 'numeric'}
-          onBlur={(): void => setFocused(false)}
-          onChangeText={onChange}
-          onFocus={(): void => setFocused(true)}
-          placeholder={placeholder}
-          placeholderTextColor={palette.textTertiary}
-          style={styles.input}
-          testID={suffixId(testID, 'input')}
-          value={value}
-        />
-        {hasUnit ? (
-          <Text variant="caption" color="textTertiary">
-            {unit}
-          </Text>
-        ) : null}
+      <View style={styles.fieldRing}>
+        <View style={styles.field}>
+          <TextInput
+            accessibilityLabel={accessibilityLabel ?? label}
+            editable={!disabled}
+            keyboardType={decimal ? 'decimal-pad' : 'numeric'}
+            onBlur={(): void => setFocused(false)}
+            onChangeText={onChange}
+            onFocus={(): void => setFocused(true)}
+            onSubmitEditing={(): void => Keyboard.dismiss()}
+            placeholder={placeholder}
+            placeholderTextColor={palette.textTertiary}
+            returnKeyType="done"
+            style={styles.input}
+            testID={suffixId(testID, 'input')}
+            value={value}
+          />
+          {hasUnit ? (
+            <Text variant="monoSmall" color="textTertiary">
+              {unit}
+            </Text>
+          ) : null}
+        </View>
       </View>
       {hasError ? (
         <Text variant="caption" color="danger" testID={suffixId(testID, 'error')}>

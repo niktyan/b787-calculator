@@ -1,6 +1,5 @@
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
 import AboutPlaceholder from '../../app/(main)/about';
-import CrosswindPlaceholder from '../../app/(main)/crosswind';
 import SettingsPlaceholder from '../../app/(main)/settings';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -13,14 +12,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 describe('placeholder screens', () => {
-  it('renders Crosswind placeholder (dark + light)', () => {
-    const dark = renderWithTheme(<CrosswindPlaceholder />, { mode: 'dark' });
-    expect(dark.getByTestId('crosswind-screen')).toBeTruthy();
-    expect(dark.getByText('placeholder.crosswindBody')).toBeTruthy();
-    expect(dark.toJSON()).toMatchSnapshot();
-    const light = renderWithTheme(<CrosswindPlaceholder />, { mode: 'light' }).toJSON();
-    expect(light).toMatchSnapshot();
-  });
+  // Crosswind is no longer a placeholder — see src/__tests__/app/crosswind.test.tsx.
 
   it('renders Settings placeholder (dark + light)', () => {
     const dark = renderWithTheme(<SettingsPlaceholder />, { mode: 'dark' });

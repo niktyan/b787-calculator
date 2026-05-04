@@ -28,6 +28,20 @@
     "settingsBody": "Settings — implementation in upcoming sprint",
     "aboutBody": "About — implementation in upcoming sprint"
   },
+  "crosswind": {
+    "title": "Crosswind · Landing",
+    "weightLabel": "Landing weight",
+    "cgLabel": "Center of gravity",
+    "runwayConditionLabel": "Runway condition",
+    "resetLabel": "Reset",
+    "resultEmpty": "Enter weight and CG to see result",
+    "resultStatusLabel": "Max crosswind · Landing",
+    "resultFootnote": "Computed for current inputs",
+    "metaWeight": "Weight",
+    "metaCG": "CG",
+    "sourceChip": "Reference: 787 FCOM",
+    "warningOutsideEnvelope": "Outside operational envelope — advisory only"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",

@@ -24,8 +24,9 @@ export interface SegmentedControlProps<TValue extends string> {
 }
 
 const TRACK_PADDING = 3;
+const TRACK_GAP = 2;
 const TRACK_PADDING_DOUBLE = TRACK_PADDING * 2;
-const DISABLED_OPACITY = 0.4;
+const DISABLED_OPACITY = 0.5;
 
 interface Styles {
   readonly segment: ViewStyle;
@@ -57,7 +58,7 @@ function buildStyles(palette: ColorPalette): Styles {
       borderRadius: tokens.radii.md,
       borderWidth: 1,
       flexDirection: 'row',
-      gap: TRACK_PADDING,
+      gap: TRACK_GAP,
       padding: TRACK_PADDING,
     },
   });
@@ -69,6 +70,19 @@ interface SegmentProps<TValue extends string> {
   readonly onPress: () => void;
   readonly styles: Styles;
   readonly testID: string | undefined;
+}
+
+function segmentTextColor(
+  isActive: boolean,
+  isDisabled: boolean,
+): 'textOnAccent' | 'textSecondary' | 'textTertiary' {
+  if (isActive) {
+    return 'textOnAccent';
+  }
+  if (isDisabled) {
+    return 'textTertiary';
+  }
+  return 'textSecondary';
 }
 
 function Segment<TValue extends string>(props: SegmentProps<TValue>): ReactNode {
@@ -88,7 +102,7 @@ function Segment<TValue extends string>(props: SegmentProps<TValue>): ReactNode 
       ]}
       testID={testID}
     >
-      <Text variant="caption" color={isActive ? 'textOnAccent' : 'textSecondary'} align="center">
+      <Text variant="segmentLabel" color={segmentTextColor(isActive, isDisabled)} align="center">
         {option.label}
       </Text>
     </Pressable>
