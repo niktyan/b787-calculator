@@ -63,8 +63,10 @@ export interface ChartGeometry {
  * Padding around the plot area (axis labels + chart whitespace).
  * Compact gets tighter padding because there are no Y-axis labels.
  */
-const COMPACT_PADDING: ChartPadding = { top: 8, right: 12, bottom: 16, left: 12 };
-const REGULAR_PADDING: ChartPadding = { top: 16, right: 24, bottom: 24, left: 36 };
+const COMPACT_PADDING: ChartPadding = { top: 8, right: 12, bottom: 16, left: 36 };
+// Regular keeps extra room on the right for per-line "X KT" endpoint
+// labels (Polish-3 follow-up Block 2).
+const REGULAR_PADDING: ChartPadding = { top: 16, right: 48, bottom: 24, left: 44 };
 
 const WEIGHT_PADDING_TONNES = 5;
 const CG_PADDING_PERCENT = 2;
@@ -184,6 +186,8 @@ export function buildGeometry(args: {
 const WEIGHT_TICK_COUNT = 5;
 const WEIGHT_TICK_INTERVALS = WEIGHT_TICK_COUNT - 1;
 const WEIGHT_TICK_STEP_3 = 3;
+const CG_TICK_COUNT = 5;
+const CG_TICK_ROUND_TO = 5;
 
 /**
  * Tick label values for the X axis (weight in tonnes). 5 evenly-spaced
@@ -200,4 +204,24 @@ export function getWeightTicks(data: CrosswindDataFile): readonly number[] {
     env.minTons + WEIGHT_TICK_STEP_3 * step,
     env.maxTons,
   ];
+}
+
+/**
+ * Tick label values for the Y axis (CG % MAC). 5 evenly-spaced ticks
+ * rounded to the nearest 5 for readable axis labels (e.g., 25, 30, 35,
+ * 40, 45 % MAC).
+ */
+export function getCgTicks(axes: ChartAxes): readonly number[] {
+  const span = axes.cgPercentMax - axes.cgPercentMin;
+  const stepRaw = span / (CG_TICK_COUNT - 1);
+  // Round step up to nearest 5 for clean labels.
+  const step = Math.max(CG_TICK_ROUND_TO, Math.ceil(stepRaw / CG_TICK_ROUND_TO) * CG_TICK_ROUND_TO);
+  const start = Math.ceil(axes.cgPercentMin / CG_TICK_ROUND_TO) * CG_TICK_ROUND_TO;
+  const ticks: number[] = [];
+  for (let i = 0; i < CG_TICK_COUNT; i += 1) {
+    const value = start + i * step;
+    if (value > axes.cgPercentMax) break;
+    ticks.push(value);
+  }
+  return ticks;
 }

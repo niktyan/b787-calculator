@@ -19,23 +19,30 @@ import {
   LinearGradient as SvgLinearGradient,
   Path as SvgPath,
   Stop as SvgStop,
+  Text as SvgText,
 } from 'react-native-svg';
 
 import type { ColorPalette } from '../../../../../design-system';
+import { tokens } from '../../../../../design-system';
 
 import type { ChartGeometry, DataLine } from './chartGeometry';
 
 const ACTIVE_STROKE_WIDTH = 2.5;
 const INACTIVE_STROKE_WIDTH = 1.25;
 const INACTIVE_OPACITY = 0.18;
+const INACTIVE_LABEL_OPACITY = 0.5;
 const ACTIVE_FILL_OPACITY_TOP = 0.18;
 const ACTIVE_FILL_OPACITY_BOTTOM = 0;
 const GRADIENT_ID = 'crosswindChartActiveFill';
+const LABEL_FONT_SIZE = 9;
+const LABEL_OFFSET_X = 4;
+const LABEL_OFFSET_Y = 3;
 
 interface ChartLinesProps {
   readonly geometry: ChartGeometry;
   readonly activeBracketIndex: number;
   readonly palette: ColorPalette;
+  readonly showEndpointLabels?: boolean;
 }
 
 function buildActiveFillPath(line: DataLine, plotBottomY: number): string {
@@ -45,13 +52,17 @@ function buildActiveFillPath(line: DataLine, plotBottomY: number): string {
   return `M ${line.x1} ${line.y1} L ${line.x2} ${line.y2} L ${line.x2} ${plotBottomY} L ${line.x1} ${plotBottomY} Z`;
 }
 
-export function ChartLines({ geometry, activeBracketIndex, palette }: ChartLinesProps): ReactNode {
+export function ChartLines({
+  geometry,
+  activeBracketIndex,
+  palette,
+  showEndpointLabels = false,
+}: ChartLinesProps): ReactNode {
   const plotBottomY = geometry.plotArea.y + geometry.plotArea.height;
   const activeLine = geometry.lines[activeBracketIndex];
 
   return (
     <G>
-      {/* Gradient definition for active-line fill below curve. */}
       <SvgDefs>
         <SvgLinearGradient id={GRADIENT_ID} x1="0" y1="0" x2="0" y2="1">
           <SvgStop offset="0" stopColor={palette.accent} stopOpacity={ACTIVE_FILL_OPACITY_TOP} />
@@ -59,12 +70,10 @@ export function ChartLines({ geometry, activeBracketIndex, palette }: ChartLines
         </SvgLinearGradient>
       </SvgDefs>
 
-      {/* Active line gradient fill (rendered before lines so strokes sit on top). */}
       {activeLine !== undefined ? (
         <SvgPath d={buildActiveFillPath(activeLine, plotBottomY)} fill={`url(#${GRADIENT_ID})`} />
       ) : null}
 
-      {/* Inactive lines first so the active stroke draws on top. */}
       {geometry.lines.map((line) => {
         if (line.bracketIndex === activeBracketIndex) return null;
         return (
@@ -81,7 +90,6 @@ export function ChartLines({ geometry, activeBracketIndex, palette }: ChartLines
         );
       })}
 
-      {/* Active line on top. */}
       {activeLine !== undefined ? (
         <SvgLine
           x1={activeLine.x1}
@@ -92,6 +100,30 @@ export function ChartLines({ geometry, activeBracketIndex, palette }: ChartLines
           strokeWidth={ACTIVE_STROKE_WIDTH}
         />
       ) : null}
+
+      {/* Per-line "X KT" endpoint labels at the right edge — gives the
+          KT-bracket context that the Y-axis (CG % MAC) doesn't carry. */}
+      {showEndpointLabels
+        ? geometry.lines.map((line) => {
+            const isActive = line.bracketIndex === activeBracketIndex;
+            return (
+              <SvgText
+                key={`label-${line.bracketIndex}`}
+                x={line.x2 + LABEL_OFFSET_X}
+                y={line.y2 + LABEL_OFFSET_Y}
+                fontSize={LABEL_FONT_SIZE}
+                fontFamily={tokens.typography.fontFamily.sans}
+                fontWeight="600"
+                fill={isActive ? palette.accent : palette.textTertiary}
+                opacity={isActive ? 1 : INACTIVE_LABEL_OPACITY}
+                textAnchor="start"
+              >
+                {/* eslint-disable-next-line react-native/no-raw-text */}
+                {`${line.crosswindKnots} KT`}
+              </SvgText>
+            );
+          })
+        : null}
     </G>
   );
 }

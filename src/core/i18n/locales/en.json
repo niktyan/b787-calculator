@@ -43,6 +43,10 @@
     "warningOutsideEnvelope": "Outside operational envelope — advisory only",
     "chartLabel": "Crosswind limit chart",
     "chartEmpty": "No data for this runway condition",
+    "chart": {
+      "title": "Crosswind limit by landing weight",
+      "legendHint": "Highlighted line is your CG range; faint lines are adjacent ranges."
+    },
     "runway": {
       "dry": "Dry",
       "wet": "Wet",

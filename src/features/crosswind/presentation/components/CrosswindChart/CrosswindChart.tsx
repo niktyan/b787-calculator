@@ -18,13 +18,13 @@
 
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import type { LayoutChangeEvent, ViewStyle } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import Svg from 'react-native-svg';
 
-import { useTheme } from '../../../../../core';
-import { tokens, useReduceMotion } from '../../../../../design-system';
+import { useTheme, useTranslation } from '../../../../../core';
+import { Text, tokens, useReduceMotion } from '../../../../../design-system';
 import type { CrosswindDataFile } from '../../../data/schema';
 
 import { buildGeometry } from './chartGeometry';
@@ -56,6 +56,7 @@ export interface CrosswindChartProps {
 export function CrosswindChart(props: CrosswindChartProps): ReactNode {
   const { data, weightTons, cgPercent, activeBracketIndex, isRegular = false, testID } = props;
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const reduceMotion = useReduceMotion();
   const palette = tokens.colors[theme.resolved];
 
@@ -73,12 +74,21 @@ export function CrosswindChart(props: CrosswindChartProps): ReactNode {
   // double-surface visual artefacts when the parent already has its own
   // border. ChartEmpty also drops its surface for the same reason.
   const height = isRegular ? REGULAR_HEIGHT : COMPACT_HEIGHT;
-  const wrapperStyle = useMemo<ViewStyle>(() => ({ height, width: '100%' }), [height]);
+  const svgWrapperStyle = useMemo<ViewStyle>(() => ({ height, width: '100%' }), [height]);
+
+  const title = (
+    <Text variant="caption" color="textSecondary" testID="crosswind-chart-title">
+      {t('crosswind.chart.title')}
+    </Text>
+  );
 
   if (data === null) {
     return (
-      <View style={wrapperStyle} testID={testID} onLayout={onLayout}>
-        <ChartEmpty />
+      <View style={styles.container} testID={testID}>
+        {title}
+        <View style={svgWrapperStyle} onLayout={onLayout}>
+          <ChartEmpty />
+        </View>
       </View>
     );
   }
@@ -92,22 +102,37 @@ export function CrosswindChart(props: CrosswindChartProps): ReactNode {
   });
 
   return (
-    <Animated.View
-      {...(reduceMotion ? {} : { entering: FadeIn.duration(SURFACE_FADE_DURATION_MS) })}
-      onLayout={onLayout}
-      style={wrapperStyle}
-      testID={testID}
-    >
-      <Svg width={measuredWidth} height={height}>
-        {/* Regular variant: full chart with all lines + envelope + axis. */}
-        {/* Compact variant: only active line + marker (no envelope, no axis labels except endpoints). */}
-        {isRegular ? <ChartEnvelope geometry={geometry} palette={palette} /> : null}
-        <ChartLines geometry={geometry} activeBracketIndex={activeBracketIndex} palette={palette} />
-        {isRegular ? (
+    <View style={styles.container} testID={testID}>
+      {title}
+      <Animated.View
+        {...(reduceMotion ? {} : { entering: FadeIn.duration(SURFACE_FADE_DURATION_MS) })}
+        onLayout={onLayout}
+        style={svgWrapperStyle}
+      >
+        <Svg width={measuredWidth} height={height}>
+          {isRegular ? <ChartEnvelope geometry={geometry} palette={palette} /> : null}
+          <ChartLines
+            geometry={geometry}
+            activeBracketIndex={activeBracketIndex}
+            palette={palette}
+            showEndpointLabels={isRegular}
+          />
           <ChartAxis data={data} geometry={geometry} palette={palette} isRegular={isRegular} />
-        ) : null}
-        <ChartMarker cx={geometry.markerX} cy={geometry.markerY} palette={palette} />
-      </Svg>
-    </Animated.View>
+          <ChartMarker cx={geometry.markerX} cy={geometry.markerY} palette={palette} />
+        </Svg>
+      </Animated.View>
+      {isRegular ? (
+        <Text variant="caption" color="textTertiary" testID="crosswind-chart-legend">
+          {t('crosswind.chart.legendHint')}
+        </Text>
+      ) : null}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    gap: tokens.spacing.sm,
+    width: '100%',
+  },
+});

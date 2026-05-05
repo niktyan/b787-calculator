@@ -204,4 +204,105 @@ describe('CrosswindChart · component', () => {
     ).toJSON();
     expect(tree).toMatchSnapshot();
   });
+
+  describe('Polish-3 follow-up · enriched chart (Block 2)', () => {
+    it('regular: title + legend hint both present', () => {
+      const tree = renderWithTheme(
+        <CrosswindChart
+          data={data}
+          weightTons={170}
+          cgPercent={32}
+          activeBracketIndex={1}
+          isRegular
+          testID="chart"
+        />,
+      );
+      expect(tree.getByTestId('crosswind-chart-title')).toBeTruthy();
+      expect(tree.getByTestId('crosswind-chart-legend')).toBeTruthy();
+      expect(tree.getByText('crosswind.chart.title')).toBeTruthy();
+      expect(tree.getByText('crosswind.chart.legendHint')).toBeTruthy();
+    });
+
+    it('compact: title shown, legend hint hidden', () => {
+      const tree = renderWithTheme(
+        <CrosswindChart
+          data={data}
+          weightTons={170}
+          cgPercent={32}
+          activeBracketIndex={1}
+          testID="chart"
+        />,
+      );
+      expect(tree.getByTestId('crosswind-chart-title')).toBeTruthy();
+      expect(tree.queryByTestId('crosswind-chart-legend')).toBeNull();
+    });
+
+    it('regular: per-line "X KT" endpoint labels render for all 5 brackets', () => {
+      const tree = renderWithTheme(
+        <CrosswindChart
+          data={data}
+          weightTons={170}
+          cgPercent={32}
+          activeBracketIndex={1}
+          isRegular
+          testID="chart"
+        />,
+      );
+      const json = JSON.stringify(tree.toJSON());
+      // All 5 KT bracket endpoint labels appear in the SVG output.
+      expect(json).toContain('40 KT');
+      expect(json).toContain('35 KT');
+      expect(json).toContain('30 KT');
+      expect(json).toContain('25 KT');
+      expect(json).toContain('20 KT');
+    });
+
+    it('compact: KT endpoint labels are NOT rendered (chart is simplified)', () => {
+      const tree = renderWithTheme(
+        <CrosswindChart
+          data={data}
+          weightTons={170}
+          cgPercent={32}
+          activeBracketIndex={1}
+          testID="chart"
+        />,
+      );
+      const json = JSON.stringify(tree.toJSON());
+      expect(json).not.toContain('40 KT');
+      expect(json).not.toContain('25 KT');
+    });
+
+    it('Y-axis CG percent labels render on both compact and regular', () => {
+      // Regular
+      const regular = renderWithTheme(
+        <CrosswindChart
+          data={data}
+          weightTons={170}
+          cgPercent={32}
+          activeBracketIndex={1}
+          isRegular
+          testID="chart"
+        />,
+      );
+      const regularJson = JSON.stringify(regular.toJSON());
+      // For the bundled b787-8-landing-dry data, the cg axis spans
+      // ~6 % to ~44 % MAC; getCgTicks rounds to step 10, producing
+      // ticks at 10/20/30/40 %MAC.
+      expect(regularJson).toContain('30%');
+      expect(regularJson).toContain('40%');
+      // Compact: same Y-axis ticks present.
+      const compact = renderWithTheme(
+        <CrosswindChart
+          data={data}
+          weightTons={170}
+          cgPercent={32}
+          activeBracketIndex={1}
+          testID="chart"
+        />,
+      );
+      const compactJson = JSON.stringify(compact.toJSON());
+      expect(compactJson).toContain('30%');
+      expect(compactJson).toContain('40%');
+    });
+  });
 });
