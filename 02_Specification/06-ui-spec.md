@@ -590,6 +590,15 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
   field-View: при `focused && !hasError` ring-обёртка получает
   `padding: 2` и `backgroundColor: accentRing`; в остальных состояниях
   `padding: 0` (ring невидим). Закреплено в Sprint 5 polish-PR.
+- **iPad-regular sizing (Polish-3 follow-up Block 1).** При
+  `useWindowDimensions().width >= tokens.breakpoints.regularHeader`
+  (768 pt) — то есть на iPad в любой ориентации — `NumericInput`
+  переключается в крупный вариант для cockpit viewing distance:
+  `minHeight 64 pt`, padding `14 × 20 pt`, value variant
+  `monoMedium` (mono 24 pt), unit suffix variant `body` (sans 16 pt),
+  label variant `label` (sans 12 / 600 / letter-spacing 0.6),
+  focus-ring 3 pt. iPhone (compact) сохраняет MVP-размеры (44 / 16 /
+  9 pt label / 2 pt ring) без изменений.
 
 *Input label (input-label):*
 
@@ -614,6 +623,12 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
   `tokens.colors.textTertiary` с reduced-opacity (≈50%) в сочетании с
   tap-handler-ом, который показывает короткий toast «Available in
   upcoming release» (визуал тоста — ниже).
+- **iPad-regular sizing (Polish-3 follow-up Block 1).** При
+  `width >= tokens.breakpoints.regularHeader` (768 pt) track
+  получает `minHeight 56 pt`; segment padding `12 × 16 pt`; label
+  variant `caption` (sans 12 / 400) вместо compact-variant
+  `segmentLabel` (sans 10 / 500). Wrap-on-compact (>4 segments) —
+  без изменений.
 
 *RWYCC segmented control:*
 
@@ -808,23 +823,46 @@ iPhone» → «Layout matrix · Crosswind result panel») result-panel
   максимум 240 pt ширины).
 - **Высота графика.**
   - Compact (iPhone, любая ориентация): 140 pt. Только active line
-    + marker. Без axis-меток (кроме первой/последней) и без
-    operational verticals.
+    + marker. Без endpoint-KT-меток и без operational verticals.
+    Y-axis CG % MAC tick-метки **присутствуют** (essential для
+    интерпретации); X-axis — только первая и последняя метка.
   - Regular (iPad landscape ≥ 1024 pt): 280 pt. Все 5 линий +
-    envelope verticals + полные axis-tick-метки.
-- **Расположение.**
-  - Compact: под result-панелью с `marginTop: tokens.spacing.sm` (см.
-    `styles.compactChart` в `CrosswindResult.tsx`).
-  - Regular: внутри `RegularIdleBody.BottomGroup` — между
-    valueBlock и meta-grid.
-- **Range row containment (Block 0 fix).** Result-panel контент
-  разделён на TopGroup (status, value, warning, footnote) и
-  BottomGroup (chart, divider+meta-grid); panel-обёртка использует
-  `flex: 1` + `justifyContent: 'space-between'` ровно для двух
-  групп. Это гарантирует, что 3-я строка meta-grid (`Range`, видна
-  при `bracketCrosswindRange.lower !== upper`) **остаётся внутри**
-  panel-границы. До Polish-3 (Block 0) она вырывалась за нижнюю
-  границу при frap-е flex-children.
+    envelope verticals + полные X- и Y-axis tick-метки + per-line
+    "X KT" endpoint-метки на правом краю.
+- **Chart card structure (Polish-3 follow-up Block 0).** Чарт
+  рендерится внутри **отдельного** `<Card>` (testID
+  `crosswind-chart-card`), который сидит как **сосед**
+  result-summary Card в вертикальном Stack. Полностью убрано
+  раннее совмещение чарта в одной обёртке с value/meta — это и
+  было причиной "побега" чарта и meta-grid за нижнюю границу
+  panel-Card-а на iPad landscape.
+  - **Regular landscape:** Right column =
+    `<Card testID="crosswind-result-summary">` (status, value,
+    KT, warning, footnote, divider+meta-grid) +
+    `<Card testID="crosswind-chart-card" style={flex:1}>`
+    (chart). Меж карточек — `tokens.spacing.md` (12 pt) gap.
+  - **Compact (iPhone any, iPad portrait):** stack из трёх карточек:
+    input form (без Card), `<ResultPanel>` (DS-обёртка с
+    собственным Card-surface) + `<Card testID="crosswind-chart-card">`.
+- **Chart title + legend.** Внутри `<Card>` чарта над SVG —
+  заголовок `crosswind.chart.title` ("Crosswind limit by landing
+  weight" / "Лимит бокового ветра по посадочному весу"), variant
+  `caption`, цвет `textSecondary`. Под SVG (только regular) —
+  концизный hint `crosswind.chart.legendHint` ("Highlighted line is
+  your CG range; faint lines are adjacent ranges."), variant
+  `caption`, цвет `textTertiary`. Compact его прячет (chart
+  показывает только active line, легенда излишня).
+- **Per-line "X KT" endpoint labels** (regular only). Каждая из 5
+  bracket-линий получает текстовую метку `"40 KT"` / `"35 KT"` / и
+  т.д. на правом конце — это даёт пилоту KT-контекст без
+  переопределения Y-оси (Y axis — CG %MAC). Active линия
+  накрашена `accent`, остальные — `textTertiary` 50 % opacity.
+- **Range row containment (Block 0 fix, Polish-3).** Range-строка
+  meta-grid (видна когда `bracketCrosswindRange.lower !== upper`)
+  гарантированно живёт внутри `<Card testID=
+  "crosswind-result-summary">`. Раннее использование
+  `flex: 1` + `justifyContent: 'space-between'` на одной обёртке
+  с чартом — снято: meta-grid сидит в своей Card, чарт — в своей.
 
 *Disabled-state toast (Wet/Contaminated tap):*
 
@@ -1076,12 +1114,23 @@ press-handler-ы становятся no-op-ами (никаких `withTiming`-
 крупного варианта **жёстко привязан к 2-колоночной раскладке**, а не к
 breakpoint-у `regularHeader` (768 pt):
 
-| Viewport | Layout | Result-panel typography |
-|----------|--------|-------------------------|
-| iPhone any orientation (`< 1024`) | stacked vertical | compact (`display` 48 / `monoMedium` 24) |
-| iPad portrait (regular width, `< 1024`) | stacked vertical | compact |
-| iPad landscape (regular width, `≥ 1024`) | 2-column (input \| result) | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) |
-| iPhone landscape (compact height) | 2-column compact-spaced | compact |
+| Viewport | Layout | Result-panel structure | Result-panel typography | Input sizing |
+|----------|--------|------------------------|-------------------------|--------------|
+| iPhone portrait (`< 768`) | stacked vertical | `<ResultPanel>` + sibling chart Card | compact (`display` 48 / `monoMedium` 24) | compact (44 / 16) |
+| iPhone landscape (`< 768`) | stacked vertical (or 2-col compact-spaced) | `<ResultPanel>` + sibling chart Card | compact | compact |
+| iPad portrait (`768 ≤ w < 1024`) | stacked vertical | `<ResultPanel>` + sibling chart Card | compact | **regular** (64 / 24) |
+| iPad landscape (`≥ 1024`) | 2-column (input \| result) | **`<Card result-summary>` + `<Card chart-card>` siblings** in column | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) | regular |
+
+Notes:
+- The two-Card right column (Polish-3 follow-up Block 0) is gated on
+  the same `isTwoColumn = width >= 1024` flag as the regular
+  typography. Single-column viewports use `<ResultPanel>` (DS Card
+  surface for status/value/meta) plus a sibling `<Card
+  testID="crosswind-chart-card">` — not the
+  `RegularIdleBody.ResultSummaryCard` two-card split.
+- Input sizing (NumericInput / SegmentedControl) auto-detects via
+  `tokens.breakpoints.regularHeader` (768 pt) — so iPad portrait
+  gets large inputs even though it stays single-column.
 
 Причина: regular-вариант полагается на flex-fill height chain, который
 схлопывается до 0, если родительский контейнер сам auto-sized
