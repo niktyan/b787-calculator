@@ -6,8 +6,6 @@ exports[`CrosswindChart · component compact snapshot at W=130 CG=27 active=2 da
   onLayout={[Function]}
   style={
     {
-      "backgroundColor": "#11161F",
-      "borderRadius": 8,
       "height": 140,
       "width": "100%",
     }
@@ -263,6 +261,12 @@ exports[`CrosswindChart · component compact snapshot at W=130 CG=27 active=2 da
 exports[`CrosswindChart · component empty state snapshot (non-dry runway condition) 1`] = `
 <View
   onLayout={[Function]}
+  style={
+    {
+      "height": 280,
+      "width": "100%",
+    }
+  }
   testID="chart"
 >
   <View
@@ -270,10 +274,8 @@ exports[`CrosswindChart · component empty state snapshot (non-dry runway condit
     style={
       {
         "alignItems": "center",
-        "backgroundColor": "#11161F",
-        "borderRadius": 8,
+        "flex": 1,
         "gap": 8,
-        "height": 280,
         "justifyContent": "center",
         "padding": 12,
         "width": "100%",
@@ -339,8 +341,6 @@ exports[`CrosswindChart · component regular snapshot at W=170 CG=32 active=1 li
   onLayout={[Function]}
   style={
     {
-      "backgroundColor": "#FFFFFF",
-      "borderRadius": 8,
       "height": 280,
       "width": "100%",
     }

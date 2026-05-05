@@ -212,4 +212,44 @@ describe('Crosswind route', () => {
       expect(within(metaGrid).getByText(/30 – 35 KT/)).toBeTruthy();
     });
   });
+
+  describe('Two-card structure (Polish-3 follow-up Block 0)', () => {
+    afterEach(() => {
+      clearViewport();
+    });
+
+    // After Block 0, the right column on iPad regular landscape splits
+    // into two distinct Cards: result-summary (status / value /
+    // footnote / meta-grid) and chart-card (chart). Previously the
+    // chart and meta-grid escaped the panel border because they were
+    // children of a single panelStyle View with flex:1 +
+    // justifyContent:'space-between'.
+    it('iPad regular landscape: chart and meta-grid live in separate Card surfaces', () => {
+      mockViewport(IPAD_MINI_LANDSCAPE);
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
+      fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
+      const summary = tree.getByTestId('crosswind-result-summary');
+      const chartCard = tree.getByTestId('crosswind-chart-card');
+      // Meta-grid lives inside the result-summary card, not the chart card.
+      expect(within(summary).getByTestId('crosswind-meta-grid')).toBeTruthy();
+      expect(within(chartCard).queryByTestId('crosswind-meta-grid')).toBeNull();
+      // Chart lives inside the chart card.
+      expect(within(chartCard).getByTestId('crosswind-chart')).toBeTruthy();
+      expect(within(summary).queryByTestId('crosswind-chart')).toBeNull();
+    });
+
+    it('iPhone compact: chart sits in its own Card sibling to ResultPanel', () => {
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
+      fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
+      const chartCard = tree.getByTestId('crosswind-chart-card');
+      expect(within(chartCard).getByTestId('crosswind-chart')).toBeTruthy();
+      // ResultPanel still hosts the meta-grid in the compact path.
+      const panel = tree.getByTestId('crosswind-result-panel');
+      expect(within(panel).getByTestId('result-panel-meta-grid')).toBeTruthy();
+      // The chart card is NOT inside the result panel (i.e., they're siblings).
+      expect(within(panel).queryByTestId('crosswind-chart-card')).toBeNull();
+    });
+  });
 });

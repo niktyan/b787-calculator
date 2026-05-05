@@ -1,15 +1,23 @@
 /**
  * iPad-regular-width idle body for the Crosswind result panel.
  *
+ * Polish-3 follow-up: the right column is now TWO sibling Cards
+ * stacked vertically — `crosswind-result-summary` (status / value /
+ * footnote / meta-grid) and `crosswind-chart-card` (chart with
+ * `flex: 1` to fill remaining vertical space). The previous single
+ * panel had `flex: 1` + `justifyContent: 'space-between'` which left
+ * the chart and meta-grid visually escaping the panel border on
+ * landscape; the two-Card structure scopes each subsection to its
+ * own surface.
+ *
  * Bypasses the design-system `<ResultPanel>` because the
  * regular-width variant uses the new `displayLarge` (72 pt) value,
- * `monoXL` (36 pt) KT suffix, and full-height `flex: 1` layout — all
- * three would require extending `ResultPanelState`, which is sealed
- * by C2 decision (см. `02_Specification/module-contracts/design-system.md`).
+ * `monoXL` (36 pt) KT suffix, and dual-Card layout — none of which
+ * fit `ResultPanelState` (sealed by C2).
  *
- * Rendered only when `width >= tokens.breakpoints.regularHeader`.
- * Compact-width path remains in `CrosswindResult` and continues to
- * use `<ResultPanel>` unchanged.
+ * Rendered only when `width >= tokens.breakpoints.regular`.
+ * Compact-width path remains in `CrosswindResult` and uses
+ * `<ResultPanel>` plus its own chart Card (sibling Stack).
  */
 
 import { useMemo } from 'react';
@@ -18,7 +26,7 @@ import { StyleSheet, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../../core';
-import { Text, tokens } from '../../../../design-system';
+import { Card, Text, tokens } from '../../../../design-system';
 import type { ResultPanelMetaItem } from '../../../../design-system';
 import type { CrosswindCalculationOutput, EnvelopeViolation } from '../../domain/types';
 import type { ChartInputs } from '../useCrosswindCalculator';
@@ -53,89 +61,85 @@ export interface RegularIdleBodyProps {
   readonly warningText: string;
 }
 
-interface TopGroupProps {
+interface ResultSummaryProps {
   readonly output: CrosswindCalculationOutput;
   readonly warning: EnvelopeViolation | null;
+  readonly meta: readonly ResultPanelMetaItem[];
   readonly statusLabel: string;
   readonly footnote: string;
   readonly warningText: string;
-}
-
-function TopGroup({
-  output,
-  warning,
-  statusLabel,
-  footnote,
-  warningText,
-}: TopGroupProps): ReactNode {
-  return (
-    <View style={styles.topGroup}>
-      <Text variant="microUppercase" color="accent" style={STATUS_STYLE}>
-        {statusLabel}
-      </Text>
-      <View style={styles.valueBlock}>
-        <Text
-          variant="displayLarge"
-          color="accent"
-          allowFontScaling={false}
-          accessibilityLabel={`${output.maxCrosswindKnots} ${KT_UNIT}`}
-        >
-          {String(output.maxCrosswindKnots)}
-        </Text>
-        <Text variant="monoXL" color="textSecondary" style={styles.ktSuffix}>
-          {KT_UNIT}
-        </Text>
-      </View>
-      {warning !== null ? (
-        <View style={styles.warningChip} testID="crosswind-warning-chip">
-          <Text variant="caption" color="warn">
-            {warningText}
-          </Text>
-        </View>
-      ) : null}
-      <Text variant="caption" color="textSecondary" align="center">
-        {footnote}
-      </Text>
-    </View>
-  );
-}
-
-interface BottomGroupProps {
-  readonly chart: ChartInputs | null;
-  readonly meta: readonly ResultPanelMetaItem[];
   readonly dividerStyle: ViewStyle;
 }
 
-function BottomGroup({ chart, meta, dividerStyle }: BottomGroupProps): ReactNode {
+function ResultSummaryCard(props: ResultSummaryProps): ReactNode {
+  const { output, warning, meta, statusLabel, footnote, warningText, dividerStyle } = props;
   return (
-    <View style={styles.bottomGroup}>
-      {chart !== null ? (
-        <View style={styles.chart} testID="crosswind-chart-slot">
-          <CrosswindChart
-            data={chart.data}
-            weightTons={chart.weightTons}
-            cgPercent={chart.cgPercent}
-            activeBracketIndex={chart.activeBracketIndex}
-            isRegular
-            testID="crosswind-chart"
-          />
+    <Card padding="lg" radius="lg" testID="crosswind-result-summary">
+      <View style={styles.summaryStack}>
+        <Text variant="microUppercase" color="accent" style={STATUS_STYLE}>
+          {statusLabel}
+        </Text>
+        <View style={styles.valueBlock}>
+          <Text
+            variant="displayLarge"
+            color="accent"
+            allowFontScaling={false}
+            accessibilityLabel={`${output.maxCrosswindKnots} ${KT_UNIT}`}
+          >
+            {String(output.maxCrosswindKnots)}
+          </Text>
+          <Text variant="monoXL" color="textSecondary" style={styles.ktSuffix}>
+            {KT_UNIT}
+          </Text>
         </View>
-      ) : null}
-      <View style={dividerStyle}>
-        <View style={styles.metaGrid} testID="crosswind-meta-grid">
-          {meta.map((item) => (
-            <View key={item.label} style={styles.metaItem}>
-              <Text variant="microUppercase" color="textTertiary" style={META_LABEL_STYLE}>
-                {item.label}
-              </Text>
-              <Text variant="mono" color="textPrimary" style={styles.metaValue}>
-                {item.value}
-              </Text>
-            </View>
-          ))}
+        {warning !== null ? (
+          <View style={styles.warningChip} testID="crosswind-warning-chip">
+            <Text variant="caption" color="warn">
+              {warningText}
+            </Text>
+          </View>
+        ) : null}
+        <Text variant="caption" color="textSecondary" align="center">
+          {footnote}
+        </Text>
+        <View style={dividerStyle}>
+          <View style={styles.metaGrid} testID="crosswind-meta-grid">
+            {meta.map((item) => (
+              <View key={item.label} style={styles.metaItem}>
+                <Text variant="microUppercase" color="textTertiary" style={META_LABEL_STYLE}>
+                  {item.label}
+                </Text>
+                <Text variant="mono" color="textPrimary" style={styles.metaValue}>
+                  {item.value}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
       </View>
-    </View>
+    </Card>
+  );
+}
+
+interface ChartCardProps {
+  readonly chart: ChartInputs | null;
+}
+
+function ChartCard({ chart }: ChartCardProps): ReactNode {
+  if (chart === null) {
+    return null;
+  }
+  return (
+    <Card padding="lg" radius="lg" style={styles.chartCard} testID="crosswind-chart-card">
+      <CrosswindChart
+        data={chart.data}
+        weightTons={chart.weightTons}
+        cgPercent={chart.cgPercent}
+        activeBracketIndex={chart.activeBracketIndex}
+        isRegular
+        testID="crosswind-chart"
+      />
+    </Card>
   );
 }
 
@@ -144,18 +148,6 @@ export function RegularIdleBody(props: RegularIdleBodyProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
 
-  const panelStyle = useMemo<ViewStyle>(
-    () => ({
-      backgroundColor: palette.bgCard,
-      borderColor: palette.border,
-      borderRadius: tokens.radii.lg,
-      borderWidth: REGULAR_BORDER_WIDTH,
-      flex: 1,
-      justifyContent: 'space-between',
-      padding: tokens.spacing.lg,
-    }),
-    [palette.bgCard, palette.border],
-  );
   const dividerStyle = useMemo<ViewStyle>(
     () => ({
       borderTopColor: palette.border,
@@ -165,34 +157,29 @@ export function RegularIdleBody(props: RegularIdleBodyProps): ReactNode {
     [palette.border],
   );
 
-  // Layout split into two anchored groups so the meta-grid never escapes
-  // the panel's bottom border. With the previous flat 6-children layout
-  // and `justifyContent: 'space-between'`, the wrapped second row of a
-  // 3-item meta-grid (CG / RWY / Range) rendered visually below the
-  // panel border on iPad regular. By containing meta-grid inside a
-  // bottom-group wrapper, space-between only distributes the two top
-  // and bottom groups, and the wrapped row stays inside the bottom
-  // wrapper's bounds.
   return (
-    <View style={panelStyle} testID="crosswind-result-panel">
-      <TopGroup
+    <View style={styles.column} testID="crosswind-result-panel">
+      <ResultSummaryCard
         output={output}
         warning={warning}
+        meta={meta}
         statusLabel={statusLabel}
         footnote={footnote}
         warningText={warningText}
+        dividerStyle={dividerStyle}
       />
-      <BottomGroup chart={chart} meta={meta} dividerStyle={dividerStyle} />
+      <ChartCard chart={chart} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  bottomGroup: {
-    gap: tokens.spacing.sm,
+  chartCard: {
+    flex: 1,
   },
-  chart: {
-    paddingHorizontal: tokens.spacing.sm,
+  column: {
+    flex: 1,
+    gap: tokens.spacing.md,
   },
   ktSuffix: {
     marginLeft: REGULAR_KT_SUFFIX_MARGIN_LEFT,
@@ -208,7 +195,7 @@ const styles = StyleSheet.create({
   metaValue: {
     marginTop: REGULAR_META_VALUE_MARGIN_TOP,
   },
-  topGroup: {
+  summaryStack: {
     gap: tokens.spacing.md,
   },
   valueBlock: {

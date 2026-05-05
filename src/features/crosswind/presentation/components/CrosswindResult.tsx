@@ -6,7 +6,7 @@ import type { ViewStyle } from 'react-native';
 import Animated, { Easing, LinearTransition } from 'react-native-reanimated';
 
 import { useTheme, useTranslation } from '../../../../core';
-import { ResultPanel, Text, tokens, useReduceMotion } from '../../../../design-system';
+import { Card, ResultPanel, Text, tokens, useReduceMotion } from '../../../../design-system';
 import type { ResultPanelMetaItem, ResultPanelState } from '../../../../design-system';
 import type { CrosswindCalculationOutput, EnvelopeViolation } from '../../domain/types';
 import type { ChartInputs, CrosswindUIState } from '../useCrosswindCalculator';
@@ -115,7 +115,9 @@ function IdleView(props: IdleViewProps): ReactNode {
       />
     );
   }
-  // Compact width keeps the existing DS ResultPanel rendering.
+  // Compact width keeps the existing DS ResultPanel rendering, plus a
+  // sibling chart Card so the chart never shares the result-panel
+  // border (Polish-3 follow-up Block 0).
   const idleState: ResultPanelState = {
     kind: 'idle',
     label: statusLabel,
@@ -125,10 +127,10 @@ function IdleView(props: IdleViewProps): ReactNode {
     meta,
   };
   return (
-    <View>
+    <View style={styles.compactColumn}>
       <ResultPanel state={idleState} testID="crosswind-result-panel" />
       {chart !== null ? (
-        <View style={styles.compactChart}>
+        <Card padding="md" radius="lg" testID="crosswind-chart-card">
           <CrosswindChart
             data={chart.data}
             weightTons={chart.weightTons}
@@ -136,10 +138,10 @@ function IdleView(props: IdleViewProps): ReactNode {
             activeBracketIndex={chart.activeBracketIndex}
             testID="crosswind-chart"
           />
-        </View>
+        </Card>
       ) : null}
       {warning !== null ? (
-        <View style={styles.warningChip} testID="crosswind-warning-chip">
+        <View testID="crosswind-warning-chip">
           <Text variant="caption" color="warn">
             {warningText}
           </Text>
@@ -246,10 +248,10 @@ function renderContent(
         ? { kind: 'error', headline: state.headline }
         : { kind: 'error', headline: state.headline, description: state.description };
     return (
-      <View>
+      <View style={styles.compactColumn}>
         <ResultPanel state={errorState} testID="crosswind-result-panel" />
         {chart !== null ? (
-          <View style={styles.compactChart}>
+          <Card padding="md" radius="lg" testID="crosswind-chart-card">
             <CrosswindChart
               data={chart.data}
               weightTons={chart.weightTons}
@@ -258,7 +260,7 @@ function renderContent(
               isRegular={isRegular}
               testID="crosswind-chart"
             />
-          </View>
+          </Card>
         ) : null}
       </View>
     );
@@ -279,13 +281,10 @@ function renderContent(
 }
 
 const styles = StyleSheet.create({
-  compactChart: {
-    marginTop: tokens.spacing.sm,
+  compactColumn: {
+    gap: tokens.spacing.sm,
   },
   fillHeight: {
     flex: 1,
-  },
-  warningChip: {
-    marginTop: tokens.spacing.sm,
   },
 });

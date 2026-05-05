@@ -67,21 +67,18 @@ export function CrosswindChart(props: CrosswindChartProps): ReactNode {
     }
   };
 
+  // Polish-3 follow-up: chart no longer carries its own bgCard / border /
+  // radius — it renders as transparent SVG content inside a parent
+  // `<Card>` provided by RegularIdleBody / CrosswindResult. This avoids
+  // double-surface visual artefacts when the parent already has its own
+  // border. ChartEmpty also drops its surface for the same reason.
   const height = isRegular ? REGULAR_HEIGHT : COMPACT_HEIGHT;
-  const surfaceStyle = useMemo<ViewStyle>(
-    () => ({
-      backgroundColor: palette.bgCard,
-      borderRadius: tokens.radii.md,
-      height,
-      width: '100%',
-    }),
-    [palette.bgCard, height],
-  );
+  const wrapperStyle = useMemo<ViewStyle>(() => ({ height, width: '100%' }), [height]);
 
   if (data === null) {
     return (
-      <View testID={testID} onLayout={onLayout}>
-        <ChartEmpty height={height} />
+      <View style={wrapperStyle} testID={testID} onLayout={onLayout}>
+        <ChartEmpty />
       </View>
     );
   }
@@ -98,7 +95,7 @@ export function CrosswindChart(props: CrosswindChartProps): ReactNode {
     <Animated.View
       {...(reduceMotion ? {} : { entering: FadeIn.duration(SURFACE_FADE_DURATION_MS) })}
       onLayout={onLayout}
-      style={surfaceStyle}
+      style={wrapperStyle}
       testID={testID}
     >
       <Svg width={measuredWidth} height={height}>
