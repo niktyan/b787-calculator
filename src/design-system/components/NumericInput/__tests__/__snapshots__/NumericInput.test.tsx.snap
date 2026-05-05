@@ -71,6 +71,7 @@ exports[`NumericInput renders decimal field with value, unit and error 1`] = `
             "flex": 1,
             "fontFamily": "Menlo",
             "fontSize": 16,
+            "lineHeight": 22,
           }
         }
         testID="cg-input"
@@ -192,6 +193,7 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
             "flex": 1,
             "fontFamily": "Menlo",
             "fontSize": 16,
+            "lineHeight": 22,
           }
         }
         testID="weight-input"
@@ -293,6 +295,7 @@ exports[`NumericInput renders empty integer field with placeholder in light them
             "flex": 1,
             "fontFamily": "Menlo",
             "fontSize": 16,
+            "lineHeight": 22,
           }
         }
         testID="weight-input"

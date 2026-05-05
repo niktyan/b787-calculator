@@ -443,6 +443,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "flex": 1,
                         "fontFamily": "Menlo",
                         "fontSize": 16,
+                        "lineHeight": 22,
                       }
                     }
                     testID="crosswind-weight-input"
@@ -541,6 +542,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "flex": 1,
                         "fontFamily": "Menlo",
                         "fontSize": 16,
+                        "lineHeight": 22,
                       }
                     }
                     testID="crosswind-cg-input"
@@ -614,6 +616,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                       "gap": 2,
                       "padding": 3,
                     },
+                    null,
                     {
                       "flexWrap": "wrap",
                       "rowGap": 8,
@@ -665,6 +668,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -741,6 +745,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -817,6 +822,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -893,6 +899,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -969,6 +976,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -1045,6 +1053,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -1604,6 +1613,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "flex": 1,
                         "fontFamily": "Menlo",
                         "fontSize": 16,
+                        "lineHeight": 22,
                       }
                     }
                     testID="crosswind-weight-input"
@@ -1702,6 +1712,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "flex": 1,
                         "fontFamily": "Menlo",
                         "fontSize": 16,
+                        "lineHeight": 22,
                       }
                     }
                     testID="crosswind-cg-input"
@@ -1775,6 +1786,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                       "gap": 2,
                       "padding": 3,
                     },
+                    null,
                     {
                       "flexWrap": "wrap",
                       "rowGap": 8,
@@ -1826,6 +1838,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -1902,6 +1915,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -1978,6 +1992,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -2054,6 +2069,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -2130,6 +2146,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",
@@ -2206,6 +2223,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                         "paddingHorizontal": 8,
                         "paddingVertical": 4,
                       },
+                      null,
                       {
                         "flex": 0,
                         "flexBasis": "32%",

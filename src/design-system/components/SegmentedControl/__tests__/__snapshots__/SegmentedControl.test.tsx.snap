@@ -4,15 +4,19 @@ exports[`SegmentedControl renders in light theme 1`] = `
 <View
   accessibilityRole="radiogroup"
   style={
-    {
-      "backgroundColor": "#FFFFFF",
-      "borderColor": "rgba(0, 0, 0, 0.08)",
-      "borderRadius": 8,
-      "borderWidth": 1,
-      "flexDirection": "row",
-      "gap": 2,
-      "padding": 3,
-    }
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "rgba(0, 0, 0, 0.08)",
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "gap": 2,
+        "padding": 3,
+      },
+      null,
+      null,
+    ]
   }
   testID="rwy"
 >
@@ -59,6 +63,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         null,
         {
           "backgroundColor": "#00C2A8",
@@ -131,6 +136,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         null,
         null,
         {
@@ -205,6 +211,7 @@ exports[`SegmentedControl renders in light theme 1`] = `
         },
         null,
         null,
+        null,
         {
           "opacity": 0.5,
         },
@@ -239,15 +246,19 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
 <View
   accessibilityRole="radiogroup"
   style={
-    {
-      "backgroundColor": "#11161F",
-      "borderColor": "rgba(255, 255, 255, 0.08)",
-      "borderRadius": 8,
-      "borderWidth": 1,
-      "flexDirection": "row",
-      "gap": 2,
-      "padding": 3,
-    }
+    [
+      {
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "gap": 2,
+        "padding": 3,
+      },
+      null,
+      null,
+    ]
   }
   testID="rwy"
 >
@@ -294,6 +305,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         null,
         {
           "backgroundColor": "#00C2A8",
@@ -366,6 +378,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         null,
         null,
         {
@@ -438,6 +451,7 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
           "paddingHorizontal": 8,
           "paddingVertical": 4,
         },
+        null,
         null,
         null,
         {

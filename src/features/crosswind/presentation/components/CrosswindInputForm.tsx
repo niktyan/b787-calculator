@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
+import { useWindowDimensions } from 'react-native';
 
 import { useTranslation } from '../../../../core';
-import { NumericInput, SegmentedControl, Stack, Text } from '../../../../design-system';
+import { NumericInput, SegmentedControl, Stack, Text, tokens } from '../../../../design-system';
 import type { SegmentedControlOption } from '../../../../design-system';
 import type { RunwayCondition } from '../../domain/types';
 
@@ -31,6 +32,12 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
     testID,
   } = props;
   const { t } = useTranslation();
+  const { width } = useWindowDimensions();
+  const isRegular = width >= tokens.breakpoints.regularHeader;
+  // Polish-3 follow-up: bigger gap between input groups on iPad regular
+  // (xxl=32) so the form fills the left column at cockpit viewing
+  // distance. Compact (iPhone any orientation) keeps `lg`=16.
+  const formGap = isRegular ? 'xxl' : 'lg';
 
   // Polish-3: 6 explicit FCOM runway-condition codes (см.
   // 04-domain-model.md § RunwayCondition). Only `dry` is active in MVP;
@@ -52,7 +59,7 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
   );
 
   return (
-    <Stack gap="lg" {...(testID === undefined ? {} : { testID })}>
+    <Stack gap={formGap} {...(testID === undefined ? {} : { testID })}>
       <NumericInput
         label={t('crosswind.weightLabel')}
         value={weightText}
@@ -72,7 +79,7 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
         {...(cgError === null ? {} : { error: cgError })}
         testID="crosswind-cg"
       />
-      <Stack gap="xs">
+      <Stack gap={isRegular ? 'sm' : 'xs'}>
         <Text variant="label" color="textSecondary">
           {t('crosswind.runwayConditionLabel')}
         </Text>

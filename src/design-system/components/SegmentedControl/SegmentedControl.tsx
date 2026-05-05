@@ -30,13 +30,21 @@ const TRACK_PADDING_DOUBLE = TRACK_PADDING * 2;
 const DISABLED_OPACITY = 0.5;
 const WRAP_THRESHOLD = 4; // > 4 segments triggers wrap on compact width
 const WRAP_FLEX_BASIS = '32%'; // ~3 segments per wrapped row with TRACK_GAP
+// Polish-3 follow-up: iPad-regular sizing — taller track + bigger
+// segment labels (caption 12 pt vs compact's segmentLabel 10 pt) for
+// cockpit readability. Auto-detected when width >= regularHeader.
+const REGULAR_TRACK_MIN_HEIGHT = 56;
+const REGULAR_SEGMENT_PADDING_VERTICAL = 12;
+const REGULAR_SEGMENT_PADDING_HORIZONTAL = 16;
 
 interface Styles {
   readonly segment: ViewStyle;
   readonly segmentActive: ViewStyle;
   readonly segmentDisabled: ViewStyle;
+  readonly segmentRegular: ViewStyle;
   readonly segmentWrapped: ViewStyle;
   readonly track: ViewStyle;
+  readonly trackRegular: ViewStyle;
   readonly trackWrapped: ViewStyle;
 }
 
@@ -57,6 +65,11 @@ function buildStyles(palette: ColorPalette): Styles {
     segmentDisabled: {
       opacity: DISABLED_OPACITY,
     },
+    segmentRegular: {
+      minHeight: REGULAR_TRACK_MIN_HEIGHT - TRACK_PADDING_DOUBLE,
+      paddingHorizontal: REGULAR_SEGMENT_PADDING_HORIZONTAL,
+      paddingVertical: REGULAR_SEGMENT_PADDING_VERTICAL,
+    },
     // Wrap mode: flexBasis governs row count; flexGrow lets segments
     // expand to fill the remaining row width after the track gap is
     // accounted for.
@@ -74,6 +87,9 @@ function buildStyles(palette: ColorPalette): Styles {
       gap: TRACK_GAP,
       padding: TRACK_PADDING,
     },
+    trackRegular: {
+      minHeight: REGULAR_TRACK_MIN_HEIGHT,
+    },
     trackWrapped: {
       flexWrap: 'wrap',
       rowGap: TRACK_ROW_GAP_WRAP,
@@ -87,6 +103,7 @@ interface SegmentProps<TValue extends string> {
   readonly onPress: () => void;
   readonly styles: Styles;
   readonly isWrapped: boolean;
+  readonly isRegular: boolean;
   readonly testID: string | undefined;
 }
 
@@ -104,8 +121,12 @@ function segmentTextColor(
 }
 
 function Segment<TValue extends string>(props: SegmentProps<TValue>): ReactNode {
-  const { option, isActive, onPress, styles, isWrapped, testID } = props;
+  const { option, isActive, onPress, styles, isWrapped, isRegular, testID } = props;
   const isDisabled = option.disabled === true;
+  // iPad regular: caption (12 pt sans 400) is bigger and more readable
+  // than the compact segmentLabel (10 pt 500). Adjust weight via style
+  // override to stay close to the compact look at the larger size.
+  const labelVariant = isRegular ? 'caption' : 'segmentLabel';
   return (
     <Pressable
       accessibilityLabel={option.accessibilityLabel ?? option.label}
@@ -115,13 +136,14 @@ function Segment<TValue extends string>(props: SegmentProps<TValue>): ReactNode 
       onPress={onPress}
       style={[
         styles.segment,
+        isRegular ? styles.segmentRegular : null,
         isWrapped ? styles.segmentWrapped : null,
         isActive ? styles.segmentActive : null,
         isDisabled ? styles.segmentDisabled : null,
       ]}
       testID={testID}
     >
-      <Text variant="segmentLabel" color={segmentTextColor(isActive, isDisabled)} align="center">
+      <Text variant={labelVariant} color={segmentTextColor(isActive, isDisabled)} align="center">
         {option.label}
       </Text>
     </Pressable>
@@ -144,8 +166,13 @@ export function SegmentedControl<TValue extends string>({
   // segmented on iPhone (см. 06-ui-spec.md § Экран 4 → "Segmented
   // control wrap rules").
   const { width } = useWindowDimensions();
-  const isWrapped = width < tokens.breakpoints.regularHeader && options.length > WRAP_THRESHOLD;
-  const trackStyle = isWrapped ? [styles.track, styles.trackWrapped] : styles.track;
+  const isRegular = width >= tokens.breakpoints.regularHeader;
+  const isWrapped = !isRegular && options.length > WRAP_THRESHOLD;
+  const trackStyle = [
+    styles.track,
+    isRegular ? styles.trackRegular : null,
+    isWrapped ? styles.trackWrapped : null,
+  ];
 
   return (
     <View
@@ -166,6 +193,7 @@ export function SegmentedControl<TValue extends string>({
           }}
           styles={styles}
           isWrapped={isWrapped}
+          isRegular={isRegular}
           testID={testID === undefined ? undefined : `${testID}-${option.value}`}
         />
       ))}

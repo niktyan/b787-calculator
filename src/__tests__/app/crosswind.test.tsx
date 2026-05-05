@@ -252,4 +252,37 @@ describe('Crosswind route', () => {
       expect(within(panel).queryByTestId('crosswind-chart-card')).toBeNull();
     });
   });
+
+  describe('Input sizing scales on iPad regular (Polish-3 follow-up Block 1)', () => {
+    afterEach(() => {
+      clearViewport();
+    });
+
+    it('iPad regular landscape: NumericInput uses 64pt minHeight + 24pt mono value', () => {
+      mockViewport(IPAD_MINI_LANDSCAPE);
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      const json = JSON.stringify(tree.toJSON());
+      // Field minHeight bumped from 44 to 64 on regular.
+      expect(json).toContain('"minHeight":64');
+      // Input font-size jumped from 16 (mono) to 24 (monoMedium).
+      expect(json).toContain('"fontSize":24');
+    });
+
+    it('iPad regular landscape: SegmentedControl track uses 56pt minHeight', () => {
+      mockViewport(IPAD_MINI_LANDSCAPE);
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      const json = JSON.stringify(tree.toJSON());
+      expect(json).toContain('"minHeight":56');
+    });
+
+    it('iPhone compact: input sizing unchanged (44pt minHeight + 16pt mono)', () => {
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      const json = JSON.stringify(tree.toJSON());
+      // Compact preserves the existing 44pt min-touch target on inputs.
+      expect(json).toContain('"minHeight":44');
+      expect(json).not.toContain('"minHeight":64');
+      // Compact input value stays at 16pt mono.
+      expect(json).not.toContain('"fontSize":24');
+    });
+  });
 });
