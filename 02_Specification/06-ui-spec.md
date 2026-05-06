@@ -70,9 +70,10 @@ export const tokens = {
 **Переключение языка пользователем:** через Settings → Language. Применяется немедленно ко всем экранам без перезапуска приложения.
 
 **Что НЕ локализуется (остаётся на английском всегда):**
-- Авиационные термины: KT, MAC, RWY, RWYCC, FCOM, OM-B, CG.
+- Авиационные термины: KT, MAC, RWY, RWYCC, FCOM, OM-B, CG, TOW.
 - Названия модулей в Main Menu.
-- Названия состояний ВПП: Dry, Wet, Contaminated.
+- Aircraft-варианты: B787-8, B787-9.
+- Названия состояний ВПП (RWYCC scale): Dry, Good, Medium to Good, Medium, Medium to Poor, Poor.
 - Дисклеймер (юридический текст). Используется один и тот же английский текст во всех языковых версиях для юридической однозначности.
 
 **Все остальные строки** живут в `src/core/i18n/locales/en.json` и `src/core/i18n/locales/ru.json`. Никаких inline-строк в JSX — всё через `useTranslation()` хук.
@@ -217,14 +218,16 @@ src/app/
 - Header: логотип + название приложения + nav-pills (Modules, Settings, About).
 - Content: 1×2 сетка карточек, render order соответствует хронологии фазы
   полёта (takeoff предшествует landing):
-  - **Crosswind · Takeoff** — Phase 2, неактивная (тизер). Слот #1.
-  - **Crosswind · Landing** — активная, открывает Crosswind Calculator. Слот #2.
+  - **Crosswind · Landing** — Phase 2, неактивная (тизер). Слот #1.
+  - **Crosswind · Takeoff** — активная, открывает Crosswind Calculator. Слот #2.
 
 Активная карточка осознанно во втором слоте, не в первом — это
-отражает физический порядок фаз полёта и помогает пилоту читать меню как
-roadmap «что будет дальше → что уже работает». Weight & Balance и
-Performance в MVP не показываются ни в каком виде (см. подсекцию
-«Long-term backlog (post-MVP)» в `01-vision.md`).
+отражает физический порядок фаз полёта (takeoff → landing) и
+помогает пилоту читать меню как roadmap «что будет дальше → что
+уже работает» (Landing — следующая фаза, для которой данные пока
+не выгружены). Weight & Balance и Performance в MVP не показываются
+ни в каком виде (см. подсекцию «Long-term backlog (post-MVP)» в
+`01-vision.md`).
 
 **Поведение карточек:**
 - **Активная** — `Pressable` с opacity feedback, навигация на `/crosswind` через `expo-router`.
@@ -242,18 +245,20 @@ Performance в MVP не показываются ни в каком виде (с
 ```json
 [
   {
-    "id": "crosswind-takeoff",
-    "name": "Crosswind · Takeoff",
-    "description": "Same crosswind logic applied to the takeoff phase.",
-    "icon": "TO",
+    "id": "crosswind-landing",
+    "name": "Crosswind · Landing",
+    "description": "Same crosswind logic applied to the landing phase.",
+    "icon": "LD",
     "phase": "Phase 2"
   }
 ]
 ```
 
-При выходе Phase 2 запись удаляется из JSON, добавляется
-`src/features/crosswind-takeoff/`, и Main Menu рендерит её как активную
-карточку без изменений в остальном коде.
+При выходе Phase 2 запись удаляется из JSON, активной карточкой
+становится Crosswind · Landing (либо параллельно с Takeoff, либо как
+её замена в зависимости от reorganisation), и Main Menu рендерит
+её как активную карточку без изменений в остальном коде. До тех
+пор тап по Landing-тизеру открывает Coming Soon Modal.
 
 **Visual treatment** (см. `03_Mockups/index.html` секция 2 «Main Menu —
 Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
@@ -458,31 +463,37 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 
 ### Input-секция (левая колонка / верхняя на portrait)
 
-**Поля:**
-1. **Landing weight (t)** — числовое поле, integer. Единица — **метрические тонны** (домен использует tons throughout — см. `04-domain-model.md` Принцип «вес всегда в тоннах внутри domain»). Range и валидация — см. ниже.
-2. **Center of gravity (% MAC)** — числовое поле, decimal с 1 знаком после запятой.
-3. **Runway condition** — segmented control с тремя вариантами: Dry / Wet / Contaminated.
-   - В MVP активен только Dry. Wet и Contaminated отображаются как **disabled** с подписью «Coming soon» (тап показывает короткий toast «Available in upcoming release»).
-4. **RWYCC** — segmented control 1–6, видим только при `runway condition === 'contaminated'`. В MVP скрыт (т.к. contaminated не активен).
+**Поля (top-to-bottom):**
+1. **Aircraft** — segmented control с двумя вариантами: B787-8 / B787-9.
+   - В MVP активен только B787-8. B787-9 отображается как **disabled** (textTertiary, opacity 0.5). Тап по B787-9 не меняет состояние (selection остаётся на B787-8).
+2. **TOW actual (t)** — числовое поле, integer. «Takeoff Weight Actual» — стандартная авиационная аббревиатура. Единица — **метрические тонны** (домен использует tons throughout — см. `04-domain-model.md` Принцип «вес всегда в тоннах внутри domain»). Range и валидация — см. ниже.
+3. **Center of gravity (% MAC)** — числовое поле, decimal с 1 знаком после запятой.
+4. **Runway condition** — segmented control с шестью значениями RWYCC scale: Dry / Good / Medium to Good / Medium / Medium to Poor / Poor.
+   - В MVP активен только Dry. Остальные 5 значений отображаются как **disabled** с подписью disabled. Тап показывает короткий toast «Available in upcoming release».
+   - На compact-ширине 6 сегментов wrap-ятся в 2 строки по 3 (см. § Segmented control wrap rules ниже). На regular-ширине — single-row из 6 сегментов.
 
 > **Mockup note (kg → t).** В `03_Mockups/index.html` секция 3 поле
 > подписано как «Landing weight (kg)»; это артефакт ранней версии
-> мокапа и **superseded** этой спекой. Реализация в Sprint 5 использует
+> мокапа и **superseded** этой спекой. Реализация использует
 > tonnes (`t`) — с unit-суффиксом «t», placeholder «e.g. 170»,
 > сообщениями об ошибке в тоннах. Единицы языка интерфейса
-> синхронизированы с doменом и `b787-8-landing-dry.json`.
+> синхронизированы с доменом и `b787-takeoff.json`. Лейбл поля
+> также сменился: «Landing weight» → «TOW actual» (Takeoff Weight
+> Actual) — авиационный термин, не локализуется.
 
 **Поведение полей:**
 - При первом открытии экрана **все числовые поля пустые**, отображаются placeholder-ы:
-  - Weight: «e.g. 170» (тонны)
+  - TOW actual: «e.g. 170» (тонны)
   - CG: «e.g. 25.5»
+- Aircraft по умолчанию = `B787-8`.
 - Runway condition по умолчанию = `Dry` (т.к. это единственный активный вариант в MVP).
-- Live update: после того как **оба** обязательных поля (weight, CG) заполнены валидными числами, результат пересчитывается немедленно при любом изменении.
+- Live update: после того как **оба** обязательных поля (TOW, CG) заполнены валидными числами, результат пересчитывается немедленно при любом изменении aircraft / weight / CG / runway condition.
 - Пока хотя бы одно поле пусто → result-секция в состоянии `empty` (см. ниже), расчёт не производится.
 - Валидация формата: ввод не-числовых символов → клавиатура `numeric-pad` не позволяет; для дробных значений — `decimals-pad`.
-- **Operational envelope валидация — мягкая.** Когда ввод за пределами `operationalEnvelope` (см. `04-domain-model.md` «Two distinct envelope concepts»), поле подсвечивается тёплым (warn-цветом, не danger), под ним появляется короткое описание («Below minimum 110 t», «Above maximum 35 %MAC»), но **расчёт всё равно выполняется** и result-секция переходит в состояние `idle` с warning chip-ом рядом с числом. Так пилот видит advisory-результат, плюс явное напоминание, что вход — за пределами регуляторных лимитов. См. ResultPanelState ниже.
-- **NoLookupData — жёсткая ошибка.** Только когда алгоритм не может произвести расчёт в принципе (NaN / Infinity на входе, или повреждённые данные) — result-секция переходит в `out-of-envelope` без числа.
-- **Кнопка Reset** в header экрана: очищает оба поля (возвращает в состояние «пусто»), runway condition возвращает к `Dry`. Без диалога подтверждения — действие моментальное и немного откатывается через возврат фокуса в первое поле.
+- **Operational envelope валидация — мягкая.** Когда ввод за пределами `operationalEnvelope` (см. `04-domain-model.md` «Two distinct envelope concepts»), поле подсвечивается тёплым (warn-цветом, не danger), под ним появляется короткое описание («Below minimum 110 t», «Above maximum 35 %MAC»), но **расчёт всё равно выполняется** и result-секция переходит в состояние `idle` с warning chip-ом рядом с числом. Так пилот видит advisory-результат, плюс явное напоминание, что вход — за пределами регуляторных лимитов.
+- **DataNotAvailable.** Когда выбран не-имплементированный aircraft (B787-9) или non-dry condition, алгоритм возвращает `DataNotAvailable` с соответствующим `reason`. Result-секция переходит в состояние `data-not-available` (icon + caption «No data available for the selected aircraft.» / «… runway condition.»). Защита: B787-9 / 5 non-dry условий в MVP помечены disabled в UI и тапы не меняют state, поэтому это состояние реально достижимо только через программную инициализацию.
+- **NoLookupData — жёсткая ошибка.** Когда алгоритм не может произвести расчёт в принципе (NaN / Infinity в Value Object factories, или повреждённые данные) — result-секция переходит в `out-of-envelope` без числа.
+- **Кнопка Reset** в header экрана: очищает оба числовых поля (возвращает в состояние «пусто»), aircraft возвращает к `B787-8`, runway condition — к `Dry`. Без диалога подтверждения.
 
 ### Keyboard behavior
 
@@ -505,356 +516,148 @@ iOS softkeyboard на `numeric-pad` / `decimal-pad` **не имеет встро
 overlay. VoiceOver не объявляет обёртку как тапаемую (`accessible:
 false`), поэтому пилот с VO навигирует напрямую по полям.
 
-### Result-секция (правая колонка / нижняя на portrait)
+### Result-секция (правая колонка / нижняя на portrait) — Block 5 single Card
 
-**Состояния:**
-- `empty` — отображается при пустых полях ввода. Содержит крупный placeholder-текст «Enter weight and CG to see result» и иконку (нейтральная, например `info-outline`). Никаких чисел.
-- `idle` — отображается результат расчёта (число + метаданные). Может **сосуществовать** с warning chip-ом (когда вход внутри lookup envelope, но за пределами operational envelope) — см. ниже.
-- `error` — показывается explanatory message (не число!). Используется при `DataNotAvailable` или `CalculationFailed`.
-- `out-of-envelope` — отдельное сообщение, например «Inputs cannot be evaluated by the lookup table. Adjust inputs.». **Зарезервировано для случаев, когда алгоритм возвращает `NoLookupData`** (NaN / Infinity на входе, повреждённые данные). Operational-envelope нарушения НЕ переводят панель в это состояние — они показываются как `idle` + warning chip.
-- `data-corrupted` — переход на fail-safe error screen.
+**Структурно:** одна Card-плашка, заполняющая колонку целиком на iPad
+landscape (`flex: 1`), и фиксированной min-height на compact /
+portrait. Содержимое центрировано по горизонтали и вертикали. Никакого
+chart-визуала, никакой meta-grid, никакого envelope-position bar — всё
+лишнее снято в Block 5 этого PR (`feat/crosswind-takeoff-rebrand`).
 
-**Composition: idle + operational-envelope warning.** Когда `validateOperationalEnvelope` возвращает `EnvelopeViolation`, но алгоритм успешно посчитал (т.е. вход внутри lookup envelope), result-панель остаётся в `idle` и **рядом с числом** показывается warning chip:
+**Состояния (`CrosswindUIState` view-model):**
+- `empty` — пустые поля ввода. Centered `info-outline` 32 pt + caption «Enter weight and CG to see result».
+- `idle` — результат расчёта: status label «Max crosswind · Takeoff» (microUppercase accent) + крупное число + KT-суффикс. Может **сосуществовать** с warning chip-ом (когда вход внутри lookup envelope, но за пределами operational envelope) — см. ниже.
+- `out-of-envelope` — `info-outline` 32 pt + caption «Inputs cannot be evaluated by the lookup table. Adjust inputs.». Зарезервировано для `NoLookupData` от алгоритма (NaN/Infinity на входе).
+- `data-not-available` — `info-outline` 32 pt + caption, описывающий причину: «No data available for the selected aircraft.» / «No data available for the selected runway condition.» Покрывает `DataNotAvailable.reason ∈ {aircraft-not-implemented, condition-not-implemented}`.
+- `error` — danger-headline + опциональная description (рядом с capability disclosure для phase mismatch / `CalculationFailed`).
+
+**Composition: idle + operational-envelope warning.** Когда `validateOperationalEnvelope` возвращает `EnvelopeViolation`, но алгоритм успешно посчитал, result-панель остаётся в `idle` и **под значением** появляется warning chip:
 - Текст chip-а: «Outside operational envelope — advisory only» (локализуется).
-- Цвет: `tokens.colors.warn` foreground, фон `tokens.colors.warnSoft`, граница `tokens.colors.warnBorder`.
-- Позиция: под source chip («Reference: 787 FCOM»), отступ 6 pt.
-- Tap: показывает короткий popover с конкретной причиной нарушения (например «Weight 95 t is below operational minimum 110 t»).
-
-Это позволяет пилоту увидеть advisory-результат для любых вычислимых входов, при этом не пропустить регуляторное нарушение.
+- Цвет: `tokens.colors.warn` foreground.
+- Позиция: marginTop `sm` под value-row.
+- Tap-detail на chip — не реализован в MVP (минималистичный one-shot read).
 
 **Содержимое (idle):**
-- Метка «Max crosswind · Landing» сверху.
-- Крупное число (48–64 pt) + единица «KT».
-- Подпись «Computed for current inputs».
-- Метаданные (3 ряда; обновлено в PR `feat/crosswind-polish-2`):
-  - **CG band** — диапазон CG в брекете (`cgBracket` из метаданных
-    алгоритма; реальный диапазон между двумя порогами XLOOKUP).
-  - **RWY** — «Dry» (RWYCC опускается в MVP, поскольку Contaminated
-    скрыт; раскроется в Phase 2).
-  - **Range** — диапазон crosswind в KT (`bracketCrosswindRange`).
-    **Условный показ:** строка скрывается, когда `min === max`
-    (fallback-кейсы below-/above-envelope возвращают
-    `[40, 40]` — рендер «40 — 40 KT» был запутывающим).
-  - Weight row удалена в этом же PR: `weightBracket` алгоритма
-    дегенеративен (`[w, w]`), а вес уже виден в input-поле слева,
-    так что её повторение было шумом.
-- Source chip удалён в этом же PR. Source attribution перенесено в
-  About per Принцип 4 (см. § Экран 6 «Data source» строка).
+- Status label «Max crosswind · Takeoff» — variant `microUppercase`, accent color, letter-spacing 0.08em (uppercase).
+- Value-row (baseline-aligned, centered):
+  - Number — variant `display` (mono 48 pt) на compact / `displayLarge` (mono 72 pt) на iPad-regular landscape. Цвет `accent`.
+  - Unit «KT» — variant `monoMedium` (mono 24 pt) на compact / `monoXL` (mono 36 pt) на iPad-regular. Цвет `textSecondary`. marginLeft 8 pt.
+- Опциональный warning chip — см. выше.
+- **Никаких метаданных, никакого footnote, никакого source-chip-а на result-панели.** Source attribution живёт в About → Data source (см. Принцип 4 + § Экран 6).
 
-**Содержимое (error):**
-- Метка «Calculation unavailable».
-- Текст с описанием причины (например «Weight 95 t is below minimum 110 t»).
-- Кнопка «Retry» (если применимо) или подсказка «Adjust inputs».
+**Содержимое (error / data-not-available / out-of-envelope):**
+- `info-outline` icon 32 pt (textTertiary).
+- Caption maxWidth 280 pt, variant `caption`, центрирован.
+
+**Card surface (общее для всех состояний):**
+- Фон `tokens.colors.bgCard`, граница `tokens.colors.border` (1 pt), `borderRadius: tokens.radii.lg`, padding `tokens.spacing.lg`.
+- Compact: `minHeight: 200 pt`. Regular (iPad landscape `width >= 1024`): `flex: 1` + `minHeight: 320 pt` — карточка растягивается на полную высоту правой колонки.
+- alignItems / justifyContent: center (контент по центру card-а).
+- Empty↔idle переход: `Animated.View` с `LinearTransition.duration(200ms).easing(Easing.out)`. Reduce Motion bypass через `useReduceMotion` — статичный wrapper без `layout`-prop.
 
 **Visual treatment** (см. `03_Mockups/index.html` секция 3 «Crosswind
 Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
-`.input-label`, `.input-field`, `.segmented`, `.segment`, `.result-panel`,
-`.result-status`, `.result-value`, `.result-label`, `.result-meta`,
-`.meta-item`, `.source-chip`):
+`.input-label`, `.input-field`, `.segmented`, `.segment`,
+`.result-panel`, `.result-status`, `.result-value`):
 
 *Layout (calc-layout):*
 
-- 2-колонная сетка на iPad landscape и iPhone landscape; вертикальный
-  стек на iPad portrait и iPhone portrait. Конкретные breakpoint-ы — см.
-  существующая секция «Адаптивность iPad ↔ iPhone» внизу документа,
-  здесь не дублируем.
-- Gap между input-колонкой и result-колонкой: 14 pt.
-- Top margin от header: 12 pt.
+- 2-колонная сетка на iPad landscape (`width >= 1024`); вертикальный
+  стек на iPad portrait и iPhone (любая ориентация). Конкретные
+  breakpoint-ы — см. секция «Адаптивность iPad ↔ iPhone» внизу
+  документа, здесь не дублируем.
+- Gap между input-колонкой и result-колонкой: `tokens.spacing.lg`
+  (16 pt).
+- Top margin от header: `tokens.spacing.md`.
 
 *Header reset / back actions:*
 
 - «Reset» — NavPill в правой части header-а, тот же визуал, что у
-  Modules/Settings/About pills, но в неактивном состоянии (прозрачный фон,
-  цвет текста `tokens.colors.textSecondary`). Опционально перед
-  лейблом — иконка `rotate-ccw` из `@expo/vector-icons` для лучшей
-  считываемости.
-- «Back» — leftmost pill, лейбл `← Back` или chevron-иконка. Touch-target
-  ≥ 44×44 pt даже если визуальный chip меньше (padding компенсирует, см.
-  «Принцип 2»).
+  Modules/Settings/About pills, но в неактивном состоянии (прозрачный
+  фон, цвет текста `tokens.colors.textSecondary`).
+- «Back» — leftmost pill, лейбл `← Back` или chevron-иконка.
+  Touch-target ≥ 44×44 pt даже если визуальный chip меньше.
 
-*Input field (input-field):*
+*Input field (input-field) — compact (iPhone, iPad portrait):*
 
-- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
-  (1 pt), `borderRadius: 8 pt`.
-- Padding `10 × 12 pt`, `minHeight ≥ 44 pt`.
-- Значение: variant `mono` (mono 16 pt), цвет `tokens.colors.textPrimary`.
-- Unit-суффикс (например «t», «% MAC»): variant `monoSmall` (mono 11 pt),
-  цвет `tokens.colors.textTertiary`, выровнен по правому краю. **Источник
-  правды для типографики — `module-contracts/design-system.md` § Typography
-  variants** (там unit-суффикс закреплён за `monoSmall`); эта строка
-  раньше указывала `bodySmall` — расхождение исправлено в Sprint 5 polish-PR
-  одновременно с применением реализации.
-- Focus state: граница `1 pt` `tokens.colors.accent` + внешнее свечение
-  `2 pt` цвета `tokens.colors.accentRing` (`rgba(0, 194, 168, 0.2)`).
-  Реализуется в DS-компоненте `NumericInput` через wrapping-View вокруг
-  field-View: при `focused && !hasError` ring-обёртка получает
-  `padding: 2` и `backgroundColor: accentRing`; в остальных состояниях
-  `padding: 0` (ring невидим). Закреплено в Sprint 5 polish-PR.
+- Surface: фон `tokens.colors.bgCard`, граница
+  `tokens.colors.border` (1 pt), `borderRadius: tokens.radii.md`.
+- Padding: vertical `sm` (8), horizontal `md` (12). `minHeight ≥ 44 pt`.
+- Значение: variant `mono` (mono 16 pt), цвет
+  `tokens.colors.textPrimary`.
+- Unit-суффикс: variant `monoSmall`, цвет
+  `tokens.colors.textTertiary`.
+- Label (НАД полем): variant `microUppercase`, цвет
+  `tokens.colors.textSecondary`, `textTransform: uppercase`.
+- Focus state: граница `1 pt accent` + внешнее `accentRing` свечение
+  (2 pt) — реализуется через wrapping-View ring в DS-компоненте
+  `NumericInput`.
 
-*Input label (input-label):*
+*Input field — regular (iPad landscape):*
 
-- 9 pt sans, weight 600, uppercase, letter-spacing 0.06em (≈0.54 pt),
-  цвет `tokens.colors.textSecondary`. Расположен НАД полем, отступ
-  снизу 4–6 pt.
-  *design-system to add typography variant `microUppercase` (sans 9 / 12,
-  600, letterSpacing 0.54 pt) или расширить существующий `chipLabel`
-  поддержкой 9 pt варианта.*
+- Размеры выставляются через DS-проп `<NumericInput size="regular">`:
+  - `minHeight: 64 pt`.
+  - Padding `14 × 20 pt` (vertical × horizontal).
+  - Значение: variant `monoMedium` (mono 24 pt).
+  - Label: variant `label` (sans 12 pt, weight 600), letter-spacing
+    из variant.
+  - Unit-суффикс: variant `body` (sans 16 pt).
+- Focus / error state — без изменений (тот же ring + danger border).
 
-*Segmented control (segmented):*
+*Aircraft selector + Runway condition — segmented (compact):*
 
-- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
-  (1 pt), внешний `borderRadius: 8 pt`, internal padding 3 pt
-  (создаёт «track»-эффект); gap между сегментами 2 pt.
-- Inactive segment: прозрачный фон, цвет `tokens.colors.textSecondary`,
-  лейбл 10 pt sans weight 500.
-- Active segment: фон `tokens.colors.accent`, цвет foreground — токен
-  `accentOnAccent` (см. форвард-сигнал в Coming Soon Modal выше).
-  Внутренний `borderRadius: 6 pt`.
-- Disabled segment (Wet, Contaminated в MVP): цвет текста
-  `tokens.colors.textTertiary` с reduced-opacity (≈50%) в сочетании с
-  tap-handler-ом, который показывает короткий toast «Available in
-  upcoming release» (визуал тоста — ниже).
+- Surface: фон `tokens.colors.bgCard`, граница
+  `tokens.colors.border` (1 pt), внешний `borderRadius:
+  tokens.radii.md`, internal padding 3 pt; row gap 4 pt при wrap.
+- Inactive segment: прозрачный фон, цвет
+  `tokens.colors.textSecondary`, лейбл variant `segmentLabel` (10 pt).
+- Active segment: фон `tokens.colors.accent`, foreground
+  `tokens.colors.accentOnAccent`, внутренний `borderRadius:
+  tokens.radii.sm`.
+- Disabled segment: цвет `tokens.colors.textTertiary` + opacity 0.5.
+  Тап → no-op (selection остаётся на текущем значении). Опциональный
+  toast «Available in upcoming release» оставлен на усмотрение
+  реализации; в текущем коде disabled-сегмент просто игнорирует тапы.
 
-*RWYCC segmented control:*
+*Aircraft selector + Runway condition — segmented (regular):*
 
-- Те же визуальные правила, что у runway-condition сегментированного
-  контрола, но с 6 сегментами (1–6). В MVP скрыт (см. поведение выше);
-  визуальные правила применяются, когда Phase 2 раскроет управление.
+- DS-проп `<SegmentedControl size="regular">`:
+  - Track height 56 pt (segment minHeight 50 pt + 3 pt padding × 2).
+  - Segment label variant `caption` (sans 12 pt, weight 400).
+- Aircraft selector — single-row (2 опции).
+- Runway condition — single-row из 6 RWYCC сегментов на regular
+  ширине (iPad landscape).
 
-*Segmented control wrap rules (Polish-3 forward signal):*
+*Segmented wrap rules (RWYCC, compact):*
 
-После Polish-3 `RunwayCondition` enum расширяется до 6 значений
-(см. `04-domain-model.md` § RunwayCondition Polish-3 expansion), и
-runway-condition segmented control становится 6-сегментным. На
-compact-ширине (iPhone) такой ряд не помещается в одну строку без
-обрезки; правила wrap-а:
+- DS-проп `<SegmentedControl wrap>`. Когда `options.length >= 5`,
+  компонент делит сегменты на 2 равные строки **внутри одной
+  bordered surface**: row gap 4 pt (`TRACK_GAP * 2`), segment gap
+  внутри строки 2 pt.
+- Aircraft selector — `wrap=false` (всего 2 опции, всегда single-row).
+- Runway condition — `wrap={!isRegular}`. На compact ширине → 2 ряда
+  по 3 сегмента; на regular — single-row.
 
-- **Compact (`width < tokens.breakpoints.regularHeader`):** при
-  count > 4 сегмент-track переходит в 2 строки. Распределение —
-  равный flex per row (`justifyContent: 'space-between'` или
-  `flex: 1` на каждом сегменте). Vertical gap между строками 8 pt.
-  Внешний `borderRadius: 8 pt` сохраняется (track теперь — двух-
-  строчный контейнер с тем же радиусом по периметру), внутренние
-  стыки сегментов остаются скруглёнными как обычно.
-- **Regular (`width >= tokens.breakpoints.regularHeader`):** track
-  всегда single-row даже при 6 сегментах. На iPad ширины достаточно;
-  труновер layout-а избежимо.
-- **Disabled-сегменты** (Wet, slipperyWet и т.д. в Polish-3, пока
-  данные comingSoon) сохраняют существующий паттерн: opacity 0.5,
-  цвет текста `tokens.colors.textTertiary`, tap → toast «Available in
-  upcoming release» (см. § Disabled-state toast ниже).
-- **RWYCC** остаётся 6-сегментным; на compact wrap-логика ровно та же
-  (2 строки по 3 сегмента); на regular — single-row.
+*Form vertical sizing:*
 
-*Result panel (result-panel):*
+- Compact: Stack gap `lg` (16 pt) между секциями (Aircraft / TOW /
+  CG / Runway).
+- Regular: Stack gap `xl` (24 pt) + `justifyContent: space-between` +
+  `flex: 1` — input column растягивается на всю высоту left-half и
+  распределяет 4 секции с равными промежутками. Это даёт визуальный
+  баланс с full-height result-card-ом справа.
 
-- Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
-  (1 pt), `borderRadius: 12 pt`, internal padding 14 pt.
-- Контент центрирован: status label, value, sub-label, разделитель,
-  meta-grid.
-- **Source chip удалён** в PR `feat/crosswind-polish-2`. Source
-  attribution перенесено в About → Data source per Принцип 4. Идущая
-  ниже типографика и токены `monoMicro` для chip-текста остаются в
-  design-system контракте на будущее использование (например бейджи
-  на других экранах), но на Crosswind они больше не применяются.
-- Status label (result-status): 9 pt sans weight 600, uppercase,
-  letter-spacing 0.08em (≈0.72 pt), цвет `tokens.colors.accent`.
-  Например: «Max crosswind · Landing». Margin-bottom 8 pt.
-  *design-system: вписывается в тот же `microUppercase` variant что и
-  input-label (выше); letter-spacing — параметр, переопределяемый
-  через style.*
-- Value (result-value): variant `display` (mono 48 pt, weight 700,
-  letterSpacing -0.5 pt ≈ -0.01em, line-height 56 / 1) — на iPad
-  landscape; на узких ширинах автоматически масштабируется по
-  существующему container query из мокапа. Цвет
-  `tokens.colors.accent`.
-- Суффикс «KT»: 24 pt mono weight 700, цвет `tokens.colors.textSecondary`,
-  `marginLeft: 6 pt`. *design-system to add typography variant
-  `monoMedium` (mono 24 / 28, 700) — текущий `monoLarge` 22 pt и
-  `display` 48 pt оставляют пробел.*
-- Sub-label (result-label): variant `caption` (sans 12 / 16, 400) или
-  10 pt-вариант, цвет `tokens.colors.textSecondary`, margin-bottom 12 pt.
-  Например: «Computed for current inputs».
-- Divider над meta-grid: `borderTopWidth: 1 pt`, `borderTopColor:
-  tokens.colors.border`, `paddingTop: 10 pt`.
-- Meta-grid (result-meta): 2 колонки, gap 6 pt, выровнен по левому краю.
-- Meta-item label: 9 pt sans uppercase, letter-spacing 0.04em (≈0.36 pt),
-  цвет `tokens.colors.textTertiary`. Тот же `microUppercase` variant с
-  переопределённым letter-spacing.
-- Meta-item value: variant `bodySmall` mono (mono 11 / 16, 400) — тот же
-  размер, что и `bodySmall` sans, но monospace; *design-system to add
-  variant `monoSmall` (mono 11 / 16, 500) если для метрик нужен
-  больший weight, чтобы числа читались на фоне лейблов.*
-  Margin-top 2 pt.
+*Result panel:*
 
-*iPad result panel scaling (regular variant, PR `feat/crosswind-polish-2`):*
+- Single Card (см. § Result-секция выше). Никаких подэлементов
+  «meta-grid», «source chip», «footnote», «envelope-position bar» —
+  всё это снято в Block 5. Reference visual style:
+  - status label `microUppercase` accent;
+  - value `display` (48) / `displayLarge` (72) accent;
+  - unit `monoMedium` (24) / `monoXL` (36) textSecondary;
+  - optional warning chip `caption` warn ниже value-row.
 
-На iPad в landscape (2-колонная раскладка, см. § «Адаптивность iPad ↔
-iPhone» → «Layout matrix · Crosswind result panel») result-panel
-переключается в крупный вариант:
-
-- Value (result-value): variant `displayLarge` (mono 72 / 80, 700,
-  letterSpacing -1 pt). Цвет `tokens.colors.accent` сохраняется.
-- Суффикс «KT»: variant `monoXL` (mono 36 / 40, 700, letterSpacing 0).
-  Цвет `tokens.colors.textSecondary`, `marginLeft: 6 pt`.
-- Meta-item value переключается с `bodySmall` mono на `mono` (16 pt).
-- Панель растягивается по высоте контейнера через `flex: 1` chain
-  (root wrapper + DS surface + inner Stack), заполняя правую колонку
-  целиком. Это требует, чтобы родительский `<Row>` поставлял
-  растягиваемый column-View — поэтому вариант активен **только** в
-  2-колоночной раскладке (см. iPad portrait fix ниже).
-- Imageementация: вариант рендерится отдельным компонентом
-  `RegularIdleBody` внутри Crosswind-модуля. DS-компонент
-  `<ResultPanel>` и его sealed `ResultPanelState` discriminated union
-  не расширены — compact-вариант продолжает использовать `<ResultPanel>`
-  без изменений.
-- Compact-вариант (iPhone любая ориентация, iPad portrait) сохраняет
-  `display` 48 pt + `monoMedium` 24 pt + `bodySmall` mono 11 pt — как
-  было до polish-2.
-
-*Result panel state mapping* (cross-ref `ResultPanelState` discriminated union
-в `module-contracts/design-system.md`):
-
-- `kind: 'empty'` — value/meta заменены компактной плашкой: иконка
-  `info-outline` 32 pt (`tokens.colors.textTertiary`) + однострочная
-  caption-подпись `tokens.colors.textSecondary`, `maxWidth: 240 pt`,
-  выравнивание по центру. Surface — `tokens.colors.bgCard` с
-  `borderColor: tokens.colors.border` (1 pt) и
-  `borderRadius: tokens.radii.lg`. **Минимальная высота:** 140 pt в
-  compact-варианте, 200 pt в regular-варианте (тот же gating, что у
-  iPad result panel scaling выше). На regular панель дополнительно
-  получает `flex: 1`, чтобы растягиваться вместе с соседней
-  input-колонкой. Source chip скрыт. Обновлено в PR
-  `feat/crosswind-polish-2`.
-- **Empty ↔ idle переход.** Wrapper-компонент `<CrosswindResult>`
-  оборачивает содержимое в `Animated.View` с
-  `LinearTransition.duration(200ms).easing(Easing.out(Easing.ease))` из
-  `react-native-reanimated`, чтобы переключение empty → idle проходило
-  плавным height-tween-ом, а не «прыжком». При системной опции
-  «Reduce Motion» обёртка возвращается к статичному `Animated.View`
-  без `layout`-prop — переход мгновенный (cross-ref «Accessibility
-  checklist» → Reduce Motion). Подписка на состояние Reduce Motion —
-  через DS-хук `useReduceMotion` (см.
-  `module-contracts/design-system.md`).
-- `kind: 'idle'` — полная раскладка выше.
-- `kind: 'error'` — value-блок заменён 14 pt headline-ом цвета
-  `tokens.colors.danger`; description body — variant `caption` (sans 12)
-  цвета `textSecondary`; опциональная кнопка «Retry» — DS-компонент
-  `Button` variant `secondary`.
-- `kind: 'out-of-envelope'` — та же surface, что у `idle`, но headline
-  цвета `tokens.colors.warn`, body объясняет нарушенную границу
-  (например «Weight 95 t is below minimum 110 t. Adjust input.»).
-
-*Envelope-position bar (PR `feat/crosswind-polish-2`):*
-
-Под result-панелью (compact) или внутри regular-блока (iPad landscape)
-рендерится горизонтальный 3-зонный индикатор положения текущего CG на
-оси `[axisMin, axisMax] = [operationalEnvelope.cg.minPercent, 50]`
-%MAC. 50 — верхний бэкстоп оси, документированный отдельной константой
-`ENVELOPE_BAR_CG_MAX_PERCENT` (см. ниже § «Decisions»); он держит
-out-of-lookup зону всегда видимой даже для above-envelope Excel-quirk
-кейсов (CG 42–50). Реализация — компонент
-`EnvelopePositionBar` внутри Crosswind feature-модуля (не в
-design-system; узкое назначение, не переиспользуемый виджет).
-
-- **Track:** `flexDirection: 'row'`, `borderRadius: 4 pt`,
-  `overflow: 'hidden'`. Высота — 8 pt в compact, 12 pt в regular.
-- **3 зоны** (flex-children в порядке слева → направо):
-  - `safe`: `[operationalMin, operationalMax]` — фон
-    `tokens.colors.accentSoft`.
-  - `boundary`: `(operationalMax, lookupMax]` — фон
-    `tokens.colors.envelopeBarBoundary` (rgba warn 20 %, см.
-    `module-contracts/design-system.md`).
-  - `outOfLookup`: `(lookupMax, axisMax]` — фон
-    `tokens.colors.envelopeBarOutOfLookup` (rgba danger 20 %).
-  - `flexGrow` каждой зоны = ширина в %MAC, так что суммарная ширина
-    равна `axisMax - axisMin` без gap-ов.
-- **`lookupMax` derivation:** возвращается доменным помощником
-  `getLookupCGRange(data, weightTons).max` (см.
-  `module-contracts/crosswind.md` Public API). Это
-  `slope × weightKilolbs + last_intercept` — последний XLOOKUP-порог
-  на текущем весе; выше него алгоритм переходит к IFNA-fallback 40 KT.
-- **Marker:** вертикальная полоска 2 pt, цвет
-  `tokens.colors.accent`. Позиция через `Animated.View` с
-  `useSharedValue` + `withTiming(200ms, Easing.out(Easing.ease))` по
-  `left: '<percent>%'`. При смене input-веса/CG marker плавно
-  скользит. **Reduce Motion bypass:** при включённом флаге
-  `useReduceMotion()` вместо `withTiming` пишется `progress.value =
-  targetProgress` синхронно — marker «прыгает» без анимации.
-- **Bounds row:** под track-ом — две microUppercase-подписи `<axisMin>%`
-  слева, `<axisMax>%` справа (`tokens.colors.textTertiary`).
-- **Accessibility:** `accessibilityRole="adjustable"`,
-  `accessibilityLabel` локализован (`crosswind.envelopeBarLabel`),
-  `accessibilityValue: { min, max, now: round(currentCG) }`.
-- **Расположение:**
-  - **Compact:** под result-панелью с `marginTop: tokens.spacing.sm`
-    (см. `compactEnvelopeBar` styles в `CrosswindResult.tsx`).
-  - **Regular:** внутри `RegularIdleBody`, как часть column-stack,
-    выше meta-grid.
-
-В Polish-3 этот компонент **удаляется** и заменяется полноценной
-chart-визуализацией (см. § «Visualization · CG / Crosswind chart»
-ниже — пред-Polish-3 prep).
-
-*Visualization · CG / Crosswind chart (Polish-3 forward signal):*
-
-Polish-3 заменяет `EnvelopePositionBar` на полноценный CG / Crosswind
-график, отрисовываемый через `react-native-svg` (см. ADR-0007).
-График визуализирует ту же piecewise-linear модель, которая лежит в
-основе алгоритма (`05-crosswind-algorithm.md`). Spec-only forward
-signal — реализация в Polish-3.
-
-- **Геометрия.** Пять параллельных линий в плоскости (Weight, CG),
-  каждая описывает «потолок» для одного из дискретных значений
-  crosswind (40 / 35 / 30 / 25 / 20 KT). Slope общий и равен `≈ 0.0576
-  KT/kip` (см. `interpolation.slope` в bundled JSON; формула линии —
-  `cgPercent = slope × weightKilolbs + intercept[i]` при фиксированном
-  KT). Линии параллельные и эквидистантные по `intercept`.
-- **Оси.**
-  - X-axis: landing weight в тоннах. Диапазон выбирается компактным
-    под фактический app-input (≈ 100–180 t для B787-8); конвертация
-    из kips в тонны для подписей делается в render-слое.
-  - Y-axis: max crosswind в KT. Диапазон 0–50 (10-pt grid).
-  - Подписи осей — `microUppercase` / `monoSmall`, цвет
-    `tokens.colors.textTertiary`.
-- **Активная линия.** Линия для CG-брекета, в который попадает
-  текущий ввод (`metadata.bracketCrosswindRange.upper` алгоритма) —
-  full opacity, цвет `tokens.colors.accent`, толщина 2 pt.
-  Остальные линии — opacity ≈ 0.3, цвет
-  `tokens.colors.textSecondary`, толщина 1 pt.
-- **Marker.** Filled circle (radius 6 pt, fill
-  `tokens.colors.accent`) на активной линии в позиции текущего веса.
-  Анимируется по той же 200 ms `withTiming` схеме, что и
-  envelope-bar marker сейчас (см. выше).
-- **Vertical operational-envelope bound.** Тонкая вертикальная линия
-  цвета `tokens.colors.warn` (1 pt, dashed `[4, 4]`) на позиции
-  `operationalEnvelope.weight.maxTons`; за ней — лёгкий fill
-  `tokens.colors.envelopeBarBoundary` (rgba warn 20 %) до правого
-  края оси, чтобы отметить outside-operational область. Аналогично
-  для `minTons` слева — без fill, только пунктир.
-- **Анимации.**
-  - Plus opacity transition при смене активной линии (CG переключает
-    брекет): 200 ms `withTiming`, `Easing.out(Easing.ease)`.
-  - Marker movement (изменение weight или CG): 200 ms `withTiming`.
-  - Line-draw анимация на первый рендер: ≈ 500 ms staged
-    `stroke-dasharray` pattern (линии «прорисовываются» слева
-    направо).
-  - Reduce-Motion bypass для всех трёх через `useReduceMotion`:
-    opacity-переходы и marker-движения мгновенны, line-draw
-    отключается (линии появляются полностью отрисованными).
-- **Compact-вариант (iPhone, compact width).** Только активная линия
-  + marker. Faded inactive lines, vertical bound и dashed minTons —
-  скрыты ради читабельности в узком viewport. Высота графика — 160 pt.
-- **Regular-вариант (iPad regular landscape).** Полная версия — все
-  5 линий, оба operational bound-а, vertical guide. Высота графика
-  — 240 pt; ширина растягивается под column.
-- **Замена envelope-bar.** В Polish-3 компонент
-  `EnvelopePositionBar` (и его файлы) удаляется; preserves только
-  color-tokens `envelopeBarBoundary` / `envelopeBarOutOfLookup` для
-  возможного переиспользования fill-зоной графика. Это **не**
-  parallel-feature toggle — переход atomic.
-
-*Disabled-state toast (Wet/Contaminated tap):*
+*Disabled-state toast (Aircraft B787-9 / non-dry runway):*
 
 - Anchored к низу экрана, отступ `24 pt` от safe-area-inset; центрирован
   горизонтально, `maxWidth: 280 pt`.
@@ -1068,30 +871,27 @@ press-handler-ы становятся no-op-ами (никаких `withTiming`-
 
 Реализация через `useWindowDimensions()` хук + media-предикаты в design-system. Все компоненты разрабатываются как «адаптивные» с одной кодовой базой, без отдельных iPhone/iPad-версий.
 
-**Layout matrix · Crosswind result panel.** Polish-2 добавил крупный
-вариант result-панели (см. § Экран 4 → «iPad result panel scaling»).
-Чтобы избежать ловушки PR `feat/crosswind-polish-2` hot-fix-а, гейтинг
-крупного варианта **жёстко привязан к 2-колоночной раскладке**, а не к
-breakpoint-у `regularHeader` (768 pt):
+**Layout matrix · Crosswind input + result.** Гейтинг крупного
+input/result варианта **жёстко привязан к 2-колоночной раскладке**, а
+не к breakpoint-у `regularHeader` (768 pt). Это нужно потому, что
+regular-вариант полагается на flex-fill height chain, и только в iPad
+landscape (`width >= 1024`) Crosswind-screen переходит в
+`<Row>`-раскладку, где column-View поставляет растягиваемый контейнер.
 
-| Viewport | Layout | Result-panel typography |
-|----------|--------|-------------------------|
-| iPhone any orientation (`< 1024`) | stacked vertical | compact (`display` 48 / `monoMedium` 24) |
-| iPad portrait (regular width, `< 1024`) | stacked vertical | compact |
-| iPad landscape (regular width, `≥ 1024`) | 2-column (input \| result) | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) |
-| iPhone landscape (compact height) | 2-column compact-spaced | compact |
+| Viewport | Layout | Input form sizing | Result-panel typography |
+|----------|--------|-------------------|-------------------------|
+| iPhone any orientation (`< 1024`) | stacked vertical | compact (44 pt fields, segmented wrap 2×3 для RWYCC) | compact (`display` 48 / `monoMedium` 24) |
+| iPad portrait (regular width, `< 1024`) | stacked vertical | compact | compact |
+| iPad landscape (regular width, `≥ 1024`) | 2-column (input \| result) | regular (64 pt fields, monoMedium value, single-row 6-segment runway) + form `flex: 1` + `justify: space-between` | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) |
+| iPhone landscape (compact height) | 2-column compact-spaced (через media-щаблон) | compact | compact |
 
-Причина: regular-вариант полагается на flex-fill height chain, который
-схлопывается до 0, если родительский контейнер сам auto-sized
-(вертикальный Stack column). Только `<Row>` с column-View поставляет
-растягиваемый контейнер, и только в iPad landscape Crosswind-screen
-переходит в `<Row>`-раскладку (порог `tokens.breakpoints.regular = 1024
-pt`). Поэтому булева переменная `isRegular` в `CrosswindScreen`
-вычисляется как `isTwoColumn = width >= 1024`, а не как `width >=
-regularHeader`. Эта зависимость ОБЯЗАТЕЛЬНА; пере-сцепка `isRegular` с
-другим breakpoint-ом без сопутствующего рефакторинга layout-chain
-схлопнет result-панель в ноль на iPad portrait. Полный кейс описан в
-коммите PR #31 (`fix(crosswind): correct iPad portrait layout`).
+Поэтому булева переменная `isRegular` в `CrosswindScreen` вычисляется
+как `isTwoColumn = width >= 1024` и пробрасывается одним и тем же
+сигналом в `<CrosswindInputForm isRegular>` и
+`<CrosswindResult isRegular>`. Пере-сцепка с другим breakpoint-ом без
+сопутствующего рефакторинга layout-chain схлопнет full-height layout
+на iPad portrait. Кейс описан в коммите PR #31
+(`fix(crosswind): correct iPad portrait layout`).
 
 В App Store Listing указываются supported devices: iPhone и iPad. Скриншоты готовятся под оба класса (минимум 6.7" iPhone и 12.9" iPad — обязательные по требованиям App Store Connect).
 

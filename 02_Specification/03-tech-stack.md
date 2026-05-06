@@ -50,7 +50,7 @@
 | `expo-updates` | соответствующая SDK | OTA-обновления через EAS Update (Phase 2+) |
 | `expo-build-properties` | соответствующая SDK | Установка iOS deployment target и других native build-properties через Expo plugin (вместо невалидного `ios.deploymentTarget` поля в `app.json`). Auto-installable via `npx expo install`. |
 | `expo-linear-gradient` | соответствующая SDK | Standard Expo SDK module for native gradient rendering; required by `06-ui-spec.md` § Экран 3 active-card visual treatment. Auto-installable via `npx expo install`. |
-| `react-native-svg` | соответствующая Expo SDK (added in Polish-3) | SVG primitives for the CG / Crosswind chart in `06-ui-spec.md` § Экран 4 → "Visualization · CG / Crosswind chart". Decision recorded in **ADR-0007**. Auto-installable via `npx expo install react-native-svg`. Currently NOT yet installed (Polish-3 will run the install command); listed here so the allowlist matches the post-Polish-3 state. |
+| `react-native-svg` | соответствующая Expo SDK (allowlisted via ADR-0007) | SVG primitives. Изначально предполагался для CG / Crosswind chart, но в `feat/crosswind-takeoff-rebrand` MVP-визуализация снята (single-card centred number). На момент MVP пакет **не установлен и не consumed** — ADR-0007 остаётся активным как зафиксированное решение «используем именно эту библиотеку, если потребуется визуализация в Phase 2+». Auto-installable via `npx expo install react-native-svg`. |
 
 #### Auto-managed transitive dependencies
 
