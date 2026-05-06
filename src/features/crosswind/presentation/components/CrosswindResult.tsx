@@ -44,8 +44,10 @@ export interface CrosswindResultProps {
 }
 
 const KT_UNIT = 'KT';
-const ICON_SIZE = 32;
-const CAPTION_MAX_WIDTH = 280;
+const ICON_SIZE_COMPACT = 32;
+const ICON_SIZE_REGULAR = 48;
+const CAPTION_MAX_WIDTH_COMPACT = 280;
+const CAPTION_MAX_WIDTH_REGULAR = 380;
 const CARD_BORDER_WIDTH = 1;
 const CARD_MIN_HEIGHT_COMPACT = 200;
 const CARD_MIN_HEIGHT_REGULAR_PORTRAIT = 280;
@@ -177,6 +179,14 @@ interface CaptionViewProps {
   readonly testID: string;
 }
 
+function captionMaxWidth(isRegular: boolean): ViewStyle {
+  return { maxWidth: isRegular ? CAPTION_MAX_WIDTH_REGULAR : CAPTION_MAX_WIDTH_COMPACT };
+}
+
+function captionVariantFor(isRegular: boolean): TextVariant {
+  return isRegular ? 'body' : 'caption';
+}
+
 function CaptionView({
   message,
   iconLabel,
@@ -186,17 +196,16 @@ function CaptionView({
 }: CaptionViewProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const messageStyle = useMemo<ViewStyle>(() => ({ maxWidth: CAPTION_MAX_WIDTH }), []);
   return (
     <CardSurface isRegular={isRegular} fillHeight={fillHeight} testID={testID}>
       <MaterialIcons
         accessibilityLabel={iconLabel}
         color={palette.textTertiary}
         name="info-outline"
-        size={ICON_SIZE}
+        size={isRegular ? ICON_SIZE_REGULAR : ICON_SIZE_COMPACT}
       />
-      <View style={messageStyle}>
-        <Text variant="caption" color="textSecondary" align="center">
+      <View style={captionMaxWidth(isRegular)}>
+        <Text variant={captionVariantFor(isRegular)} color="textSecondary" align="center">
           {message}
         </Text>
       </View>
@@ -212,19 +221,19 @@ interface ErrorViewProps {
 }
 
 function ErrorView({ headline, description, isRegular, fillHeight }: ErrorViewProps): ReactNode {
-  const messageStyle = useMemo<ViewStyle>(() => ({ maxWidth: CAPTION_MAX_WIDTH }), []);
+  const variant = captionVariantFor(isRegular);
   return (
     <CardSurface
       isRegular={isRegular}
       fillHeight={fillHeight}
       testID="crosswind-result-panel-error"
     >
-      <Text variant="caption" color="danger" align="center">
+      <Text variant={variant} color="danger" align="center">
         {headline}
       </Text>
       {description !== undefined ? (
-        <View style={messageStyle}>
-          <Text variant="caption" color="textSecondary" align="center">
+        <View style={captionMaxWidth(isRegular)}>
+          <Text variant={variant} color="textSecondary" align="center">
             {description}
           </Text>
         </View>
