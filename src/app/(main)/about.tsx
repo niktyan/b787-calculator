@@ -91,7 +91,9 @@ function resolveDataSource(): string {
   if (!result.ok) {
     return '—';
   }
-  return `${result.value.metadata.referenceDocument} · ${result.value.dataVersion}`;
+  const dataset = result.value.byAircraft.b787_8?.dry;
+  const refDoc = dataset?.metadata.referenceDocument ?? 'Boeing 787 FCOM';
+  return `${refDoc} · ${result.value.dataVersion}`;
 }
 
 interface AboutHeaderProps {

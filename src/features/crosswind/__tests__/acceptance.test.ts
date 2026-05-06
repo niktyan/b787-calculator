@@ -27,7 +27,7 @@ describe('Crosswind module · acceptance', () => {
         weightTons: w.value,
         cgPercent: cg.value,
         aircraft: 'b787_8',
-        phase: 'landing',
+        phase: 'takeoff',
         runwayCondition: 'dry',
       },
       data,
@@ -39,6 +39,7 @@ describe('Crosswind module · acceptance', () => {
     expect(result.value.metadata.referenceDocument).toBe('Boeing 787 FCOM');
     expect(result.value.metadata.dataVersion).toBe(data.dataVersion);
     expect(result.value.metadata.calculationStrategy).toBe('within-bracket');
+    expect(result.value.metadata.aircraft).toBe('b787_8');
   });
 
   it('orchestrates validator + calculator: inside operational envelope, computes a number', () => {
@@ -62,7 +63,7 @@ describe('Crosswind module · acceptance', () => {
         weightTons: w.value,
         cgPercent: cg.value,
         aircraft: 'b787_8',
-        phase: 'landing',
+        phase: 'takeoff',
         runwayCondition: 'dry',
       },
       data,
@@ -76,8 +77,6 @@ describe('Crosswind module · acceptance', () => {
       throw new Error('expected ok');
     }
     const data = loaded.value;
-    // weight 95 t — below operational envelope (110)
-    // but the algorithm can still compute (lookup envelope is wide).
     const w = makeWeightInTons(95);
     const cg = makeCGPercentMAC(25);
     if (!w.ok || !cg.ok) {
@@ -93,7 +92,7 @@ describe('Crosswind module · acceptance', () => {
         weightTons: w.value,
         cgPercent: cg.value,
         aircraft: 'b787_8',
-        phase: 'landing',
+        phase: 'takeoff',
         runwayCondition: 'dry',
       },
       data,

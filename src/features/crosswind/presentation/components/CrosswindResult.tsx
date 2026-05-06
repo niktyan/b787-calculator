@@ -238,6 +238,15 @@ function renderContent(
       />
     );
   }
+  if (state.kind === 'data-not-available') {
+    return (
+      <EmptyView
+        message={state.description}
+        iconLabel={t('crosswind.emptyIconLabel')}
+        isRegular={isRegular}
+      />
+    );
+  }
   if (state.kind === 'error') {
     const errorState: ResultPanelState =
       state.description === undefined

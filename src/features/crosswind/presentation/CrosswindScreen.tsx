@@ -32,7 +32,7 @@ import {
 } from '../../../design-system';
 import { createCrosswindRepository } from '../data';
 import type { CrosswindDataFile } from '../data/schema';
-import type { RunwayCondition } from '../domain/types';
+import type { AircraftVariant, RunwayCondition } from '../domain/types';
 
 import { CrosswindInputForm } from './components/CrosswindInputForm';
 import { CrosswindResult } from './components/CrosswindResult';
@@ -42,6 +42,7 @@ const COLUMN_BASIS = '48%';
 const TWO_COLUMN_BREAKPOINT = tokens.breakpoints.regular;
 const HEADER_DIVIDER_HEIGHT = 1;
 const PILL_PRESSED_OPACITY = 0.6;
+const DEFAULT_AIRCRAFT: AircraftVariant = 'b787_8';
 
 const repository = createCrosswindRepository();
 
@@ -62,24 +63,19 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const isTwoColumn = width >= TWO_COLUMN_BREAKPOINT;
-  // The iPad-regular result panel (72 pt value + 36 pt KT + flex-fill
-  // height) is only safe inside the 2-column landscape layout: the
-  // landscape Row's column View stretches to provide a height
-  // container for the panel's flex:1 chain. In single-column mode
-  // (iPad portrait, iPhone any orientation) the inner Stack is
-  // auto-sized, the flex:1 chain collapses to 0 height, and the
-  // result panel disappears (см. PR feat/crosswind-polish-2 fix
-  // commit). Tying isRegular to isTwoColumn ensures the regular
-  // typography scales up only when there's a column View to host it.
   const isRegular = isTwoColumn;
 
   const [weightText, setWeightText] = useState('');
   const [cgText, setCgText] = useState('');
   const [runwayCondition, setRunwayCondition] = useState<RunwayCondition>('dry');
+  // Aircraft selector lives in the input form starting Block 6; for now
+  // the calculator is hardwired to b787_8 — the only aircraft with
+  // bundled lookup data in MVP.
+  const aircraft: AircraftVariant = DEFAULT_AIRCRAFT;
 
   const inputs = useMemo(
-    () => ({ weightText, cgText, runwayCondition }),
-    [weightText, cgText, runwayCondition],
+    () => ({ weightText, cgText, aircraft, runwayCondition }),
+    [weightText, cgText, aircraft, runwayCondition],
   );
   const { state, weightFieldError, cgFieldError } = useCrosswindCalculator({ inputs, data });
 

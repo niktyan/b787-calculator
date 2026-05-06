@@ -1,9 +1,11 @@
 /**
  * Public calculator API for the Crosswind module.
  *
- * Dispatches to the strategy named in `data.interpolation.model`.
- * In MVP only `'piecewise-linear-excel-equivalent'` exists; future
- * models add a new branch here without touching call sites.
+ * Looks up the per-(aircraft, runwayCondition) dataset inside
+ * `data.byAircraft` and dispatches to the strategy named in the
+ * dataset's `interpolation.model`. In MVP only `b787_8 / dry` is
+ * populated; everything else surfaces as `DataNotAvailable` with an
+ * explanatory `reason`.
  *
  * Spec: 02_Specification/05-crosswind-algorithm.md.
  */
@@ -42,15 +44,35 @@ export function calculateCrosswindLimit(
     return validation;
   }
 
-  if (data.interpolation.model === 'piecewise-linear-excel-equivalent') {
+  const aircraftEntry = data.byAircraft[input.aircraft];
+  if (aircraftEntry === undefined) {
+    return err({
+      kind: 'DataNotAvailable',
+      aircraft: input.aircraft,
+      condition: input.runwayCondition,
+      reason: 'aircraft-not-implemented',
+    });
+  }
+  const dataset = aircraftEntry[input.runwayCondition];
+  if (dataset === undefined) {
+    return err({
+      kind: 'DataNotAvailable',
+      aircraft: input.aircraft,
+      condition: input.runwayCondition,
+      reason: 'condition-not-implemented',
+    });
+  }
+
+  if (dataset.interpolation.model === 'piecewise-linear-excel-equivalent') {
     return calculateExcelEquivalent(
       { weightTons: input.weightTons, cgPercent: input.cgPercent },
       {
-        slope: data.interpolation.slope,
-        breakpoints: data.interpolation.breakpoints,
+        slope: dataset.interpolation.slope,
+        breakpoints: dataset.interpolation.breakpoints,
         tonsToKilolbsFactor: data.weightConversion.tonsToKilolbsFactor,
         dataVersion: data.dataVersion,
-        referenceDocument: data.metadata.referenceDocument,
+        referenceDocument: dataset.metadata.referenceDocument,
+        aircraft: input.aircraft,
       },
     );
   }
@@ -60,3 +82,10 @@ export function calculateCrosswindLimit(
     reason: `Unknown interpolation model`,
   });
 }
+
+/**
+ * Spec-named alias for the takeoff phase. The algorithm is phase-agnostic;
+ * MVP bundled data only ships `phase: 'takeoff'`, so this name is
+ * documentary — call sites in the takeoff feature should prefer it.
+ */
+export const calculateMaxCrosswindTakeoff = calculateCrosswindLimit;

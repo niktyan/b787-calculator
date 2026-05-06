@@ -1,28 +1,48 @@
 /**
  * Test Set #5 from `02_Specification/05-crosswind-algorithm.md` —
- * data integrity / corrupted JSON cases. All five must surface as
+ * data integrity / corrupted JSON cases. All must surface as
  * `CorruptedDataBundle` from the repository.
  *
- * The default-context expects b787_8 / landing / dry — which is what
- * `b787-8-landing-dry.json` ships. Mismatches against that context
- * are also `CorruptedDataBundle`.
+ * The default-context expects phase = 'takeoff'. Lookup-data integrity
+ * (slope, breakpoints) is checked across every populated
+ * byAircraft[*][*] entry.
  */
 
 import { createCrosswindRepository } from '../data/crosswindRepository';
-import bundled from '../data/b787-8-landing-dry.json';
+import bundled from '../data/b787-takeoff.json';
 
 type Mutator = (raw: Record<string, unknown>) => Record<string, unknown>;
+
+interface DatasetShape {
+  readonly interpolation: {
+    slope: number;
+    breakpoints: { readonly crosswindKnots: number; readonly intercept: number }[];
+  };
+}
 
 function withCorruption(mutator: Mutator): Record<string, unknown> {
   const cloned = JSON.parse(JSON.stringify(bundled)) as Record<string, unknown>;
   return mutator(cloned);
 }
 
+function dryDataset(raw: Record<string, unknown>): DatasetShape {
+  const byAircraft = raw['byAircraft'] as Record<string, Record<string, unknown>>;
+  const aircraftEntry = byAircraft['b787_8'];
+  if (aircraftEntry === undefined) {
+    throw new Error('expected b787_8 entry');
+  }
+  const ds = aircraftEntry['dry'];
+  if (ds === undefined) {
+    throw new Error('expected dry dataset');
+  }
+  return ds as DatasetShape;
+}
+
 describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
   it('case 5.01: breakpoints.length !== 5 → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
-      const interp = raw['interpolation'] as { breakpoints: unknown[] };
-      interp.breakpoints = interp.breakpoints.slice(0, 4);
+      const ds = dryDataset(raw);
+      ds.interpolation.breakpoints = ds.interpolation.breakpoints.slice(0, 4);
       return raw;
     });
     const repo = createCrosswindRepository({ raw: corrupted });
@@ -36,8 +56,8 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
 
   it('case 5.02: slope === 0 → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
-      const interp = raw['interpolation'] as Record<string, unknown>;
-      interp['slope'] = 0;
+      const ds = dryDataset(raw);
+      ds.interpolation.slope = 0;
       return raw;
     });
     const repo = createCrosswindRepository({ raw: corrupted });
@@ -50,25 +70,10 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
     expect(r.error.details).toMatch(/slope/);
   });
 
-  it('case 5.03: aircraft mismatches expected file context → CorruptedDataBundle', () => {
-    const corrupted = withCorruption((raw) => {
-      raw['aircraft'] = 'b787_9';
-      return raw;
-    });
-    const repo = createCrosswindRepository({ raw: corrupted });
-    const r = repo.load();
-    expect(r.ok).toBe(false);
-    if (r.ok) {
-      throw new Error('expected error');
-    }
-    expect(r.error.kind).toBe('CorruptedDataBundle');
-    expect(r.error.details).toMatch(/aircraft/);
-  });
-
   it('case 5.04: non-ascending intercepts → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
-      const interp = raw['interpolation'] as Record<string, unknown>;
-      interp['breakpoints'] = [
+      const ds = dryDataset(raw);
+      ds.interpolation.breakpoints = [
         { crosswindKnots: 40, intercept: 6.1 },
         { crosswindKnots: 35, intercept: 5.0 },
         { crosswindKnots: 30, intercept: 12.8 },
@@ -143,8 +148,8 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
 
   it('non-descending crosswindKnots → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
-      const interp = raw['interpolation'] as Record<string, unknown>;
-      interp['breakpoints'] = [
+      const ds = dryDataset(raw);
+      ds.interpolation.breakpoints = [
         { crosswindKnots: 20, intercept: 6.1 },
         { crosswindKnots: 25, intercept: 9.3 },
         { crosswindKnots: 30, intercept: 12.8 },
@@ -164,7 +169,7 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
 
   it('phase mismatch → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
-      raw['phase'] = 'takeoff';
+      raw['phase'] = 'landing';
       return raw;
     });
     const repo = createCrosswindRepository({ raw: corrupted });
@@ -176,9 +181,10 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
     expect(r.error.details).toMatch(/phase/);
   });
 
-  it('runwayCondition mismatch → CorruptedDataBundle', () => {
+  it('unknown aircraft key in byAircraft → CorruptedDataBundle (zod strict)', () => {
     const corrupted = withCorruption((raw) => {
-      raw['runwayCondition'] = 'wet';
+      const byAircraft = raw['byAircraft'] as Record<string, unknown>;
+      byAircraft['b777_300'] = { dry: byAircraft['b787_8'] };
       return raw;
     });
     const repo = createCrosswindRepository({ raw: corrupted });
@@ -187,6 +193,6 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
     if (r.ok) {
       throw new Error('expected error');
     }
-    expect(r.error.details).toMatch(/runwayCondition/);
+    expect(r.error.kind).toBe('CorruptedDataBundle');
   });
 });

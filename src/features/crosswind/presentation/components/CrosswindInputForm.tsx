@@ -17,6 +17,12 @@ export interface CrosswindInputFormProps {
   readonly testID?: string | undefined;
 }
 
+const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
+  { value: 'dry', label: 'Dry' },
+  { value: 'wet', label: 'Wet', disabled: true },
+  { value: 'contaminated', label: 'Contaminated', disabled: true },
+];
+
 export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
   const {
     weightText,
@@ -30,12 +36,6 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
     testID,
   } = props;
   const { t } = useTranslation();
-
-  const runwayOptions: readonly SegmentedControlOption<RunwayCondition>[] = [
-    { value: 'dry', label: 'Dry' },
-    { value: 'wet', label: 'Wet', disabled: true },
-    { value: 'contaminated', label: 'Contaminated', disabled: true },
-  ];
 
   return (
     <Stack gap="lg" {...(testID === undefined ? {} : { testID })}>
@@ -64,7 +64,7 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
         </Text>
         <SegmentedControl<RunwayCondition>
           value={runwayCondition}
-          options={runwayOptions}
+          options={RUNWAY_OPTIONS}
           onChange={onRunwayConditionChange}
           accessibilityLabel={t('crosswind.runwayConditionLabel')}
           testID="crosswind-runway"

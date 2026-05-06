@@ -1,6 +1,7 @@
 // Public API of the Crosswind domain layer.
 
 export type {
+  Aircraft,
   AircraftVariant,
   CalculationMetadata,
   CalculationStrategy,
@@ -11,6 +12,8 @@ export type {
   CrosswindCalculationOutput,
   CrosswindError,
   CrosswindKnots,
+  CrosswindTakeoffInput,
+  DataUnavailableReason,
   EnvelopeViolation,
   FlightPhase,
   OperationalEnvelope,
@@ -25,7 +28,7 @@ export { makeCGPercentMAC, makeCrosswindKnots, makeWeightInTons } from './valueO
 
 export { validateAlgorithmInput, validateOperationalEnvelope } from './validators';
 
-export { calculateCrosswindLimit } from './calculator';
+export { calculateCrosswindLimit, calculateMaxCrosswindTakeoff } from './calculator';
 export type { CalculatorInput } from './calculator';
 
 export { getLookupCGRange } from './lookupRange';

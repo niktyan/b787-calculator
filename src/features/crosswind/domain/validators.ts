@@ -4,8 +4,10 @@
  * Two validation flows are defined in spec
  * (02_Specification/04-domain-model.md § "Two distinct envelope concepts"):
  *
- *  1. `validateAlgorithmInput` — defence-in-depth NaN/Infinity & data
- *     availability checks called from inside the calculator (Step 0).
+ *  1. `validateAlgorithmInput` — defence-in-depth NaN/Infinity & phase
+ *     check (Step 0 of the algorithm). Aircraft and runway-condition
+ *     availability are now resolved via lookup in `data.byAircraft`,
+ *     not via top-level equality checks.
  *  2. `validateOperationalEnvelope` — use-case-layer regulatory check.
  *     UI shows the algorithm's number anyway and surfaces an
  *     `EnvelopeViolation` as a warning chip alongside it.
@@ -34,34 +36,19 @@ interface AlgorithmInputCheck {
 }
 
 interface AlgorithmDataCheck {
-  readonly aircraft: AircraftVariant;
   readonly phase: FlightPhase;
-  readonly runwayCondition: RunwayCondition;
 }
 
 export function validateAlgorithmInput(
   input: AlgorithmInputCheck,
   data: AlgorithmDataCheck,
 ): Result<void, CrosswindCalculationError> {
-  if (input.aircraft !== data.aircraft) {
-    return err({
-      kind: 'DataNotAvailable',
-      aircraft: input.aircraft,
-      condition: input.runwayCondition,
-    });
-  }
   if (input.phase !== data.phase) {
     return err({
       kind: 'DataNotAvailable',
       aircraft: input.aircraft,
       condition: input.runwayCondition,
-    });
-  }
-  if (input.runwayCondition !== data.runwayCondition) {
-    return err({
-      kind: 'DataNotAvailable',
-      aircraft: input.aircraft,
-      condition: input.runwayCondition,
+      reason: 'phase-mismatch',
     });
   }
   if (Number.isNaN(input.weightTons) || Number.isNaN(input.cgPercent)) {

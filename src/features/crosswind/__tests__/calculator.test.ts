@@ -17,14 +17,14 @@ import type {
   WeightInTons,
 } from '../domain/types';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
-import bundledData from '../data/b787-8-landing-dry.json';
+import bundledData from '../data/b787-takeoff.json';
 import { crosswindDataFileSchema } from '../data/schema';
 import type { CrosswindDataFile } from '../data/schema';
 
 const data: CrosswindDataFile = crosswindDataFileSchema.parse(bundledData);
 
 const AIRCRAFT: AircraftVariant = 'b787_8';
-const PHASE: FlightPhase = 'landing';
+const PHASE: FlightPhase = 'takeoff';
 const RUNWAY: RunwayCondition = 'dry';
 
 interface Case {
@@ -64,6 +64,7 @@ function runCase(c: Case): void {
   }
   expect(result.value.maxCrosswindKnots).toBe(c.expected);
   expect(result.value.metadata.calculationStrategy).toBe(c.strategy);
+  expect(result.value.metadata.aircraft).toBe(AIRCRAFT);
 }
 
 describe('Test Set #1 · Weight = 170 t', () => {
@@ -211,7 +212,7 @@ describe('Calculator metadata', () => {
     expect(r.value.metadata.dataVersion).toBe(data.dataVersion);
   });
 
-  it('returns DataNotAvailable when aircraft mismatches', () => {
+  it('returns DataNotAvailable.aircraft-not-implemented for b787_9', () => {
     const { w, cg } = vo(170, 32);
     const r = calculateCrosswindLimit(
       { weightTons: w, cgPercent: cg, aircraft: 'b787_9', phase: PHASE, runwayCondition: RUNWAY },
@@ -221,16 +222,20 @@ describe('Calculator metadata', () => {
       throw new Error('expected error');
     }
     expect(r.error.kind).toBe('DataNotAvailable');
+    if (r.error.kind !== 'DataNotAvailable') {
+      throw new Error('expected DataNotAvailable');
+    }
+    expect(r.error.reason).toBe('aircraft-not-implemented');
   });
 
-  it('returns DataNotAvailable when phase mismatches', () => {
+  it('returns DataNotAvailable.phase-mismatch when phase differs from data', () => {
     const { w, cg } = vo(170, 32);
     const r = calculateCrosswindLimit(
       {
         weightTons: w,
         cgPercent: cg,
         aircraft: AIRCRAFT,
-        phase: 'takeoff',
+        phase: 'landing',
         runwayCondition: RUNWAY,
       },
       data,
@@ -239,9 +244,13 @@ describe('Calculator metadata', () => {
       throw new Error('expected error');
     }
     expect(r.error.kind).toBe('DataNotAvailable');
+    if (r.error.kind !== 'DataNotAvailable') {
+      throw new Error('expected DataNotAvailable');
+    }
+    expect(r.error.reason).toBe('phase-mismatch');
   });
 
-  it('returns DataNotAvailable when runwayCondition mismatches', () => {
+  it('returns DataNotAvailable.condition-not-implemented for non-dry condition', () => {
     const { w, cg } = vo(170, 32);
     const r = calculateCrosswindLimit(
       { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: 'wet' },
@@ -251,5 +260,9 @@ describe('Calculator metadata', () => {
       throw new Error('expected error');
     }
     expect(r.error.kind).toBe('DataNotAvailable');
+    if (r.error.kind !== 'DataNotAvailable') {
+      throw new Error('expected DataNotAvailable');
+    }
+    expect(r.error.reason).toBe('condition-not-implemented');
   });
 });

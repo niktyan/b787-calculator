@@ -1,6 +1,6 @@
 /**
  * Unit tests for `getLookupCGRange` against the bundled
- * `b787-8-landing-dry.json` dataset.
+ * `b787-takeoff.json` dataset.
  *
  * Threshold values cross-verified with the test-set #1/#2 tables in
  * `02_Specification/05-crosswind-algorithm.md`:
@@ -45,27 +45,27 @@ describe('getLookupCGRange', () => {
   const data = loadData();
 
   it('returns first/last breakpoint thresholds at W = 170 t', () => {
-    const range = getLookupCGRange(data, weight(W_170));
+    const range = getLookupCGRange(data, 'b787_8', 'dry', weight(W_170));
     expect(range.min).toBeCloseTo(T1_AT_170, PRECISION_DIGITS);
     expect(range.max).toBeCloseTo(T5_AT_170, PRECISION_DIGITS);
   });
 
   it('returns first/last breakpoint thresholds at W = 130 t', () => {
-    const range = getLookupCGRange(data, weight(W_130));
+    const range = getLookupCGRange(data, 'b787_8', 'dry', weight(W_130));
     expect(range.min).toBeCloseTo(T1_AT_130, PRECISION_DIGITS);
     expect(range.max).toBeCloseTo(T5_AT_130, PRECISION_DIGITS);
   });
 
   it('range is monotonic (max > min) at any operationally-realistic weight', () => {
     for (const w of [W_130, W_150, W_170, W_172]) {
-      const range = getLookupCGRange(data, weight(w));
+      const range = getLookupCGRange(data, 'b787_8', 'dry', weight(w));
       expect(range.max).toBeGreaterThan(range.min);
     }
   });
 
   it('higher weight shifts both endpoints upward', () => {
-    const r130 = getLookupCGRange(data, weight(W_130));
-    const r170 = getLookupCGRange(data, weight(W_170));
+    const r130 = getLookupCGRange(data, 'b787_8', 'dry', weight(W_130));
+    const r170 = getLookupCGRange(data, 'b787_8', 'dry', weight(W_170));
     expect(r170.min).toBeGreaterThan(r130.min);
     expect(r170.max).toBeGreaterThan(r130.max);
   });
@@ -74,20 +74,18 @@ describe('getLookupCGRange', () => {
     // intercept span = breakpoints[last].intercept - breakpoints[0].intercept
     //                = 19.8 - 6.1 = 13.7 (independent of weight, since slope cancels)
     const expectedSpan = 13.7;
-    const range = getLookupCGRange(data, weight(W_150));
+    const range = getLookupCGRange(data, 'b787_8', 'dry', weight(W_150));
     expect(range.max - range.min).toBeCloseTo(expectedSpan, PRECISION_DIGITS);
   });
 
-  // Defensive narrowing for noUncheckedIndexedAccess. zod-validated bundled
-  // data always has breakpoints.length === 5, so this branch is unreachable
-  // in production — we cover it with a synthetic dataset to satisfy the
-  // domain-layer 90 % branch threshold.
-  it('falls back to operationalEnvelope.cg when breakpoints is empty', () => {
-    const synthetic: CrosswindDataFile = {
-      ...data,
-      interpolation: { ...data.interpolation, breakpoints: [] as never },
-    };
-    const range = getLookupCGRange(synthetic, weight(W_170));
+  it('falls back to operationalEnvelope.cg when aircraft is not implemented', () => {
+    const range = getLookupCGRange(data, 'b787_9', 'dry', weight(W_170));
+    expect(range.min).toBe(data.operationalEnvelope.cg.minPercent);
+    expect(range.max).toBe(data.operationalEnvelope.cg.maxPercent);
+  });
+
+  it('falls back to operationalEnvelope.cg when condition is not implemented', () => {
+    const range = getLookupCGRange(data, 'b787_8', 'wet', weight(W_170));
     expect(range.min).toBe(data.operationalEnvelope.cg.minPercent);
     expect(range.max).toBe(data.operationalEnvelope.cg.maxPercent);
   });
