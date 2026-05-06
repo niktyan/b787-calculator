@@ -40,6 +40,7 @@ import { useCrosswindCalculator } from './useCrosswindCalculator';
 
 const COLUMN_BASIS = '48%';
 const TWO_COLUMN_BREAKPOINT = tokens.breakpoints.regular;
+const REGULAR_BREAKPOINT = tokens.breakpoints.regularHeader;
 const HEADER_DIVIDER_HEIGHT = 1;
 const PILL_PRESSED_OPACITY = 0.6;
 const DEFAULT_AIRCRAFT: AircraftVariant = 'b787_8';
@@ -62,8 +63,14 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const router = useRouter();
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
+  // Two independent breakpoints:
+  //   - isRegular (>= 768pt): drives bumped typography / input sizing.
+  //     Active on iPad portrait + landscape; iPhone always compact.
+  //   - isTwoColumn (>= 1024pt): drives the 2-column horizontal layout
+  //     and the result Card's `flex: 1` height-fill. Active only on
+  //     iPad landscape.
+  const isRegular = width >= REGULAR_BREAKPOINT;
   const isTwoColumn = width >= TWO_COLUMN_BREAKPOINT;
-  const isRegular = isTwoColumn;
 
   const [weightText, setWeightText] = useState('');
   const [cgText, setCgText] = useState('');
@@ -103,7 +110,12 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     />
   );
   const resultPanel = (
-    <CrosswindResult state={state} isRegular={isRegular} testID="crosswind-result" />
+    <CrosswindResult
+      state={state}
+      isRegular={isRegular}
+      fillHeight={isTwoColumn}
+      testID="crosswind-result"
+    />
   );
 
   return (
@@ -123,7 +135,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
               <View style={styles.column}>{resultPanel}</View>
             </Row>
           ) : (
-            <Stack gap="lg">
+            <Stack gap="lg" style={isRegular ? styles.fillHeight : undefined}>
               {inputForm}
               {resultPanel}
             </Stack>

@@ -1,12 +1,17 @@
 /**
- * Crosswind result panel — Block 5 simplified single-card variant.
+ * Crosswind result panel — single-card variant.
  *
  * Spec: 02_Specification/06-ui-spec.md § Экран 4 → result panel.
  *
- * One Card with the huge centred number (status label + value + KT
- * suffix). On iPad landscape (`isRegular === true`) the Card stretches
- * to fill the right column via `flex: 1`. On compact widths the Card
- * holds its own height and the content remains vertically centred.
+ * Two independent props:
+ *   - `isRegular` — drives typography size (`displayLarge` / `monoXL`
+ *     vs `display` / `monoMedium`). Active on iPad portrait +
+ *     landscape (width >= 768pt).
+ *   - `fillHeight` — drives `flex: 1` so the Card claims the full
+ *     right-column height. Active only when the screen is in
+ *     2-column layout (iPad landscape, width >= 1024pt). On iPad
+ *     portrait the Card stacks under the input form and uses a
+ *     larger minHeight floor; on iPhone it uses the compact floor.
  *
  * States:
  *   • idle:               status label + value + KT (+ optional warning chip)
@@ -34,6 +39,7 @@ import type { CrosswindUIState } from '../useCrosswindCalculator';
 export interface CrosswindResultProps {
   readonly state: CrosswindUIState;
   readonly isRegular?: boolean;
+  readonly fillHeight?: boolean;
   readonly testID?: string | undefined;
 }
 
@@ -42,23 +48,37 @@ const ICON_SIZE = 32;
 const CAPTION_MAX_WIDTH = 280;
 const CARD_BORDER_WIDTH = 1;
 const CARD_MIN_HEIGHT_COMPACT = 200;
-const CARD_MIN_HEIGHT_REGULAR = 320;
+const CARD_MIN_HEIGHT_REGULAR_PORTRAIT = 280;
+const CARD_MIN_HEIGHT_REGULAR_LANDSCAPE = 320;
 const TRANSITION_DURATION_MS = 200;
 const STATUS_LETTER_SPACING = 0.72; // ≈ 0.08em at 9pt
+const STATUS_MARGIN_BOTTOM = 16; // anchors the label above the value group
 const KT_SUFFIX_MARGIN_LEFT = 8;
 
 const STATUS_STYLE: TextStyle = {
   letterSpacing: STATUS_LETTER_SPACING,
+  marginBottom: STATUS_MARGIN_BOTTOM,
   textTransform: 'uppercase',
 };
+
+function cardMinHeight(isRegular: boolean, fillHeight: boolean): number {
+  if (fillHeight) {
+    return CARD_MIN_HEIGHT_REGULAR_LANDSCAPE;
+  }
+  if (isRegular) {
+    return CARD_MIN_HEIGHT_REGULAR_PORTRAIT;
+  }
+  return CARD_MIN_HEIGHT_COMPACT;
+}
 
 interface CardSurfaceProps {
   readonly children: ReactNode;
   readonly isRegular: boolean;
+  readonly fillHeight: boolean;
   readonly testID?: string | undefined;
 }
 
-function CardSurface({ children, isRegular, testID }: CardSurfaceProps): ReactNode {
+function CardSurface({ children, isRegular, fillHeight, testID }: CardSurfaceProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
   const cardStyle = useMemo<ViewStyle>(
@@ -68,13 +88,13 @@ function CardSurface({ children, isRegular, testID }: CardSurfaceProps): ReactNo
       borderColor: palette.border,
       borderRadius: tokens.radii.lg,
       borderWidth: CARD_BORDER_WIDTH,
-      flex: isRegular ? 1 : 0,
+      flex: fillHeight ? 1 : 0,
       gap: tokens.spacing.sm,
       justifyContent: 'center',
-      minHeight: isRegular ? CARD_MIN_HEIGHT_REGULAR : CARD_MIN_HEIGHT_COMPACT,
+      minHeight: cardMinHeight(isRegular, fillHeight),
       padding: tokens.spacing.lg,
     }),
-    [isRegular, palette.bgCard, palette.border],
+    [fillHeight, isRegular, palette.bgCard, palette.border],
   );
   return (
     <View style={cardStyle} {...(testID === undefined ? {} : { testID })}>
@@ -114,12 +134,13 @@ interface IdleViewProps {
   readonly statusLabel: string;
   readonly warningText: string;
   readonly isRegular: boolean;
+  readonly fillHeight: boolean;
 }
 
 function IdleView(props: IdleViewProps): ReactNode {
-  const { output, warning, statusLabel, warningText, isRegular } = props;
+  const { output, warning, statusLabel, warningText, isRegular, fillHeight } = props;
   return (
-    <CardSurface isRegular={isRegular} testID="crosswind-result-panel">
+    <CardSurface isRegular={isRegular} fillHeight={fillHeight} testID="crosswind-result-panel">
       <Text variant="microUppercase" color="accent" style={STATUS_STYLE}>
         {statusLabel}
       </Text>
@@ -139,15 +160,22 @@ interface CaptionViewProps {
   readonly message: string;
   readonly iconLabel: string;
   readonly isRegular: boolean;
+  readonly fillHeight: boolean;
   readonly testID: string;
 }
 
-function CaptionView({ message, iconLabel, isRegular, testID }: CaptionViewProps): ReactNode {
+function CaptionView({
+  message,
+  iconLabel,
+  isRegular,
+  fillHeight,
+  testID,
+}: CaptionViewProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
   const messageStyle = useMemo<ViewStyle>(() => ({ maxWidth: CAPTION_MAX_WIDTH }), []);
   return (
-    <CardSurface isRegular={isRegular} testID={testID}>
+    <CardSurface isRegular={isRegular} fillHeight={fillHeight} testID={testID}>
       <MaterialIcons
         accessibilityLabel={iconLabel}
         color={palette.textTertiary}
@@ -167,12 +195,17 @@ interface ErrorViewProps {
   readonly headline: string;
   readonly description?: string | undefined;
   readonly isRegular: boolean;
+  readonly fillHeight: boolean;
 }
 
-function ErrorView({ headline, description, isRegular }: ErrorViewProps): ReactNode {
+function ErrorView({ headline, description, isRegular, fillHeight }: ErrorViewProps): ReactNode {
   const messageStyle = useMemo<ViewStyle>(() => ({ maxWidth: CAPTION_MAX_WIDTH }), []);
   return (
-    <CardSurface isRegular={isRegular} testID="crosswind-result-panel-error">
+    <CardSurface
+      isRegular={isRegular}
+      fillHeight={fillHeight}
+      testID="crosswind-result-panel-error"
+    >
       <Text variant="caption" color="danger" align="center">
         {headline}
       </Text>
@@ -188,11 +221,11 @@ function ErrorView({ headline, description, isRegular }: ErrorViewProps): ReactN
 }
 
 export function CrosswindResult(props: CrosswindResultProps): ReactNode {
-  const { state, isRegular = false, testID } = props;
+  const { state, isRegular = false, fillHeight = false, testID } = props;
   const { t } = useTranslation();
   const reduceMotion = useReduceMotion();
-  const content = renderContent(state, isRegular, t);
-  const wrapperStyle = isRegular ? styles.fillHeight : undefined;
+  const content = renderContent(state, isRegular, fillHeight, t);
+  const wrapperStyle = fillHeight ? styles.fillHeight : undefined;
 
   if (reduceMotion) {
     return (
@@ -215,6 +248,7 @@ export function CrosswindResult(props: CrosswindResultProps): ReactNode {
 function renderContent(
   state: CrosswindUIState,
   isRegular: boolean,
+  fillHeight: boolean,
   t: (key: string) => string,
 ): ReactNode {
   if (state.kind === 'empty') {
@@ -223,6 +257,7 @@ function renderContent(
         message={t('crosswind.resultEmpty')}
         iconLabel={t('crosswind.emptyIconLabel')}
         isRegular={isRegular}
+        fillHeight={fillHeight}
         testID="crosswind-result-panel-empty"
       />
     );
@@ -233,6 +268,7 @@ function renderContent(
         message={state.reason}
         iconLabel={t('crosswind.emptyIconLabel')}
         isRegular={isRegular}
+        fillHeight={fillHeight}
         testID="crosswind-result-panel-out-of-envelope"
       />
     );
@@ -243,13 +279,19 @@ function renderContent(
         message={state.description}
         iconLabel={t('crosswind.emptyIconLabel')}
         isRegular={isRegular}
+        fillHeight={fillHeight}
         testID="crosswind-result-panel-data-not-available"
       />
     );
   }
   if (state.kind === 'error') {
     return (
-      <ErrorView headline={state.headline} description={state.description} isRegular={isRegular} />
+      <ErrorView
+        headline={state.headline}
+        description={state.description}
+        isRegular={isRegular}
+        fillHeight={fillHeight}
+      />
     );
   }
   return (
@@ -257,6 +299,7 @@ function renderContent(
       output={state.output}
       warning={state.warning}
       isRegular={isRegular}
+      fillHeight={fillHeight}
       statusLabel={t('crosswind.resultStatusLabel')}
       warningText={t('crosswind.warningOutsideEnvelope')}
     />

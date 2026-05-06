@@ -125,29 +125,29 @@ describe('Crosswind route', () => {
 
     // Note on assertion shape: we deliberately use targeted typography
     // asserts on the rendered JSON tree instead of toMatchSnapshot.
-    // Reanimated's `LinearTransition` (added in commit e434a1b for the
-    // empty↔idle transition) keeps the previous content mounted in the
-    // jest mock environment during a state change, so a snapshot
-    // captures both the empty and the idle subtrees and is dominated
-    // by transition-mock noise. The compact-vs-regular result-panel
-    // choice is still cleanly observable via the result-value
-    // typography (48 pt / 24 pt vs 72 pt / 36 pt), which is what the
-    // user reported as broken on iPad portrait.
-    it('iPad mini portrait (768 x 1024): single-column stack, compact result panel (NOT regular)', () => {
+    // Reanimated's `LinearTransition` keeps the previous content
+    // mounted in the jest mock environment during a state change, so a
+    // snapshot captures both subtrees and is dominated by
+    // transition-mock noise. Targeted asserts isolate the load-bearing
+    // breakpoint behaviour.
+    //
+    // Block 2 of the takeoff-rebrand follow-up split the single
+    // `isRegular` signal into two: `isWidescreen` (>= 768pt) drives
+    // typography sizing (the user explicitly asked for the bigger
+    // fonts on iPad portrait too), and `isTwoColumn` (>= 1024pt)
+    // drives the 2-column layout + result Card flex:1.
+    it('iPad mini portrait (768 x 1024): single-column stack, regular typography (NOT 2-column)', () => {
       mockViewport(IPAD_MINI_PORTRAIT);
       const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
       fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
       fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
       const json = JSON.stringify(tree.toJSON());
-      // Regression guard: NO iPad-regular typography on iPad portrait.
-      expect(json).not.toContain('"fontSize":72');
-      expect(json).not.toContain('"fontSize":36');
-      // Compact path uses `display` (48 pt). Asserting it appears
-      // confirms idle state rendered with the compact ResultPanel.
-      expect(json).toContain('"fontSize":48');
+      // Regular typography is now active on iPad portrait too.
+      expect(json).toContain('"fontSize":72');
+      expect(json).toContain('"fontSize":36');
     });
 
-    it('iPad mini landscape (1024 x 768): 2-column row, regular result panel (72 pt typography)', () => {
+    it('iPad mini landscape (1024 x 768): 2-column row, regular typography (72 pt)', () => {
       mockViewport(IPAD_MINI_LANDSCAPE);
       const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
       fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
