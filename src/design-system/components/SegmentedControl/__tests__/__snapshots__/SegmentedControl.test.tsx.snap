@@ -1201,7 +1201,7 @@ exports[`SegmentedControl renders the regular size variant with larger track 1`]
             "borderRadius": 4,
             "flex": 1,
             "justifyContent": "center",
-            "minHeight": 50,
+            "minHeight": 66,
             "paddingHorizontal": 8,
             "paddingVertical": 4,
           },
@@ -1220,13 +1220,15 @@ exports[`SegmentedControl renders the regular size variant with larger track 1`]
             {
               "color": "#001A17",
               "fontFamily": "System",
-              "fontSize": 12,
+              "fontSize": 16,
               "fontWeight": "400",
               "letterSpacing": 0,
-              "lineHeight": 16,
+              "lineHeight": 22,
               "textAlign": "center",
             },
-            undefined,
+            {
+              "fontWeight": "500",
+            },
           ]
         }
       >
@@ -1272,7 +1274,7 @@ exports[`SegmentedControl renders the regular size variant with larger track 1`]
             "borderRadius": 4,
             "flex": 1,
             "justifyContent": "center",
-            "minHeight": 50,
+            "minHeight": 66,
             "paddingHorizontal": 8,
             "paddingVertical": 4,
           },
@@ -1291,13 +1293,15 @@ exports[`SegmentedControl renders the regular size variant with larger track 1`]
             {
               "color": "#6E7681",
               "fontFamily": "System",
-              "fontSize": 12,
+              "fontSize": 16,
               "fontWeight": "400",
               "letterSpacing": 0,
-              "lineHeight": 16,
+              "lineHeight": 22,
               "textAlign": "center",
             },
-            undefined,
+            {
+              "fontWeight": "500",
+            },
           ]
         }
       >
@@ -1343,7 +1347,7 @@ exports[`SegmentedControl renders the regular size variant with larger track 1`]
             "borderRadius": 4,
             "flex": 1,
             "justifyContent": "center",
-            "minHeight": 50,
+            "minHeight": 66,
             "paddingHorizontal": 8,
             "paddingVertical": 4,
           },
@@ -1362,13 +1366,15 @@ exports[`SegmentedControl renders the regular size variant with larger track 1`]
             {
               "color": "#6E7681",
               "fontFamily": "System",
-              "fontSize": 12,
+              "fontSize": 16,
               "fontWeight": "400",
               "letterSpacing": 0,
-              "lineHeight": 16,
+              "lineHeight": 22,
               "textAlign": "center",
             },
-            undefined,
+            {
+              "fontWeight": "500",
+            },
           ]
         }
       >

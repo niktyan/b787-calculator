@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { TextStyle } from 'react-native';
 
 import { useTranslation } from '../../../../core';
 import { NumericInput, SegmentedControl, Stack, Text } from '../../../../design-system';
@@ -6,6 +7,8 @@ import type {
   NumericInputSize,
   SegmentedControlOption,
   SegmentedControlSize,
+  SpacingToken,
+  TextVariant,
 } from '../../../../design-system';
 import type { AircraftVariant, RunwayCondition } from '../../domain/types';
 
@@ -30,6 +33,14 @@ export interface CrosswindInputFormProps {
   readonly testID?: string | undefined;
 }
 
+const REGULAR_SECTION_LABEL_FONT_WEIGHT = '600';
+const REGULAR_SECTION_LABEL_LETTER_SPACING = 1;
+const REGULAR_SECTION_LABEL_STYLE: TextStyle = {
+  fontWeight: REGULAR_SECTION_LABEL_FONT_WEIGHT,
+  letterSpacing: REGULAR_SECTION_LABEL_LETTER_SPACING,
+  textTransform: 'uppercase',
+};
+
 const AIRCRAFT_OPTIONS: readonly SegmentedControlOption<AircraftVariant>[] = [
   { value: 'b787_8', label: 'B787-8' },
   { value: 'b787_9', label: 'B787-9', disabled: true },
@@ -43,6 +54,62 @@ const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
   { value: 'mediumToPoor', label: 'Medium to Poor', disabled: true },
   { value: 'poor', label: 'Poor', disabled: true },
 ];
+
+interface FormSizing {
+  readonly inputSize: NumericInputSize;
+  readonly segmentedSize: SegmentedControlSize;
+  readonly stackGap: SpacingToken;
+  readonly stackJustify: 'space-between' | 'flex-start';
+  readonly stackStyle: { readonly flex: number } | undefined;
+  readonly sectionLabelGap: SpacingToken;
+  readonly sectionLabelVariant: TextVariant;
+  readonly sectionLabelStyle: TextStyle | undefined;
+  readonly runwayWrap: boolean;
+}
+
+function resolveSizing(isRegular: boolean): FormSizing {
+  if (isRegular) {
+    return {
+      inputSize: 'regular',
+      segmentedSize: 'regular',
+      stackGap: 'xl',
+      stackJustify: 'space-between',
+      stackStyle: { flex: 1 },
+      sectionLabelGap: 'md',
+      sectionLabelVariant: 'body',
+      sectionLabelStyle: REGULAR_SECTION_LABEL_STYLE,
+      runwayWrap: false,
+    };
+  }
+  return {
+    inputSize: 'compact',
+    segmentedSize: 'compact',
+    stackGap: 'lg',
+    stackJustify: 'flex-start',
+    stackStyle: undefined,
+    sectionLabelGap: 'xs',
+    sectionLabelVariant: 'label',
+    sectionLabelStyle: undefined,
+    runwayWrap: true,
+  };
+}
+
+interface SectionLabelProps {
+  readonly text: string;
+  readonly sizing: FormSizing;
+}
+
+function SectionLabel({ text, sizing }: SectionLabelProps): ReactNode {
+  return (
+    <Text
+      variant={sizing.sectionLabelVariant}
+      color="textSecondary"
+      style={sizing.sectionLabelStyle}
+    >
+      {text}
+    </Text>
+  );
+}
 
 export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
   const {
@@ -60,29 +127,22 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
     testID,
   } = props;
   const { t } = useTranslation();
-
-  const inputSize: NumericInputSize = isRegular ? 'regular' : 'compact';
-  const segmentedSize: SegmentedControlSize = isRegular ? 'regular' : 'compact';
-  const stackGap = isRegular ? 'xl' : 'lg';
-  const stackJustify = isRegular ? 'space-between' : 'flex-start';
-  const stackStyle = isRegular ? { flex: 1 } : undefined;
+  const sizing = resolveSizing(isRegular);
 
   return (
     <Stack
-      gap={stackGap}
-      justify={stackJustify}
-      style={stackStyle}
+      gap={sizing.stackGap}
+      justify={sizing.stackJustify}
+      style={sizing.stackStyle}
       {...(testID === undefined ? {} : { testID })}
     >
-      <Stack gap="xs">
-        <Text variant="label" color="textSecondary">
-          {t('crosswind.aircraftLabel')}
-        </Text>
+      <Stack gap={sizing.sectionLabelGap}>
+        <SectionLabel text={t('crosswind.aircraftLabel')} sizing={sizing} />
         <SegmentedControl<AircraftVariant>
           value={aircraft}
           options={AIRCRAFT_OPTIONS}
           onChange={onAircraftChange}
-          size={segmentedSize}
+          size={sizing.segmentedSize}
           accessibilityLabel={t('crosswind.aircraftLabel')}
           testID="crosswind-aircraft"
         />
@@ -93,7 +153,7 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
         onChange={onWeightChange}
         placeholder="e.g. 170"
         unit="t"
-        size={inputSize}
+        size={sizing.inputSize}
         {...(weightError === null ? {} : { error: weightError })}
         testID="crosswind-weight"
       />
@@ -104,20 +164,18 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
         placeholder="e.g. 25.5"
         unit="%MAC"
         decimal
-        size={inputSize}
+        size={sizing.inputSize}
         {...(cgError === null ? {} : { error: cgError })}
         testID="crosswind-cg"
       />
-      <Stack gap="xs">
-        <Text variant="label" color="textSecondary">
-          {t('crosswind.runwayConditionLabel')}
-        </Text>
+      <Stack gap={sizing.sectionLabelGap}>
+        <SectionLabel text={t('crosswind.runwayConditionLabel')} sizing={sizing} />
         <SegmentedControl<RunwayCondition>
           value={runwayCondition}
           options={RUNWAY_OPTIONS}
           onChange={onRunwayConditionChange}
-          size={segmentedSize}
-          wrap={!isRegular}
+          size={sizing.segmentedSize}
+          wrap={sizing.runwayWrap}
           accessibilityLabel={t('crosswind.runwayConditionLabel')}
           testID="crosswind-runway"
         />
