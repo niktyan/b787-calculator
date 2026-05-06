@@ -51,15 +51,23 @@ const CARD_MIN_HEIGHT_COMPACT = 200;
 const CARD_MIN_HEIGHT_REGULAR_PORTRAIT = 280;
 const CARD_MIN_HEIGHT_REGULAR_LANDSCAPE = 320;
 const TRANSITION_DURATION_MS = 200;
-const STATUS_LETTER_SPACING = 0.72; // ≈ 0.08em at 9pt
-const STATUS_MARGIN_BOTTOM = 16; // anchors the label above the value group
+const STATUS_MARGIN_BOTTOM = 16;
 const KT_SUFFIX_MARGIN_LEFT = 8;
-
-const STATUS_STYLE: TextStyle = {
-  letterSpacing: STATUS_LETTER_SPACING,
+// Inline overrides on top of `displayLarge` / `monoXL` / `body`
+// variants — bumps the cockpit-glance number without adding a new DS
+// token (PR hard constraint). Compact path keeps existing variants.
+const STATUS_STYLE_COMPACT: TextStyle = {
+  letterSpacing: 0.72,
   marginBottom: STATUS_MARGIN_BOTTOM,
   textTransform: 'uppercase',
 };
+const STATUS_STYLE_REGULAR: TextStyle = {
+  ...STATUS_STYLE_COMPACT,
+  fontWeight: '600',
+  letterSpacing: 1,
+};
+const VALUE_STYLE_REGULAR: TextStyle = { fontSize: 96, lineHeight: 104 };
+const UNIT_STYLE_REGULAR: TextStyle = { fontSize: 48, lineHeight: 56 };
 
 function cardMinHeight(isRegular: boolean, fillHeight: boolean): number {
   if (fillHeight) {
@@ -111,6 +119,8 @@ interface ValueRowProps {
 function ValueRow({ value, isRegular }: ValueRowProps): ReactNode {
   const valueVariant: TextVariant = isRegular ? 'displayLarge' : 'display';
   const unitVariant: TextVariant = isRegular ? 'monoXL' : 'monoMedium';
+  const valueStyle = isRegular ? VALUE_STYLE_REGULAR : undefined;
+  const unitStyle = isRegular ? [styles.ktSuffix, UNIT_STYLE_REGULAR] : styles.ktSuffix;
   return (
     <View style={styles.valueRow}>
       <Text
@@ -118,10 +128,11 @@ function ValueRow({ value, isRegular }: ValueRowProps): ReactNode {
         color="accent"
         allowFontScaling={false}
         accessibilityLabel={`${value} ${KT_UNIT}`}
+        style={valueStyle}
       >
         {String(value)}
       </Text>
-      <Text variant={unitVariant} color="textSecondary" style={styles.ktSuffix}>
+      <Text variant={unitVariant} color="textSecondary" style={unitStyle}>
         {KT_UNIT}
       </Text>
     </View>
@@ -139,9 +150,11 @@ interface IdleViewProps {
 
 function IdleView(props: IdleViewProps): ReactNode {
   const { output, warning, statusLabel, warningText, isRegular, fillHeight } = props;
+  const statusVariant: TextVariant = isRegular ? 'body' : 'microUppercase';
+  const statusStyle = isRegular ? STATUS_STYLE_REGULAR : STATUS_STYLE_COMPACT;
   return (
     <CardSurface isRegular={isRegular} fillHeight={fillHeight} testID="crosswind-result-panel">
-      <Text variant="microUppercase" color="accent" style={STATUS_STYLE}>
+      <Text variant={statusVariant} color="accent" style={statusStyle}>
         {statusLabel}
       </Text>
       <ValueRow value={output.maxCrosswindKnots} isRegular={isRegular} />

@@ -256,14 +256,15 @@ exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 
           {
             "color": "#00C2A8",
             "fontFamily": "System",
-            "fontSize": 9,
-            "fontWeight": "600",
-            "letterSpacing": 0.54,
-            "lineHeight": 12,
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
             "textAlign": "auto",
           },
           {
-            "letterSpacing": 0.72,
+            "fontWeight": "600",
+            "letterSpacing": 1,
             "marginBottom": 16,
             "textTransform": "uppercase",
           },
@@ -295,7 +296,10 @@ exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 
               "lineHeight": 80,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontSize": 96,
+              "lineHeight": 104,
+            },
           ]
         }
       >
@@ -314,9 +318,15 @@ exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 
               "lineHeight": 40,
               "textAlign": "auto",
             },
-            {
-              "marginLeft": 8,
-            },
+            [
+              {
+                "marginLeft": 8,
+              },
+              {
+                "fontSize": 48,
+                "lineHeight": 56,
+              },
+            ],
           ]
         }
       >

@@ -147,16 +147,21 @@ describe('Crosswind route', () => {
       expect(json).toContain('"fontSize":36');
     });
 
-    it('iPad mini landscape (1024 x 768): 2-column row, regular typography (72 pt)', () => {
+    it('iPad mini landscape (1024 x 768): 2-column row, regular typography + cockpit-glance value', () => {
       mockViewport(IPAD_MINI_LANDSCAPE);
       const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
       fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
       fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
       const json = JSON.stringify(tree.toJSON());
-      // Regression guard: iPad-regular typography MUST appear in
-      // landscape so the user-visible scale-up isn't silently lost.
+      // Regular typography baseline (variant fontSize is still emitted
+      // as part of the Text style array even when overridden inline).
       expect(json).toContain('"fontSize":72');
       expect(json).toContain('"fontSize":36');
+      // Cockpit-glance bump (inline override on top of displayLarge /
+      // monoXL): result value 96 pt, KT suffix 48 pt. If either size
+      // disappears, the visible result has silently shrunk.
+      expect(json).toContain('"fontSize":96');
+      expect(json).toContain('"fontSize":48');
     });
 
     /**
