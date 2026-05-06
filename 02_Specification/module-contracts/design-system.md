@@ -88,12 +88,12 @@ fontWeight / letterSpacing`, которые компонент `<Text variant=".
 | `caption` | sans | 12 | 16 | 400 | 0 |
 | `label` | sans | 12 | 16 | 600 | 0.6 (≈ 0.05em) |
 | `chipLabel` | sans | 11 | 16 | 600 | 0.44 (≈ 0.04em) — uppercase callers |
-| `microUppercase` | sans | 9 | 12 | 600 | 0.54 (≈ 0.06em) — uppercase callers; used by Crosswind input labels, result-status, meta-item labels |
+| `microUppercase` | sans | 9 | 12 | 600 | 0.54 (≈ 0.06em) — uppercase callers; used by Crosswind input labels (compact) and result-status label (compact). Meta-item-label use-site removed alongside the meta-grid in takeoff rebrand Block 5. |
 | `mono` | mono | 16 | 22 | 500 | 0 |
-| `monoSmall` | mono | 11 | 16 | 400 | 0 — used by result-meta values, input field unit suffix, Settings/About row values |
+| `monoSmall` | mono | 11 | 16 | 400 | 0 — used by Crosswind input field unit suffix (compact) and Settings/About row values. Result-meta use-site removed alongside the meta-grid in takeoff rebrand Block 5. |
 | `monoMedium` | mono | 24 | 28 | 700 | -0.5 (≈ -0.02em) — used by the "KT" suffix on the Crosswind result value |
 | `monoLarge` | mono | 22 | 28 | 700 | 0 |
-| `monoMicro` | mono | 8 | 12 | 400 | 0 — used by the source chip on the Crosswind result panel («Reference: 787 FCOM») |
+| `monoMicro` | mono | 8 | 12 | 400 | 0 — no current consumer (the Crosswind result-panel source chip was removed in PR `feat/crosswind-polish-2`; the variant is kept for future small chip / badge use-cases). |
 | `segmentLabel` | sans | 10 | 14 | 500 | 0 — used by `SegmentedControl` segment labels |
 | `monoXL` | mono | 36 | 40 | 700 | 0 — used by the iPad-regular variant of the "KT" suffix on the Crosswind result value (paired with `displayLarge`); compact-width keeps `monoMedium` (24 pt) |
 | `displayLarge` | mono | 72 | 80 | 700 | -1 (≈ -0.014em) — used by the iPad-regular variant of the Crosswind result value; compact-width keeps `display` (48 pt) |

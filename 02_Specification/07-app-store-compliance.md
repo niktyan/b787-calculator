@@ -276,7 +276,7 @@ Quick advisory crosswind reference for Boeing 787 pilots. Calculates conservativ
 
 ```
 B787 Calculator is a fast, offline advisory tool for Boeing 787 pilots.
-It calculates the maximum allowed crosswind component for landing based on three inputs: landing weight, center of gravity, and runway condition.
+It calculates the maximum allowed crosswind component for takeoff based on four inputs: aircraft variant, TOW (takeoff weight), center of gravity, and runway condition.
 
 CONSERVATIVE ADVISORY LIMITS
 
@@ -285,7 +285,7 @@ The calculations use conservative operational values that are intentionally more
 KEY FEATURES
 
 - Pure advisory: results are reference values, not operational decisions.
-- Fast: enter weight, CG, runway condition; result appears in seconds.
+- Fast: enter aircraft, TOW, CG, runway condition; result appears in seconds.
 - Offline: works completely without internet. No tracking, no analytics, no data collection.
 - Dark and light themes for cockpit and briefing-room use.
 - Localized in English and Russian.
@@ -304,13 +304,13 @@ We collect no data. The App makes no network requests. All settings are stored l
 
 ROADMAP
 
-Future modules planned: Crosswind Takeoff, Weight & Balance, Performance V-speeds, and additional runway conditions (Wet, Contaminated). The current version focuses on Crosswind Landing for Boeing 787-8 on Dry runway.
+The current version focuses on Crosswind Takeoff for Boeing 787-8 on Dry runway. Phase 2 will add Crosswind Landing, Boeing 787-9 variant, and the remaining RWYCC runway conditions (Good, Medium to Good, Medium, Medium to Poor, Poor). Later phases: Weight & Balance, Performance V-speeds, Fuel Planning.
 ```
 
 ### Keywords (100 chars max, comma-separated, no spaces around commas)
 
 ```
-boeing,787,crosswind,pilot,landing,advisory,FCOM,EFB,aviation,calculator,reference,limit
+boeing,787,crosswind,pilot,takeoff,advisory,FCOM,EFB,aviation,calculator,reference,limit
 ```
 
 ### What's New (release notes, ≤ 4000 chars per release)
@@ -319,7 +319,9 @@ boeing,787,crosswind,pilot,landing,advisory,FCOM,EFB,aviation,calculator,referen
 ```
 First public release.
 
-- Crosswind Landing module for Boeing 787-8 on Dry runway.
+- Crosswind Takeoff module for Boeing 787-8 on Dry runway.
+- Aircraft selector (B787-8 active, B787-9 ready for Phase 2).
+- RWYCC runway-condition selector (Dry active in MVP).
 - Localization in English and Russian.
 - Light and dark themes.
 - Fully offline. No data collection.
@@ -362,11 +364,11 @@ https://[github-username].github.io/b787-calculator/support.html
 ```
 Hello App Review team,
 
-This is an offline advisory calculator for Boeing 787 pilots. The app calculates a conservative reference value (maximum allowed crosswind for landing) based on three inputs: landing weight, center of gravity, and runway condition. The output is intended as a quick-reference reminder; the user is expected to verify against official Boeing 787 FCOM/QRH and their operator's procedures before any operational decision.
+This is an offline advisory calculator for Boeing 787 pilots. The app calculates a conservative reference value (maximum allowed crosswind for takeoff) based on four inputs: aircraft variant, TOW (takeoff weight), center of gravity, and runway condition. The output is intended as a quick-reference reminder; the user is expected to verify against official Boeing 787 FCOM/QRH and their operator's procedures before any operational decision.
 
 The advisory nature is communicated to the user three ways:
 1. A first-launch disclaimer screen requires explicit acknowledgment before the app can be used.
-2. Each calculation result displays a "Reference: 787 FCOM" chip linking the user back to the source of truth.
+2. The About screen exposes a "Data source" row showing the bundled FCOM revision (e.g. "Boeing 787 FCOM · 2026-05-05.001"), keeping the user one tap away from the source of truth.
 3. The App Store Listing description and Subtitle ("Advisory crosswind reference") emphasize the advisory nature.
 
 Reference values are derived from publicly available Boeing 787 Airport Characteristics for Airport Planning (787 ACAP), ICAO Annex 14 standards, and conservative operational practice. Values are validated with active Boeing 787 line pilots in pre-release beta testing. The values are intentionally MORE RESTRICTIVE than Boeing demonstrated crosswind values for additional safety margin.
@@ -381,8 +383,8 @@ Existing precedents for similar advisory aviation calculators in the App Store:
 
 To test the app:
 1. Launch the app — you will see the disclaimer. Tap "I understand · Continue".
-2. On the Main Menu, tap "Crosswind · Landing".
-3. Enter test values: Weight = 170, CG = 32, Runway condition = Dry.
+2. On the Main Menu, tap "Crosswind · Takeoff".
+3. Enter test values: Aircraft = B787-8, TOW actual = 170, CG = 32, Runway condition = Dry.
 4. The result should appear: 34 KT.
 5. Settings, About, and back navigation should work without issue.
 
