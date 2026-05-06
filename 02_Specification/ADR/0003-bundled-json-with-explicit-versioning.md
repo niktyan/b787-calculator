@@ -32,7 +32,7 @@
 - **`schemaVersion`** (semver) — версия структуры файла. Major bump при breaking-изменениях схемы.
 - **`dataVersion`** (date-based) — версия конкретных значений. Инкрементируется при любом изменении значений.
 
-Каждый JSON-файл соответствует комбинации (aircraft, phase, runwayCondition). В MVP — один файл `b787-8-landing-dry.json`. В Phase 2+ добавляются новые файлы.
+Каждый JSON-файл соответствует фазе полёта; данные внутри ключуются по `(aircraft, runwayCondition)` (см. `04-domain-model.md` § "JSON Schema bundled данных"). В MVP — один файл `b787-takeoff.json` с заполненной только парой `byAircraft.b787_8.dry`. В Phase 2+ добавляются новые файлы (`b787-landing.json`) и/или новые ветки в существующих (B787-9, non-dry RWYCC).
 
 Все JSON-файлы валидируются через zod-схему при загрузке репозиторием. При несоответствии — fail-safe режим, не показ числа.
 

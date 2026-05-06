@@ -162,7 +162,7 @@ features/crosswind/
 │   │   └── ResultPanel.tsx
 │   └── useCrosswindCalculator.ts   — view-model хук
 ├── domain/
-│   ├── types.ts                    — типы и интерфейсы (LandingWeight, CG, etc)
+│   ├── types.ts                    — типы и интерфейсы (Aircraft, WeightInTons, CGPercentMAC, RunwayCondition RWYCC scale, etc)
 │   ├── calculator.ts               — чистая функция расчёта
 │   ├── validators.ts               — валидация входов
 │   └── breakpoints.ts              — типы для опорных значений

@@ -678,7 +678,7 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 
 1. **Language** — кликабельная строка → bottom sheet с выбором (English / Русский). Применяется немедленно.
 2. **Theme** — bottom sheet с выбором (Auto / Light / Dark).
-3. **Weight units** — Tons (t) / Pounds (lbs). MVP — только tons, переключатель disabled с подсказкой «Available in upcoming release». Mockup-era ярлык «Kilograms (kg)» отменён — domain работает в тоннах, и единица пользовательского ввода в Calculator — тонны (см. § Экран 4 поле «Landing weight (t)»).
+3. **Weight units** — Tons (t) / Pounds (lbs). MVP — только tons, переключатель disabled с подсказкой «Available in upcoming release». Mockup-era ярлык «Kilograms (kg)» отменён — domain работает в тоннах, и единица пользовательского ввода в Calculator — тонны (см. § Экран 4 поле «TOW actual (t)»).
 4. **Wind units** — Knots (KT) / m/s. MVP — только KT, disabled.
 5. **Show data source on result** — toggle, по умолчанию ON.
 

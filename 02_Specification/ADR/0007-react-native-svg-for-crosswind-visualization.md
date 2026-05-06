@@ -1,8 +1,8 @@
 # ADR-0007 · Adopt react-native-svg for crosswind visualization
 
-**Status:** Accepted
-**Date:** 2026-05-04 (forward signal — to be installed at the start of Polish-3)
-**Related:** `02_Specification/03-tech-stack.md`, `02_Specification/06-ui-spec.md` § Экран 4 → "Visualization · CG / Crosswind chart"
+**Status:** Accepted as forward signal · not consumed in MVP (see Status update below)
+**Date:** 2026-05-04 (forward signal — installation deferred indefinitely after takeoff rebrand)
+**Related:** `02_Specification/03-tech-stack.md`, `02_Specification/06-ui-spec.md` § Экран 4 (visualization subsection removed in takeoff rebrand)
 
 ## Context
 
@@ -129,3 +129,53 @@ compatible release, и зарегистрирует pod через autolinking. 
 
 После install — `package-lock.json` коммитится; `package.json` поле
 ссылается на конкретную версию (через `save-exact=true` из `.npmrc`).
+
+---
+
+## Status update (post-takeoff-rebrand, 2026-05-06)
+
+This ADR was written as a **forward signal** in PR #32 ahead of
+Polish-3 (PR #33), which intended to install `react-native-svg`
+and replace the temporary `EnvelopePositionBar` with a full CG /
+Crosswind chart. None of that code shipped:
+
+- **PR #33 (Polish-3, chart implementation) was closed without
+  merge** (decision: scrap chart and Range-row work, restart
+  with the takeoff direction).
+- The **takeoff rebrand** (PR #44, merge commit `09ac1d6` on
+  2026-05-06) explicitly removed the chart from MVP scope —
+  the result panel is a single full-height card with a centred
+  number, no visualization (см. `06-ui-spec.md` § Экран 4 →
+  "Result-секция (правая колонка / нижняя на portrait) — Block 5
+  single Card").
+- `react-native-svg` was **never added** to `package.json`. The
+  `npx expo install` step from the section above was scheduled
+  for Polish-3 but never executed; transitive references through
+  `@expo/vector-icons` are unrelated to direct consumption.
+
+**Current disposition (MVP):**
+
+- The library is **not installed and not consumed** by any
+  feature. Bundle size impact is currently zero.
+- The library remains on the **allowlist** in
+  `02_Specification/03-tech-stack.md` so that re-adoption (if
+  Phase 2 reintroduces visualization — e.g., a Crosswind
+  Landing chart, or a different presentation) does not require
+  another full ADR cycle: this ADR is the standing decision on
+  *which* library to use when visualization returns.
+- The Decision and Consequences sections above remain as
+  written; they describe the rationale for choosing
+  `react-native-svg` *over* alternatives (Skia, victory-native,
+  view-based fakes, WebView), and that rationale still holds
+  whenever visualization is needed.
+
+**Reconsider this status when:**
+
+- Phase 2 design finalises the Crosswind Landing module's
+  result-panel shape — if it includes a chart, run `npx expo
+  install react-native-svg` per the section above and update
+  this ADR's status to `Accepted · consumed`.
+- Or, after Phase 2, if the project consistently ships without
+  visualization in any module — flip allowlist + this ADR to
+  `Reverted` (separate ADR cycle, since reversal touches both
+  the tech-stack policy and any code that may have been added).

@@ -143,8 +143,8 @@ export type { CrosswindRepository } from './data';
 
 **Unit-тесты domain (обязательно):**
 - `calculator.test.ts` — Test Sets #1, #2, #3 + algorithm-only NaN/Infinity cases. ≥ 40 кейсов из тест-таблицы `05-crosswind-algorithm.md`. Тестирует `calculateCrosswindLimit`.
-- `valueObjects.test.ts` — Test Set #4 кейсы #4.05–4.07 (NaN / Infinity / negative). Тестирует фабрики `makeWeightInTons` / `makeCGPercentMAC`.
-- `validateOperationalEnvelope.test.ts` — Test Set #4 кейсы #4.01–4.04 (вес/CG вне operational envelope). Тестирует use-case-функцию.
+- `validators.test.ts` — Test Set #4: кейсы #4.01–4.04 для `validateOperationalEnvelope` плюс кейсы #4.05–4.07 для Value Object factories (`makeWeightInTons` / `makeCGPercentMAC` отвергают NaN / Infinity / negative).
+- `edgeCases.test.ts` — strategy-dispatcher fall-through, validateAlgorithmInput defence-in-depth NaN/Infinity guards, runtime const arrays.
 - Coverage: ≥ 90%.
 
 **Unit-тесты data:**
@@ -162,7 +162,7 @@ export type { CrosswindRepository } from './data';
 
 ## Версионирование
 
-Версия данных читается из `b787-8-landing-dry.json` поле `dataVersion`. При обновлении JSON:
+Версия данных читается из `b787-takeoff.json` поле `dataVersion`. При обновлении JSON:
 1. Обновить значения в JSON.
 2. Инкрементировать `dataVersion`.
 3. Обновить тест-таблицу в `05-crosswind-algorithm.md`.

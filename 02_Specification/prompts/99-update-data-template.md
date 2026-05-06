@@ -1,6 +1,6 @@
 # Template: Обновление опорных значений в bundled JSON
 
-> **Когда использовать:** при необходимости обновить операционные значения (slope, intercepts, envelope, etc.) в `b787-8-landing-dry.json` без изменения кода.
+> **Когда использовать:** при необходимости обновить операционные значения (slope, intercepts, envelope, etc.) в `b787-takeoff.json` без изменения кода.
 >
 > Например: если уточняется значение какого-то C-коэффициента, или меняются границы envelope.
 
@@ -25,7 +25,7 @@ You are Claude Code. Update bundled crosswind reference data.
 
 Example of fully filled request:
 
-  Update b787-8-landing-dry.json:
+  Update b787-takeoff.json:
   - Change intercept for 35 KT breakpoint from 9.3 to 9.4.
   - Reason: revised operational practice based on additional pilot feedback.
   - All other values remain unchanged.
@@ -37,7 +37,7 @@ After reading and confirming the data update request:
 
 1. Branch `chore/data-update-<date>`.
 
-2. Update src/features/crosswind/data/b787-8-landing-dry.json:
+2. Update src/features/crosswind/data/b787-takeoff.json:
    - Apply the requested change(s).
    - Bump dataVersion (e.g., "2026-04-29.001" → "2026-09-15.001" — date of update + counter).
    - Update metadata.notes if relevant.
