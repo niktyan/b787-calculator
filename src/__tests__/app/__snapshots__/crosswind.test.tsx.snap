@@ -79,7 +79,9 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
               "gap": 16,
               "justifyContent": "flex-start",
             },
-            undefined,
+            {
+              "flex": 1,
+            },
           ]
         }
       >
@@ -1422,7 +1424,9 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
               "gap": 16,
               "justifyContent": "flex-start",
             },
-            undefined,
+            {
+              "flex": 1,
+            },
           ]
         }
       >

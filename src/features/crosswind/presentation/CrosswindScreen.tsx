@@ -109,7 +109,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   return (
     <Screen testID="crosswind-screen">
       <KeyboardDismissView testID="crosswind-keyboard-dismiss">
-        <Stack gap="lg">
+        <Stack gap="lg" style={styles.fillHeight}>
           <CrosswindHeader
             title={t('crosswind.title')}
             backLabel={`← ${t('common.back')}`}
@@ -118,7 +118,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
             onReset={handleReset}
           />
           {isTwoColumn ? (
-            <Row align="flex-start" gap="lg">
+            <Row align="stretch" gap="lg" style={styles.fillHeight}>
               <View style={styles.column}>{inputForm}</View>
               <View style={styles.column}>{resultPanel}</View>
             </Row>
@@ -253,6 +253,9 @@ const styles = StyleSheet.create({
   column: {
     flexBasis: COLUMN_BASIS,
     flexGrow: 1,
+  },
+  fillHeight: {
+    flex: 1,
   },
   pressed: {
     opacity: PILL_PRESSED_OPACITY,
