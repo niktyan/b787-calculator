@@ -9,11 +9,11 @@
 
 import { calculateCrosswindLimit } from '../domain/calculator';
 import { calculateExcelEquivalent } from '../domain/strategies';
-import { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS } from '../domain/types';
+import { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from '../domain/types';
 import type { CGPercentMAC, WeightInTons } from '../domain/types';
 import { validateAlgorithmInput } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
-import bundled from '../data/b787-8-landing-dry.json';
+import bundled from '../data/b787-takeoff.json';
 import { crosswindDataFileSchema } from '../data/schema';
 import type { CrosswindDataFile } from '../data/schema';
 
@@ -30,17 +30,23 @@ function vo(weight: number, cg: number): { readonly w: WeightInTons; readonly cg
 
 describe('Calculator edge cases', () => {
   it('returns CalculationFailed for unknown interpolation.model', () => {
-    const corruptedData = {
-      ...data,
-      interpolation: { ...data.interpolation, model: 'some-future-model' as never },
-    } as unknown as CrosswindDataFile;
+    const corruptedData = JSON.parse(JSON.stringify(data)) as CrosswindDataFile;
+    const aircraftEntry = corruptedData.byAircraft.b787_8;
+    if (aircraftEntry === undefined) {
+      throw new Error('expected b787_8 entry to exist');
+    }
+    const dataset = aircraftEntry.dry;
+    if (dataset === undefined) {
+      throw new Error('expected dry dataset');
+    }
+    (dataset.interpolation as { model: string }).model = 'some-future-model';
     const { w, cg } = vo(170, 32);
     const r = calculateCrosswindLimit(
       {
         weightTons: w,
         cgPercent: cg,
         aircraft: 'b787_8',
-        phase: 'landing',
+        phase: 'takeoff',
         runwayCondition: 'dry',
       },
       corruptedData,
@@ -64,6 +70,7 @@ describe('Strategy edge cases', () => {
         tonsToKilolbsFactor: 2.20462,
         dataVersion: 'test',
         referenceDocument: 'test',
+        aircraft: 'b787_8',
       },
     );
     expect(r.ok).toBe(false);
@@ -74,9 +81,6 @@ describe('Strategy edge cases', () => {
   });
 
   it('returns CalculationFailed when computed value > demonstrated 40', () => {
-    // First breakpoint at crosswindKnots = 50; cg just above T1 yields
-    // resultRaw close to 50, which makeCrosswindKnots rejects. Guards
-    // the `!knotsResult.ok` branch.
     const { w } = vo(170, 32);
     const r = calculateExcelEquivalent(
       { weightTons: w, cgPercent: 27.7 as CGPercentMAC },
@@ -92,6 +96,7 @@ describe('Strategy edge cases', () => {
         tonsToKilolbsFactor: 2.20462,
         dataVersion: 'test',
         referenceDocument: 'test',
+        aircraft: 'b787_8',
       },
     );
     expect(r.ok).toBe(false);
@@ -102,9 +107,6 @@ describe('Strategy edge cases', () => {
   });
 
   it('returns CalculationFailed when bracket-label crosswind > 40 even though value ≤ 40', () => {
-    // Wide first bracket (intercepts 6.1 → 26.1) so the formula yields
-    // a value ≤ 40 while lower.crosswindKnots = 50 — exercises the
-    // bracket-label guard distinct from the result-value guard.
     const { w } = vo(170, 32);
     const r = calculateExcelEquivalent(
       { weightTons: w, cgPercent: 30 as CGPercentMAC },
@@ -120,6 +122,7 @@ describe('Strategy edge cases', () => {
         tonsToKilolbsFactor: 2.20462,
         dataVersion: 'test',
         referenceDocument: 'test',
+        aircraft: 'b787_8',
       },
     );
     expect(r.ok).toBe(false);
@@ -130,17 +133,20 @@ describe('Strategy edge cases', () => {
   });
 
   it('returns NoLookupData when weight × factor overflows to Infinity', () => {
-    // Choose weight large enough that weight × factor exceeds Number.MAX_VALUE.
-    // Number.MAX_VALUE / 2.20462 ≈ 8.16e307. Slightly above that overflows.
+    const dataset = data.byAircraft.b787_8?.dry;
+    if (dataset === undefined) {
+      throw new Error('expected dry dataset');
+    }
     const w = Number.MAX_VALUE as WeightInTons;
     const r = calculateExcelEquivalent(
       { weightTons: w, cgPercent: 32 as CGPercentMAC },
       {
         slope: 0.0576,
-        breakpoints: data.interpolation.breakpoints,
+        breakpoints: dataset.interpolation.breakpoints,
         tonsToKilolbsFactor: 2.20462,
         dataVersion: 'test',
         referenceDocument: 'test',
+        aircraft: 'b787_8',
       },
     );
     expect(r.ok).toBe(false);
@@ -156,20 +162,18 @@ describe('Algorithm input validator defence-in-depth', () => {
   // validator's checks at Step 0 are belt-and-suspenders. These tests
   // exercise them by passing branded values directly (bypassing the
   // factories' guards).
-  const dataAvail = {
-    aircraft: 'b787_8' as const,
-    phase: 'landing' as const,
-    runwayCondition: 'dry' as const,
-  };
+  const dataPhase = { phase: 'takeoff' as const };
 
   it('NaN weight → NoLookupData reason NaN', () => {
     const r = validateAlgorithmInput(
       {
-        ...dataAvail,
+        aircraft: 'b787_8',
+        phase: 'takeoff',
+        runwayCondition: 'dry',
         weightTons: Number.NaN as WeightInTons,
         cgPercent: 25 as CGPercentMAC,
       },
-      dataAvail,
+      dataPhase,
     );
     expect(r.ok).toBe(false);
     if (r.ok) {
@@ -185,11 +189,13 @@ describe('Algorithm input validator defence-in-depth', () => {
   it('Infinity cg → NoLookupData reason NotFinite', () => {
     const r = validateAlgorithmInput(
       {
-        ...dataAvail,
+        aircraft: 'b787_8',
+        phase: 'takeoff',
+        runwayCondition: 'dry',
         weightTons: 170 as WeightInTons,
         cgPercent: Number.POSITIVE_INFINITY as CGPercentMAC,
       },
-      dataAvail,
+      dataPhase,
     );
     expect(r.ok).toBe(false);
     if (r.ok) {
@@ -200,6 +206,28 @@ describe('Algorithm input validator defence-in-depth', () => {
       throw new Error('expected NoLookupData');
     }
     expect(r.error.reason).toBe('NotFinite');
+  });
+
+  it('phase mismatch → DataNotAvailable.phase-mismatch', () => {
+    const r = validateAlgorithmInput(
+      {
+        aircraft: 'b787_8',
+        phase: 'landing',
+        runwayCondition: 'dry',
+        weightTons: 170 as WeightInTons,
+        cgPercent: 25 as CGPercentMAC,
+      },
+      dataPhase,
+    );
+    expect(r.ok).toBe(false);
+    if (r.ok) {
+      throw new Error('expected error');
+    }
+    expect(r.error.kind).toBe('DataNotAvailable');
+    if (r.error.kind !== 'DataNotAvailable') {
+      throw new Error('expected DataNotAvailable');
+    }
+    expect(r.error.reason).toBe('phase-mismatch');
   });
 });
 
@@ -212,7 +240,25 @@ describe('Runtime const arrays (types.ts)', () => {
     expect(FLIGHT_PHASES).toEqual(['takeoff', 'landing']);
   });
 
-  it('exports RUNWAY_CONDITIONS', () => {
-    expect(RUNWAY_CONDITIONS).toEqual(['dry', 'wet', 'contaminated']);
+  it('exports RUNWAY_CONDITIONS as the 6-state RWYCC scale', () => {
+    expect(RUNWAY_CONDITIONS).toEqual([
+      'dry',
+      'good',
+      'mediumToGood',
+      'medium',
+      'mediumToPoor',
+      'poor',
+    ]);
+  });
+
+  it('RWYCC maps each runway condition to its ICAO numeric code', () => {
+    expect(RWYCC).toEqual({
+      dry: 6,
+      good: 5,
+      mediumToGood: 4,
+      medium: 3,
+      mediumToPoor: 2,
+      poor: 1,
+    });
   });
 });

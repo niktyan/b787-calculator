@@ -17,14 +17,14 @@ describe('coming-soon-modules loader', () => {
     }
   });
 
-  it('exposes crosswind-takeoff as a coming-soon teaser', () => {
+  it('exposes crosswind-landing as a coming-soon teaser', () => {
     const modules = loadComingSoonModules();
-    const takeoff = modules.find((x) => x.id === 'crosswind-takeoff');
-    expect(takeoff).toBeDefined();
-    expect(takeoff?.phase).toMatch(/^Phase \d+$/);
-    expect((takeoff?.name ?? '').length).toBeGreaterThan(0);
-    expect((takeoff?.description ?? '').length).toBeGreaterThan(0);
-    expect((takeoff?.icon ?? '').length).toBeGreaterThan(0);
+    const landing = modules.find((x) => x.id === 'crosswind-landing');
+    expect(landing).toBeDefined();
+    expect(landing?.phase).toMatch(/^Phase \d+$/);
+    expect((landing?.name ?? '').length).toBeGreaterThan(0);
+    expect((landing?.description ?? '').length).toBeGreaterThan(0);
+    expect((landing?.icon ?? '').length).toBeGreaterThan(0);
   });
 
   it('does not surface weight-balance or performance in MVP (post-MVP backlog)', () => {
@@ -33,10 +33,10 @@ describe('coming-soon-modules loader', () => {
     expect(modules.find((x) => x.id === 'performance')).toBeUndefined();
   });
 
-  it('does not include the active landing module (lives under features/, per ADR-0004)', () => {
+  it('does not include the active takeoff module (lives under features/, per ADR-0004)', () => {
     const modules = loadComingSoonModules();
-    const landing = modules.find((m) => m.id === 'crosswind-landing');
-    expect(landing).toBeUndefined();
+    const takeoff = modules.find((m) => m.id === 'crosswind-takeoff');
+    expect(takeoff).toBeUndefined();
   });
 
   it('returns the same cached array on repeat calls', () => {
@@ -58,7 +58,7 @@ describe('coming-soon-modules loader', () => {
     });
 
     it('returns an empty list when input is missing required fields', () => {
-      const result = _parseModules([{ id: 'crosswind-takeoff' }]);
+      const result = _parseModules([{ id: 'crosswind-landing' }]);
       expect(result).toEqual([]);
     });
 

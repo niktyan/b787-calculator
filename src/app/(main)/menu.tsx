@@ -34,8 +34,8 @@ const REGULAR_BREAKPOINT = tokens.breakpoints.regularHeader;
 type TabId = 'modules' | 'settings' | 'about';
 
 const ACTIVE_MODULE: ActiveModule = {
-  id: 'crosswind-landing',
-  name: 'Crosswind · Landing',
+  id: 'crosswind-takeoff',
+  name: 'Crosswind · Takeoff',
   icon: 'XW',
 };
 

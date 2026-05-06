@@ -6,7 +6,7 @@
 
 ## Ответственность
 
-Feature-модуль Crosswind реализует **главную функциональность приложения в MVP** — расчёт максимально допустимого бокового ветра для посадки Boeing 787-8 на сухой ВПП. Модуль самодостаточен: содержит свою domain-логику, источник данных, UI-экран и тесты.
+Feature-модуль Crosswind реализует **главную функциональность приложения в MVP** — расчёт максимально допустимого бокового ветра для взлёта (Takeoff) Boeing 787-8 на сухой ВПП. Модуль самодостаточен: содержит свою domain-логику, источник данных, UI-экран и тесты.
 
 Алгоритм расчёта детально описан в `02_Specification/05-crosswind-algorithm.md`. Этот контракт фокусируется на **публичном API** модуля и его зависимостях.
 
@@ -17,31 +17,31 @@ src/features/crosswind/
 ├── presentation/
 │   ├── CrosswindScreen.tsx          — главный экран
 │   ├── components/
-│   │   ├── CrosswindInputForm.tsx   — форма ввода (weight, CG, runway condition)
-│   │   ├── CrosswindResult.tsx      — отображение результата
-│   │   └── CrosswindSourceChip.tsx  — chip "Reference: 787 FCOM"
+│   │   ├── CrosswindInputForm.tsx   — форма ввода (Aircraft, TOW actual, CG, runway condition)
+│   │   └── CrosswindResult.tsx      — single-card centred number panel
 │   └── useCrosswindCalculator.ts    — view-model хук
 ├── domain/
-│   ├── types.ts                     — domain-типы
+│   ├── types.ts                     — domain-типы (Aircraft, RunwayCondition RWYCC scale, RWYCC mapping)
 │   ├── valueObjects.ts              — Value Objects (WeightInTons, CGPercentMAC, CrosswindKnots)
-│   ├── calculator.ts                — чистая функция расчёта
+│   ├── calculator.ts                — чистая функция расчёта (calculateCrosswindLimit + alias calculateMaxCrosswindTakeoff)
 │   ├── strategies.ts                — implementation для 'piecewise-linear-excel-equivalent'
-│   ├── validators.ts                — валидация входных данных
-│   ├── lookupRange.ts               — getLookupCGRange query helper (envelope-bar driver)
-│   └── errors.ts                    — типы ошибок
+│   └── validators.ts                — validateAlgorithmInput + validateOperationalEnvelope
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
-│   ├── schema.ts                    — zod-схема для bundled JSON
-│   └── b787-8-landing-dry.json      — opcional: см. примечание ниже
+│   ├── schema.ts                    — zod-схема (byAircraft / dataset shape)
+│   └── b787-takeoff.json            — bundled lookup data (see 04-domain-model.md)
 ├── __tests__/
 │   ├── calculator.test.ts           — тест-таблица из 05-crosswind-algorithm.md
 │   ├── validators.test.ts
+│   ├── edgeCases.test.ts
 │   ├── repository.test.ts
 │   └── acceptance.test.ts           — end-to-end тесты модуля
 └── index.ts                         — barrel
 ```
 
-**Примечание про расположение JSON-данных.** Bundled JSON-файл может лежать либо в `src/features/crosswind/data/b787-8-landing-dry.json`, либо в более общей папке `src/data/crosswind/`. Решение принимается при имплементации; ESLint правила в `08-quality-gates.md` это допускают. Рекомендуется внутри модуля для самодостаточности.
+**Примечание про расположение JSON-данных.** Bundled JSON-файл живёт
+в `src/features/crosswind/data/b787-takeoff.json` — самодостаточно
+внутри модуля. ESLint правила в `08-quality-gates.md` это допускают.
 
 ## Public API
 
@@ -51,25 +51,26 @@ src/features/crosswind/
 // Screen для регистрации в навигации
 export { CrosswindScreen } from './presentation';
 
-// Domain types для использования снаружи (если понадобится)
+// Domain types
 export type {
+  Aircraft,
   CrosswindCalculationInput,
   CrosswindCalculationOutput,
   CrosswindCalculationError,
-} from './domain';
-
-// Value Objects (для типобезопасной работы с числами в App Shell, если понадобится)
-export type {
+  CrosswindTakeoffInput,
+  EnvelopeViolation,
   WeightInTons,
   CGPercentMAC,
   CrosswindKnots,
 } from './domain';
 
-// Pure calculation function (для тестов или future use cases)
-export { calculateCrosswindLimit } from './domain';
+// Pure calculation function. `calculateMaxCrosswindTakeoff` is a
+// spec-named alias of `calculateCrosswindLimit` — same signature, same
+// behaviour, documents intent at takeoff call sites.
+export { calculateCrosswindLimit, calculateMaxCrosswindTakeoff } from './domain';
 
-// Use-case validation (operational envelope — отдельно от lookup envelope).
-// См. 04-domain-model.md "Two distinct envelope concepts".
+// Use-case validation (operational envelope — отдельно от lookup
+// envelope). См. 04-domain-model.md "Two distinct envelope concepts".
 //
 // signature:
 //   function validateOperationalEnvelope(
@@ -78,42 +79,26 @@ export { calculateCrosswindLimit } from './domain';
 //                 cg:     { minPercent: number; maxPercent: number } },
 //   ): Result<void, EnvelopeViolation>;
 //
-// EnvelopeViolation discriminated union covers the four cases:
-//   weight.below, weight.above, cg.below, cg.above.
-//
-// Use-case calls validateOperationalEnvelope FIRST, then always calls
-// calculateCrosswindLimit. UI shows the algorithm's number unconditionally
-// (assuming it returned a value); the validator's result drives the warning
-// chip next to it.
+// EnvelopeViolation covers four cases: weight.below / weight.above /
+// cg.below / cg.above. Use-case calls validateOperationalEnvelope
+// FIRST, then always calls calculateCrosswindLimit. UI shows the
+// algorithm's number unconditionally; the validator's result drives
+// the warning chip next to it.
 export { validateOperationalEnvelope } from './domain';
-export type { EnvelopeViolation } from './domain';
-
-// Lookup-range query.
-//
-// signature:
-//   interface LookupCGRange { readonly min: number; readonly max: number }
-//   function getLookupCGRange(
-//     data: CrosswindDataFile,
-//     weightTons: WeightInTons,
-//   ): LookupCGRange;
-//
-// Returns the CG (% MAC) interval at the given weight for which the
-// lookup table produces an interpolated number rather than the
-// IFNA-fallback 40 KT (см. 05-crosswind-algorithm.md Шаг 3 lower /
-// upper bound search). Endpoints = `slope × weightKilolbs + intercept`
-// for the first and last breakpoints. Pure data introspection — no
-// business decisions, no side effects.
-//
-// Used by the presentation layer to drive the EnvelopePositionBar
-// zones (см. 06-ui-spec.md § Экран 4 → "Envelope-position bar"); not
-// consumed by `calculateCrosswindLimit` itself.
-export { getLookupCGRange } from './domain';
-export type { LookupCGRange } from './domain';
 
 // Repository factory (для DI, если понадобится альтернативная реализация)
 export { createCrosswindRepository } from './data';
 export type { CrosswindRepository } from './data';
 ```
+
+**Removed in Block 5 (takeoff rebrand) — formerly public:**
+
+- `getLookupCGRange` / `LookupCGRange` — drove the deleted
+  `EnvelopePositionBar`. No remaining consumers.
+- `EnvelopePositionBar` component — deleted.
+- `RegularIdleBody` component — deleted (folded into the simplified
+  `CrosswindResult`).
+- Result-panel meta-grid + footnote.
 
 Что НЕ экспортируется:
 - Внутренние компоненты презентации (InputForm, Result, SourceChip).
@@ -197,22 +182,25 @@ export type { CrosswindRepository } from './data';
 
 Strategy dispatcher уже имплементирован с MVP. Это значит, что добавить новую strategy = добавить функцию + ветку в switch.
 
-### Polish-3 forward signal
+### Takeoff rebrand structural change (Block 2 of feat/crosswind-takeoff-rebrand)
 
-Polish-3 расширит `RunwayCondition` с 3 значений (`'dry' | 'wet' |
-'contaminated'`) до 6 (`'dry' | 'wet' | 'slipperyWet' |
-'compactedSnow' | 'drySnow' | 'wetSnow'`) и переключит bundled JSON с
-flat-структуры на per-aircraft × phase файл с map-полем `datasets`,
-ключи которого — все 6 runway-condition значений. Каждый ключ
-содержит либо полный lookup-entry, либо `{ status: 'comingSoon' }` —
-последний триггерит `Result.err({ kind: 'DataNotAvailable', reason:
-'comingSoon' })` без обращения к алгоритму. Это **уровень 4** по
-классификации выше — major schema bump. Public API модуля при этом
-остаётся стабильным: сигнатуры `calculateCrosswindLimit`,
-`validateOperationalEnvelope`, `getLookupCGRange` не меняются;
-расширяется только value-set входного `runwayCondition`. Полная
-спека — `04-domain-model.md` § "JSON Schema · Polish-3 expansion
-(forward signal)".
+Bundled JSON переехал с flat per-(aircraft, phase, condition) shape
+на per-phase файл, в котором lookup-данные ключуются `byAircraft[
+aircraft][runwayCondition]`. Это **уровень 4** по классификации выше
+— major schema bump (`schemaVersion 1.x → 2.0.0`). `RunwayCondition`
+одновременно расширился до 6-state RWYCC scale (`dry / good /
+mediumToGood / medium / mediumToPoor / poor`).
+
+Public API изменения:
+- `calculateCrosswindLimit` — сигнатура та же, поведение поменялось
+  при miss: `aircraft`-not-implemented и `condition`-not-implemented
+  возвращают `DataNotAvailable.reason` с явным дискриминатором.
+- Добавлены: `Aircraft` (alias `AircraftVariant`), `CrosswindTakeoffInput`,
+  `calculateMaxCrosswindTakeoff` (alias).
+- Удалены: `getLookupCGRange`, `LookupCGRange` — драйверы удалённого
+  `EnvelopePositionBar`.
+
+`validateOperationalEnvelope` неизменён.
 
 ## Открытые вопросы
 

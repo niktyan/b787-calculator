@@ -15,6 +15,7 @@ import { err, ok } from '../../../core/result';
 import type { Result } from '../../../core/result';
 
 import type {
+  AircraftVariant,
   CalculationMetadata,
   CalculationStrategy,
   CGPercentMAC,
@@ -36,6 +37,7 @@ export interface ExcelEquivalentData {
   readonly tonsToKilolbsFactor: number;
   readonly dataVersion: string;
   readonly referenceDocument: string;
+  readonly aircraft: AircraftVariant;
 }
 
 export interface ExcelEquivalentInput {
@@ -182,6 +184,7 @@ function buildMetadata(args: BuildMetadataArgs): CalculationMetadata {
   return {
     dataVersion: data.dataVersion,
     referenceDocument: data.referenceDocument,
+    aircraft: data.aircraft,
     weightBracket: { lower: weightTons, upper: weightTons },
     cgBracket: { lower: computed.cgLower, upper: computed.cgUpper },
     bracketCrosswindRange: { lower: bracketLower, upper: bracketUpper },

@@ -1,12 +1,12 @@
 /**
- * Repository wrapping the bundled `b787-8-landing-dry.json` resource.
+ * Repository wrapping the bundled `b787-takeoff.json` resource.
  *
  * Spec: 02_Specification/04-domain-model.md (Fail-safe), ADR-0003.
  *
  * Two failure surfaces, both via Result.err({ kind: 'CorruptedDataBundle' }):
  *   • zod schema mismatch (structural)
  *   • business-rule violation (envelope sanity, slope=0, breakpoint
- *     ordering, file/aircraft consistency)
+ *     ordering, file/phase consistency)
  *
  * Validated payloads are memoized — repeated `load()` calls return the
  * same parsed object without re-running zod.
@@ -15,7 +15,7 @@
 import { err, ok } from '../../../core/result';
 import type { Result } from '../../../core/result';
 
-import b787_8LandingDryJson from './b787-8-landing-dry.json';
+import b787TakeoffJson from './b787-takeoff.json';
 import { checkBusinessRules, crosswindDataFileSchema } from './schema';
 import type { BusinessRuleContext, CrosswindDataFile } from './schema';
 
@@ -34,15 +34,13 @@ export interface CrosswindRepositoryOptions {
 }
 
 const DEFAULT_CONTEXT: BusinessRuleContext = {
-  expectedAircraft: 'b787_8',
-  expectedPhase: 'landing',
-  expectedRunwayCondition: 'dry',
+  expectedPhase: 'takeoff',
 };
 
 export function createCrosswindRepository(
   options?: CrosswindRepositoryOptions,
 ): CrosswindRepository {
-  const raw = options?.raw ?? b787_8LandingDryJson;
+  const raw = options?.raw ?? b787TakeoffJson;
   const context = options?.context ?? DEFAULT_CONTEXT;
   let cached: Result<CrosswindDataFile, CrosswindRepositoryError> | null = null;
 

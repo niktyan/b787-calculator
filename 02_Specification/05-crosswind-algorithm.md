@@ -2,7 +2,7 @@
 
 ## Назначение документа
 
-Этот документ — **математически точная спецификация алгоритма расчёта максимально допустимого бокового ветра для посадки Boeing 787-8 на сухой ВПП**. Он содержит:
+Этот документ — **математически точная спецификация алгоритма расчёта максимально допустимого бокового ветра для взлёта Boeing 787-8 на сухой ВПП**. Он содержит:
 
 - Точное описание модели и формул.
 - Покрытие всех граничных случаев.
@@ -28,17 +28,19 @@
 
 ## Константы алгоритма
 
-Все константы хранятся в bundled JSON (`b787-8-landing-dry.json`). В коде они **не хардкодятся** — читаются из JSON при инициализации репозитория.
+Все константы хранятся в bundled JSON (`b787-takeoff.json`,
+вложенно по пути `byAircraft.b787_8.dry`). В коде они **не
+хардкодятся** — читаются из JSON при инициализации репозитория.
 
 | Константа | Значение | Откуда |
 |-----------|----------|--------|
-| Конверсия вес → kilolbs | `tonsToKilolbsFactor = 2.20462` | JSON, поле `weightConversion.tonsToKilolbsFactor` |
-| Общий наклон | `slope = 0.0576` | JSON, поле `interpolation.slope` |
-| Точка 1 (макс. crosswind) | `crosswind = 40 KT, intercept = 6.1` | JSON, `breakpoints[0]` |
-| Точка 2 | `crosswind = 35 KT, intercept = 9.3` | JSON, `breakpoints[1]` |
-| Точка 3 | `crosswind = 30 KT, intercept = 12.8` | JSON, `breakpoints[2]` |
-| Точка 4 | `crosswind = 25 KT, intercept = 16.3` | JSON, `breakpoints[3]` |
-| Точка 5 (мин. crosswind) | `crosswind = 20 KT, intercept = 19.8` | JSON, `breakpoints[4]` |
+| Конверсия вес → kilolbs | `tonsToKilolbsFactor = 2.20462` | JSON, top-level `weightConversion.tonsToKilolbsFactor` |
+| Общий наклон | `slope = 0.0576` | JSON, `byAircraft.b787_8.dry.interpolation.slope` |
+| Точка 1 (макс. crosswind) | `crosswind = 40 KT, intercept = 6.1` | JSON, `…dry.interpolation.breakpoints[0]` |
+| Точка 2 | `crosswind = 35 KT, intercept = 9.3` | JSON, `…breakpoints[1]` |
+| Точка 3 | `crosswind = 30 KT, intercept = 12.8` | JSON, `…breakpoints[2]` |
+| Точка 4 | `crosswind = 25 KT, intercept = 16.3` | JSON, `…breakpoints[3]` |
+| Точка 5 (мин. crosswind) | `crosswind = 20 KT, intercept = 19.8` | JSON, `…breakpoints[4]` |
 
 ---
 
@@ -47,8 +49,19 @@
 ### Шаг 0. Валидация data-availability
 
 Перед расчётом проверяется:
-- `aircraft === 'b787_8'`, `phase === 'landing'`, `runwayCondition === 'dry'`. Иначе → `Result.error({ kind: 'DataNotAvailable', ... })`.
-- Входные значения числовые и конечные. NaN / Infinity → `Result.error({ kind: 'NoLookupData', reason: 'NaN' | 'NotFinite' })`. (Эти случаи на практике не должны возникать — Value Objects `WeightInTons` / `CGPercentMAC` уже отвергают их в фабриках; шаг 0 — defence in depth.)
+- `phase === data.phase` (MVP: `'takeoff'`). Иначе →
+  `Result.error({ kind: 'DataNotAvailable', reason: 'phase-mismatch' })`.
+- Входные значения числовые и конечные. NaN / Infinity →
+  `Result.error({ kind: 'NoLookupData', reason: 'NaN' | 'NotFinite' })`.
+  (Эти случаи на практике не должны возникать — Value Objects
+  `WeightInTons` / `CGPercentMAC` уже отвергают их в фабриках; шаг 0 —
+  defence in depth.)
+- Lookup `data.byAircraft[input.aircraft]`. Отсутствует →
+  `Result.error({ kind: 'DataNotAvailable',
+  reason: 'aircraft-not-implemented' })`.
+- Lookup `…[input.runwayCondition]`. Отсутствует →
+  `Result.error({ kind: 'DataNotAvailable',
+  reason: 'condition-not-implemented' })`.
 
 **Operational-envelope валидация (вес/CG в регуляторных пределах) здесь
 НЕ выполняется.** Алгоритм — это «pure data lookup». Проверка
@@ -176,9 +189,33 @@ return Result.ok({
 
 ---
 
+## Aircraft variant — MVP
+
+В MVP bundled JSON содержит lookup-данные **только для `b787_8`**;
+ветка `byAircraft.b787_9` отсутствует. Все алгоритмические test-кейсы
+ниже фиксируют `aircraft: 'b787_8'`. Запрос `aircraft: 'b787_9'`
+(или любого другого варианта) при любом `weight / cg / phase /
+condition` возвращает
+`Result.error({ kind: 'DataNotAvailable', reason: 'aircraft-not-implemented' })`
+без обращения к piecewise-linear-функции. Это поведение покрывается
+отдельным тестом в `__tests__/calculator.test.ts`.
+
+Аналогично для всех non-dry значений `RunwayCondition` (`good`,
+`mediumToGood`, `medium`, `mediumToPoor`, `poor`) — в MVP они
+помечены disabled в UI и при программном запросе возвращают
+`DataNotAvailable.reason: 'condition-not-implemented'`.
+
+---
+
 ## Тест-таблица (авторитативная)
 
 Эта таблица — единственный источник правды для unit-тестов. Каждая строка — отдельный test case в `crosswind/__tests__/calculator.test.ts`. Все значения CG-порогов вычислены точно: `threshold = 0.0576 × (weightTons × 2.20462) + intercept`.
+
+**Aircraft / phase / runway condition фиксированы для всех Test
+Sets #1–#3:** `aircraft: 'b787_8'`, `phase: 'takeoff'`,
+`runwayCondition: 'dry'`. Эти значения входят в каждый
+`calculateCrosswindLimit` call — в таблицах ниже опущены ради
+читаемости.
 
 **Test sets ownership.** Sets #1–#3 + #5 — тесты алгоритма (`calculateCrosswindLimit`); #4 — тесты use-case-функции `validateOperationalEnvelope`. Это разделение явное: алгоритм НЕ проверяет operational envelope (см. Шаг 0 выше), поэтому test cases типа «CG=40 → InvalidInput» относятся к валидатору, а не к алгоритму. То же самое CG=40 при тех же threshold-ах остаётся валидным входом для алгоритма и даёт численный результат.
 
@@ -296,11 +333,11 @@ Value Object factories (`makeWeightInTons`, `makeCGPercentMAC`), до
 
 | # | Сценарий | Expected |
 |---|----------|----------|
-| 5.01 | JSON с `breakpoints.length === 4` (не 5) | CorruptedDataBundle |
-| 5.02 | JSON с `slope === 0` | CorruptedDataBundle (zero slope невалиден) |
-| 5.03 | JSON с `aircraft === 'b787_9'`, но имя файла `b787-8-...` | CorruptedDataBundle (несоответствие) |
-| 5.04 | JSON с не-возрастающими `intercept` | CorruptedDataBundle |
-| 5.05 | JSON с `operationalEnvelope.weight.minTons > operationalEnvelope.weight.maxTons` | CorruptedDataBundle |
+| 5.01 | `byAircraft.b787_8.dry.interpolation.breakpoints.length === 4` | CorruptedDataBundle |
+| 5.02 | `byAircraft.b787_8.dry.interpolation.slope === 0` | CorruptedDataBundle (zero slope невалиден) |
+| 5.03 | `byAircraft` содержит неизвестный ключ (например `b777_300`) | CorruptedDataBundle (zod `.strict()` failure) |
+| 5.04 | `byAircraft.b787_8.dry.interpolation.breakpoints` с не-возрастающими `intercept` | CorruptedDataBundle |
+| 5.05 | `operationalEnvelope.weight.minTons > operationalEnvelope.weight.maxTons` | CorruptedDataBundle |
 
 ---
 
@@ -348,15 +385,22 @@ export function calculateCrosswindLimit(
 // псевдокод тела функции (для понимания, не финальный код)
 
 function calculateCrosswindLimit(input, data) {
-  // Step 0a: data-availability — aircraft/phase/runwayCondition must match.
-  if (input.aircraft !== data.aircraft) return error('DataNotAvailable');
-  if (input.phase !== data.phase) return error('DataNotAvailable');
-  if (input.runwayCondition !== data.runwayCondition) return error('DataNotAvailable');
-
-  // Step 0b: defence-in-depth NaN/Infinity check (Value Object factories
-  // already reject these; we re-check to be safe).
+  // Step 0a: defence-in-depth NaN/Infinity + phase check.
+  if (input.phase !== data.phase) {
+    return error('DataNotAvailable', 'phase-mismatch');
+  }
   if (!Number.isFinite(input.weightTons)) return error('NoLookupData', 'NotFinite');
   if (!Number.isFinite(input.cgPercent)) return error('NoLookupData', 'NotFinite');
+
+  // Step 0b: resolve the per-(aircraft, condition) dataset.
+  const aircraftEntry = data.byAircraft[input.aircraft];
+  if (!aircraftEntry) {
+    return error('DataNotAvailable', 'aircraft-not-implemented');
+  }
+  const dataset = aircraftEntry[input.runwayCondition];
+  if (!dataset) {
+    return error('DataNotAvailable', 'condition-not-implemented');
+  }
 
   // (Note: operational-envelope validation is NOT performed here.
   //  See `validateOperationalEnvelope` in the use-case layer.)
@@ -366,9 +410,9 @@ function calculateCrosswindLimit(input, data) {
 
   // Step 2: compute thresholds for all breakpoints
   // sorted by ascending threshold (== descending crosswind value)
-  const thresholds = data.interpolation.breakpoints.map(bp => ({
+  const thresholds = dataset.interpolation.breakpoints.map(bp => ({
     crosswind: bp.crosswindKnots,
-    threshold: data.interpolation.slope * weightKilolbs + bp.intercept,
+    threshold: dataset.interpolation.slope * weightKilolbs + bp.intercept,
   }));
 
   // Step 3: find lower and upper bounds
@@ -401,8 +445,8 @@ function calculateCrosswindLimit(input, data) {
     strategy = 'within-bracket';
   }
 
-  // Step 5: build metadata
-  const metadata = buildMetadata(data, lowerBound, upperBound, strategy);
+  // Step 5: build metadata (incl. aircraft for traceability)
+  const metadata = buildMetadata(data, dataset, input.aircraft, lowerBound, upperBound, strategy);
 
   // Step 6: return
   return ok({

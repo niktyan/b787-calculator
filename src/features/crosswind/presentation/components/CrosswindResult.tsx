@@ -1,142 +1,165 @@
+/**
+ * Crosswind result panel — single-card variant.
+ *
+ * Spec: 02_Specification/06-ui-spec.md § Экран 4 → result panel.
+ *
+ * Two independent props:
+ *   - `isRegular` — drives typography size (`displayLarge` / `monoXL`
+ *     vs `display` / `monoMedium`). Active on iPad portrait +
+ *     landscape (width >= 768pt).
+ *   - `fillHeight` — drives `flex: 1` so the Card claims the full
+ *     right-column height. Active only when the screen is in
+ *     2-column layout (iPad landscape, width >= 1024pt). On iPad
+ *     portrait the Card stacks under the input form and uses a
+ *     larger minHeight floor; on iPhone it uses the compact floor.
+ *
+ * States:
+ *   • idle:               status label + value + KT (+ optional warning chip)
+ *   • empty:              info-outline + caption ("Enter weight and CG …")
+ *   • out-of-envelope:    info-outline + reason caption
+ *   • data-not-available: info-outline + condition/aircraft caption
+ *   • error:              danger headline + description (rare; covers
+ *                         NaN/Infinity / DataNotAvailable phase mismatch /
+ *                         CalculationFailed)
+ */
+
 import { MaterialIcons } from '@expo/vector-icons';
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import type { ViewStyle } from 'react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 import Animated, { Easing, LinearTransition } from 'react-native-reanimated';
 
 import { useTheme, useTranslation } from '../../../../core';
-import { ResultPanel, Text, tokens, useReduceMotion } from '../../../../design-system';
-import type { ResultPanelMetaItem, ResultPanelState } from '../../../../design-system';
+import { Text, tokens, useReduceMotion } from '../../../../design-system';
+import type { TextVariant } from '../../../../design-system';
 import type { CrosswindCalculationOutput, EnvelopeViolation } from '../../domain/types';
-import type { CrosswindUIState, EnvelopeBarInputs } from '../useCrosswindCalculator';
-
-import { EnvelopePositionBar } from './EnvelopePositionBar';
-import { RegularIdleBody } from './RegularIdleBody';
+import type { CrosswindUIState } from '../useCrosswindCalculator';
 
 export interface CrosswindResultProps {
   readonly state: CrosswindUIState;
   readonly isRegular?: boolean;
+  readonly fillHeight?: boolean;
   readonly testID?: string | undefined;
 }
 
 const KT_UNIT = 'KT';
-const EMPTY_ICON_SIZE = 32;
-const EMPTY_TEXT_MAX_WIDTH = 240;
-const EMPTY_PANEL_MIN_HEIGHT_COMPACT = 140;
-const EMPTY_PANEL_MIN_HEIGHT_REGULAR = 200;
-const EMPTY_PANEL_BORDER_WIDTH = 1;
+const ICON_SIZE_COMPACT = 32;
+const ICON_SIZE_REGULAR = 48;
+const CAPTION_MAX_WIDTH_COMPACT = 280;
+const CAPTION_MAX_WIDTH_REGULAR = 380;
+const CARD_BORDER_WIDTH = 1;
+const CARD_MIN_HEIGHT_COMPACT = 200;
+const CARD_MIN_HEIGHT_REGULAR_PORTRAIT = 280;
+const CARD_MIN_HEIGHT_REGULAR_LANDSCAPE = 320;
 const TRANSITION_DURATION_MS = 200;
+const STATUS_MARGIN_BOTTOM = 16;
+const KT_SUFFIX_MARGIN_LEFT = 8;
+// Inline overrides on top of `displayLarge` / `monoXL` / `body`
+// variants — bumps the cockpit-glance number without adding a new DS
+// token (PR hard constraint). Compact path keeps existing variants.
+const STATUS_STYLE_COMPACT: TextStyle = {
+  letterSpacing: 0.72,
+  marginBottom: STATUS_MARGIN_BOTTOM,
+  textTransform: 'uppercase',
+};
+const STATUS_STYLE_REGULAR: TextStyle = {
+  ...STATUS_STYLE_COMPACT,
+  fontWeight: '600',
+  letterSpacing: 1,
+};
+const VALUE_STYLE_REGULAR: TextStyle = { fontSize: 96, lineHeight: 104 };
+const UNIT_STYLE_REGULAR: TextStyle = { fontSize: 48, lineHeight: 56 };
 
-function formatBracket(bracket: { readonly lower: number; readonly upper: number }): string {
-  if (bracket.lower === bracket.upper) {
-    return `${formatNumber(bracket.lower)}`;
+function cardMinHeight(isRegular: boolean, fillHeight: boolean): number {
+  if (fillHeight) {
+    return CARD_MIN_HEIGHT_REGULAR_LANDSCAPE;
   }
-  return `${formatNumber(bracket.lower)} – ${formatNumber(bracket.upper)}`;
+  if (isRegular) {
+    return CARD_MIN_HEIGHT_REGULAR_PORTRAIT;
+  }
+  return CARD_MIN_HEIGHT_COMPACT;
 }
 
-function formatNumber(value: number): string {
-  if (Number.isInteger(value)) {
-    return value.toFixed(0);
-  }
-  return value.toFixed(2);
+interface CardSurfaceProps {
+  readonly children: ReactNode;
+  readonly isRegular: boolean;
+  readonly fillHeight: boolean;
+  readonly testID?: string | undefined;
 }
 
-/**
- * Build the meta-grid rows from algorithm output.
- *
- * Spec: 06-ui-spec.md § Экран 4 → "Содержимое (idle)" / Visual treatment
- *   "Meta-grid".
- *
- * - Weight row was dropped (PR feat/crosswind-polish-2): the algorithm's
- *   `weightBracket` is degenerate (`[w, w]`) and the weight is already
- *   echoed in the input field, so showing it again here was noise.
- * - CG band uses `cgBracket` (real range from XLOOKUP threshold pair).
- * - Range uses `bracketCrosswindRange` (real KT range), but is hidden
- *   when min == max — for example below-/above-envelope fallback cases
- *   yield `[40, 40]` and rendering "40 — 40 KT" is confusing.
- * - RWY is "Dry" in MVP; RWYCC is implicit for Dry per § Экран 4 input
- *   section (RWYCC visible only when contaminated, which is hidden in
- *   MVP).
- */
-function buildMeta(
-  output: CrosswindCalculationOutput,
-  cgLabel: string,
-  rangeLabel: string,
-): readonly ResultPanelMetaItem[] {
-  const items: ResultPanelMetaItem[] = [
-    { label: cgLabel, value: `${formatBracket(output.metadata.cgBracket)} %MAC` },
-    { label: 'RWY', value: 'Dry' },
-  ];
-  const range = output.metadata.bracketCrosswindRange;
-  if (range.lower !== range.upper) {
-    items.push({ label: rangeLabel, value: `${range.lower} – ${range.upper} ${KT_UNIT}` });
-  }
-  return items;
+function CardSurface({ children, isRegular, fillHeight, testID }: CardSurfaceProps): ReactNode {
+  const { theme } = useTheme();
+  const palette = tokens.colors[theme.resolved];
+  const cardStyle = useMemo<ViewStyle>(
+    () => ({
+      alignItems: 'center',
+      backgroundColor: palette.bgCard,
+      borderColor: palette.border,
+      borderRadius: tokens.radii.lg,
+      borderWidth: CARD_BORDER_WIDTH,
+      flex: fillHeight ? 1 : 0,
+      gap: tokens.spacing.sm,
+      justifyContent: 'center',
+      minHeight: cardMinHeight(isRegular, fillHeight),
+      padding: tokens.spacing.lg,
+    }),
+    [fillHeight, isRegular, palette.bgCard, palette.border],
+  );
+  return (
+    <View style={cardStyle} {...(testID === undefined ? {} : { testID })}>
+      {children}
+    </View>
+  );
+}
+
+interface ValueRowProps {
+  readonly value: number;
+  readonly isRegular: boolean;
+}
+
+function ValueRow({ value, isRegular }: ValueRowProps): ReactNode {
+  const valueVariant: TextVariant = isRegular ? 'displayLarge' : 'display';
+  const unitVariant: TextVariant = isRegular ? 'monoXL' : 'monoMedium';
+  const valueStyle = isRegular ? VALUE_STYLE_REGULAR : undefined;
+  const unitStyle = isRegular ? [styles.ktSuffix, UNIT_STYLE_REGULAR] : styles.ktSuffix;
+  return (
+    <View style={styles.valueRow}>
+      <Text
+        variant={valueVariant}
+        color="accent"
+        allowFontScaling={false}
+        accessibilityLabel={`${value} ${KT_UNIT}`}
+        style={valueStyle}
+      >
+        {String(value)}
+      </Text>
+      <Text variant={unitVariant} color="textSecondary" style={unitStyle}>
+        {KT_UNIT}
+      </Text>
+    </View>
+  );
 }
 
 interface IdleViewProps {
   readonly output: CrosswindCalculationOutput;
   readonly warning: EnvelopeViolation | null;
-  readonly envelopeBar: EnvelopeBarInputs;
-  readonly isRegular: boolean;
   readonly statusLabel: string;
-  readonly footnote: string;
-  readonly cgLabel: string;
-  readonly rangeLabel: string;
   readonly warningText: string;
+  readonly isRegular: boolean;
+  readonly fillHeight: boolean;
 }
 
 function IdleView(props: IdleViewProps): ReactNode {
-  const {
-    output,
-    warning,
-    envelopeBar,
-    isRegular,
-    statusLabel,
-    footnote,
-    cgLabel,
-    rangeLabel,
-    warningText,
-  } = props;
-  const meta = buildMeta(output, cgLabel, rangeLabel);
-
-  if (isRegular) {
-    return (
-      <RegularIdleBody
-        output={output}
-        warning={warning}
-        envelopeBar={envelopeBar}
-        meta={meta}
-        statusLabel={statusLabel}
-        footnote={footnote}
-        warningText={warningText}
-      />
-    );
-  }
-  // Compact width keeps the existing DS ResultPanel rendering.
-  const idleState: ResultPanelState = {
-    kind: 'idle',
-    label: statusLabel,
-    value: String(output.maxCrosswindKnots),
-    unit: KT_UNIT,
-    footnote,
-    meta,
-  };
+  const { output, warning, statusLabel, warningText, isRegular, fillHeight } = props;
+  const statusVariant: TextVariant = isRegular ? 'body' : 'microUppercase';
+  const statusStyle = isRegular ? STATUS_STYLE_REGULAR : STATUS_STYLE_COMPACT;
   return (
-    <View>
-      <ResultPanel state={idleState} testID="crosswind-result-panel" />
-      <View style={styles.compactEnvelopeBar} testID="crosswind-envelope-bar">
-        <EnvelopePositionBar
-          currentCG={envelopeBar.currentCG}
-          axisMin={envelopeBar.axisMin}
-          axisMax={envelopeBar.axisMax}
-          operationalMin={envelopeBar.operationalMin}
-          operationalMax={envelopeBar.operationalMax}
-          lookupMax={envelopeBar.lookupMax}
-          isRegular={false}
-        />
-      </View>
+    <CardSurface isRegular={isRegular} fillHeight={fillHeight} testID="crosswind-result-panel">
+      <Text variant={statusVariant} color="accent" style={statusStyle}>
+        {statusLabel}
+      </Text>
+      <ValueRow value={output.maxCrosswindKnots} isRegular={isRegular} />
       {warning !== null ? (
         <View style={styles.warningChip} testID="crosswind-warning-chip">
           <Text variant="caption" color="warn">
@@ -144,59 +167,87 @@ function IdleView(props: IdleViewProps): ReactNode {
           </Text>
         </View>
       ) : null}
-    </View>
+    </CardSurface>
   );
 }
 
-interface EmptyViewProps {
+interface CaptionViewProps {
   readonly message: string;
   readonly iconLabel: string;
   readonly isRegular: boolean;
+  readonly fillHeight: boolean;
+  readonly testID: string;
 }
 
-function EmptyView({ message, iconLabel, isRegular }: EmptyViewProps): ReactNode {
+function captionMaxWidth(isRegular: boolean): ViewStyle {
+  return { maxWidth: isRegular ? CAPTION_MAX_WIDTH_REGULAR : CAPTION_MAX_WIDTH_COMPACT };
+}
+
+function captionVariantFor(isRegular: boolean): TextVariant {
+  return isRegular ? 'body' : 'caption';
+}
+
+function CaptionView({
+  message,
+  iconLabel,
+  isRegular,
+  fillHeight,
+  testID,
+}: CaptionViewProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const containerStyle = useMemo<ViewStyle>(
-    () => ({
-      alignItems: 'center',
-      backgroundColor: palette.bgCard,
-      borderColor: palette.border,
-      borderRadius: tokens.radii.lg,
-      borderWidth: EMPTY_PANEL_BORDER_WIDTH,
-      flex: isRegular ? 1 : 0,
-      gap: tokens.spacing.sm,
-      justifyContent: 'center',
-      minHeight: isRegular ? EMPTY_PANEL_MIN_HEIGHT_REGULAR : EMPTY_PANEL_MIN_HEIGHT_COMPACT,
-      padding: tokens.spacing.lg,
-    }),
-    [isRegular, palette.bgCard, palette.border],
-  );
-  const messageStyle = useMemo<ViewStyle>(() => ({ maxWidth: EMPTY_TEXT_MAX_WIDTH }), []);
-
   return (
-    <View accessibilityRole="summary" style={containerStyle} testID="crosswind-result-panel-empty">
+    <CardSurface isRegular={isRegular} fillHeight={fillHeight} testID={testID}>
       <MaterialIcons
         accessibilityLabel={iconLabel}
         color={palette.textTertiary}
         name="info-outline"
-        size={EMPTY_ICON_SIZE}
+        size={isRegular ? ICON_SIZE_REGULAR : ICON_SIZE_COMPACT}
       />
-      <View style={messageStyle}>
-        <Text variant="caption" color="textSecondary" align="center">
+      <View style={captionMaxWidth(isRegular)}>
+        <Text variant={captionVariantFor(isRegular)} color="textSecondary" align="center">
           {message}
         </Text>
       </View>
-    </View>
+    </CardSurface>
+  );
+}
+
+interface ErrorViewProps {
+  readonly headline: string;
+  readonly description?: string | undefined;
+  readonly isRegular: boolean;
+  readonly fillHeight: boolean;
+}
+
+function ErrorView({ headline, description, isRegular, fillHeight }: ErrorViewProps): ReactNode {
+  const variant = captionVariantFor(isRegular);
+  return (
+    <CardSurface
+      isRegular={isRegular}
+      fillHeight={fillHeight}
+      testID="crosswind-result-panel-error"
+    >
+      <Text variant={variant} color="danger" align="center">
+        {headline}
+      </Text>
+      {description !== undefined ? (
+        <View style={captionMaxWidth(isRegular)}>
+          <Text variant={variant} color="textSecondary" align="center">
+            {description}
+          </Text>
+        </View>
+      ) : null}
+    </CardSurface>
   );
 }
 
 export function CrosswindResult(props: CrosswindResultProps): ReactNode {
-  const { state, isRegular = false, testID } = props;
+  const { state, isRegular = false, fillHeight = false, testID } = props;
   const { t } = useTranslation();
   const reduceMotion = useReduceMotion();
-  const content = renderContent(state, isRegular, t);
-  const wrapperStyle = isRegular ? styles.fillHeight : undefined;
+  const content = renderContent(state, isRegular, fillHeight, t);
+  const wrapperStyle = fillHeight ? styles.fillHeight : undefined;
 
   if (reduceMotion) {
     return (
@@ -219,53 +270,75 @@ export function CrosswindResult(props: CrosswindResultProps): ReactNode {
 function renderContent(
   state: CrosswindUIState,
   isRegular: boolean,
+  fillHeight: boolean,
   t: (key: string) => string,
 ): ReactNode {
   if (state.kind === 'empty') {
     return (
-      <EmptyView
+      <CaptionView
         message={t('crosswind.resultEmpty')}
         iconLabel={t('crosswind.emptyIconLabel')}
         isRegular={isRegular}
+        fillHeight={fillHeight}
+        testID="crosswind-result-panel-empty"
       />
     );
   }
   if (state.kind === 'out-of-envelope') {
     return (
-      <ResultPanel
-        state={{ kind: 'out-of-envelope', message: state.reason }}
-        testID="crosswind-result-panel"
+      <CaptionView
+        message={state.reason}
+        iconLabel={t('crosswind.emptyIconLabel')}
+        isRegular={isRegular}
+        fillHeight={fillHeight}
+        testID="crosswind-result-panel-out-of-envelope"
+      />
+    );
+  }
+  if (state.kind === 'data-not-available') {
+    return (
+      <CaptionView
+        message={state.description}
+        iconLabel={t('crosswind.emptyIconLabel')}
+        isRegular={isRegular}
+        fillHeight={fillHeight}
+        testID="crosswind-result-panel-data-not-available"
       />
     );
   }
   if (state.kind === 'error') {
-    const errorState: ResultPanelState =
-      state.description === undefined
-        ? { kind: 'error', headline: state.headline }
-        : { kind: 'error', headline: state.headline, description: state.description };
-    return <ResultPanel state={errorState} testID="crosswind-result-panel" />;
+    return (
+      <ErrorView
+        headline={state.headline}
+        description={state.description}
+        isRegular={isRegular}
+        fillHeight={fillHeight}
+      />
+    );
   }
   return (
     <IdleView
       output={state.output}
       warning={state.warning}
-      envelopeBar={state.envelopeBar}
       isRegular={isRegular}
+      fillHeight={fillHeight}
       statusLabel={t('crosswind.resultStatusLabel')}
-      footnote={t('crosswind.resultFootnote')}
-      cgLabel={t('crosswind.metaCG')}
-      rangeLabel={t('crosswind.metaRange')}
       warningText={t('crosswind.warningOutsideEnvelope')}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  compactEnvelopeBar: {
-    marginTop: tokens.spacing.sm,
-  },
   fillHeight: {
     flex: 1,
+  },
+  ktSuffix: {
+    marginLeft: KT_SUFFIX_MARGIN_LEFT,
+  },
+  valueRow: {
+    alignItems: 'baseline',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   warningChip: {
     marginTop: tokens.spacing.sm,

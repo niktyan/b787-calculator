@@ -21,7 +21,7 @@ describe('ResultPanel', () => {
       <ResultPanel
         state={{
           kind: 'idle',
-          label: 'Max crosswind · Landing',
+          label: 'Max crosswind · Takeoff',
           value: '27',
           unit: 'KT',
           footnote: 'Computed for current inputs',
@@ -45,7 +45,7 @@ describe('ResultPanel', () => {
       <ResultPanel
         state={{
           kind: 'idle',
-          label: 'Max crosswind · Landing',
+          label: 'Max crosswind · Takeoff',
           value: '27',
           unit: 'KT',
         }}

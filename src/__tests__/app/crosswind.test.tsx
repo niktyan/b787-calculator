@@ -125,38 +125,88 @@ describe('Crosswind route', () => {
 
     // Note on assertion shape: we deliberately use targeted typography
     // asserts on the rendered JSON tree instead of toMatchSnapshot.
-    // Reanimated's `LinearTransition` (added in commit e434a1b for the
-    // empty↔idle transition) keeps the previous content mounted in the
-    // jest mock environment during a state change, so a snapshot
-    // captures both the empty and the idle subtrees and is dominated
-    // by transition-mock noise. The compact-vs-regular result-panel
-    // choice is still cleanly observable via the result-value
-    // typography (48 pt / 24 pt vs 72 pt / 36 pt), which is what the
-    // user reported as broken on iPad portrait.
-    it('iPad mini portrait (768 x 1024): single-column stack, compact result panel (NOT regular)', () => {
+    // Reanimated's `LinearTransition` keeps the previous content
+    // mounted in the jest mock environment during a state change, so a
+    // snapshot captures both subtrees and is dominated by
+    // transition-mock noise. Targeted asserts isolate the load-bearing
+    // breakpoint behaviour.
+    //
+    // Block 2 of the takeoff-rebrand follow-up split the single
+    // `isRegular` signal into two: `isWidescreen` (>= 768pt) drives
+    // typography sizing (the user explicitly asked for the bigger
+    // fonts on iPad portrait too), and `isTwoColumn` (>= 1024pt)
+    // drives the 2-column layout + result Card flex:1.
+    it('iPad mini portrait (768 x 1024): single-column stack, regular typography (NOT 2-column)', () => {
       mockViewport(IPAD_MINI_PORTRAIT);
       const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
       fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
       fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
       const json = JSON.stringify(tree.toJSON());
-      // Regression guard: NO iPad-regular typography on iPad portrait.
-      expect(json).not.toContain('"fontSize":72');
-      expect(json).not.toContain('"fontSize":36');
-      // Compact path uses `display` (48 pt). Asserting it appears
-      // confirms idle state rendered with the compact ResultPanel.
-      expect(json).toContain('"fontSize":48');
+      // Regular typography is now active on iPad portrait too.
+      expect(json).toContain('"fontSize":72');
+      expect(json).toContain('"fontSize":36');
     });
 
-    it('iPad mini landscape (1024 x 768): 2-column row, regular result panel (72 pt typography)', () => {
+    it('iPad mini landscape (1024 x 768): 2-column row, regular typography + cockpit-glance value', () => {
       mockViewport(IPAD_MINI_LANDSCAPE);
       const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
       fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
       fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
       const json = JSON.stringify(tree.toJSON());
-      // Regression guard: iPad-regular typography MUST appear in
-      // landscape so the user-visible scale-up isn't silently lost.
+      // Regular typography baseline (variant fontSize is still emitted
+      // as part of the Text style array even when overridden inline).
       expect(json).toContain('"fontSize":72');
       expect(json).toContain('"fontSize":36');
+      // Cockpit-glance bump (inline override on top of displayLarge /
+      // monoXL): result value 96 pt, KT suffix 48 pt. If either size
+      // disappears, the visible result has silently shrunk.
+      expect(json).toContain('"fontSize":96');
+      expect(json).toContain('"fontSize":48');
+    });
+
+    /**
+     * Regression for the iPad-landscape overlap bug fixed in Block 0 of
+     * `feat/crosswind-takeoff-rebrand` follow-up.
+     *
+     * Root cause: the form Stack had `flex:1` + `justifyContent:
+     * 'space-between'` but its parents (outer Stack + Row) had no flex
+     * height claim, so the form collapsed to 0 height and all four
+     * input groups (Aircraft / TOW / CG / Runway) stacked at y=0.
+     *
+     * Guard: at iPad landscape the outer Stack and the 2-column Row
+     * both render with `flex:1` style (full-height claim) so the form
+     * has a real container to fill. The DOM-level `flex:1` is the
+     * single load-bearing assertion: without it, `space-between` on
+     * the form Stack collapses again.
+     */
+    it('iPad landscape: outer Stack and Row both claim flex:1 (overlap regression guard)', () => {
+      mockViewport(IPAD_MINI_LANDSCAPE);
+      const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      const json = JSON.stringify(tree.toJSON());
+      // The form Stack uses flex:1 + space-between only when there's a
+      // height container. Both must appear in the rendered tree.
+      const flexOneOccurrences = (json.match(/"flex":1/g) ?? []).length;
+      // Screen.content + KeyboardDismissView + outer Stack + Row +
+      // form Stack + result wrapper + result Card = at least 4 distinct
+      // flex:1 nodes in the chain. (We don't pin the exact number to
+      // stay resilient to layout-internal refactors; the floor of 4
+      // protects against accidentally dropping one of the parents.)
+      expect(flexOneOccurrences).toBeGreaterThanOrEqual(4);
+      // Form Stack uses justify space-between for full-height
+      // distribution of 4 sections.
+      expect(json).toContain('"justifyContent":"space-between"');
+    });
+
+    it('iPad landscape: all four input groups render in the tree (Aircraft, TOW, CG, Runway)', () => {
+      mockViewport(IPAD_MINI_LANDSCAPE);
+      const { getByTestId } = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
+      // Each section rendered as a distinct testID-bearing node — if
+      // any went missing (e.g., aircraft selector inserted at wrong
+      // wrapper depth) the form would be incomplete.
+      expect(getByTestId('crosswind-aircraft')).toBeTruthy();
+      expect(getByTestId('crosswind-weight')).toBeTruthy();
+      expect(getByTestId('crosswind-cg')).toBeTruthy();
+      expect(getByTestId('crosswind-runway')).toBeTruthy();
     });
   });
 });

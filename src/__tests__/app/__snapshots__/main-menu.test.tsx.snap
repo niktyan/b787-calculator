@@ -440,7 +440,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
           }
         >
           <View
-            accessibilityLabel="Crosswind · Takeoff"
+            accessibilityLabel="Crosswind · Landing"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -471,7 +471,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
             onResponderTerminate={[Function]}
             onResponderTerminationRequest={[Function]}
             onStartShouldSetResponder={[Function]}
-            testID="module-card-crosswind-takeoff"
+            testID="module-card-crosswind-landing"
           >
             <View
               style={
@@ -557,7 +557,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                     ]
                   }
                 >
-                  TO
+                  LD
                 </Text>
               </View>
               <Text
@@ -580,7 +580,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   ]
                 }
               >
-                Crosswind · Takeoff
+                Crosswind · Landing
               </Text>
               <Text
                 allowFontScaling={true}
@@ -602,7 +602,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   ]
                 }
               >
-                Same crosswind logic applied to the takeoff phase.
+                Same crosswind logic applied to the landing phase.
               </Text>
             </View>
           </View>
@@ -615,7 +615,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
           }
         >
           <View
-            accessibilityLabel="Crosswind · Landing"
+            accessibilityLabel="Crosswind · Takeoff"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -646,7 +646,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
             onResponderTerminate={[Function]}
             onResponderTerminationRequest={[Function]}
             onStartShouldSetResponder={[Function]}
-            testID="module-card-crosswind-landing"
+            testID="module-card-crosswind-takeoff"
           >
             <View
               style={
@@ -758,7 +758,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   ]
                 }
               >
-                Crosswind · Landing
+                Crosswind · Takeoff
               </Text>
               <Text
                 allowFontScaling={true}
@@ -791,7 +791,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
 </RNCSafeAreaView>
 `;
 
-exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and the active landing card (dark) 1`] = `
+exports[`Main Menu route renders the header, NavPills, the landing teaser, and the active takeoff card (dark) 1`] = `
 <RNCSafeAreaView
   edges={
     {
@@ -1231,7 +1231,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
           }
         >
           <View
-            accessibilityLabel="Crosswind · Takeoff"
+            accessibilityLabel="Crosswind · Landing"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1262,7 +1262,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
             onResponderTerminate={[Function]}
             onResponderTerminationRequest={[Function]}
             onStartShouldSetResponder={[Function]}
-            testID="module-card-crosswind-takeoff"
+            testID="module-card-crosswind-landing"
           >
             <View
               style={
@@ -1348,7 +1348,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
                     ]
                   }
                 >
-                  TO
+                  LD
                 </Text>
               </View>
               <Text
@@ -1371,7 +1371,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
                   ]
                 }
               >
-                Crosswind · Takeoff
+                Crosswind · Landing
               </Text>
               <Text
                 allowFontScaling={true}
@@ -1393,7 +1393,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
                   ]
                 }
               >
-                Same crosswind logic applied to the takeoff phase.
+                Same crosswind logic applied to the landing phase.
               </Text>
             </View>
           </View>
@@ -1406,7 +1406,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
           }
         >
           <View
-            accessibilityLabel="Crosswind · Landing"
+            accessibilityLabel="Crosswind · Takeoff"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1437,7 +1437,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
             onResponderTerminate={[Function]}
             onResponderTerminationRequest={[Function]}
             onStartShouldSetResponder={[Function]}
-            testID="module-card-crosswind-landing"
+            testID="module-card-crosswind-takeoff"
           >
             <View
               style={
@@ -1549,7 +1549,7 @@ exports[`Main Menu route renders the header, NavPills, the takeoff teaser, and t
                   ]
                 }
               >
-                Crosswind · Landing
+                Crosswind · Takeoff
               </Text>
               <Text
                 allowFontScaling={true}

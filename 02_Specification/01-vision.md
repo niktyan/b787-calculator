@@ -40,13 +40,13 @@ MVP — это первая публичная версия в App Store. Осо
 
 **MVP включает:**
 
-1. Один функциональный модуль — **Crosswind Landing для Boeing 787-8 на сухой ВПП (Dry runway)**. Входы: посадочный вес (kg), центровка (% MAC). Выход: одно число — максимально допустимый боковой ветер в узлах.
+1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787-8 на сухой ВПП (Dry runway)**. Входы: вариант ВС (Aircraft, B787-8 активен / B787-9 disabled-тизер), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale, Dry активен / 5 остальных disabled-тизеры). Выход: одно число — максимально допустимый боковой ветер в узлах.
 2. **Splash-экран с обязательным advisory-дисклеймером** при первом запуске. Подтверждение пользователя сохраняется и больше не показывается.
 3. **Главное меню — crosswind-семья.** В MVP Main Menu показывает только два модуля одной семьи (crosswind), в порядке хронологии фазы полёта:
-   - **Crosswind · Takeoff** — Phase 2, неактивная карточка-«тизер» (слот #1).
-   - **Crosswind · Landing** — активная карточка (слот #2), открывает Crosswind Calculator.
+   - **Crosswind · Landing** — Phase 2, неактивная карточка-«тизер» (слот #1).
+   - **Crosswind · Takeoff** — активная карточка (слот #2), открывает Crosswind Calculator.
 
-   Тизер содержит иконку, название, краткое описание (1 предложение), бейдж «Phase 2». Тап по неактивной карточке открывает короткий info-popup «This module is planned for an upcoming release. Stay tuned.» с кнопкой закрытия. Цель — показать, что crosswind-модуль будет дополнен takeoff-сценарием в ближайшем апдейте, и не перегружать MVP-меню тизерами модулей, до которых ещё далеко.
+   Тизер содержит иконку, название, краткое описание (1 предложение), бейдж «Phase 2». Тап по неактивной карточке открывает короткий info-popup «This module is planned for an upcoming release. Stay tuned.» с кнопкой закрытия. Цель — показать, что crosswind-модуль будет дополнен landing-сценарием в ближайшем апдейте, и не перегружать MVP-меню тизерами модулей, до которых ещё далеко.
 4. **Settings** — выбор языка (RU/EN), переключение темы (Auto/Light/Dark), выбор единиц измерения (зафиксированы как метрические для MVP, но архитектурно поддерживается переключение).
 5. **About** — версия приложения, ссылка на Privacy Policy, ссылка на Terms of Use, контактный email поддержки.
 6. **Полная локализация на русский и английский языки.**
@@ -71,11 +71,11 @@ MVP — это первая публичная версия в App Store. Осо
 
 Следующие фичи **не включены** в MVP. Они задокументированы как Future Enhancements в `01-vision.md` (этот документ, секция ниже) и ADR `0001-mvp-scope.md` (создаётся в Phase B).
 
-- Boeing 787-9 — будет добавлен в Phase 2 после релиза.
-- Wet и Contaminated runway режимы — Phase 2.
+- Boeing 787-9 — будет добавлен в Phase 2 после релиза. В MVP виден как disabled-сегмент в Aircraft selector.
+- Non-dry RWYCC runway conditions (Good / Medium to Good / Medium / Medium to Poor / Poor) — Phase 2. В MVP видны как disabled-сегменты Runway condition selector-а.
 - Wind direction + runway heading inputs с автоматическим расчётом crosswind component — Phase 2.
 - Save / History calculations с экспортом в PDF — Phase 2/3.
-- Crosswind Takeoff модуль — Phase 3.
+- Crosswind Landing модуль — Phase 2 (та же piecewise-linear модель, отдельная таблица констант).
 - Weight & Balance модуль (CG envelope, MAC%, load sheet) — Phase 4.
 - Performance V-speeds (V1/VR/V2, LDR, ASDA, BFL) — Phase 4+.
 - Fuel Planning (trip / contingency / alternate / final reserve / taxi) — Phase 4+.
@@ -137,11 +137,11 @@ MVP считается успешным, если выполнены **все** 
 Этот список фиксирует все идеи, которые мы обсуждали и которые потенциально интересны, но осознанно отложены. По мере реализации фичей или их отбраковки список обновляется.
 
 **Phase 2 (после первого публичного релиза):**
-- Boeing 787-9 variant.
-- Wet и Contaminated runway режимы (с RWYCC 1–6).
+- Boeing 787-9 variant (включая `byAircraft.b787_9` lookup-данные).
+- Non-dry RWYCC runway conditions: Good / Medium to Good / Medium / Medium to Poor / Poor (RWYCC 5/4/3/2/1) — собственный набор breakpoints на каждое состояние.
+- Crosswind Landing (та же piecewise-linear модель, отдельный per-phase JSON).
 - Wind direction + runway heading inputs → автоматический crosswind component → Within limit / Exceeded badge.
 - Save / History calculations с экспортом в PDF.
-- Crosswind Takeoff (расширение текущего модуля или отдельный sub-mode).
 - OTA-обновления bundled data через EAS Update.
 
 **Phase 3+:**

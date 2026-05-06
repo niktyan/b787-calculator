@@ -97,29 +97,10 @@ export interface ColorPalette {
   readonly dangerSoft: string;
   readonly success: string;
   readonly overlay: string;
-  /**
-   * 20%-alpha amber, scoped to the EnvelopePositionBar "boundary"
-   * zone (CG inside lookup envelope but outside operational
-   * envelope). Distinct from `warnSoft` (8%) which is used as a
-   * background tint for the disclaimer card. Identical in both
-   * themes — the color reads against `accentSoft` and
-   * `envelopeBarOutOfLookup` neighbors equivalently in dark and
-   * light. See `06-ui-spec.md` § Экран 4 Envelope-position bar.
-   */
-  readonly envelopeBarBoundary: string;
-  /**
-   * 20%-alpha red, scoped to the EnvelopePositionBar
-   * "out-of-lookup" zone (CG beyond what the algorithm can compute).
-   * Distinct from `dangerSoft` (10–12%) which is a background tint
-   * for inline error messages. Identical in both themes.
-   */
-  readonly envelopeBarOutOfLookup: string;
 }
 
 const ACCENT_ON_ACCENT = '#001A17';
 const ACCENT_RING = 'rgba(0, 194, 168, 0.2)';
-const ENVELOPE_BAR_BOUNDARY = 'rgba(255, 176, 32, 0.2)';
-const ENVELOPE_BAR_OUT_OF_LOOKUP = 'rgba(229, 72, 77, 0.2)';
 
 const DARK_PALETTE: ColorPalette = {
   bgPage: '#0A0E14',
@@ -143,8 +124,6 @@ const DARK_PALETTE: ColorPalette = {
   dangerSoft: 'rgba(229, 72, 77, 0.12)',
   success: '#46A758',
   overlay: 'rgba(0, 0, 0, 0.6)',
-  envelopeBarBoundary: ENVELOPE_BAR_BOUNDARY,
-  envelopeBarOutOfLookup: ENVELOPE_BAR_OUT_OF_LOOKUP,
 };
 
 const LIGHT_PALETTE: ColorPalette = {
@@ -168,8 +147,6 @@ const LIGHT_PALETTE: ColorPalette = {
   danger: '#E5484D',
   dangerSoft: 'rgba(229, 72, 77, 0.10)',
   success: '#46A758',
-  envelopeBarBoundary: ENVELOPE_BAR_BOUNDARY,
-  envelopeBarOutOfLookup: ENVELOPE_BAR_OUT_OF_LOOKUP,
   overlay: 'rgba(15, 23, 42, 0.4)',
 };
 

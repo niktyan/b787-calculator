@@ -32,7 +32,7 @@ import {
 } from '../../../design-system';
 import { createCrosswindRepository } from '../data';
 import type { CrosswindDataFile } from '../data/schema';
-import type { RunwayCondition } from '../domain/types';
+import type { AircraftVariant, RunwayCondition } from '../domain/types';
 
 import { CrosswindInputForm } from './components/CrosswindInputForm';
 import { CrosswindResult } from './components/CrosswindResult';
@@ -40,8 +40,10 @@ import { useCrosswindCalculator } from './useCrosswindCalculator';
 
 const COLUMN_BASIS = '48%';
 const TWO_COLUMN_BREAKPOINT = tokens.breakpoints.regular;
+const REGULAR_BREAKPOINT = tokens.breakpoints.regularHeader;
 const HEADER_DIVIDER_HEIGHT = 1;
 const PILL_PRESSED_OPACITY = 0.6;
+const DEFAULT_AIRCRAFT: AircraftVariant = 'b787_8';
 
 const repository = createCrosswindRepository();
 
@@ -61,25 +63,23 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const router = useRouter();
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
+  // Two independent breakpoints:
+  //   - isRegular (>= 768pt): drives bumped typography / input sizing.
+  //     Active on iPad portrait + landscape; iPhone always compact.
+  //   - isTwoColumn (>= 1024pt): drives the 2-column horizontal layout
+  //     and the result Card's `flex: 1` height-fill. Active only on
+  //     iPad landscape.
+  const isRegular = width >= REGULAR_BREAKPOINT;
   const isTwoColumn = width >= TWO_COLUMN_BREAKPOINT;
-  // The iPad-regular result panel (72 pt value + 36 pt KT + flex-fill
-  // height) is only safe inside the 2-column landscape layout: the
-  // landscape Row's column View stretches to provide a height
-  // container for the panel's flex:1 chain. In single-column mode
-  // (iPad portrait, iPhone any orientation) the inner Stack is
-  // auto-sized, the flex:1 chain collapses to 0 height, and the
-  // result panel disappears (см. PR feat/crosswind-polish-2 fix
-  // commit). Tying isRegular to isTwoColumn ensures the regular
-  // typography scales up only when there's a column View to host it.
-  const isRegular = isTwoColumn;
 
   const [weightText, setWeightText] = useState('');
   const [cgText, setCgText] = useState('');
+  const [aircraft, setAircraft] = useState<AircraftVariant>(DEFAULT_AIRCRAFT);
   const [runwayCondition, setRunwayCondition] = useState<RunwayCondition>('dry');
 
   const inputs = useMemo(
-    () => ({ weightText, cgText, runwayCondition }),
-    [weightText, cgText, runwayCondition],
+    () => ({ weightText, cgText, aircraft, runwayCondition }),
+    [weightText, cgText, aircraft, runwayCondition],
   );
   const { state, weightFieldError, cgFieldError } = useCrosswindCalculator({ inputs, data });
 
@@ -89,6 +89,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const handleReset = useCallback((): void => {
     setWeightText('');
     setCgText('');
+    setAircraft(DEFAULT_AIRCRAFT);
     setRunwayCondition('dry');
   }, []);
 
@@ -96,23 +97,31 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     <CrosswindInputForm
       weightText={weightText}
       cgText={cgText}
+      aircraft={aircraft}
       runwayCondition={runwayCondition}
       weightError={weightFieldError}
       cgError={cgFieldError}
       onWeightChange={setWeightText}
       onCGChange={setCgText}
+      onAircraftChange={setAircraft}
       onRunwayConditionChange={setRunwayCondition}
+      isRegular={isRegular}
       testID="crosswind-input-form"
     />
   );
   const resultPanel = (
-    <CrosswindResult state={state} isRegular={isRegular} testID="crosswind-result" />
+    <CrosswindResult
+      state={state}
+      isRegular={isRegular}
+      fillHeight={isTwoColumn}
+      testID="crosswind-result"
+    />
   );
 
   return (
     <Screen testID="crosswind-screen">
       <KeyboardDismissView testID="crosswind-keyboard-dismiss">
-        <Stack gap="lg">
+        <Stack gap="lg" style={styles.fillHeight}>
           <CrosswindHeader
             title={t('crosswind.title')}
             backLabel={`← ${t('common.back')}`}
@@ -121,12 +130,12 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
             onReset={handleReset}
           />
           {isTwoColumn ? (
-            <Row align="flex-start" gap="lg">
+            <Row align="stretch" gap="lg" style={styles.fillHeight}>
               <View style={styles.column}>{inputForm}</View>
               <View style={styles.column}>{resultPanel}</View>
             </Row>
           ) : (
-            <Stack gap="lg">
+            <Stack gap="lg" style={isRegular ? styles.fillHeight : undefined}>
               {inputForm}
               {resultPanel}
             </Stack>
@@ -256,6 +265,9 @@ const styles = StyleSheet.create({
   column: {
     flexBasis: COLUMN_BASIS,
     flexGrow: 1,
+  },
+  fillHeight: {
+    flex: 1,
   },
   pressed: {
     opacity: PILL_PRESSED_OPACITY,

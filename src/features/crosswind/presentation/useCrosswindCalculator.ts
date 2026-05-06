@@ -8,17 +8,18 @@
  *   4. Run `calculateCrosswindLimit` regardless of operational result —
  *      the algorithm covers the lookup envelope; the validator drives
  *      the warning chip alongside the number.
- *   5. Resolve UI state: empty / idle (+optional warning) / out-of-envelope / error.
+ *   5. Resolve UI state: empty / idle (+optional warning) / out-of-envelope
+ *      / data-not-available / error.
  *
- * Spec: 02_Specification/06-ui-spec.md § "Composition: idle + operational-envelope warning".
+ * Spec: 02_Specification/06-ui-spec.md § Экран 4.
  */
 
 import { useMemo } from 'react';
 
 import { isOk } from '../../../core/result';
 import { calculateCrosswindLimit } from '../domain/calculator';
-import { getLookupCGRange } from '../domain/lookupRange';
 import type {
+  AircraftVariant,
   CGPercentMAC,
   CrosswindCalculationOutput,
   EnvelopeViolation,
@@ -29,31 +30,21 @@ import { validateOperationalEnvelope } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import type { CrosswindDataFile } from '../data/schema';
 
-import { ENVELOPE_BAR_CG_MAX_PERCENT } from './constants';
-
-export interface EnvelopeBarInputs {
-  readonly currentCG: number;
-  readonly axisMin: number;
-  readonly axisMax: number;
-  readonly operationalMin: number;
-  readonly operationalMax: number;
-  readonly lookupMax: number;
-}
-
 export type CrosswindUIState =
   | { readonly kind: 'empty' }
   | {
       readonly kind: 'idle';
       readonly output: CrosswindCalculationOutput;
       readonly warning: EnvelopeViolation | null;
-      readonly envelopeBar: EnvelopeBarInputs;
     }
   | { readonly kind: 'out-of-envelope'; readonly reason: string }
+  | { readonly kind: 'data-not-available'; readonly description: string }
   | { readonly kind: 'error'; readonly headline: string; readonly description?: string };
 
 export interface CrosswindCalculatorInputs {
   readonly weightText: string;
   readonly cgText: string;
+  readonly aircraft: AircraftVariant;
   readonly runwayCondition: RunwayCondition;
 }
 
@@ -137,28 +128,17 @@ function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is Pa
   return 'weight' in x;
 }
 
-/**
- * Compute the envelope-position bar inputs from the bundled JSON +
- * the user's current weight/CG. The CG-axis upper bound and the
- * lookup-range derivation are extracted to dedicated helpers
- * (`ENVELOPE_BAR_CG_MAX_PERCENT` in `./constants` and
- * `getLookupCGRange` in `../domain/lookupRange`) so the bar's two
- * non-spec defaults are individually testable and documented.
- */
-function buildEnvelopeBarInputs(
-  data: CrosswindDataFile,
-  weightTons: WeightInTons,
-  cgPercent: number,
-): EnvelopeBarInputs {
-  const lookupRange = getLookupCGRange(data, weightTons);
-  return {
-    currentCG: cgPercent,
-    axisMin: data.operationalEnvelope.cg.minPercent,
-    axisMax: ENVELOPE_BAR_CG_MAX_PERCENT,
-    operationalMin: data.operationalEnvelope.cg.minPercent,
-    operationalMax: data.operationalEnvelope.cg.maxPercent,
-    lookupMax: lookupRange.max,
-  };
+function describeUnavailable(
+  reason: 'aircraft-not-implemented' | 'condition-not-implemented' | 'phase-mismatch',
+): string {
+  switch (reason) {
+    case 'aircraft-not-implemented':
+      return 'No data available for the selected aircraft.';
+    case 'condition-not-implemented':
+      return 'No data available for the selected runway condition.';
+    case 'phase-mismatch':
+      return 'Bundled data does not match the requested flight phase.';
+  }
 }
 
 function compute(
@@ -177,7 +157,7 @@ function compute(
     {
       weightTons: parsed.weight,
       cgPercent: parsed.cg,
-      aircraft: data.aircraft,
+      aircraft: inputs.aircraft,
       phase: data.phase,
       runwayCondition: inputs.runwayCondition,
     },
@@ -185,9 +165,8 @@ function compute(
   );
 
   if (calc.ok) {
-    const envelopeBar = buildEnvelopeBarInputs(data, parsed.weight, parsed.cg);
     return {
-      state: { kind: 'idle', output: calc.value, warning: violation, envelopeBar },
+      state: { kind: 'idle', output: calc.value, warning: violation },
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
     };
@@ -206,9 +185,8 @@ function compute(
   if (calc.error.kind === 'DataNotAvailable') {
     return {
       state: {
-        kind: 'error',
-        headline: 'Data unavailable',
-        description: 'This combination is not yet supported.',
+        kind: 'data-not-available',
+        description: describeUnavailable(calc.error.reason),
       },
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,

@@ -1,0 +1,338 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CrosswindResult renders the centred number for idle state (default W=170, CG=25 dry → 33 KT) 1`] = `
+<View
+  layout={BaseAnimationMock {}}
+  testID="result"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "flex": 0,
+        "gap": 8,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 16,
+      }
+    }
+    testID="crosswind-result-panel"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "System",
+            "fontSize": 9,
+            "fontWeight": "600",
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
+            "textAlign": "auto",
+          },
+          {
+            "letterSpacing": 0.72,
+            "marginBottom": 16,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      crosswind.resultStatusLabel
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "baseline",
+          "flexDirection": "row",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="33 KT"
+        allowFontScaling={false}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "Menlo",
+              "fontSize": 48,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
+              "lineHeight": 56,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        33
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "Menlo",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
+              "lineHeight": 28,
+              "textAlign": "auto",
+            },
+            {
+              "marginLeft": 8,
+            },
+          ]
+        }
+      >
+        KT
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`CrosswindResult renders the data-not-available caption for unimplemented aircraft / condition 1`] = `
+<View
+  layout={BaseAnimationMock {}}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "flex": 0,
+        "gap": 8,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 16,
+      }
+    }
+    testID="crosswind-result-panel-data-not-available"
+  >
+    <Text
+      accessibilityLabel="crosswind.emptyIconLabel"
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6E7681",
+            "fontSize": 32,
+          },
+          undefined,
+          {
+            "fontFamily": "material",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+    <View
+      style={
+        {
+          "maxWidth": 280,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        No data available for the selected aircraft.
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`CrosswindResult renders the empty caption when fields are blank 1`] = `
+<View
+  layout={BaseAnimationMock {}}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "flex": 0,
+        "gap": 8,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 16,
+      }
+    }
+    testID="crosswind-result-panel-empty"
+  >
+    <Text />
+    <View
+      style={
+        {
+          "maxWidth": 280,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        crosswind.resultEmpty
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 1`] = `
+<View
+  layout={BaseAnimationMock {}}
+  testID="result"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "flex": 0,
+        "gap": 8,
+        "justifyContent": "center",
+        "minHeight": 280,
+        "padding": 16,
+      }
+    }
+    testID="crosswind-result-panel"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontWeight": "600",
+            "letterSpacing": 1,
+            "marginBottom": 16,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      crosswind.resultStatusLabel
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "baseline",
+          "flexDirection": "row",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="33 KT"
+        allowFontScaling={false}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "Menlo",
+              "fontSize": 72,
+              "fontWeight": "700",
+              "letterSpacing": -1,
+              "lineHeight": 80,
+              "textAlign": "auto",
+            },
+            {
+              "fontSize": 96,
+              "lineHeight": 104,
+            },
+          ]
+        }
+      >
+        33
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "Menlo",
+              "fontSize": 36,
+              "fontWeight": "700",
+              "letterSpacing": 0,
+              "lineHeight": 40,
+              "textAlign": "auto",
+            },
+            [
+              {
+                "marginLeft": 8,
+              },
+              {
+                "fontSize": 48,
+                "lineHeight": 56,
+              },
+            ],
+          ]
+        }
+      >
+        KT
+      </Text>
+    </View>
+  </View>
+</View>
+`;

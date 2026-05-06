@@ -56,8 +56,10 @@ export type {
   MonoTextProps,
   // Inputs
   NumericInputProps,
+  NumericInputSize,
   SegmentedControlOption,
   SegmentedControlProps,
+  SegmentedControlSize,
   ToggleProps,
   ButtonProps,
   ButtonVariant,

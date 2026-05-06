@@ -167,7 +167,7 @@ exports[`ResultPanel renders idle state in light theme 1`] = `
         ]
       }
     >
-      Max crosswind · Landing
+      Max crosswind · Takeoff
     </Text>
     <View
       style={
@@ -277,7 +277,7 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
         ]
       }
     >
-      Max crosswind · Landing
+      Max crosswind · Takeoff
     </Text>
     <View
       style={
