@@ -23,10 +23,6 @@ export { calculateCrosswindLimit, calculateMaxCrosswindTakeoff } from './domain'
 // Use-case validator
 export { validateOperationalEnvelope } from './domain';
 
-// Lookup-range query (Block-5 forward signal: removed alongside EnvelopePositionBar).
-export { getLookupCGRange } from './domain';
-export type { LookupCGRange } from './domain';
-
 // Repository factory
 export { createCrosswindRepository } from './data';
 export type { CrosswindRepository } from './data';

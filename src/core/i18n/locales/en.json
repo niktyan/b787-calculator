@@ -38,11 +38,7 @@
     "resultEmpty": "Enter weight and CG to see result",
     "emptyIconLabel": "Information",
     "resultStatusLabel": "Max crosswind · Takeoff",
-    "resultFootnote": "Computed for current inputs",
-    "metaCG": "CG",
-    "metaRange": "Range",
     "warningOutsideEnvelope": "Outside operational envelope — advisory only",
-    "envelopeBarLabel": "Center of gravity envelope position",
     "runwayCondition": {
       "dry": "Dry",
       "good": "Good",

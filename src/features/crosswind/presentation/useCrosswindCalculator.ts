@@ -8,16 +8,16 @@
  *   4. Run `calculateCrosswindLimit` regardless of operational result —
  *      the algorithm covers the lookup envelope; the validator drives
  *      the warning chip alongside the number.
- *   5. Resolve UI state: empty / idle (+optional warning) / out-of-envelope / error.
+ *   5. Resolve UI state: empty / idle (+optional warning) / out-of-envelope
+ *      / data-not-available / error.
  *
- * Spec: 02_Specification/06-ui-spec.md § "Composition: idle + operational-envelope warning".
+ * Spec: 02_Specification/06-ui-spec.md § Экран 4.
  */
 
 import { useMemo } from 'react';
 
 import { isOk } from '../../../core/result';
 import { calculateCrosswindLimit } from '../domain/calculator';
-import { getLookupCGRange } from '../domain/lookupRange';
 import type {
   AircraftVariant,
   CGPercentMAC,
@@ -30,24 +30,12 @@ import { validateOperationalEnvelope } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import type { CrosswindDataFile } from '../data/schema';
 
-import { ENVELOPE_BAR_CG_MAX_PERCENT } from './constants';
-
-export interface EnvelopeBarInputs {
-  readonly currentCG: number;
-  readonly axisMin: number;
-  readonly axisMax: number;
-  readonly operationalMin: number;
-  readonly operationalMax: number;
-  readonly lookupMax: number;
-}
-
 export type CrosswindUIState =
   | { readonly kind: 'empty' }
   | {
       readonly kind: 'idle';
       readonly output: CrosswindCalculationOutput;
       readonly warning: EnvelopeViolation | null;
-      readonly envelopeBar: EnvelopeBarInputs;
     }
   | { readonly kind: 'out-of-envelope'; readonly reason: string }
   | { readonly kind: 'data-not-available'; readonly description: string }
@@ -140,27 +128,6 @@ function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is Pa
   return 'weight' in x;
 }
 
-interface EnvelopeBarArgs {
-  readonly data: CrosswindDataFile;
-  readonly aircraft: AircraftVariant;
-  readonly condition: RunwayCondition;
-  readonly weightTons: WeightInTons;
-  readonly cgPercent: number;
-}
-
-function buildEnvelopeBarInputs(args: EnvelopeBarArgs): EnvelopeBarInputs {
-  const { data, aircraft, condition, weightTons, cgPercent } = args;
-  const lookupRange = getLookupCGRange(data, aircraft, condition, weightTons);
-  return {
-    currentCG: cgPercent,
-    axisMin: data.operationalEnvelope.cg.minPercent,
-    axisMax: ENVELOPE_BAR_CG_MAX_PERCENT,
-    operationalMin: data.operationalEnvelope.cg.minPercent,
-    operationalMax: data.operationalEnvelope.cg.maxPercent,
-    lookupMax: lookupRange.max,
-  };
-}
-
 function describeUnavailable(
   reason: 'aircraft-not-implemented' | 'condition-not-implemented' | 'phase-mismatch',
 ): string {
@@ -198,15 +165,8 @@ function compute(
   );
 
   if (calc.ok) {
-    const envelopeBar = buildEnvelopeBarInputs({
-      data,
-      aircraft: inputs.aircraft,
-      condition: inputs.runwayCondition,
-      weightTons: parsed.weight,
-      cgPercent: parsed.cg,
-    });
     return {
-      state: { kind: 'idle', output: calc.value, warning: violation, envelopeBar },
+      state: { kind: 'idle', output: calc.value, warning: violation },
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
     };

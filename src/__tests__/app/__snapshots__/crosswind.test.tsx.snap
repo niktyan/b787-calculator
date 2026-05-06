@@ -1050,7 +1050,6 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
             testID="crosswind-result"
           >
             <View
-              accessibilityRole="summary"
               style={
                 {
                   "alignItems": "center",
@@ -1061,7 +1060,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   "flex": 0,
                   "gap": 8,
                   "justifyContent": "center",
-                  "minHeight": 140,
+                  "minHeight": 200,
                   "padding": 16,
                 }
               }
@@ -1092,7 +1091,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
               <View
                 style={
                   {
-                    "maxWidth": 240,
+                    "maxWidth": 280,
                   }
                 }
               >
@@ -2175,7 +2174,6 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
             testID="crosswind-result"
           >
             <View
-              accessibilityRole="summary"
               style={
                 {
                   "alignItems": "center",
@@ -2186,7 +2184,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   "flex": 0,
                   "gap": 8,
                   "justifyContent": "center",
-                  "minHeight": 140,
+                  "minHeight": 200,
                   "padding": 16,
                 }
               }
@@ -2217,7 +2215,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
               <View
                 style={
                   {
-                    "maxWidth": 240,
+                    "maxWidth": 280,
                   }
                 }
               >

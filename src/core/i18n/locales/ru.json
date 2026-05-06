@@ -38,11 +38,7 @@
     "resultEmpty": "Введите вес и центровку, чтобы увидеть результат",
     "emptyIconLabel": "Информация",
     "resultStatusLabel": "Max crosswind · Takeoff",
-    "resultFootnote": "Рассчитано для текущих значений",
-    "metaCG": "CG",
-    "metaRange": "Диапазон",
     "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно",
-    "envelopeBarLabel": "Положение центровки в эксплуатационном диапазоне",
     "runwayCondition": {
       "dry": "Dry",
       "good": "Good",
