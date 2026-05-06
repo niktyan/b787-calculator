@@ -9,7 +9,7 @@
 
 import { calculateCrosswindLimit } from '../domain/calculator';
 import { calculateExcelEquivalent } from '../domain/strategies';
-import { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS } from '../domain/types';
+import { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from '../domain/types';
 import type { CGPercentMAC, WeightInTons } from '../domain/types';
 import { validateAlgorithmInput } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
@@ -240,7 +240,25 @@ describe('Runtime const arrays (types.ts)', () => {
     expect(FLIGHT_PHASES).toEqual(['takeoff', 'landing']);
   });
 
-  it('exports RUNWAY_CONDITIONS', () => {
-    expect(RUNWAY_CONDITIONS).toEqual(['dry', 'wet', 'contaminated']);
+  it('exports RUNWAY_CONDITIONS as the 6-state RWYCC scale', () => {
+    expect(RUNWAY_CONDITIONS).toEqual([
+      'dry',
+      'good',
+      'mediumToGood',
+      'medium',
+      'mediumToPoor',
+      'poor',
+    ]);
+  });
+
+  it('RWYCC maps each runway condition to its ICAO numeric code', () => {
+    expect(RWYCC).toEqual({
+      dry: 6,
+      good: 5,
+      mediumToGood: 4,
+      medium: 3,
+      mediumToPoor: 2,
+      poor: 1,
+    });
   });
 });

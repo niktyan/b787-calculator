@@ -41,7 +41,15 @@
     "metaCG": "CG",
     "metaRange": "Range",
     "warningOutsideEnvelope": "Outside operational envelope — advisory only",
-    "envelopeBarLabel": "Center of gravity envelope position"
+    "envelopeBarLabel": "Center of gravity envelope position",
+    "runwayCondition": {
+      "dry": "Dry",
+      "good": "Good",
+      "mediumToGood": "Medium to Good",
+      "medium": "Medium",
+      "mediumToPoor": "Medium to Poor",
+      "poor": "Poor"
+    }
   },
   "settings": {
     "title": "Settings",

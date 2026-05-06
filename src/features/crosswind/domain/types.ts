@@ -13,15 +13,37 @@ export type Aircraft = AircraftVariant;
 export const FLIGHT_PHASES = ['takeoff', 'landing'] as const;
 export type FlightPhase = (typeof FLIGHT_PHASES)[number];
 
-export const RUNWAY_CONDITIONS = ['dry', 'wet', 'contaminated'] as const;
+export const RUNWAY_CONDITIONS = [
+  'dry',
+  'good',
+  'mediumToGood',
+  'medium',
+  'mediumToPoor',
+  'poor',
+] as const;
 export type RunwayCondition = (typeof RUNWAY_CONDITIONS)[number];
 
 /**
- * ICAO Runway Condition Code (1–6). Used only when
- * `RunwayCondition === 'contaminated'`. Not active in MVP (Dry only).
+ * ICAO Runway Condition Code (1–6). Each `RunwayCondition` maps to a
+ * single RWYCC value per the FCOM landing/takeoff performance table:
+ *   dry          → 6
+ *   good         → 5
+ *   mediumToGood → 4
+ *   medium       → 3
+ *   mediumToPoor → 2
+ *   poor         → 1
  */
 // eslint-disable-next-line no-magic-numbers
 export type RunwayConditionCode = 1 | 2 | 3 | 4 | 5 | 6;
+
+export const RWYCC: Readonly<Record<RunwayCondition, RunwayConditionCode>> = {
+  dry: 6,
+  good: 5,
+  mediumToGood: 4,
+  medium: 3,
+  mediumToPoor: 2,
+  poor: 1,
+};
 
 // --- Branded Value Objects ---
 

@@ -19,8 +19,11 @@ export interface CrosswindInputFormProps {
 
 const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
   { value: 'dry', label: 'Dry' },
-  { value: 'wet', label: 'Wet', disabled: true },
-  { value: 'contaminated', label: 'Contaminated', disabled: true },
+  { value: 'good', label: 'Good', disabled: true },
+  { value: 'mediumToGood', label: 'Medium to Good', disabled: true },
+  { value: 'medium', label: 'Medium', disabled: true },
+  { value: 'mediumToPoor', label: 'Medium to Poor', disabled: true },
+  { value: 'poor', label: 'Poor', disabled: true },
 ];
 
 export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {

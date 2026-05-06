@@ -41,7 +41,15 @@
     "metaCG": "CG",
     "metaRange": "Диапазон",
     "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно",
-    "envelopeBarLabel": "Положение центровки в эксплуатационном диапазоне"
+    "envelopeBarLabel": "Положение центровки в эксплуатационном диапазоне",
+    "runwayCondition": {
+      "dry": "Dry",
+      "good": "Good",
+      "mediumToGood": "Medium to Good",
+      "medium": "Medium",
+      "mediumToPoor": "Medium to Poor",
+      "poor": "Poor"
+    }
   },
   "settings": {
     "title": "Настройки",

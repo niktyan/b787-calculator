@@ -84,9 +84,12 @@ describe('getLookupCGRange', () => {
     expect(range.max).toBe(data.operationalEnvelope.cg.maxPercent);
   });
 
-  it('falls back to operationalEnvelope.cg when condition is not implemented', () => {
-    const range = getLookupCGRange(data, 'b787_8', 'wet', weight(W_170));
-    expect(range.min).toBe(data.operationalEnvelope.cg.minPercent);
-    expect(range.max).toBe(data.operationalEnvelope.cg.maxPercent);
-  });
+  it.each(['good', 'mediumToGood', 'medium', 'mediumToPoor', 'poor'] as const)(
+    'falls back to operationalEnvelope.cg when condition %s is not implemented',
+    (condition) => {
+      const range = getLookupCGRange(data, 'b787_8', condition, weight(W_170));
+      expect(range.min).toBe(data.operationalEnvelope.cg.minPercent);
+      expect(range.max).toBe(data.operationalEnvelope.cg.maxPercent);
+    },
+  );
 });

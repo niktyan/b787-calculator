@@ -250,19 +250,28 @@ describe('Calculator metadata', () => {
     expect(r.error.reason).toBe('phase-mismatch');
   });
 
-  it('returns DataNotAvailable.condition-not-implemented for non-dry condition', () => {
-    const { w, cg } = vo(170, 32);
-    const r = calculateCrosswindLimit(
-      { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: 'wet' },
-      data,
-    );
-    if (r.ok) {
-      throw new Error('expected error');
-    }
-    expect(r.error.kind).toBe('DataNotAvailable');
-    if (r.error.kind !== 'DataNotAvailable') {
-      throw new Error('expected DataNotAvailable');
-    }
-    expect(r.error.reason).toBe('condition-not-implemented');
-  });
+  it.each(['good', 'mediumToGood', 'medium', 'mediumToPoor', 'poor'] as const)(
+    'returns DataNotAvailable.condition-not-implemented for non-dry condition %s',
+    (condition) => {
+      const { w, cg } = vo(170, 32);
+      const r = calculateCrosswindLimit(
+        {
+          weightTons: w,
+          cgPercent: cg,
+          aircraft: AIRCRAFT,
+          phase: PHASE,
+          runwayCondition: condition,
+        },
+        data,
+      );
+      if (r.ok) {
+        throw new Error('expected error');
+      }
+      expect(r.error.kind).toBe('DataNotAvailable');
+      if (r.error.kind !== 'DataNotAvailable') {
+        throw new Error('expected DataNotAvailable');
+      }
+      expect(r.error.reason).toBe('condition-not-implemented');
+    },
+  );
 });

@@ -23,7 +23,14 @@ const BREAKPOINT_COUNT = 5;
 const MAX_CROSSWIND_KT = 50;
 
 const flightPhaseSchema = z.enum(['takeoff', 'landing']);
-const runwayConditionSchema = z.enum(['dry', 'wet', 'contaminated']);
+const runwayConditionSchema = z.enum([
+  'dry',
+  'good',
+  'mediumToGood',
+  'medium',
+  'mediumToPoor',
+  'poor',
+]);
 
 const breakpointSchema = z.object({
   crosswindKnots: z.number().int().min(0).max(MAX_CROSSWIND_KT),
@@ -59,8 +66,11 @@ export type CrosswindDataset = z.infer<typeof datasetSchema>;
 const aircraftEntrySchema = z
   .object({
     dry: datasetSchema.optional(),
-    wet: datasetSchema.optional(),
-    contaminated: datasetSchema.optional(),
+    good: datasetSchema.optional(),
+    mediumToGood: datasetSchema.optional(),
+    medium: datasetSchema.optional(),
+    mediumToPoor: datasetSchema.optional(),
+    poor: datasetSchema.optional(),
   })
   .strict();
 

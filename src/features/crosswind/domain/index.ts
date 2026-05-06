@@ -22,7 +22,7 @@ export type {
   WeightError,
   WeightInTons,
 } from './types';
-export { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS } from './types';
+export { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from './types';
 
 export { makeCGPercentMAC, makeCrosswindKnots, makeWeightInTons } from './valueObjects';
 
