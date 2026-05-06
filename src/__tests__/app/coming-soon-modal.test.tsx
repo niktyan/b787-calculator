@@ -14,10 +14,10 @@ jest.mock('react-i18next', () => ({
 }));
 
 const SAMPLE_MODULE: ComingSoonModule = {
-  id: 'crosswind-takeoff',
-  name: 'Crosswind · Takeoff',
-  description: 'Same crosswind logic applied to the takeoff phase.',
-  icon: 'TO',
+  id: 'crosswind-landing',
+  name: 'Crosswind · Landing',
+  description: 'Same crosswind logic applied to the landing phase.',
+  icon: 'LD',
   phase: 'Phase 2',
 };
 
@@ -28,9 +28,9 @@ describe('ComingSoonModal', () => {
       { mode: 'dark' },
     );
     expect(tree.getByTestId('coming-soon-modal-sheet')).toBeTruthy();
-    expect(tree.getByText('Crosswind · Takeoff')).toBeTruthy();
+    expect(tree.getByText('Crosswind · Landing')).toBeTruthy();
     expect(tree.getByText('Phase 2')).toBeTruthy();
-    expect(tree.getByText('TO')).toBeTruthy();
+    expect(tree.getByText('LD')).toBeTruthy();
     expect(tree.getByText('comingSoonModal.body')).toBeTruthy();
     expect(tree.getByTestId('coming-soon-modal-close')).toBeTruthy();
     expect(tree.toJSON()).toMatchSnapshot();

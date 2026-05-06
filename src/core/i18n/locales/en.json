@@ -17,7 +17,7 @@
     "tabSettings": "Settings",
     "tabAbout": "About",
     "comingSoonBadge": "Coming soon",
-    "activeModuleDescription": "Maximum crosswind for the landing phase."
+    "activeModuleDescription": "Max crosswind for takeoff based on weight, CG, RWYCC, aircraft variant."
   },
   "comingSoonModal": {
     "body": "This module is planned for an upcoming release. Stay tuned.",

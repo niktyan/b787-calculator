@@ -1,9 +1,9 @@
 [
   {
-    "id": "crosswind-takeoff",
-    "name": "Crosswind · Takeoff",
-    "description": "Same crosswind logic applied to the takeoff phase.",
-    "icon": "TO",
+    "id": "crosswind-landing",
+    "name": "Crosswind · Landing",
+    "description": "Same crosswind logic applied to the landing phase.",
+    "icon": "LD",
     "phase": "Phase 2"
   }
 ]

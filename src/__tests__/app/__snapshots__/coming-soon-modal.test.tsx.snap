@@ -134,7 +134,7 @@ exports[`ComingSoonModal renders correctly in light theme 1`] = `
               ]
             }
           >
-            TO
+            LD
           </Text>
         </View>
         <Text
@@ -154,7 +154,7 @@ exports[`ComingSoonModal renders correctly in light theme 1`] = `
             ]
           }
         >
-          Crosswind · Takeoff
+          Crosswind · Landing
         </Text>
         <Text
           allowFontScaling={true}
@@ -415,7 +415,7 @@ exports[`ComingSoonModal renders the module name, phase, body text and OK button
               ]
             }
           >
-            TO
+            LD
           </Text>
         </View>
         <Text
@@ -435,7 +435,7 @@ exports[`ComingSoonModal renders the module name, phase, body text and OK button
             ]
           }
         >
-          Crosswind · Takeoff
+          Crosswind · Landing
         </Text>
         <Text
           allowFontScaling={true}

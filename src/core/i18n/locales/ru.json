@@ -17,7 +17,7 @@
     "tabSettings": "Настройки",
     "tabAbout": "О приложении",
     "comingSoonBadge": "Скоро",
-    "activeModuleDescription": "Максимальный боковой ветер на посадке."
+    "activeModuleDescription": "Макс. боковой ветер на взлёте: вес, центровка, RWYCC, вариант ВС."
   },
   "comingSoonModal": {
     "body": "Этот модуль планируется в одном из ближайших обновлений.",
