@@ -1,5 +1,902 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SegmentedControl renders 6 options as two rows of 3 when wrap=true 1`] = `
+<View
+  accessibilityRole="radiogroup"
+  style={
+    {
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "column",
+      "gap": 4,
+      "padding": 3,
+    }
+  }
+  testID="rwy"
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "gap": 2,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="A"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          {
+            "backgroundColor": "#00C2A8",
+          },
+          null,
+        ]
+      }
+      testID="rwy-a"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        A
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="B"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-b"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        B
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="C"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-c"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        C
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "gap": 2,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="D"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-d"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        D
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="E"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-e"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        E
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="F"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-f"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        F
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`SegmentedControl renders 6 wrap-able options as a single row when wrap=false 1`] = `
+<View
+  accessibilityRole="radiogroup"
+  style={
+    {
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "column",
+      "gap": 4,
+      "padding": 3,
+    }
+  }
+  testID="rwy"
+>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "gap": 2,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="A"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          {
+            "backgroundColor": "#00C2A8",
+          },
+          null,
+        ]
+      }
+      testID="rwy-a"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        A
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="B"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-b"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        B
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="C"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-c"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        C
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="D"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-d"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        D
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="E"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-e"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        E
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="F"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          null,
+        ]
+      }
+      testID="rwy-f"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        F
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`SegmentedControl renders in light theme 1`] = `
 <View
   accessibilityRole="radiogroup"
@@ -9,225 +906,475 @@ exports[`SegmentedControl renders in light theme 1`] = `
       "borderColor": "rgba(0, 0, 0, 0.08)",
       "borderRadius": 8,
       "borderWidth": 1,
-      "flexDirection": "row",
-      "gap": 2,
+      "flexDirection": "column",
+      "gap": 4,
       "padding": 3,
     }
   }
   testID="rwy"
 >
   <View
-    accessibilityLabel="Dry"
-    accessibilityRole="radio"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": true,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "flex": 1,
-          "justifyContent": "center",
-          "minHeight": 38,
-          "paddingHorizontal": 8,
-          "paddingVertical": 4,
-        },
-        {
-          "backgroundColor": "#00C2A8",
-        },
-        null,
-      ]
+      {
+        "flexDirection": "row",
+        "gap": 2,
+      }
     }
-    testID="rwy-dry"
   >
-    <Text
-      allowFontScaling={true}
+    <View
+      accessibilityLabel="Dry"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "color": "#001A17",
-            "fontFamily": "System",
-            "fontSize": 10,
-            "fontWeight": "500",
-            "letterSpacing": 0,
-            "lineHeight": 14,
-            "textAlign": "center",
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
           },
-          undefined,
+          {
+            "backgroundColor": "#00C2A8",
+          },
+          null,
         ]
       }
+      testID="rwy-dry"
     >
-      Dry
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Dry
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Wet"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": true,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          {
+            "opacity": 0.5,
+          },
+        ]
+      }
+      testID="rwy-wet"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Wet
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Contaminated"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": true,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          {
+            "opacity": 0.5,
+          },
+        ]
+      }
+      testID="rwy-contaminated"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Contaminated
+      </Text>
+    </View>
   </View>
+</View>
+`;
+
+exports[`SegmentedControl renders the regular size variant with larger track 1`] = `
+<View
+  accessibilityRole="radiogroup"
+  style={
+    {
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "column",
+      "gap": 4,
+      "padding": 3,
+    }
+  }
+  testID="rwy"
+>
   <View
-    accessibilityLabel="Wet"
-    accessibilityRole="radio"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": true,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "flex": 1,
-          "justifyContent": "center",
-          "minHeight": 38,
-          "paddingHorizontal": 8,
-          "paddingVertical": 4,
-        },
-        null,
-        {
-          "opacity": 0.5,
-        },
-      ]
+      {
+        "flexDirection": "row",
+        "gap": 2,
+      }
     }
-    testID="rwy-wet"
   >
-    <Text
-      allowFontScaling={true}
+    <View
+      accessibilityLabel="Dry"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "color": "#6B7280",
-            "fontFamily": "System",
-            "fontSize": 10,
-            "fontWeight": "500",
-            "letterSpacing": 0,
-            "lineHeight": 14,
-            "textAlign": "center",
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 50,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
           },
-          undefined,
+          {
+            "backgroundColor": "#00C2A8",
+          },
+          null,
         ]
       }
+      testID="rwy-dry"
     >
-      Wet
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Contaminated"
-    accessibilityRole="radio"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": true,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Dry
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Wet"
+      accessibilityRole="radio"
+      accessibilityState={
         {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "flex": 1,
-          "justifyContent": "center",
-          "minHeight": 38,
-          "paddingHorizontal": 8,
-          "paddingVertical": 4,
-        },
-        null,
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": true,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
         {
-          "opacity": 0.5,
-        },
-      ]
-    }
-    testID="rwy-contaminated"
-  >
-    <Text
-      allowFontScaling={true}
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "color": "#6B7280",
-            "fontFamily": "System",
-            "fontSize": 10,
-            "fontWeight": "500",
-            "letterSpacing": 0,
-            "lineHeight": 14,
-            "textAlign": "center",
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 50,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
           },
-          undefined,
+          null,
+          {
+            "opacity": 0.5,
+          },
         ]
       }
+      testID="rwy-wet"
     >
-      Contaminated
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6E7681",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Wet
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Contaminated"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": true,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 50,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
+          },
+          null,
+          {
+            "opacity": 0.5,
+          },
+        ]
+      }
+      testID="rwy-contaminated"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6E7681",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Contaminated
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -241,225 +1388,234 @@ exports[`SegmentedControl renders three options with one active in dark theme 1`
       "borderColor": "rgba(255, 255, 255, 0.08)",
       "borderRadius": 8,
       "borderWidth": 1,
-      "flexDirection": "row",
-      "gap": 2,
+      "flexDirection": "column",
+      "gap": 4,
       "padding": 3,
     }
   }
   testID="rwy"
 >
   <View
-    accessibilityLabel="Dry"
-    accessibilityRole="radio"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": true,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      [
-        {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "flex": 1,
-          "justifyContent": "center",
-          "minHeight": 38,
-          "paddingHorizontal": 8,
-          "paddingVertical": 4,
-        },
-        {
-          "backgroundColor": "#00C2A8",
-        },
-        null,
-      ]
+      {
+        "flexDirection": "row",
+        "gap": 2,
+      }
     }
-    testID="rwy-dry"
   >
-    <Text
-      allowFontScaling={true}
+    <View
+      accessibilityLabel="Dry"
+      accessibilityRole="radio"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "color": "#001A17",
-            "fontFamily": "System",
-            "fontSize": 10,
-            "fontWeight": "500",
-            "letterSpacing": 0,
-            "lineHeight": 14,
-            "textAlign": "center",
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
           },
-          undefined,
+          {
+            "backgroundColor": "#00C2A8",
+          },
+          null,
         ]
       }
+      testID="rwy-dry"
     >
-      Dry
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Wet"
-    accessibilityRole="radio"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": true,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Dry
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Wet"
+      accessibilityRole="radio"
+      accessibilityState={
         {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "flex": 1,
-          "justifyContent": "center",
-          "minHeight": 38,
-          "paddingHorizontal": 8,
-          "paddingVertical": 4,
-        },
-        null,
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": true,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
         {
-          "opacity": 0.5,
-        },
-      ]
-    }
-    testID="rwy-wet"
-  >
-    <Text
-      allowFontScaling={true}
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "color": "#6E7681",
-            "fontFamily": "System",
-            "fontSize": 10,
-            "fontWeight": "500",
-            "letterSpacing": 0,
-            "lineHeight": 14,
-            "textAlign": "center",
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
           },
-          undefined,
+          null,
+          {
+            "opacity": 0.5,
+          },
         ]
       }
+      testID="rwy-wet"
     >
-      Wet
-    </Text>
-  </View>
-  <View
-    accessibilityLabel="Contaminated"
-    accessibilityRole="radio"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": true,
-        "expanded": undefined,
-        "selected": false,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      [
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6E7681",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Wet
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Contaminated"
+      accessibilityRole="radio"
+      accessibilityState={
         {
-          "alignItems": "center",
-          "borderRadius": 4,
-          "flex": 1,
-          "justifyContent": "center",
-          "minHeight": 38,
-          "paddingHorizontal": 8,
-          "paddingVertical": 4,
-        },
-        null,
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": true,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
         {
-          "opacity": 0.5,
-        },
-      ]
-    }
-    testID="rwy-contaminated"
-  >
-    <Text
-      allowFontScaling={true}
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         [
           {
-            "color": "#6E7681",
-            "fontFamily": "System",
-            "fontSize": 10,
-            "fontWeight": "500",
-            "letterSpacing": 0,
-            "lineHeight": 14,
-            "textAlign": "center",
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "minHeight": 38,
+            "paddingHorizontal": 8,
+            "paddingVertical": 4,
           },
-          undefined,
+          null,
+          {
+            "opacity": 0.5,
+          },
         ]
       }
+      testID="rwy-contaminated"
     >
-      Contaminated
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6E7681",
+              "fontFamily": "System",
+              "fontSize": 10,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 14,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Contaminated
+      </Text>
+    </View>
   </View>
 </View>
 `;

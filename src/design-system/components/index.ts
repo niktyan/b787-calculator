@@ -16,9 +16,13 @@ export type { MonoTextProps } from './MonoText';
 
 // Inputs
 export { NumericInput } from './NumericInput';
-export type { NumericInputProps } from './NumericInput';
+export type { NumericInputProps, NumericInputSize } from './NumericInput';
 export { SegmentedControl } from './SegmentedControl';
-export type { SegmentedControlOption, SegmentedControlProps } from './SegmentedControl';
+export type {
+  SegmentedControlOption,
+  SegmentedControlProps,
+  SegmentedControlSize,
+} from './SegmentedControl';
 export { Toggle } from './Toggle';
 export type { ToggleProps } from './Toggle';
 export { Button } from './Button';

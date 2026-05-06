@@ -67,11 +67,8 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
 
   const [weightText, setWeightText] = useState('');
   const [cgText, setCgText] = useState('');
+  const [aircraft, setAircraft] = useState<AircraftVariant>(DEFAULT_AIRCRAFT);
   const [runwayCondition, setRunwayCondition] = useState<RunwayCondition>('dry');
-  // Aircraft selector lives in the input form starting Block 6; for now
-  // the calculator is hardwired to b787_8 — the only aircraft with
-  // bundled lookup data in MVP.
-  const aircraft: AircraftVariant = DEFAULT_AIRCRAFT;
 
   const inputs = useMemo(
     () => ({ weightText, cgText, aircraft, runwayCondition }),
@@ -85,6 +82,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const handleReset = useCallback((): void => {
     setWeightText('');
     setCgText('');
+    setAircraft(DEFAULT_AIRCRAFT);
     setRunwayCondition('dry');
   }, []);
 
@@ -92,12 +90,15 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     <CrosswindInputForm
       weightText={weightText}
       cgText={cgText}
+      aircraft={aircraft}
       runwayCondition={runwayCondition}
       weightError={weightFieldError}
       cgError={cgFieldError}
       onWeightChange={setWeightText}
       onCGChange={setCgText}
+      onAircraftChange={setAircraft}
       onRunwayConditionChange={setRunwayCondition}
+      isRegular={isRegular}
       testID="crosswind-input-form"
     />
   );
