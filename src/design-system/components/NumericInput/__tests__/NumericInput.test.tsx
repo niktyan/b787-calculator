@@ -12,7 +12,7 @@ describe('NumericInput', () => {
   it('renders empty integer field with placeholder in dark theme', () => {
     const tree = renderWithTheme(
       <NumericInput
-        label="Landing weight"
+        label="TOW actual"
         value=""
         onChange={jest.fn()}
         placeholder="e.g. 170"
@@ -27,7 +27,7 @@ describe('NumericInput', () => {
   it('renders empty integer field with placeholder in light theme', () => {
     const tree = renderWithTheme(
       <NumericInput
-        label="Landing weight"
+        label="TOW actual"
         value=""
         onChange={jest.fn()}
         placeholder="e.g. 170"
@@ -57,7 +57,7 @@ describe('NumericInput', () => {
   it('forwards user input to onChange', () => {
     const onChange = jest.fn();
     const { getByTestId } = renderWithTheme(
-      <NumericInput label="Landing weight" value="" onChange={onChange} testID="weight" />,
+      <NumericInput label="TOW actual" value="" onChange={onChange} testID="weight" />,
     );
     fireEvent.changeText(getByTestId('weight-input'), '170');
     expect(onChange).toHaveBeenCalledWith('170');

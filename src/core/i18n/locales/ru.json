@@ -29,14 +29,15 @@
     "aboutBody": "О приложении — реализация в следующем спринте"
   },
   "crosswind": {
-    "title": "Crosswind · Landing",
-    "weightLabel": "Посадочный вес",
+    "title": "Crosswind · Takeoff",
+    "towActual": "TOW actual",
     "cgLabel": "Центровка",
+    "aircraftLabel": "Aircraft",
     "runwayConditionLabel": "Состояние ВПП",
     "resetLabel": "Сброс",
     "resultEmpty": "Введите вес и центровку, чтобы увидеть результат",
     "emptyIconLabel": "Информация",
-    "resultStatusLabel": "Max crosswind · Landing",
+    "resultStatusLabel": "Max crosswind · Takeoff",
     "resultFootnote": "Рассчитано для текущих значений",
     "metaCG": "CG",
     "metaRange": "Диапазон",

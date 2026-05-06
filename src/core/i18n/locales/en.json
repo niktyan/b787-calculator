@@ -29,14 +29,15 @@
     "aboutBody": "About — implementation in upcoming sprint"
   },
   "crosswind": {
-    "title": "Crosswind · Landing",
-    "weightLabel": "Landing weight",
+    "title": "Crosswind · Takeoff",
+    "towActual": "TOW actual",
     "cgLabel": "Center of gravity",
+    "aircraftLabel": "Aircraft",
     "runwayConditionLabel": "Runway condition",
     "resetLabel": "Reset",
     "resultEmpty": "Enter weight and CG to see result",
     "emptyIconLabel": "Information",
-    "resultStatusLabel": "Max crosswind · Landing",
+    "resultStatusLabel": "Max crosswind · Takeoff",
     "resultFootnote": "Computed for current inputs",
     "metaCG": "CG",
     "metaRange": "Range",

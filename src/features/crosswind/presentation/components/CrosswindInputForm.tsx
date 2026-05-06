@@ -43,7 +43,7 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
   return (
     <Stack gap="lg" {...(testID === undefined ? {} : { testID })}>
       <NumericInput
-        label={t('crosswind.weightLabel')}
+        label={t('crosswind.towActual')}
         value={weightText}
         onChange={onWeightChange}
         placeholder="e.g. 170"

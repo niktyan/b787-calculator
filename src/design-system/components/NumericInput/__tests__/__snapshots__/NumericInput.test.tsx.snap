@@ -148,7 +148,7 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
       ]
     }
   >
-    Landing weight
+    TOW actual
   </Text>
   <View
     style={
@@ -176,7 +176,7 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
       }
     >
       <TextInput
-        accessibilityLabel="Landing weight"
+        accessibilityLabel="TOW actual"
         editable={true}
         keyboardType="numeric"
         onBlur={[Function]}
@@ -249,7 +249,7 @@ exports[`NumericInput renders empty integer field with placeholder in light them
       ]
     }
   >
-    Landing weight
+    TOW actual
   </Text>
   <View
     style={
@@ -277,7 +277,7 @@ exports[`NumericInput renders empty integer field with placeholder in light them
       }
     >
       <TextInput
-        accessibilityLabel="Landing weight"
+        accessibilityLabel="TOW actual"
         editable={true}
         keyboardType="numeric"
         onBlur={[Function]}

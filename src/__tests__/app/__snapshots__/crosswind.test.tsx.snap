@@ -399,7 +399,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.weightLabel
+                crosswind.towActual
               </Text>
               <View
                 style={
@@ -427,7 +427,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   }
                 >
                   <TextInput
-                    accessibilityLabel="crosswind.weightLabel"
+                    accessibilityLabel="crosswind.towActual"
                     editable={true}
                     keyboardType="numeric"
                     onBlur={[Function]}
@@ -1524,7 +1524,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.weightLabel
+                crosswind.towActual
               </Text>
               <View
                 style={
@@ -1552,7 +1552,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   }
                 >
                   <TextInput
-                    accessibilityLabel="crosswind.weightLabel"
+                    accessibilityLabel="crosswind.towActual"
                     editable={true}
                     keyboardType="numeric"
                     onBlur={[Function]}
