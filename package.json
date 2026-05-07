@@ -18,7 +18,7 @@
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/native": "^7.1.8",
     "date-fns": "4.1.0",
-    "expo": "~54.0.34",
+    "expo": "~55.0.23",
     "expo-application": "55.0.14",
     "expo-build-properties": "~1.0.10",
     "expo-constants": "18.0.13",
