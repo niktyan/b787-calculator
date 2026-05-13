@@ -6,7 +6,7 @@ import type { TextStyle, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useTheme, useTranslation } from '../../../core';
-import type { ComingSoonModule } from '../../../core/coming-soon-modules';
+import type { ActiveModule, ComingSoonModule } from '../../../core/modules';
 import { Text, tokens, useScaleOnPress } from '../../../design-system';
 import type { ColorPalette } from '../../../design-system';
 
@@ -47,12 +47,6 @@ interface ComingSoonStyles {
 
 const NAME_LH_REGULAR = 22;
 const NAME_LH_COMPACT = 16;
-
-export interface ActiveModule {
-  readonly id: string;
-  readonly name: string;
-  readonly icon: string;
-}
 
 type CardSizing = (typeof tokens.sizing.moduleCard)[keyof typeof tokens.sizing.moduleCard];
 

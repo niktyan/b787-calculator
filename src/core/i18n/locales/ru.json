@@ -17,7 +17,9 @@
     "tabSettings": "Настройки",
     "tabAbout": "О приложении",
     "comingSoonBadge": "Скоро",
-    "activeModuleDescription": "Макс. боковой ветер на взлёте: вес, центровка, RWYCC, вариант ВС."
+    "activeModuleDescription": "Макс. боковой ветер на взлёте: вес, центровка, RWYCC, вариант ВС.",
+    "allHidden": "Все модули скрыты. Откройте настройки, чтобы включить.",
+    "openSettings": "Открыть настройки"
   },
   "comingSoonModal": {
     "body": "Этот модуль планируется в одном из ближайших обновлений.",
@@ -58,7 +60,8 @@
     "themeDark": "Тёмная",
     "weightUnits": "Единицы веса",
     "windUnits": "Единицы ветра",
-    "sheetClose": "Закрыть"
+    "sheetClose": "Закрыть",
+    "modulesSectionTitle": "Модули"
   },
   "about": {
     "title": "О приложении",

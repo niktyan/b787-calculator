@@ -17,7 +17,9 @@
     "tabSettings": "Settings",
     "tabAbout": "About",
     "comingSoonBadge": "Coming soon",
-    "activeModuleDescription": "Max crosswind for takeoff based on weight, CG, RWYCC, aircraft variant."
+    "activeModuleDescription": "Max crosswind for takeoff based on weight, CG, RWYCC, aircraft variant.",
+    "allHidden": "All modules hidden. Open Settings to re-enable.",
+    "openSettings": "Open Settings"
   },
   "comingSoonModal": {
     "body": "This module is planned for an upcoming release. Stay tuned.",
@@ -58,7 +60,8 @@
     "themeDark": "Dark",
     "weightUnits": "Weight units",
     "windUnits": "Wind units",
-    "sheetClose": "Close"
+    "sheetClose": "Close",
+    "modulesSectionTitle": "Modules"
   },
   "about": {
     "title": "About",

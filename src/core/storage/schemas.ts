@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+import { moduleVisibilitySchema } from '../modules/visibility';
+import type { ModuleVisibility } from '../modules/visibility';
+
 import type { StorageKey } from './keys';
 
 export const disclaimerAcceptedSchema = z.boolean();
@@ -14,10 +17,12 @@ export interface StorageValueMap {
   disclaimerAccepted: DisclaimerAccepted;
   language: Language;
   theme: ThemeMode;
+  moduleVisibility: ModuleVisibility;
 }
 
 export const SCHEMAS: { [K in StorageKey]: z.ZodType<StorageValueMap[K]> } = {
   disclaimerAccepted: disclaimerAcceptedSchema,
   language: languageSchema,
   theme: themeSchema,
+  moduleVisibility: moduleVisibilitySchema,
 };

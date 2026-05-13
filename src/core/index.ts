@@ -27,6 +27,13 @@ export { ok, err } from './result';
 export type { Result } from './result';
 export type { Result as ResultType } from './result';
 
-// coming-soon-modules
-export { useComingSoonModules } from './coming-soon-modules';
-export type { ComingSoonModule } from './coming-soon-modules';
+// modules (active + coming-soon registry, visibility preferences)
+export { useComingSoonModules, useModules, useModuleVisibility } from './modules';
+export type {
+  ActiveModule,
+  ComingSoonModule,
+  InactiveModule,
+  Module,
+  ModuleVisibility,
+  UseModuleVisibilityResult,
+} from './modules';

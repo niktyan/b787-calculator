@@ -48,6 +48,13 @@ describe('Settings route', () => {
     expect(tree.getByTestId('settings-row-wind-units')).toBeTruthy();
   });
 
+  it('renders the Modules section with a toggle row per known module', () => {
+    const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
+    expect(getByTestId('settings-section-modules')).toBeTruthy();
+    expect(getByTestId('settings-row-module-crosswind-takeoff')).toBeTruthy();
+    expect(getByTestId('settings-row-module-crosswind-landing')).toBeTruthy();
+  });
+
   it('navigates to /menu when Modules tab is tapped', () => {
     const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
     fireEvent.press(getByTestId('settings-tabs-modules'));

@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 
 import { useTheme, useTranslation } from '../../../core';
-import type { ComingSoonModule } from '../../../core/coming-soon-modules';
+import type { ComingSoonModule } from '../../../core/modules';
 import { Button, Stack, Text, tokens } from '../../../design-system';
 
 /**

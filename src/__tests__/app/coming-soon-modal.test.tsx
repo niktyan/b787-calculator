@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/react-native';
 
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
 import { ComingSoonModal } from '../../app/(main)/_components/ComingSoonModal';
-import type { ComingSoonModule } from '../../core/coming-soon-modules';
+import type { ComingSoonModule } from '../../core/modules';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -18,6 +18,7 @@ const SAMPLE_MODULE: ComingSoonModule = {
   name: 'Crosswind · Landing',
   description: 'Same crosswind logic applied to the landing phase.',
   icon: 'LD',
+  active: false,
   phase: 'Phase 2',
 };
 

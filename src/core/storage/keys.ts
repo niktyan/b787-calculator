@@ -9,6 +9,7 @@ export const STORAGE_KEYS = {
   disclaimerAccepted: 'b787.disclaimerAccepted',
   language: 'b787.language',
   theme: 'b787.theme',
+  moduleVisibility: 'b787.moduleVisibility',
 } as const;
 
 export type StorageKey = keyof typeof STORAGE_KEYS;

@@ -13,7 +13,14 @@ import type { ReactNode } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
-import { getCurrentLanguage, setLanguage, useTheme, useTranslation } from '../../core';
+import {
+  getCurrentLanguage,
+  setLanguage,
+  useModules,
+  useModuleVisibility,
+  useTheme,
+  useTranslation,
+} from '../../core';
 import type { SupportedLanguage, ThemeMode } from '../../core';
 import {
   BottomSheet,
@@ -26,6 +33,8 @@ import {
   tokens,
 } from '../../design-system';
 import type { NavPillsItem } from '../../design-system';
+
+import { ModulesSection } from './_components/ModulesSection';
 
 type TabId = 'modules' | 'settings' | 'about';
 type SheetKind = 'language' | 'theme' | null;
@@ -41,6 +50,8 @@ export default function Settings(): ReactNode {
   const { width } = useWindowDimensions();
   const isRegular = width >= tokens.breakpoints.regularHeader;
   const state = useSettingsState(setMode);
+  const modules = useModules();
+  const visibility = useModuleVisibility();
 
   const handleTabChange = useCallback(
     (next: TabId): void => {
@@ -78,6 +89,14 @@ export default function Settings(): ReactNode {
           isRegular={isRegular}
           logoTestID="settings-logo"
           navTestID="settings-tabs"
+        />
+        <ModulesSection
+          title={t('settings.modulesSectionTitle')}
+          modules={modules}
+          isVisible={visibility.isVisible}
+          onToggle={visibility.toggle}
+          isRegular={isRegular}
+          listGap={listGap}
         />
         <SettingsList
           t={t}
