@@ -6,6 +6,24 @@ updates:
       interval: 'weekly'
       day: 'monday'
     open-pull-requests-limit: 10
+    ignore:
+      # Expo SDK-coordinated packages — MAJOR bumps require a
+      # coordinated SDK upgrade (expo + react-native + all expo-*
+      # peers + native config), not point-bumps via Dependabot.
+      # PATCH and MINOR within the current SDK remain auto-proposed.
+      # See ADR-0008 and 02_Specification/09-cicd-and-ops.md.
+      - dependency-name: 'expo'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'expo-*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-native'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-native-*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@react-native/*'
+        update-types: ['version-update:semver-major']
     groups:
       production-dependencies:
         dependency-type: 'production'
