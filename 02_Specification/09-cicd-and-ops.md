@@ -478,6 +478,18 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "@react-native/*"
         update-types: ["version-update:semver-major"]
+
+      # Gap 1 · 0.X versioning — see ADR-0008 § "Enforcement gaps".
+      - dependency-name: "react-native"
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: "react-native-worklets"
+        update-types: ["version-update:semver-minor"]
+
+      # Gap 2 · prefix matching — see ADR-0008 § "Enforcement gaps".
+      - dependency-name: "eslint-config-expo"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "jest-expo"
+        update-types: ["version-update:semver-major"]
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -510,6 +522,10 @@ Dependabot настроен **пропускать MAJOR-обновления** 
 **Почему:** major-bumps этих пакетов пересекают границу Expo SDK и требуют координированных upgrade-ов нескольких peer-пакетов плюс изменения native-конфигурации (`app.json`, prebuild, dev client). Поштучные point-bumps через Dependabot создают **гибридное SDK-состояние**, которое проходит статический CI (lint / typecheck / tests), но падает в runtime — расхождение между версиями нативных модулей экспоутит баги, не воспроизводимые в unit-тестах.
 
 **Как делать SDK upgrade правильно:** отдельный deliberate PR, следующий [Expo SDK upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/) — один PR обновляет `expo` вместе со всеми связанными peer-пакетами и native-конфигом за раз. После merge — preview-build с лейблом `preview`, ручная функциональная проверка в Expo Go / TestFlight, и только потом релиз.
+
+**Особый случай · 0.X versioning у `react-native` и `react-native-worklets`.** Эти два пакета используют `0.X.Y` versioning, где каждый `0.X` bump — де-факто major release (RN 0.81 идёт с Expo SDK 54, RN 0.85 — с SDK 56+; worklets 0.5 vs 0.8 — несовместимые ABI). По semver-классификации Dependabot такой bump = `version-update:semver-minor`, и обычное major-only правило его не ловит. Поэтому в `dependabot.yml` для этих двух пакетов **также блокируется semver-minor**. Patch внутри 0.X (`0.81.5 → 0.81.6`) по-прежнему auto-proposed. См. ADR-0008 § «Enforcement gaps and refinements».
+
+**Особый случай · Misnamed SDK-coordinated пакеты.** Glob `expo-*` не матчит `eslint-config-expo` и `jest-expo` (prefix-based matching), но их major-версии track Expo SDK release cycle. Они добавлены в `ignore:` блок отдельными explicit-name правилами.
 
 Решение зафиксировано ADR-0008.
 
