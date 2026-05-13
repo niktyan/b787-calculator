@@ -237,11 +237,14 @@ src/app/
 - `active` — реализован, доступен для использования.
 - `coming-soon` — показан как тизер, тап вызывает modal.
 
-Активные feature-модули импортируются из `src/features/*` и рендерятся
-явно в Main Menu. Coming-soon тизеры читаются из bundled JSON-конфига
-`src/core/coming-soon-modules/data.json` через хук
-`useComingSoonModules()` (см. ADR-0004). JSON содержит только тизеры — у
-каждого entry есть `id`, `name`, `description`, `icon`, `phase`:
+Все модули (и активные, и coming-soon) живут в едином bundled
+JSON-конфиге `src/core/modules/data.json`, читаемом через
+`useModules()` (см. ADR-0004 + Sprint 6 follow-up, который
+переименовал `coming-soon-modules` → `modules` и закатил активный
+крос-винд-вариант в тот же реестр). Каждый entry дискриминирован
+полем `active`: активные несут `route` для навигации, coming-soon —
+`description` и `phase` для отрисовки тизер-карточки.
+
 ```json
 [
   {
@@ -249,16 +252,36 @@ src/app/
     "name": "Crosswind · Landing",
     "description": "Same crosswind logic applied to the landing phase.",
     "icon": "LD",
+    "active": false,
     "phase": "Phase 2"
+  },
+  {
+    "id": "crosswind-takeoff",
+    "name": "Crosswind · Takeoff",
+    "icon": "XW",
+    "active": true,
+    "route": "/crosswind"
   }
 ]
 ```
 
-При выходе Phase 2 запись удаляется из JSON, активной карточкой
-становится Crosswind · Landing (либо параллельно с Takeoff, либо как
-её замена в зависимости от reorganisation), и Main Menu рендерит
-её как активную карточку без изменений в остальном коде. До тех
-пор тап по Landing-тизеру открывает Coming Soon Modal.
+При выходе Phase 2 запись Landing просто меняет `active: false` →
+`active: true` и добавляет поле `route`; никаких изменений в коде
+Main Menu для этого не требуется. До тех пор тап по Landing-тизеру
+открывает Coming Soon Modal.
+
+**Видимость модулей пользователем** (Sprint 6 follow-up). Пилот
+может скрыть любой модуль (и активный, и coming-soon) переключателем
+в Settings → Modules. Состояние хранится в `core/storage` под ключом
+`moduleVisibility` (`Record<id, boolean>`), читается через
+`useModuleVisibility()`. Отсутствие записи трактуется как «видим» —
+новые модули, добавленные в будущем релизе, всплывают автоматически
+без необходимости миграции state.
+
+**Empty state.** Если все модули скрыты, Main Menu рендерит
+`<EmptyState>` с тайтлом «All modules hidden. Open Settings to
+re-enable.» и primary-кнопкой «Open Settings», которая навигирует
+на `/settings`. Карточная сетка в этом состоянии не отрисовывается.
 
 **Visual treatment** (см. `03_Mockups/index.html` секция 2 «Main Menu —
 Modules», классы `.app-header`, `.app-logo`, `.app-title`, `.nav-pills`,
@@ -674,13 +697,31 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 
 **Назначение:** управление настройками приложения.
 
-**Список настроек** (вертикальный список строк):
+**Структура** (сверху вниз):
 
-1. **Language** — кликабельная строка → bottom sheet с выбором (English / Русский). Применяется немедленно.
-2. **Theme** — bottom sheet с выбором (Auto / Light / Dark).
-3. **Weight units** — Tons (t) / Pounds (lbs). MVP — только tons, переключатель disabled с подсказкой «Available in upcoming release». Mockup-era ярлык «Kilograms (kg)» отменён — domain работает в тоннах, и единица пользовательского ввода в Calculator — тонны (см. § Экран 4 поле «TOW actual (t)»).
-4. **Wind units** — Knots (KT) / m/s. MVP — только KT, disabled.
-5. **Show data source on result** — toggle, по умолчанию ON.
+- **Modules section** — заголовок «Modules», за ним один
+  `ToggleSettingsRow` per known module из
+  `src/core/modules/data.json`. По умолчанию все включены. Состояние
+  персистится в `moduleVisibility` storage-ключе и фильтрует
+  карточную сетку Main Menu (см. § Экран 3 «Видимость модулей»).
+  Имена модулей берутся из `data.json` `name`-поля и не локализуются
+  (продуктовые названия, как и авиа-термины).
+
+- **Settings rows** (в этом порядке):
+  1. **Language** — кликабельная строка → bottom sheet с выбором
+     (English / Русский). Применяется немедленно.
+  2. **Theme** — bottom sheet с выбором (Auto / Light / Dark).
+  3. **Weight units** — info-row, значение «Tons (t)». Никаких
+     переключателей, никакого caption. Tons выбран в MVP как
+     перманентное значение (см. `01-vision.md` § «Что входит в MVP»
+     → Units).
+  4. **Wind units** — info-row, значение «Knots (KT)». Аналогично
+     перманентное.
+
+  Pre-follow-up существовал пятый пункт «Show data source on result»
+  (toggle). Он удалён в Sprint 6 follow-up Block 3 — source-chip на
+  result-панели был снят в PR #44, и тогл перестал контролировать
+  что-либо видимое.
 
 **Сохранение:** все изменения сохраняются в AsyncStorage немедленно через debounced write (300 ms).
 
@@ -688,40 +729,68 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 классы `.settings-list`, `.settings-row`, `.settings-name`,
 `.settings-val`, `.toggle`):
 
+Адаптивные размеры заданы в `tokens.sizing.settingsRow.{compact,
+regular}` и переключаются одним bool-ом `isRegular = width >=
+tokens.breakpoints.regularHeader` (768 pt — порог iPad-mini portrait).
+На iPad regular выбирается «regular» bundle: бoльшие фонты + padding,
+оптимизированные для cockpit-glance recall. iPhone (любая ориентация)
+и iPad portrait < 768 остаются на «compact».
+
 *Settings-list контейнер:*
 
-- Вертикальная колонка, gap 8 pt между строками, `marginTop: 12 pt` от
-  header.
+- Вертикальная колонка, gap `listGap` (8 pt compact / 12 pt regular)
+  между строками, `marginTop: tokens.spacing.md` от header.
+- На iPad regular screen имеет `flex: 1` + horizontal padding 24 pt
+  + флекс-spacer `View flex: 1` под последним row-ом, чтобы экран
+  визуально заполнил viewport без большой пустой области под
+  списком (см. § Адаптивность iPad ↔ iPhone — Settings).
+- На iPhone compact внешний контейнер без горизонтального padding-а
+  (наследует от `<Screen>`) и без флекс-spacer-а — content по
+  обычной портретной высоте.
 
 *Settings-row (один пункт):*
 
 - Surface: фон `tokens.colors.bgCard`, граница `tokens.colors.border`
-  (1 pt), `borderRadius: 8 pt`, padding `10 × 12 pt`.
+  (1 pt), `borderRadius: tokens.radii.md`.
+
+  | | compact | regular |
+  |---|---|---|
+  | minHeight | 44 pt | 72 pt |
+  | Padding (V × H) | 8 × 12 pt | 16 × 24 pt |
+  | Name font size | 12 pt | 16 pt |
+  | Name weight | 500 | 500 |
+  | Value font size | 11 pt mono | 16 pt mono |
+  | Chevron font size | 12 pt | 20 pt |
+
 - Раскладка: name слева, value/control справа (`justifyContent:
   space-between`, `alignItems: center`).
-- Name (settings-name): variant `caption` weight 500 (sans 12), цвет
-  `tokens.colors.textPrimary`.
-- Value (settings-val) для не-toggle строк: variant `bodySmall` mono
-  (mono 11 / 16, 400) — см. `monoSmall` форвард-сигнал из Crosswind
-  выше; цвет `tokens.colors.textSecondary`.
+- Name (settings-name): шрифт `tokens.typography.fontFamily.sans`,
+  цвет `tokens.colors.textPrimary`. Размер из таблицы выше.
+- Value (settings-val) для не-toggle строк: шрифт
+  `tokens.typography.fontFamily.mono`, цвет
+  `tokens.colors.textSecondary`. Размер из таблицы выше.
 - Для строк-«navigate to bottom-sheet» (Language, Theme): после value
-  добавляется `›` chevron — sans 12 pt, цвет `tokens.colors.textTertiary`,
+  добавляется `›` chevron — sans, цвет `tokens.colors.textTertiary`,
   margin-left 8 pt. Опционально иконка `chevron-right` из
   `@expo/vector-icons` вместо текстового глифа.
+- Info-rows (Weight units / Wind units) — те же размеры, value
+  read-only, никаких сегментов, никакого chevron.
+
+*Modules section title:*
+
+- Variant `body` weight 600, uppercase, letterSpacing 1 pt, цвет
+  `tokens.colors.textSecondary`. Font size — 12 pt compact / 16 pt
+  regular (`tokens.sizing.settingsRow.{compact,regular}.sectionTitleSize`).
 
 *Toggle (DS-компонент Toggle):*
 
-- Track: `32 × 18 pt`, `borderRadius: 9 pt`.
-- ON state: фон track-а `tokens.colors.accent`; knob — `14 × 14 pt`
-  белый круг (фон `#FFFFFF` — design-system to alias as
-  `colors.toggleKnob` если в светлой теме потребуется иной оттенок),
-  `borderRadius: 7 pt`, inset 2 pt от правого края track-а.
+- Track: `44 × 26 pt`, `borderRadius: 13 pt` (одинаков на compact +
+  regular в MVP — уже превышает оригинальное mockup-значение 32 × 18,
+  размер не требуется масштабировать дальше).
+- ON state: фон track-а `tokens.colors.accent`; knob — `22 × 22 pt`
+  круг (фон `tokens.colors.bgCard`), inset 2 pt от правого края track-а.
 - OFF state: фон track-а `tokens.colors.textTertiary`; knob inset
   2 pt от левого края.
-- Disabled toggle (Weight units / Wind units в MVP): track при
-  opacity 40 %; под title строки добавляется caption «Available in
-  upcoming release» — variant `bodySmall` (sans 11), цвет
-  `tokens.colors.textTertiary`.
 
 *Bottom-sheet для Language / Theme:*
 
@@ -745,23 +814,26 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 
 **Назначение:** информация о приложении, ссылки на юридические документы.
 
-**Содержимое (все 8 рядов реализованы — Version / Aircraft / Data source в
-PR `feat/crosswind-polish-2`, остальные 5 + advisory disclaimer paragraph
-в Sprint 6 / PR `feat/settings-about`):**
-1. ✅ **Version** — версия + build номер (через `expo-application`).
-2. ✅ **Aircraft** — «Boeing 787-8 (B787-9 — Phase 2)». Один аirframe
-   активен в MVP; -9 раскрыт как Phase 2 follow-up прямо в строке.
-3. ✅ **Validation** — «Active line pilots».
-4. ✅ **Data source** — формат `"<referenceDocument> · <dataVersion>"`,
+**Содержимое (7 рядов).** Aircraft-row был удалён в Sprint 6
+follow-up Block 5 как избыточный — вариант ВС выбирается per-
+calculation в Crosswind Takeoff calculator, не имеет смысла
+дублировать его в About. Итог:
+
+1. ✅ **Version** — формат «`<nativeApplicationVersion>` (`<nativeBuildVersion>`)»,
+   читается из `expo-application`. Например «1.0.0 (42)». **Никаких
+   SDK-строк, никаких runtime-деталей** — пользователю важна только
+   опубликованная версия приложения.
+2. ✅ **Validation** — «Active line pilots».
+3. ✅ **Data source** — формат `"<referenceDocument> · <dataVersion>"`,
    например «Boeing 787 FCOM · 2026-05-03.001». Значение читается из
    `crosswindRepository.load()`. Это — единственная visible точка
    source-attribution в приложении (см. Принцип 4).
-5. ✅ **Distribution** — «Public App Store».
-6. ✅ **Privacy policy** — кликабельная строка, открывает
+4. ✅ **Distribution** — «Public App Store».
+5. ✅ **Privacy policy** — кликабельная строка, открывает
    `PRIVACY_POLICY_URL` (из `src/core/constants.ts`) через
    `WebBrowser.openBrowserAsync` (`expo-web-browser`, НЕ WebView).
-7. ✅ **Terms of use** — аналогично, `TERMS_OF_USE_URL`.
-8. ✅ **Support** — `mailto:${SUPPORT_EMAIL}` через
+6. ✅ **Terms of use** — аналогично, `TERMS_OF_USE_URL`.
+7. ✅ **Support** — `mailto:${SUPPORT_EMAIL}` через
    `Linking.openURL`. Адрес читается из `src/core/constants.ts` —
    тот же placeholder, что в `src/app/error.tsx`, заменяется
    одновременно в Phase D (см. `07-app-store-compliance.md`).
@@ -895,6 +967,23 @@ landscape (`width >= 1024`) Crosswind-screen переходит в
 | iPhone any orientation (`< 1024`) | stacked vertical | compact (44 pt fields, segmented wrap 2×3 для RWYCC) | compact (`display` 48 / `monoMedium` 24) |
 | iPad portrait (regular width, `< 1024`) | stacked vertical | compact | compact |
 | iPad landscape (regular width, `≥ 1024`) | 2-column (input \| result) | regular (64 pt fields, monoMedium value, single-row 6-segment runway) + form `flex: 1` + `justify: space-between` | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) |
+
+**Layout · Settings.** В отличие от Crosswind, Settings переключает
+свой sizing-набор по **`regularHeader` breakpoint-у (768 pt)**, не по
+1024 pt — потому что Settings-экран горизонтально однокoлоночный, и
+бoльшая width iPad-portrait (810 pt) уже даёт достаточно места для
+72 pt row-ов с 16 pt label-фонтом и 24 pt screen padding.
+
+| Viewport | Row sizing | Screen padding | Bottom spacer |
+|----------|------------|----------------|---------------|
+| iPhone any orientation (`< 768`) | compact (44 pt minHeight) | 0 (наследует от `<Screen>`) | нет |
+| iPad portrait (`>= 768`, `< 1024`) | regular (72 pt minHeight) | 24 pt horizontal | `flex: 1` view под списком |
+| iPad landscape (`>= 1024`) | regular | 24 pt horizontal | `flex: 1` view под списком |
+
+Spacer + `flex: 1` на outer `<Stack>` гарантируют, что Settings-экран
+визуально заполняет cockpit-glance viewport без большой пустой
+области под последним row-ом. About-экран остаётся compact на всех
+viewport-ах — он короче по содержимому и не страдает от пустоты.
 | iPhone landscape (compact height) | 2-column compact-spaced (через media-щаблон) | compact | compact |
 
 Поэтому булева переменная `isRegular` в `CrosswindScreen` вычисляется
