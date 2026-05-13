@@ -1,20 +1,28 @@
 /**
  * Settings-list row variants (см. `02_Specification/06-ui-spec.md`
- * § Экран 5 «Settings-row»). Three shapes share the same surface
- * (bgCard, border, radii.md, padding 10×12 in tokens) but differ in
- * trailing affordance:
+ * § Экран 5 «Settings-row»). Shapes share the same surface (bgCard,
+ * border, radii.md) but differ in trailing affordance:
  *
  *   - NavigableSettingsRow — opens a sub-screen / bottom-sheet
  *     (label + value + chevron, whole row tappable).
  *   - ToggleSettingsRow    — boolean toggle (label + Toggle).
  *   - DisabledUnitsRow     — MVP unit chooser with two segments,
- *     only the first active, with caption below.
+ *     only the first active, with caption below. Retired in Sprint 6
+ *     follow-up Block 2 in favour of `InfoSettingsRow`; kept exported
+ *     for one commit while consumers migrate.
+ *   - InfoSettingsRow      — read-only label/value pair (no chevron,
+ *     no Pressable). Used for MVP-permanent unit rows.
+ *
+ * All variants accept `isRegular` and switch between two sizing
+ * bundles in `tokens.sizing.settingsRow.{compact, regular}` so a
+ * single bool propagated from the screen scales the whole list on
+ * iPad regular for cockpit-glance readability.
  */
 
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import type { ViewStyle } from 'react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
@@ -25,7 +33,26 @@ import { Toggle } from '../Toggle/Toggle';
 const ROW_BORDER_WIDTH = 1;
 const DISABLED_SEGMENT_OPACITY = 0.4;
 
-export interface NavigableSettingsRowProps {
+export interface SettingsRowSizingProp {
+  /** When true, use iPad-regular sizing (bigger minHeight / fonts). */
+  readonly isRegular?: boolean;
+}
+
+interface RowSizing {
+  readonly minHeight: number;
+  readonly paddingV: number;
+  readonly paddingH: number;
+  readonly labelSize: number;
+  readonly labelWeight: TextStyle['fontWeight'];
+  readonly valueSize: number;
+  readonly chevronSize: number;
+}
+
+function pickRowSizing(isRegular: boolean): RowSizing {
+  return isRegular ? tokens.sizing.settingsRow.regular : tokens.sizing.settingsRow.compact;
+}
+
+export interface NavigableSettingsRowProps extends SettingsRowSizingProp {
   readonly label: string;
   readonly value: string;
   readonly onPress: () => void;
@@ -37,10 +64,18 @@ export function NavigableSettingsRow({
   value,
   onPress,
   testID,
+  isRegular = false,
 }: NavigableSettingsRowProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const rowStyle = useRowStyle(palette.bgCard, palette.border);
+  const s = pickRowSizing(isRegular);
+  const rowStyle = useRowStyle(palette.bgCard, palette.border, s);
+  const labelStyle = useMemo<TextStyle>(
+    () => ({ fontSize: s.labelSize, fontWeight: s.labelWeight }),
+    [s.labelSize, s.labelWeight],
+  );
+  const valueStyle = useMemo<TextStyle>(() => ({ fontSize: s.valueSize }), [s.valueSize]);
+  const chevronStyle = useMemo<TextStyle>(() => ({ fontSize: s.chevronSize }), [s.chevronSize]);
 
   return (
     <Pressable
@@ -50,14 +85,14 @@ export function NavigableSettingsRow({
       style={rowStyle}
       testID={testID}
     >
-      <Text variant="caption" color="textPrimary">
+      <Text variant="caption" color="textPrimary" style={labelStyle}>
         {label}
       </Text>
       <Row align="center" gap="xs">
-        <Text variant="monoSmall" color="textSecondary">
+        <Text variant="mono" color="textSecondary" style={valueStyle}>
           {value}
         </Text>
-        <Text variant="caption" color="textTertiary">
+        <Text variant="caption" color="textTertiary" style={chevronStyle}>
           ›
         </Text>
       </Row>
@@ -65,7 +100,7 @@ export function NavigableSettingsRow({
   );
 }
 
-export interface ToggleSettingsRowProps {
+export interface ToggleSettingsRowProps extends SettingsRowSizingProp {
   readonly label: string;
   readonly value: boolean;
   readonly onChange: (next: boolean) => void;
@@ -77,14 +112,20 @@ export function ToggleSettingsRow({
   value,
   onChange,
   testID,
+  isRegular = false,
 }: ToggleSettingsRowProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const rowStyle = useRowStyle(palette.bgCard, palette.border);
+  const s = pickRowSizing(isRegular);
+  const rowStyle = useRowStyle(palette.bgCard, palette.border, s);
+  const labelStyle = useMemo<TextStyle>(
+    () => ({ fontSize: s.labelSize, fontWeight: s.labelWeight }),
+    [s.labelSize, s.labelWeight],
+  );
 
   return (
     <View style={rowStyle} testID={testID}>
-      <Text variant="caption" color="textPrimary">
+      <Text variant="caption" color="textPrimary" style={labelStyle}>
         {label}
       </Text>
       <Toggle
@@ -97,7 +138,41 @@ export function ToggleSettingsRow({
   );
 }
 
-export interface DisabledUnitsRowProps {
+export interface InfoSettingsRowProps extends SettingsRowSizingProp {
+  readonly label: string;
+  readonly value: string;
+  readonly testID: string;
+}
+
+export function InfoSettingsRow({
+  label,
+  value,
+  testID,
+  isRegular = false,
+}: InfoSettingsRowProps): ReactNode {
+  const { theme } = useTheme();
+  const palette = tokens.colors[theme.resolved];
+  const s = pickRowSizing(isRegular);
+  const rowStyle = useRowStyle(palette.bgCard, palette.border, s);
+  const labelStyle = useMemo<TextStyle>(
+    () => ({ fontSize: s.labelSize, fontWeight: s.labelWeight }),
+    [s.labelSize, s.labelWeight],
+  );
+  const valueStyle = useMemo<TextStyle>(() => ({ fontSize: s.valueSize }), [s.valueSize]);
+
+  return (
+    <View style={rowStyle} testID={testID}>
+      <Text variant="caption" color="textPrimary" style={labelStyle}>
+        {label}
+      </Text>
+      <Text variant="mono" color="textSecondary" style={valueStyle}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
+export interface DisabledUnitsRowProps extends SettingsRowSizingProp {
   readonly label: string;
   readonly activeLabel: string;
   readonly disabledLabel: string;
@@ -118,14 +193,20 @@ export function DisabledUnitsRow({
   disabledLabel,
   caption,
   testID,
+  isRegular = false,
 }: DisabledUnitsRowProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const styles = useDisabledUnitsStyles(palette);
+  const s = pickRowSizing(isRegular);
+  const styles = useDisabledUnitsStyles(palette, s);
+  const labelStyle = useMemo<TextStyle>(
+    () => ({ fontSize: s.labelSize, fontWeight: s.labelWeight }),
+    [s.labelSize, s.labelWeight],
+  );
 
   return (
     <View style={styles.container} testID={testID}>
-      <Text variant="caption" color="textPrimary">
+      <Text variant="caption" color="textPrimary" style={labelStyle}>
         {label}
       </Text>
       <View style={styles.segments}>
@@ -147,7 +228,7 @@ export function DisabledUnitsRow({
   );
 }
 
-function useRowStyle(bgCard: string, border: string): ViewStyle {
+function useRowStyle(bgCard: string, border: string, s: RowSizing): ViewStyle {
   return useMemo<ViewStyle>(
     () => ({
       alignItems: 'center',
@@ -157,19 +238,18 @@ function useRowStyle(bgCard: string, border: string): ViewStyle {
       borderWidth: ROW_BORDER_WIDTH,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      minHeight: tokens.layout.minTouchTarget,
-      paddingHorizontal: tokens.spacing.md,
-      paddingVertical: tokens.spacing.sm,
+      minHeight: s.minHeight,
+      paddingHorizontal: s.paddingH,
+      paddingVertical: s.paddingV,
     }),
-    [bgCard, border],
+    [bgCard, border, s.minHeight, s.paddingH, s.paddingV],
   );
 }
 
-function useDisabledUnitsStyles(palette: {
-  readonly bgCard: string;
-  readonly border: string;
-  readonly accent: string;
-}): DisabledUnitsStyles {
+function useDisabledUnitsStyles(
+  palette: { readonly bgCard: string; readonly border: string; readonly accent: string },
+  s: RowSizing,
+): DisabledUnitsStyles {
   return useMemo<DisabledUnitsStyles>(
     () => ({
       container: {
@@ -177,8 +257,8 @@ function useDisabledUnitsStyles(palette: {
         borderColor: palette.border,
         borderRadius: tokens.radii.md,
         borderWidth: ROW_BORDER_WIDTH,
-        paddingHorizontal: tokens.spacing.md,
-        paddingVertical: tokens.spacing.sm,
+        paddingHorizontal: s.paddingH,
+        paddingVertical: s.paddingV,
       },
       activeSegment: {
         alignItems: 'center',
@@ -204,6 +284,6 @@ function useDisabledUnitsStyles(palette: {
         marginTop: tokens.spacing.xs,
       },
     }),
-    [palette.accent, palette.bgCard, palette.border],
+    [palette.accent, palette.bgCard, palette.border, s.paddingH, s.paddingV],
   );
 }

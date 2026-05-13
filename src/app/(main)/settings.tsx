@@ -10,7 +10,8 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
+import type { ViewStyle } from 'react-native';
 
 import { getCurrentLanguage, setLanguage, storage, useTheme, useTranslation } from '../../core';
 import type { SupportedLanguage, ThemeMode } from '../../core';
@@ -62,9 +63,14 @@ export default function Settings(): ReactNode {
     [t],
   );
 
+  const outerStackStyle = useSettingsOuterStyle(isRegular);
+  const listGap = isRegular
+    ? tokens.sizing.settingsRow.regular.listGap
+    : tokens.sizing.settingsRow.compact.listGap;
+
   return (
     <Screen testID="settings-screen">
-      <Stack gap="md">
+      <Stack gap="md" style={outerStackStyle}>
         <ScreenHeader
           title={t('settings.title')}
           tabs={tabs}
@@ -79,10 +85,13 @@ export default function Settings(): ReactNode {
           language={state.language}
           themeMode={theme.mode}
           showDataSource={state.showDataSource}
+          isRegular={isRegular}
+          listGap={listGap}
           onOpenLanguage={state.openLanguageSheet}
           onOpenTheme={state.openThemeSheet}
           onDataSourceChange={state.setDataSource}
         />
+        {isRegular ? <View style={SETTINGS_SPACER} testID="settings-fill-spacer" /> : null}
       </Stack>
       <SettingsSheets
         t={t}
@@ -94,6 +103,21 @@ export default function Settings(): ReactNode {
         onSelectTheme={state.selectTheme}
       />
     </Screen>
+  );
+}
+
+const SETTINGS_SPACER: ViewStyle = { flex: 1 };
+
+function useSettingsOuterStyle(isRegular: boolean): ViewStyle {
+  const padding = isRegular
+    ? tokens.sizing.settingsRow.regular.screenPadding
+    : tokens.sizing.settingsRow.compact.screenPadding;
+  return useMemo<ViewStyle>(
+    () => ({
+      flex: isRegular ? 1 : 0,
+      paddingHorizontal: padding,
+    }),
+    [isRegular, padding],
   );
 }
 
@@ -163,6 +187,8 @@ interface SettingsListProps {
   readonly language: SupportedLanguage;
   readonly themeMode: ThemeMode;
   readonly showDataSource: boolean;
+  readonly isRegular: boolean;
+  readonly listGap: number;
   readonly onOpenLanguage: () => void;
   readonly onOpenTheme: () => void;
   readonly onDataSourceChange: (next: boolean) => void;
@@ -173,26 +199,31 @@ function SettingsList({
   language,
   themeMode,
   showDataSource,
+  isRegular,
+  listGap,
   onOpenLanguage,
   onOpenTheme,
   onDataSourceChange,
 }: SettingsListProps): ReactNode {
   const languageLabel = languageLabelFor(language, t);
   const themeLabel = themeLabelFor(themeMode, t);
+  const listStyle = useMemo<ViewStyle>(() => ({ gap: listGap }), [listGap]);
 
   return (
-    <Stack gap="sm">
+    <View style={listStyle}>
       <NavigableSettingsRow
         label={t('settings.language')}
         value={languageLabel}
         onPress={onOpenLanguage}
         testID="settings-row-language"
+        isRegular={isRegular}
       />
       <NavigableSettingsRow
         label={t('settings.theme')}
         value={themeLabel}
         onPress={onOpenTheme}
         testID="settings-row-theme"
+        isRegular={isRegular}
       />
       <DisabledUnitsRow
         label={t('settings.weightUnits')}
@@ -200,6 +231,7 @@ function SettingsList({
         disabledLabel="Pounds (lbs)"
         caption={t('settings.unitsUpcomingRelease')}
         testID="settings-row-weight-units"
+        isRegular={isRegular}
       />
       <DisabledUnitsRow
         label={t('settings.windUnits')}
@@ -207,14 +239,16 @@ function SettingsList({
         disabledLabel="m/s"
         caption={t('settings.unitsUpcomingRelease')}
         testID="settings-row-wind-units"
+        isRegular={isRegular}
       />
       <ToggleSettingsRow
         label={t('settings.showDataSource')}
         value={showDataSource}
         onChange={onDataSourceChange}
         testID="settings-row-show-data-source"
+        isRegular={isRegular}
       />
-    </Stack>
+    </View>
   );
 }
 

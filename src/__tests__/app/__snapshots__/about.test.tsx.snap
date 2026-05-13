@@ -130,7 +130,9 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                     "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 16,
+                  },
                 ]
               }
             >
@@ -1232,7 +1234,9 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                     "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 16,
+                  },
                 ]
               }
             >

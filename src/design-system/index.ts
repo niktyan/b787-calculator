@@ -49,6 +49,7 @@ export {
   // Settings/About list rows
   NavigableSettingsRow,
   ToggleSettingsRow,
+  InfoSettingsRow,
   DisabledUnitsRow,
 } from './components';
 
@@ -91,5 +92,6 @@ export type {
   // Settings/About list rows
   NavigableSettingsRowProps,
   ToggleSettingsRowProps,
+  InfoSettingsRowProps,
   DisabledUnitsRowProps,
 } from './components';

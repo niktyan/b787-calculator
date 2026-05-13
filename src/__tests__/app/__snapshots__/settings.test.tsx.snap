@@ -39,7 +39,10 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
             "gap": 12,
             "justifyContent": "flex-start",
           },
-          undefined,
+          {
+            "flex": 0,
+            "paddingHorizontal": 0,
+          },
         ]
       }
     >
@@ -130,7 +133,9 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                     "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 16,
+                  },
                 ]
               }
             >
@@ -422,15 +427,9 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "gap": 8,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
+          {
+            "gap": 8,
+          }
         }
       >
         <View
@@ -494,7 +493,10 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -521,13 +523,15 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                   {
                     "color": "#8B949E",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -546,7 +550,9 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                     "lineHeight": 16,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 12,
+                  },
                 ]
               }
             >
@@ -615,7 +621,10 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -642,13 +651,15 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                   {
                     "color": "#8B949E",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -667,7 +678,9 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                     "lineHeight": 16,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 12,
+                  },
                 ]
               }
             >
@@ -701,7 +714,10 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -830,7 +846,10 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -963,7 +982,10 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1084,7 +1106,10 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
             "gap": 12,
             "justifyContent": "flex-start",
           },
-          undefined,
+          {
+            "flex": 0,
+            "paddingHorizontal": 0,
+          },
         ]
       }
     >
@@ -1175,7 +1200,9 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                     "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 16,
+                  },
                 ]
               }
             >
@@ -1467,15 +1494,9 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
       </View>
       <View
         style={
-          [
-            {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "gap": 8,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
+          {
+            "gap": 8,
+          }
         }
       >
         <View
@@ -1539,7 +1560,10 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1566,13 +1590,15 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                   {
                     "color": "#4B5563",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -1591,7 +1617,9 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                     "lineHeight": 16,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 12,
+                  },
                 ]
               }
             >
@@ -1660,7 +1688,10 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1687,13 +1718,15 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                   {
                     "color": "#4B5563",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -1712,7 +1745,9 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                     "lineHeight": 16,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 12,
+                  },
                 ]
               }
             >
@@ -1746,7 +1781,10 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1875,7 +1913,10 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -2008,7 +2049,10 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >

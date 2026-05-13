@@ -64,6 +64,7 @@ export function ScreenHeader<TId extends string>({
     }),
     [palette.accentSoft, sizing.logoRadius, sizing.logoSize],
   );
+  const titleStyle = useMemo(() => ({ fontSize: sizing.titleSize }), [sizing.titleSize]);
 
   const brand = (
     <Row align="center" gap="sm">
@@ -72,7 +73,9 @@ export function ScreenHeader<TId extends string>({
           B7
         </Text>
       </View>
-      <Text variant="body">{title}</Text>
+      <Text variant="body" style={titleStyle}>
+        {title}
+      </Text>
     </Row>
   );
 
