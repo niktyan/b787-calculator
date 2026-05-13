@@ -8,12 +8,12 @@
  */
 
 import { useRouter } from 'expo-router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
-import { getCurrentLanguage, setLanguage, storage, useTheme, useTranslation } from '../../core';
+import { getCurrentLanguage, setLanguage, useTheme, useTranslation } from '../../core';
 import type { SupportedLanguage, ThemeMode } from '../../core';
 import {
   BottomSheet,
@@ -23,7 +23,6 @@ import {
   Screen,
   ScreenHeader,
   Stack,
-  ToggleSettingsRow,
   tokens,
 } from '../../design-system';
 import type { NavPillsItem } from '../../design-system';
@@ -84,12 +83,10 @@ export default function Settings(): ReactNode {
           t={t}
           language={state.language}
           themeMode={theme.mode}
-          showDataSource={state.showDataSource}
           isRegular={isRegular}
           listGap={listGap}
           onOpenLanguage={state.openLanguageSheet}
           onOpenTheme={state.openThemeSheet}
-          onDataSourceChange={state.setDataSource}
         />
         {isRegular ? <View style={SETTINGS_SPACER} testID="settings-fill-spacer" /> : null}
       </Stack>
@@ -123,32 +120,17 @@ function useSettingsOuterStyle(isRegular: boolean): ViewStyle {
 
 interface SettingsState {
   readonly language: SupportedLanguage;
-  readonly showDataSource: boolean;
   readonly sheet: SheetKind;
   readonly openLanguageSheet: () => void;
   readonly openThemeSheet: () => void;
   readonly closeSheet: () => void;
   readonly selectLanguage: (next: SupportedLanguage) => void;
   readonly selectTheme: (next: ThemeMode) => void;
-  readonly setDataSource: (next: boolean) => void;
 }
 
 function useSettingsState(setMode: (next: ThemeMode) => void): SettingsState {
   const [language, setLanguageState] = useState<SupportedLanguage>(() => getCurrentLanguage());
-  const [showDataSource, setShowDataSource] = useState<boolean>(true);
   const [sheet, setSheet] = useState<SheetKind>(null);
-
-  useEffect(() => {
-    let active = true;
-    void storage.get('showDataSourceOnResult').then((stored) => {
-      if (active && stored !== null) {
-        setShowDataSource(stored);
-      }
-    });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   const selectLanguage = useCallback((next: SupportedLanguage): void => {
     void setLanguage(next);
@@ -164,21 +146,14 @@ function useSettingsState(setMode: (next: ThemeMode) => void): SettingsState {
     [setMode],
   );
 
-  const setDataSource = useCallback((next: boolean): void => {
-    setShowDataSource(next);
-    storage.set('showDataSourceOnResult', next);
-  }, []);
-
   return {
     language,
-    showDataSource,
     sheet,
     openLanguageSheet: useCallback((): void => setSheet('language'), []),
     openThemeSheet: useCallback((): void => setSheet('theme'), []),
     closeSheet: useCallback((): void => setSheet(null), []),
     selectLanguage,
     selectTheme,
-    setDataSource,
   };
 }
 
@@ -186,24 +161,20 @@ interface SettingsListProps {
   readonly t: Translator;
   readonly language: SupportedLanguage;
   readonly themeMode: ThemeMode;
-  readonly showDataSource: boolean;
   readonly isRegular: boolean;
   readonly listGap: number;
   readonly onOpenLanguage: () => void;
   readonly onOpenTheme: () => void;
-  readonly onDataSourceChange: (next: boolean) => void;
 }
 
 function SettingsList({
   t,
   language,
   themeMode,
-  showDataSource,
   isRegular,
   listGap,
   onOpenLanguage,
   onOpenTheme,
-  onDataSourceChange,
 }: SettingsListProps): ReactNode {
   const languageLabel = languageLabelFor(language, t);
   const themeLabel = themeLabelFor(themeMode, t);
@@ -235,13 +206,6 @@ function SettingsList({
         label={t('settings.windUnits')}
         value="Knots (KT)"
         testID="settings-row-wind-units"
-        isRegular={isRegular}
-      />
-      <ToggleSettingsRow
-        label={t('settings.showDataSource')}
-        value={showDataSource}
-        onChange={onDataSourceChange}
-        testID="settings-row-show-data-source"
         isRegular={isRegular}
       />
     </View>

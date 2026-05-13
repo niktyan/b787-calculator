@@ -1,4 +1,4 @@
-import { act, fireEvent } from '@testing-library/react-native';
+import { fireEvent } from '@testing-library/react-native';
 
 import Settings from '../../app/(main)/settings';
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
@@ -37,7 +37,7 @@ describe('Settings route', () => {
     mockCurrentLanguage = 'en';
   });
 
-  it('renders the brand block, NavPills with Settings active, and all 5 setting rows', () => {
+  it('renders the brand block, NavPills with Settings active, and all 4 setting rows', () => {
     const tree = renderWithTheme(<Settings />, { mode: 'dark' });
     expect(tree.getByTestId('settings-screen')).toBeTruthy();
     expect(tree.getByTestId('settings-logo')).toBeTruthy();
@@ -46,7 +46,6 @@ describe('Settings route', () => {
     expect(tree.getByTestId('settings-row-theme')).toBeTruthy();
     expect(tree.getByTestId('settings-row-weight-units')).toBeTruthy();
     expect(tree.getByTestId('settings-row-wind-units')).toBeTruthy();
-    expect(tree.getByTestId('settings-row-show-data-source')).toBeTruthy();
   });
 
   it('navigates to /menu when Modules tab is tapped', () => {
@@ -93,22 +92,9 @@ describe('Settings route', () => {
     expect(() => getByTestId('settings-sheet-theme-light')).toThrow();
   });
 
-  it('toggles "Show data source on result" and persists via storage', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const AsyncStorage = require('@react-native-async-storage/async-storage') as {
-      setItem: jest.Mock;
-      getAllKeys: () => Promise<readonly string[]>;
-      getItem: (key: string) => Promise<string | null>;
-    };
-    const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
-    const toggle = getByTestId('settings-row-show-data-source-toggle');
-    await act(async () => {
-      fireEvent.press(toggle);
-      // Allow debounced write (300ms) to flush.
-      await new Promise((resolve) => setTimeout(resolve, 350));
-    });
-    const stored = await AsyncStorage.getItem('b787.showDataSourceOnResult');
-    expect(stored).toBe('false');
+  it('no longer renders the "Show data source on result" row', () => {
+    const { queryByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
+    expect(queryByTestId('settings-row-show-data-source')).toBeNull();
   });
 
   it('renders Weight units as an info row with value "Tons (t)" and no caption', () => {

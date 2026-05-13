@@ -123,13 +123,11 @@ describe('storage', () => {
       storage.set('disclaimerAccepted', true);
       storage.set('language', 'ru');
       storage.set('theme', 'dark');
-      storage.set('showDataSourceOnResult', false);
       await storage.flushNow();
 
       expect(await storage.get('disclaimerAccepted')).toBe(true);
       expect(await storage.get('language')).toBe('ru');
       expect(await storage.get('theme')).toBe('dark');
-      expect(await storage.get('showDataSourceOnResult')).toBe(false);
     });
   });
 });
