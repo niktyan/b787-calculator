@@ -24,6 +24,30 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: '@react-native/*'
         update-types: ['version-update:semver-major']
+
+      # Gap 1 · 0.X versioning — `react-native` and
+      # `react-native-worklets` use 0.X.Y semantics where each 0.X
+      # bump is effectively a major release (new RN architecture
+      # baseline / new worklets ABI). Dependabot classifies them as
+      # semver-minor by npm leading-zero rule, so the major-only
+      # rules above don't fire. Block minor too. PATCH within a 0.X
+      # (e.g. 0.81.5 → 0.81.6) remains auto-proposed — those are
+      # typically safe. Discovered via PR #34 (RN 0.81 → 0.85).
+      # See ADR-0008 § "Enforcement gaps and refinements".
+      - dependency-name: 'react-native'
+        update-types: ['version-update:semver-minor']
+      - dependency-name: 'react-native-worklets'
+        update-types: ['version-update:semver-minor']
+
+      # Gap 2 · Prefix matching — `expo-*` glob doesn't match
+      # `eslint-config-expo` or `jest-expo` (they don't start with
+      # "expo-"), but their major versions track Expo SDK release
+      # cycle. Explicit entries needed. Discovered via PR #36
+      # (eslint-config-expo 10.0.0 → 55.0.0).
+      - dependency-name: 'eslint-config-expo'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'jest-expo'
+        update-types: ['version-update:semver-major']
     groups:
       production-dependencies:
         dependency-type: 'production'
