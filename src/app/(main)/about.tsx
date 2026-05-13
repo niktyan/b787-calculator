@@ -1,12 +1,15 @@
 /**
  * About screen (см. `02_Specification/06-ui-spec.md` § Экран 6).
  *
- * Eight rows: Version, Aircraft, Validation, Data source, Distribution,
+ * Seven rows: Version, Validation, Data source, Distribution,
  * Privacy policy, Terms of use, Support — plus the advisory disclaimer
  * paragraph at the bottom (verbatim from
  * `02_Specification/07-app-store-compliance.md` § "About screen —
- * раздел Disclaimer"). Privacy/Terms open via expo-web-browser;
- * Support opens the system mail composer via Linking.
+ * раздел Disclaimer"). The Aircraft row was removed in Sprint 6
+ * follow-up Block 5 — aircraft variant is selected per-calculation
+ * in Crosswind Takeoff and therefore no longer redundantly displayed
+ * here. Privacy/Terms open via expo-web-browser; Support opens the
+ * system mail composer via Linking.
  */
 
 import * as Application from 'expo-application';
@@ -114,18 +117,13 @@ interface AboutRowsProps {
 }
 
 function AboutRows({ t, onOpenPrivacy, onOpenTerms, onOpenSupport }: AboutRowsProps): ReactNode {
-  const version = Application.nativeApplicationVersion ?? '0.0.0';
+  const versionDisplay = resolveVersionDisplay();
   const dataSourceValue = resolveDataSource();
   const viewAffordance = `${t('about.openExternal')} →`;
 
   return (
     <Stack gap="sm">
-      <AboutRow label={t('about.version')} value={version} testID="about-row-version" />
-      <AboutRow
-        label={t('about.aircraft')}
-        value={t('about.aircraftValue')}
-        testID="about-row-aircraft"
-      />
+      <AboutRow label={t('about.version')} value={versionDisplay} testID="about-row-version" />
       <AboutRow
         label={t('about.validation')}
         value={t('about.validationValue')}
@@ -161,6 +159,22 @@ function AboutRows({ t, onOpenPrivacy, onOpenTerms, onOpenSupport }: AboutRowsPr
       />
     </Stack>
   );
+}
+
+/**
+ * Composes the Version row value as `<app version> (<build number>)`.
+ * Falls back to `'0.0.0'` if expo-application returns null (development
+ * runs); the build-number suffix is omitted when not available so the
+ * row stays clean. Intentionally does not surface the Expo SDK version —
+ * the user cares about the published app version, not the runtime SDK.
+ */
+function resolveVersionDisplay(): string {
+  const version = Application.nativeApplicationVersion ?? '0.0.0';
+  const build = Application.nativeBuildVersion;
+  if (build === null || build === '') {
+    return version;
+  }
+  return `${version} (${build})`;
 }
 
 function resolveDataSource(): string {

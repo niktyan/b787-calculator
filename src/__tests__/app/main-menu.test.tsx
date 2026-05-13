@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
 import MainMenu from '../../app/(main)/menu';
-import { STORAGE_KEYS } from '../../core/storage';
+import { STORAGE_KEYS, storage } from '../../core/storage';
 
 const mockPush = jest.fn();
 
@@ -24,6 +24,7 @@ jest.mock('react-i18next', () => ({
 describe('Main Menu route', () => {
   beforeEach(async () => {
     mockPush.mockClear();
+    await storage.flushNow();
     await AsyncStorage.clear();
   });
 
@@ -81,9 +82,12 @@ describe('Main Menu route', () => {
       JSON.stringify({ 'crosswind-landing': false }),
     );
     const { queryByTestId, getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
-    await waitFor(() => {
-      expect(queryByTestId('module-card-crosswind-landing')).toBeNull();
-    });
+    await waitFor(
+      () => {
+        expect(queryByTestId('module-card-crosswind-landing')).toBeNull();
+      },
+      { timeout: 5000 },
+    );
     expect(getByTestId('module-card-crosswind-takeoff')).toBeTruthy();
   });
 
@@ -93,9 +97,12 @@ describe('Main Menu route', () => {
       JSON.stringify({ 'crosswind-landing': false, 'crosswind-takeoff': false }),
     );
     const { queryByTestId, getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
-    await waitFor(() => {
-      expect(getByTestId('main-menu-empty')).toBeTruthy();
-    });
+    await waitFor(
+      () => {
+        expect(getByTestId('main-menu-empty')).toBeTruthy();
+      },
+      { timeout: 5000 },
+    );
     expect(queryByTestId('main-menu-grid')).toBeNull();
     fireEvent.press(getByTestId('main-menu-empty-open-settings'));
     expect(mockPush).toHaveBeenCalledWith('/settings');

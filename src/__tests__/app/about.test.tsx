@@ -31,13 +31,12 @@ describe('About route', () => {
     mockOpenBrowserAsync.mockClear();
   });
 
-  it('renders the brand block, NavPills with About active, and all 8 rows in spec order', () => {
+  it('renders the brand block, NavPills with About active, and all 7 rows in spec order', () => {
     const tree = renderWithTheme(<About />, { mode: 'dark' });
     expect(tree.getByTestId('about-screen')).toBeTruthy();
     expect(tree.getByTestId('about-logo')).toBeTruthy();
     expect(tree.getByTestId('about-tabs')).toBeTruthy();
     expect(tree.getByTestId('about-row-version')).toBeTruthy();
-    expect(tree.getByTestId('about-row-aircraft')).toBeTruthy();
     expect(tree.getByTestId('about-row-validation')).toBeTruthy();
     expect(tree.getByTestId('about-row-data-source')).toBeTruthy();
     expect(tree.getByTestId('about-row-distribution')).toBeTruthy();
@@ -45,6 +44,7 @@ describe('About route', () => {
     expect(tree.getByTestId('about-row-terms-of-use')).toBeTruthy();
     expect(tree.getByTestId('about-row-support')).toBeTruthy();
     expect(tree.getByTestId('about-disclaimer')).toBeTruthy();
+    expect(tree.queryByTestId('about-row-aircraft')).toBeNull();
   });
 
   it('renders the Data source row with referenceDocument · dataVersion format', () => {
