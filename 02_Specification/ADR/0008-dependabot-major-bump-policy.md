@@ -194,3 +194,139 @@ merge». Defense-in-depth: `expo-doctor` advisory остаётся в CI
   в обычном PR review — тогда policy можно ослабить (но,
   скорее всего, всё равно не стоит: deliberate single-PR
   migration остаётся правильным паттерном).
+
+---
+
+## Enforcement gaps and refinements (2026-05-13)
+
+Через несколько часов после merge ADR-0008 (PR #46) Dependabot
+выкатил три накопленных PR-а (#34, #35, #36). Inspection-проход
+по ним выявил **два конкретных пробела** в первоначальных
+ignore-правилах. Эта секция фиксирует обнаруженные пробелы и
+добавленные refinements. Никаких изменений в Decision /
+Consequences / Alternatives выше не делается — там описана
+policy intent, которая остаётся в силе; здесь — implementation
+fixes для случаев, которые intent покрывает, но регулярное
+выражение в `dependabot.yml` мимо них пропустило.
+
+### Gap 1 · 0.X versioning of `react-native` / `react-native-worklets`
+
+**Discovery case:** PR #34 (production-dependencies group)
+предлагал bundle с `react-native` 0.81.5 → 0.85.3 и
+`react-native-worklets` 0.5.1 → 0.8.3.
+
+**Что происходит:** обе библиотеки используют 0.X.Y versioning.
+По semver-спецификации (и по реализации Dependabot) bump
+`0.81.X → 0.85.Y` классифицируется как
+`version-update:semver-minor`, потому что **major-position
+остаётся `0`** — меняется только minor (`81 → 85`). Наше
+исходное правило для `react-native` фиксировало только
+`semver-major` — оно не сработало.
+
+**Что на практике:** в React Native экосистеме каждый
+`0.X` bump — это де-факто major release. RN 0.81 идёт с
+Expo SDK 54, RN 0.85 — с SDK 56+. Worklets 0.5 vs 0.8 — это
+несовместимые ABI-уровни для нативной части Reanimated 4.x.
+То есть `0.X` minor по semver-классификации = SDK-boundary
+crossing по нашему intent.
+
+**Fix:** в `.github/dependabot.yml` добавлены явные правила:
+
+```yaml
+- dependency-name: 'react-native'
+  update-types: ['version-update:semver-minor']
+- dependency-name: 'react-native-worklets'
+  update-types: ['version-update:semver-minor']
+```
+
+**Что остаётся auto-proposed:** patch-bumps внутри 0.X
+(`0.81.5 → 0.81.6`) — те, как правило, безопасны (bug-fixes
+без breaking native changes).
+
+**Почему только эти два пакета, а не «все RN-stack 0.X»:**
+другие react-native-* пакеты (gesture-handler, reanimated,
+screens, safe-area-context, vector-icons) используют
+**полноценный 1.X / 2.X / 4.X / 5.X / 15.X versioning**, и для
+них стандартное semver-major правило работает корректно.
+Расширять Gap-1 fix на них — overshoot.
+
+### Gap 2 · Prefix matching не покрывает `eslint-config-expo` / `jest-expo`
+
+**Discovery case:** PR #36 предлагал
+`eslint-config-expo` 10.0.0 → 55.0.0 — явный SDK-boundary
+crossing (10.x для SDK 54, 55.x для SDK 55).
+
+**Что происходит:** Dependabot pattern matching для
+`dependency-name` — **prefix-based glob**. Паттерн `expo-*`
+матчит `expo-application`, `expo-localization`, и т.п. — но
+**не** `eslint-config-expo` (начинается с `eslint-config-`,
+не с `expo-`). Аналогично не матчит `jest-expo` (начинается
+с `jest-`). Оба пакета — часть Expo-published ecosystem, и их
+major-версии track Expo SDK release cycle.
+
+**Fix:** добавлены explicit-name правила:
+
+```yaml
+- dependency-name: 'eslint-config-expo'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'jest-expo'
+  update-types: ['version-update:semver-major']
+```
+
+**Почему не глобальный pattern `*expo*`:** слишком жадный —
+зацепит сторонние пакеты, имеющие `expo` в имени, но не
+координированные с Expo SDK (например, гипотетический
+`my-expo-helper@1.x`). Explicit list — predictable.
+
+### Полная картина после refinements
+
+Ignore-block в `.github/dependabot.yml` теперь покрывает:
+
+1. **Все** SDK-coordinated пакеты с нормальным 1+ versioning:
+   semver-major для `expo`, `expo-*`, `react`, `react-native`,
+   `react-native-*`, `@react-native/*`.
+2. **0.X-versioned** RN-stack пакеты: semver-minor для
+   `react-native`, `react-native-worklets`.
+3. **Misnamed** SDK-coordinated пакеты: semver-major для
+   `eslint-config-expo`, `jest-expo`.
+
+PR-noise reduction: ожидается, что Dependabot перестанет
+открывать PR-ы для всех трёх категорий вышеперечисленных
+SDK-boundary-crossing bumps.
+
+### Acknowledged limitation
+
+Этот refinement-pass не делает enforcement bullet-proof — он
+закрывает **только** два пробела, обнаруженные на сегодняшних
+трёх PR-ах. Любой **новый именованный SDK-coordinated пакет**,
+не подходящий под существующие prefix-патерны и не добавленный
+явно (например, гипотетический будущий `metro-react-native-*`
+крос, или новый `@expo/some-tool`, или `react-test-renderer-*`
+с зависимостью от RN-version), потребует **следующего
+amendment cycle**.
+
+**Процесс при обнаружении нового case:**
+
+1. Inspection — открыт Dependabot PR, проверяется, какие пакеты
+   и какие версии.
+2. Если PR содержит SDK-coordinated пакет, пересекающий
+   SDK boundary, — close PR с rationale (ссылка на ADR-0008).
+3. **В том же или следующем PR** — extend `.github/dependabot.yml`
+   ignore-блок новым правилом + amend этот ADR новой
+   sub-section в Enforcement gaps (формат как у Gap 1 / Gap 2:
+   discovery case, что происходит, fix, что остаётся
+   auto-proposed).
+
+Это превращает каждый случайный mis-pattern из incident в
+documented refinement. Со временем ignore-block accumulates
+конкретные правила, основанные на наблюдаемом поведении
+Dependabot, а не на воображаемом полном списке всех возможных
+SDK-coordinated пакетов.
+
+**Manual-review остаётся primary safety net.** Ignore-block —
+это PR-noise-reducer и first-line filter, но не замена
+inspection-проходу перед merge любого Dependabot PR,
+затрагивающего production-dependencies. Inspection-протокол
+(см. предыдущий cleanup-prompt от 2026-05-13) воспроизводимо
+ловит SDK-boundary issues, даже если правила в
+`dependabot.yml` для конкретного пакета ещё не добавлены.
