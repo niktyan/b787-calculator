@@ -460,6 +460,24 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 10
+    ignore:
+      # Expo SDK-coordinated packages — MAJOR bumps require a
+      # coordinated SDK upgrade (expo + react-native + all expo-*
+      # peers + native config), not point-bumps via Dependabot.
+      # PATCH and MINOR within the current SDK remain auto-proposed.
+      # See ADR-0008 and § "Dependabot major-bump policy" below.
+      - dependency-name: "expo"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "expo-*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-native"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-native-*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@react-native/*"
+        update-types: ["version-update:semver-major"]
     groups:
       production-dependencies:
         dependency-type: "production"
@@ -484,6 +502,16 @@ updates:
 ```
 
 Раз в неделю Dependabot создаёт PR-ы с обновлениями. Они проходят CI как обычные PR. Безопасные обновления (patch для devDependencies) могут merge-иться автоматически (см. ниже).
+
+### Dependabot major-bump policy
+
+Dependabot настроен **пропускать MAJOR-обновления** для SDK-coordinated пакетов: `expo`, `expo-*`, `react`, `react-native`, `react-native-*`, `@react-native/*`. PATCH- и MINOR-обновления внутри текущей SDK по-прежнему предлагаются автоматически — они, как правило, безопасны, и мы хотим их получать.
+
+**Почему:** major-bumps этих пакетов пересекают границу Expo SDK и требуют координированных upgrade-ов нескольких peer-пакетов плюс изменения native-конфигурации (`app.json`, prebuild, dev client). Поштучные point-bumps через Dependabot создают **гибридное SDK-состояние**, которое проходит статический CI (lint / typecheck / tests), но падает в runtime — расхождение между версиями нативных модулей экспоутит баги, не воспроизводимые в unit-тестах.
+
+**Как делать SDK upgrade правильно:** отдельный deliberate PR, следующий [Expo SDK upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/) — один PR обновляет `expo` вместе со всеми связанными peer-пакетами и native-конфигом за раз. После merge — preview-build с лейблом `preview`, ручная функциональная проверка в Expo Go / TestFlight, и только потом релиз.
+
+Решение зафиксировано ADR-0008.
 
 ### Auto-merge безопасных Dependabot PR-ов (`.github/workflows/dependabot-auto-merge.yml`)
 
