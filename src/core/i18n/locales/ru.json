@@ -25,7 +25,6 @@
   },
   "placeholder": {
     "crosswindBody": "Модуль Crosswind — реализация в следующем спринте",
-    "settingsBody": "Настройки — реализация в следующем спринте",
     "aboutBody": "О приложении — реализация в следующем спринте"
   },
   "crosswind": {
@@ -51,25 +50,34 @@
   "settings": {
     "title": "Настройки",
     "language": "Язык",
+    "languageEnglish": "English",
+    "languageRussian": "Русский",
     "theme": "Тема",
+    "themeAuto": "Авто",
+    "themeLight": "Светлая",
+    "themeDark": "Тёмная",
     "weightUnits": "Единицы веса",
     "windUnits": "Единицы ветра",
     "showDataSource": "Показывать источник данных",
-    "themeAuto": "Авто",
-    "themeLight": "Светлая",
-    "themeDark": "Тёмная"
+    "unitsUpcomingRelease": "Будет доступно в одном из ближайших обновлений",
+    "sheetClose": "Закрыть"
   },
   "about": {
     "title": "О приложении",
     "version": "Версия",
     "aircraft": "Воздушное судно",
-    "aircraftValue": "Boeing 787-8",
+    "aircraftValue": "Boeing 787-8 (B787-9 — Phase 2)",
     "validation": "Проверено",
+    "validationValue": "Active line pilots",
     "dataSource": "Источник данных",
     "distribution": "Распространение",
+    "distributionValue": "Public App Store",
     "privacyPolicy": "Политика конфиденциальности",
     "termsOfUse": "Условия использования",
-    "support": "Поддержка"
+    "support": "Поддержка",
+    "openExternal": "Открыть",
+    "openMail": "Открыть почту",
+    "disclaimer": "This application provides advisory calculations only. All values represent conservative reference based on publicly available aircraft characteristics and operational practice. They do not replace official Boeing FCOM, QRH, AFM, or operator-specific OM-A/OM-B documentation. Always verify before operational use."
   },
   "error": {
     "referenceDataUnavailable": "Справочные данные недоступны",

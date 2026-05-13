@@ -50,6 +50,7 @@
 | `expo-updates` | соответствующая SDK | OTA-обновления через EAS Update (Phase 2+) |
 | `expo-build-properties` | соответствующая SDK | Установка iOS deployment target и других native build-properties через Expo plugin (вместо невалидного `ios.deploymentTarget` поля в `app.json`). Auto-installable via `npx expo install`. |
 | `expo-linear-gradient` | соответствующая SDK | Standard Expo SDK module for native gradient rendering; required by `06-ui-spec.md` § Экран 3 active-card visual treatment. Auto-installable via `npx expo install`. |
+| `expo-web-browser` | соответствующая SDK | Standard Expo SDK module for in-app web links via `WebBrowser.openBrowserAsync`. Required by `06-ui-spec.md` § Экран 6 Privacy Policy / Terms of Use rows (consistent in-app UX, не уводит пользователя из приложения — закрыто как Open question #2 в той же спеке). Auto-installable via `npx expo install`. |
 | `react-native-svg` | соответствующая Expo SDK (allowlisted via ADR-0007) | SVG primitives. Изначально предполагался для CG / Crosswind chart, но в `feat/crosswind-takeoff-rebrand` MVP-визуализация снята (single-card centred number). На момент MVP пакет **не установлен и не consumed** — ADR-0007 остаётся активным как зафиксированное решение «используем именно эту библиотеку, если потребуется визуализация в Phase 2+». Auto-installable via `npx expo install react-native-svg`. |
 
 #### Auto-managed transitive dependencies
@@ -68,7 +69,9 @@
 Дефолтный `create-expo-app` шаблон (`--template default`) тянет несколько пакетов, которые были **удалены при инициализации Phase B** как не входящие в наш scope:
 
 - `react-dom`, `react-native-web` — нет web-таргета.
-- `expo-haptics`, `expo-image`, `expo-symbols`, `expo-web-browser` — не нужны для MVP функциональности.
+- `expo-haptics`, `expo-image`, `expo-symbols` — не нужны для MVP функциональности.
+  (~~`expo-web-browser`~~ — изначально удалили, восстановили в Sprint 6 / PR
+  `feat/settings-about` для Privacy Policy / Terms of Use rows в About-экране.)
 - `@react-navigation/bottom-tabs`, `@react-navigation/elements` — мы используем минимальный expo-router stack без tabs UI; `@react-navigation/native` остаётся как peer-dep expo-router.
 
 Если в будущем какой-то из этих пакетов понадобится — добавление через ADR с обоснованием и явным включением в этот документ.

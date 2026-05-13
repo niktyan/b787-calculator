@@ -25,7 +25,6 @@
   },
   "placeholder": {
     "crosswindBody": "Crosswind module — implementation in next sprint",
-    "settingsBody": "Settings — implementation in upcoming sprint",
     "aboutBody": "About — implementation in upcoming sprint"
   },
   "crosswind": {
@@ -51,25 +50,34 @@
   "settings": {
     "title": "Settings",
     "language": "Language",
+    "languageEnglish": "English",
+    "languageRussian": "Русский",
     "theme": "Theme",
+    "themeAuto": "Auto",
+    "themeLight": "Light",
+    "themeDark": "Dark",
     "weightUnits": "Weight units",
     "windUnits": "Wind units",
     "showDataSource": "Show data source on result",
-    "themeAuto": "Auto",
-    "themeLight": "Light",
-    "themeDark": "Dark"
+    "unitsUpcomingRelease": "Available in upcoming release",
+    "sheetClose": "Close"
   },
   "about": {
     "title": "About",
     "version": "Version",
     "aircraft": "Aircraft",
-    "aircraftValue": "Boeing 787-8",
+    "aircraftValue": "Boeing 787-8 (B787-9 — Phase 2)",
     "validation": "Validation",
+    "validationValue": "Active line pilots",
     "dataSource": "Data source",
     "distribution": "Distribution",
+    "distributionValue": "Public App Store",
     "privacyPolicy": "Privacy policy",
     "termsOfUse": "Terms of use",
-    "support": "Support"
+    "support": "Support",
+    "openExternal": "View",
+    "openMail": "Open mail",
+    "disclaimer": "This application provides advisory calculations only. All values represent conservative reference based on publicly available aircraft characteristics and operational practice. They do not replace official Boeing FCOM, QRH, AFM, or operator-specific OM-A/OM-B documentation. Always verify before operational use."
   },
   "error": {
     "referenceDataUnavailable": "Reference data unavailable",

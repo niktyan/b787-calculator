@@ -745,20 +745,32 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 
 **Назначение:** информация о приложении, ссылки на юридические документы.
 
-**Содержимое (3 ряда реализованы в PR `feat/crosswind-polish-2`,
-5 деферрированы на Sprint 6 — отмечены ниже):**
+**Содержимое (все 8 рядов реализованы — Version / Aircraft / Data source в
+PR `feat/crosswind-polish-2`, остальные 5 + advisory disclaimer paragraph
+в Sprint 6 / PR `feat/settings-about`):**
 1. ✅ **Version** — версия + build номер (через `expo-application`).
-2. ✅ **Aircraft** — «Boeing 787-8» (только -8 в MVP).
-3. ⏳ **Validation** — «Active line pilots». (Sprint 6)
+2. ✅ **Aircraft** — «Boeing 787-8 (B787-9 — Phase 2)». Один аirframe
+   активен в MVP; -9 раскрыт как Phase 2 follow-up прямо в строке.
+3. ✅ **Validation** — «Active line pilots».
 4. ✅ **Data source** — формат `"<referenceDocument> · <dataVersion>"`,
    например «Boeing 787 FCOM · 2026-05-03.001». Значение читается из
    `crosswindRepository.load()`. Это — единственная visible точка
    source-attribution в приложении (см. Принцип 4).
-5. ⏳ **Distribution** — «Public App Store». (Sprint 6)
-6. ⏳ **Privacy policy** — кликабельная строка, открывает
-   `PRIVACY_POLICY.md` через WebBrowser API (не WebView!). (Sprint 6)
-7. ⏳ **Terms of use** — аналогично. (Sprint 6)
-8. ⏳ **Support** — email-ссылка, открывает почтовый клиент. (Sprint 6)
+5. ✅ **Distribution** — «Public App Store».
+6. ✅ **Privacy policy** — кликабельная строка, открывает
+   `PRIVACY_POLICY_URL` (из `src/core/constants.ts`) через
+   `WebBrowser.openBrowserAsync` (`expo-web-browser`, НЕ WebView).
+7. ✅ **Terms of use** — аналогично, `TERMS_OF_USE_URL`.
+8. ✅ **Support** — `mailto:${SUPPORT_EMAIL}` через
+   `Linking.openURL`. Адрес читается из `src/core/constants.ts` —
+   тот же placeholder, что в `src/app/error.tsx`, заменяется
+   одновременно в Phase D (см. `07-app-store-compliance.md`).
+
+Ниже row-стека рендерится **advisory disclaimer paragraph** —
+английский, не локализуется (юридический текст, см. § Локализация),
+дословно из `07-app-store-compliance.md` § «About screen — раздел
+Disclaimer». Это короткий вариант splash-дисклеймера; он не дублирует
+splash-карточку, а напоминает читателю в окне «о приложении».
 
 **Visual treatment** (см. `03_Mockups/index.html` секция 4 (правая половина);
 переиспользуем классы `.settings-row`, `.settings-name`, `.settings-val`):

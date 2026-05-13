@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`About route renders correctly in dark theme (snapshot) 1`] = `
+exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
 <RNCSafeAreaView
   edges={
     {
@@ -16,7 +16,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
       "flex": 1,
     }
   }
-  testID="about-screen"
+  testID="settings-screen"
 >
   <View
     style={
@@ -95,7 +95,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "width": 28,
                 }
               }
-              testID="about-logo"
+              testID="settings-logo"
             >
               <Text
                 allowFontScaling={true}
@@ -134,7 +134,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.title
+              settings.title
             </Text>
           </View>
           <View
@@ -150,7 +150,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 },
               ]
             }
-            testID="about-tabs"
+            testID="settings-tabs"
           >
             <View
               accessibilityLabel="mainMenu.tabModules"
@@ -189,7 +189,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "flex": 1,
                 }
               }
-              testID="about-tabs-modules"
+              testID="settings-tabs-modules"
             >
               <View
                 style={
@@ -246,91 +246,6 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "checked": undefined,
                   "disabled": undefined,
                   "expanded": undefined,
-                  "selected": false,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="about-tabs-settings"
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
-                    },
-                    null,
-                    {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#8B949E",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "letterSpacing": 0,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  mainMenu.tabSettings
-                </Text>
-              </View>
-            </View>
-            <View
-              accessibilityLabel="mainMenu.tabAbout"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
                   "selected": true,
                 }
               }
@@ -359,7 +274,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "flex": 1,
                 }
               }
-              testID="about-tabs-about"
+              testID="settings-tabs-settings"
             >
               <View
                 style={
@@ -405,6 +320,91 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                     ]
                   }
                 >
+                  mainMenu.tabSettings
+                </Text>
+              </View>
+            </View>
+            <View
+              accessibilityLabel="mainMenu.tabAbout"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": false,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="settings-tabs-about"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#8B949E",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
                   mainMenu.tabAbout
                 </Text>
               </View>
@@ -434,288 +434,8 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
         }
       >
         <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-version"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.version
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#8B949E",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            mock
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-aircraft"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.aircraft
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#8B949E",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.aircraftValue
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-validation"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.validation
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#8B949E",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.validationValue
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-data-source"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.dataSource
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#8B949E",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            Boeing 787 FCOM · 2026-05-05.001
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-distribution"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.distribution
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#8B949E",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.distributionValue
-          </Text>
-        </View>
-        <View
-          accessibilityLabel="about.privacyPolicy"
-          accessibilityRole="link"
+          accessibilityLabel="settings.language"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -759,7 +479,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               "paddingVertical": 8,
             }
           }
-          testID="about-row-privacy-policy"
+          testID="settings-row-language"
         >
           <Text
             allowFontScaling={true}
@@ -778,7 +498,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               ]
             }
           >
-            about.privacyPolicy
+            settings.language
           </Text>
           <View
             style={
@@ -799,7 +519,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#8B949E",
                     "fontFamily": "Menlo",
                     "fontSize": 11,
                     "fontWeight": "400",
@@ -811,14 +531,14 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              settings.languageEnglish
             </Text>
             <Text
               allowFontScaling={true}
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#6E7681",
                     "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "400",
@@ -835,8 +555,8 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
           </View>
         </View>
         <View
-          accessibilityLabel="about.termsOfUse"
-          accessibilityRole="link"
+          accessibilityLabel="settings.theme"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -880,7 +600,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               "paddingVertical": 8,
             }
           }
-          testID="about-row-terms-of-use"
+          testID="settings-row-theme"
         >
           <Text
             allowFontScaling={true}
@@ -899,7 +619,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               ]
             }
           >
-            about.termsOfUse
+            settings.theme
           </Text>
           <View
             style={
@@ -920,7 +640,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#8B949E",
                     "fontFamily": "Menlo",
                     "fontSize": 11,
                     "fontWeight": "400",
@@ -932,14 +652,14 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              settings.themeDark
             </Text>
             <Text
               allowFontScaling={true}
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#6E7681",
                     "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "400",
@@ -956,52 +676,17 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
           </View>
         </View>
         <View
-          accessibilityLabel="about.support"
-          accessibilityRole="link"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "alignItems": "center",
               "backgroundColor": "#11161F",
               "borderColor": "rgba(255, 255, 255, 0.08)",
               "borderRadius": 8,
               "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
           }
-          testID="about-row-support"
+          testID="settings-row-weight-units"
         >
           <Text
             allowFontScaling={true}
@@ -1020,89 +705,347 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               ]
             }
           >
-            about.support
+            settings.weightUnits
           </Text>
           <View
             style={
-              [
+              {
+                "flexDirection": "row",
+                "gap": 4,
+                "marginTop": 4,
+              }
+            }
+          >
+            <View
+              style={
                 {
                   "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
-                  "gap": 4,
-                  "justifyContent": "flex-start",
+                  "backgroundColor": "#00C2A8",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#001A17",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Tons (t)
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "opacity": 0.4,
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#6E7681",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Pounds (lbs)
+              </Text>
+            </View>
+          </View>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#6E7681",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+            testID="settings-row-weight-units-caption"
+          >
+            settings.unitsUpcomingRelease
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="settings-row-wind-units"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
                 },
                 undefined,
               ]
             }
           >
-            <Text
-              allowFontScaling={true}
+            settings.windUnits
+          </Text>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "gap": 4,
+                "marginTop": 4,
+              }
+            }
+          >
+            <View
               style={
-                [
-                  {
-                    "color": "#00C2A8",
-                    "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
               }
             >
-              support@example.com
-            </Text>
-            <Text
-              allowFontScaling={true}
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#001A17",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                KT
+              </Text>
+            </View>
+            <View
               style={
-                [
-                  {
-                    "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "opacity": 0.4,
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
               }
             >
-              ›
-            </Text>
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#6E7681",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                m/s
+              </Text>
+            </View>
+          </View>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#6E7681",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+            testID="settings-row-wind-units-caption"
+          >
+            settings.unitsUpcomingRelease
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="settings-row-show-data-source"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            settings.showDataSource
+          </Text>
+          <View
+            accessibilityLabel="settings.showDataSource"
+            accessibilityRole="switch"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": true,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+                "minHeight": 44,
+                "minWidth": 44,
+                "opacity": 1,
+                "padding": 4,
+              }
+            }
+            testID="settings-row-show-data-source-toggle"
+          >
+            <View
+              style={
+                {
+                  "backgroundColor": "#00C2A8",
+                  "borderRadius": 13,
+                  "height": 26,
+                  "width": 44,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "backgroundColor": "#11161F",
+                    "borderRadius": 11,
+                    "height": 22,
+                    "left": 20,
+                    "position": "absolute",
+                    "top": 2,
+                    "width": 22,
+                  }
+                }
+              />
+            </View>
           </View>
         </View>
       </View>
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#8B949E",
-              "fontFamily": "System",
-              "fontSize": 11,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-        testID="about-disclaimer"
-      >
-        about.disclaimer
-      </Text>
     </View>
   </View>
 </RNCSafeAreaView>
 `;
 
-exports[`About route renders correctly in light theme (snapshot) 1`] = `
+exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
 <RNCSafeAreaView
   edges={
     {
@@ -1118,7 +1061,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
       "flex": 1,
     }
   }
-  testID="about-screen"
+  testID="settings-screen"
 >
   <View
     style={
@@ -1197,7 +1140,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "width": 28,
                 }
               }
-              testID="about-logo"
+              testID="settings-logo"
             >
               <Text
                 allowFontScaling={true}
@@ -1236,7 +1179,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.title
+              settings.title
             </Text>
           </View>
           <View
@@ -1252,7 +1195,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 },
               ]
             }
-            testID="about-tabs"
+            testID="settings-tabs"
           >
             <View
               accessibilityLabel="mainMenu.tabModules"
@@ -1291,7 +1234,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "flex": 1,
                 }
               }
-              testID="about-tabs-modules"
+              testID="settings-tabs-modules"
             >
               <View
                 style={
@@ -1348,91 +1291,6 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "checked": undefined,
                   "disabled": undefined,
                   "expanded": undefined,
-                  "selected": false,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="about-tabs-settings"
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
-                    },
-                    null,
-                    {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#4B5563",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "letterSpacing": 0,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  mainMenu.tabSettings
-                </Text>
-              </View>
-            </View>
-            <View
-              accessibilityLabel="mainMenu.tabAbout"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
                   "selected": true,
                 }
               }
@@ -1461,7 +1319,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "flex": 1,
                 }
               }
-              testID="about-tabs-about"
+              testID="settings-tabs-settings"
             >
               <View
                 style={
@@ -1507,6 +1365,91 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                     ]
                   }
                 >
+                  mainMenu.tabSettings
+                </Text>
+              </View>
+            </View>
+            <View
+              accessibilityLabel="mainMenu.tabAbout"
+              accessibilityRole="tab"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": false,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+              testID="settings-tabs-about"
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 10,
+                      "justifyContent": "center",
+                      "minHeight": 44,
+                      "paddingHorizontal": 10,
+                      "paddingVertical": 5,
+                    },
+                    null,
+                    {
+                      "opacity": 1,
+                      "transform": [
+                        {
+                          "scale": 1,
+                        },
+                      ],
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#4B5563",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "letterSpacing": 0,
+                        "lineHeight": 16,
+                        "textAlign": "auto",
+                      },
+                      {
+                        "fontSize": 12,
+                      },
+                    ]
+                  }
+                >
                   mainMenu.tabAbout
                 </Text>
               </View>
@@ -1536,288 +1479,8 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
         }
       >
         <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-version"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.version
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#4B5563",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            mock
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-aircraft"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.aircraft
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#4B5563",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.aircraftValue
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-validation"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.validation
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#4B5563",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.validationValue
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-data-source"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.dataSource
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#4B5563",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            Boeing 787 FCOM · 2026-05-05.001
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="about-row-distribution"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.distribution
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#4B5563",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                undefined,
-              ]
-            }
-          >
-            about.distributionValue
-          </Text>
-        </View>
-        <View
-          accessibilityLabel="about.privacyPolicy"
-          accessibilityRole="link"
+          accessibilityLabel="settings.language"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -1861,7 +1524,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               "paddingVertical": 8,
             }
           }
-          testID="about-row-privacy-policy"
+          testID="settings-row-language"
         >
           <Text
             allowFontScaling={true}
@@ -1880,7 +1543,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               ]
             }
           >
-            about.privacyPolicy
+            settings.language
           </Text>
           <View
             style={
@@ -1901,7 +1564,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#4B5563",
                     "fontFamily": "Menlo",
                     "fontSize": 11,
                     "fontWeight": "400",
@@ -1913,14 +1576,14 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              settings.languageEnglish
             </Text>
             <Text
               allowFontScaling={true}
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#6B7280",
                     "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "400",
@@ -1937,8 +1600,8 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
           </View>
         </View>
         <View
-          accessibilityLabel="about.termsOfUse"
-          accessibilityRole="link"
+          accessibilityLabel="settings.theme"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -1982,7 +1645,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               "paddingVertical": 8,
             }
           }
-          testID="about-row-terms-of-use"
+          testID="settings-row-theme"
         >
           <Text
             allowFontScaling={true}
@@ -2001,7 +1664,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               ]
             }
           >
-            about.termsOfUse
+            settings.theme
           </Text>
           <View
             style={
@@ -2022,7 +1685,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#4B5563",
                     "fontFamily": "Menlo",
                     "fontSize": 11,
                     "fontWeight": "400",
@@ -2034,14 +1697,14 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              settings.themeLight
             </Text>
             <Text
               allowFontScaling={true}
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#6B7280",
                     "fontFamily": "System",
                     "fontSize": 12,
                     "fontWeight": "400",
@@ -2058,52 +1721,17 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
           </View>
         </View>
         <View
-          accessibilityLabel="about.support"
-          accessibilityRole="link"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "alignItems": "center",
               "backgroundColor": "#FFFFFF",
               "borderColor": "rgba(0, 0, 0, 0.08)",
               "borderRadius": 8,
               "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
           }
-          testID="about-row-support"
+          testID="settings-row-weight-units"
         >
           <Text
             allowFontScaling={true}
@@ -2122,83 +1750,341 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               ]
             }
           >
-            about.support
+            settings.weightUnits
           </Text>
           <View
             style={
-              [
+              {
+                "flexDirection": "row",
+                "gap": 4,
+                "marginTop": 4,
+              }
+            }
+          >
+            <View
+              style={
                 {
                   "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
-                  "gap": 4,
-                  "justifyContent": "flex-start",
+                  "backgroundColor": "#00C2A8",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#001A17",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Tons (t)
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "opacity": 0.4,
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#6B7280",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Pounds (lbs)
+              </Text>
+            </View>
+          </View>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+            testID="settings-row-weight-units-caption"
+          >
+            settings.unitsUpcomingRelease
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="settings-row-wind-units"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
                 },
                 undefined,
               ]
             }
           >
-            <Text
-              allowFontScaling={true}
+            settings.windUnits
+          </Text>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "gap": 4,
+                "marginTop": 4,
+              }
+            }
+          >
+            <View
               style={
-                [
-                  {
-                    "color": "#00C2A8",
-                    "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
               }
             >
-              support@example.com
-            </Text>
-            <Text
-              allowFontScaling={true}
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#001A17",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                KT
+              </Text>
+            </View>
+            <View
               style={
-                [
-                  {
-                    "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
+                {
+                  "alignItems": "center",
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "justifyContent": "center",
+                  "opacity": 0.4,
+                  "paddingHorizontal": 8,
+                  "paddingVertical": 4,
+                }
               }
             >
-              ›
-            </Text>
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#6B7280",
+                      "fontFamily": "System",
+                      "fontSize": 10,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 14,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                m/s
+              </Text>
+            </View>
+          </View>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#6B7280",
+                  "fontFamily": "System",
+                  "fontSize": 11,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+            testID="settings-row-wind-units-caption"
+          >
+            settings.unitsUpcomingRelease
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="settings-row-show-data-source"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            settings.showDataSource
+          </Text>
+          <View
+            accessibilityLabel="settings.showDataSource"
+            accessibilityRole="switch"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": true,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "justifyContent": "center",
+                "minHeight": 44,
+                "minWidth": 44,
+                "opacity": 1,
+                "padding": 4,
+              }
+            }
+            testID="settings-row-show-data-source-toggle"
+          >
+            <View
+              style={
+                {
+                  "backgroundColor": "#00C2A8",
+                  "borderRadius": 13,
+                  "height": 26,
+                  "width": 44,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 11,
+                    "height": 22,
+                    "left": 20,
+                    "position": "absolute",
+                    "top": 2,
+                    "width": 22,
+                  }
+                }
+              />
+            </View>
           </View>
         </View>
       </View>
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#4B5563",
-              "fontFamily": "System",
-              "fontSize": 11,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-        testID="about-disclaimer"
-      >
-        about.disclaimer
-      </Text>
     </View>
   </View>
 </RNCSafeAreaView>
