@@ -50,7 +50,6 @@ export {
   NavigableSettingsRow,
   ToggleSettingsRow,
   InfoSettingsRow,
-  DisabledUnitsRow,
 } from './components';
 
 export type {
@@ -93,5 +92,4 @@ export type {
   NavigableSettingsRowProps,
   ToggleSettingsRowProps,
   InfoSettingsRowProps,
-  DisabledUnitsRowProps,
 } from './components';

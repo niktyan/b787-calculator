@@ -53,15 +53,9 @@ export { BottomSheet, BottomSheetOption } from './BottomSheet';
 export type { BottomSheetProps, BottomSheetOptionProps } from './BottomSheet';
 
 // Settings/About list rows
-export {
-  NavigableSettingsRow,
-  ToggleSettingsRow,
-  InfoSettingsRow,
-  DisabledUnitsRow,
-} from './SettingsRow';
+export { NavigableSettingsRow, ToggleSettingsRow, InfoSettingsRow } from './SettingsRow';
 export type {
   NavigableSettingsRowProps,
   ToggleSettingsRowProps,
   InfoSettingsRowProps,
-  DisabledUnitsRowProps,
 } from './SettingsRow';

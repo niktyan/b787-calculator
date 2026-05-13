@@ -111,14 +111,16 @@ describe('Settings route', () => {
     expect(stored).toBe('false');
   });
 
-  it('shows "Available in upcoming release" caption beneath Weight units', () => {
-    const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
-    expect(getByTestId('settings-row-weight-units-caption')).toBeTruthy();
+  it('renders Weight units as an info row with value "Tons (t)" and no caption', () => {
+    const { getByTestId, queryByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
+    expect(getByTestId('settings-row-weight-units')).toBeTruthy();
+    expect(queryByTestId('settings-row-weight-units-caption')).toBeNull();
   });
 
-  it('shows "Available in upcoming release" caption beneath Wind units', () => {
-    const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
-    expect(getByTestId('settings-row-wind-units-caption')).toBeTruthy();
+  it('renders Wind units as an info row with value "Knots (KT)" and no caption', () => {
+    const { getByTestId, queryByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
+    expect(getByTestId('settings-row-wind-units')).toBeTruthy();
+    expect(queryByTestId('settings-row-wind-units-caption')).toBeNull();
   });
 
   it('renders correctly in dark theme (snapshot)', () => {

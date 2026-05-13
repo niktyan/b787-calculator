@@ -18,7 +18,7 @@ import type { SupportedLanguage, ThemeMode } from '../../core';
 import {
   BottomSheet,
   BottomSheetOption,
-  DisabledUnitsRow,
+  InfoSettingsRow,
   NavigableSettingsRow,
   Screen,
   ScreenHeader,
@@ -225,19 +225,15 @@ function SettingsList({
         testID="settings-row-theme"
         isRegular={isRegular}
       />
-      <DisabledUnitsRow
+      <InfoSettingsRow
         label={t('settings.weightUnits')}
-        activeLabel="Tons (t)"
-        disabledLabel="Pounds (lbs)"
-        caption={t('settings.unitsUpcomingRelease')}
+        value="Tons (t)"
         testID="settings-row-weight-units"
         isRegular={isRegular}
       />
-      <DisabledUnitsRow
+      <InfoSettingsRow
         label={t('settings.windUnits')}
-        activeLabel="KT"
-        disabledLabel="m/s"
-        caption={t('settings.unitsUpcomingRelease')}
+        value="Knots (KT)"
         testID="settings-row-wind-units"
         isRegular={isRegular}
       />
