@@ -527,6 +527,8 @@ Dependabot настроен **пропускать MAJOR-обновления** 
 
 **Особый случай · Misnamed SDK-coordinated пакеты.** Glob `expo-*` не матчит `eslint-config-expo` и `jest-expo` (prefix-based matching), но их major-версии track Expo SDK release cycle. Они добавлены в `ignore:` блок отдельными explicit-name правилами.
 
+**Pre-release tooling stability lock (2026-05-14).** На время Phase D / App Store submission заблокированы major-bumps четырёх core-инструментов, не координированных с Expo SDK: `typescript`, `i18next`, `lint-staged`, `eslint-plugin-react-hooks`. Каждый имеет нетривиальный breakage surface и нулевую функциональную выгоду до launch. PATCH + MINOR внутри текущего major-а остаются auto-proposed (security patches проходят). После Phase D — dedicated «tooling-evaluation sprint», снимающий правила по одному пакету с per-package регресс-тестом. См. ADR-0008 § «Pre-release tooling stability lock».
+
 Решение зафиксировано ADR-0008.
 
 ### Auto-merge безопасных Dependabot PR-ов (`.github/workflows/dependabot-auto-merge.yml`)
