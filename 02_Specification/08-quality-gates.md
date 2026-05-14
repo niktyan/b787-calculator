@@ -438,9 +438,14 @@ Sprint 3 PR MUST:
 | `accent` (`#00C2A8`) on `bgScreen` | Dark | 8.39:1 | ✓ AAA |
 | `accent` on `accentSoft` | Dark | 1.93:1 | NB (decorative active-pill tint) |
 | `accent` on `bgCard` | Dark | 8.05:1 | ✓ AAA |
-| `accent` (`#00C2A8`) on `bgScreen` | Light | 2.09:1 | ✗ — see note A |
-| `accent` on `bgCard` (white) | Light | 2.26:1 | ✗ — see note A |
-| `accent` on `accentSoft` | Light | 2.01:1 | ✗ — see note A |
+| `accent` (`#00C2A8`) on `bgScreen` | Light | 2.09:1 | NB (decorative surface fill only — see note A) |
+| `accent` on `bgCard` (white) | Light | 2.26:1 | NB (decorative surface fill only — see note A) |
+| `accent` on `accentSoft` | Light | 2.01:1 | NB (decorative surface fill only — see note A) |
+| `accentText` (`#006B5E`) on `bgScreen` | Light | 5.94:1 | ✓ AA (+ near-AAA) — text/icon foreground |
+| `accentText` on `bgCard` (white) | Light | 6.43:1 | ✓ AAA — text/icon foreground |
+| `accentText` on `accentSoft` | Light | 5.72:1 | ✓ AA — text/icon foreground |
+| `accentText` on `bgScreen` | Dark | 8.37:1 | ✓ AAA (identical to `accent` in dark) |
+| `accentText` on `bgCard` | Dark | 8.12:1 | ✓ AAA (identical to `accent` in dark) |
 | `warn` on `warnSoft` | Dark | 8.91:1 | ✓ AAA |
 | `warn` on `warnSoft` | Light | 4.53:1 | ✓ AA (icon-paired) |
 | `warn` on `bgScreen` | Light | 4.50:1 | ✓ AA |
@@ -450,13 +455,18 @@ Sprint 3 PR MUST:
 | `textTertiary` on `bgScreen` | Dark | 4.12:1 | NB (decorative metadata, see note B) |
 | `textTertiary` on `bgScreen` | Light | 4.47:1 | NB (decorative metadata, see note B) |
 
-**Note A — `accent` on light backgrounds:**
+**Note A — `accent` on light backgrounds (RESOLVED by ADR-0009):**
 
-Brand teal `#00C2A8` имеет insufficient contrast против light bg (2.09–2.26:1) для body text. Текущее использование: NavPill active label, BackButton text, BottomSheetOption check ✓, NavigableSettingsRow chevron (с `valueColor="accent"`), большой numeric result в Crosswind.
+Brand teal `#00C2A8` имеет insufficient contrast против light bg (2.09–2.26:1) для body text. Resolved в PR `fix/a11y-accent-text-contrast` (2026-05-15) через ADR-0009: split `accent` (surface fills / borders / focus rings) и `accentText` (text + icon foregrounds), где light-theme `accentText = #006B5E` даёт ~5.94:1 на bgScreen / 6.43:1 на bgCard — passes WCAG AA и AAA.
 
-App primarily используется в cockpit с dark theme (`tokens.colors.dark` is `default` per `01-vision.md`). Light theme reserved для briefing room / iPad outdoor сценариев. Тем не менее, на light theme accent-цвет на bg не проходит AA для body text.
+Migrated text/icon foregrounds: NavPill active label, BackButton arrow + text, BottomSheetOption ✓ check, NavigableSettingsRow value text + chevron когда `valueColor="accent"` (About row external-destination affordances), ResultPanel + CrosswindResult idle status label, Button secondary/ghost variant text.
 
-**Status:** flagged. Полное исправление требует разделить `accent` (surface fill / brand) и `accent-text-on-light` (затемнённый вариант для текста), что является brand-level decision требующим ADR. Tracked для Phase D follow-up; не блокирует MVP App Store submission т.к. (а) dark theme — primary, (b) accent на light используется в UI-affordances не в critical text, (c) большой numeric result визуально различим за счёт размера (48–96 pt).
+Сохранены `accent` (по ADR-0009 § Decision):
+- decorative surfaces: active card border, segmented active segment, Toggle ON track, Button primary fill, BottomSheet selected option border, NumericInput focused border, splash/disclaimer logo fill, gradients;
+- decorative glyphs на `accentSoft` surface: module-icon glyph, B7 logo;
+- large display-result number (48–96 pt — large-text WCAG bucket + decorative-result content).
+
+**Status:** ✓ Resolved. Dark theme не изменён (`accentText === accent`). Light theme текст и иконки теперь читаются на ≥ 5.7:1 везде.
 
 **Note B — `textTertiary` on screen background:**
 

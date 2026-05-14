@@ -98,7 +98,7 @@ export function NavigableSettingsRow({
         {label}
       </Text>
       <Row align="center" gap="xs">
-        <Text variant="mono" color={valueColor} style={valueStyle}>
+        <Text variant="mono" color={pickValueTextColor(valueColor)} style={valueStyle}>
           {value}
         </Text>
         <Ionicons
@@ -112,14 +112,25 @@ export function NavigableSettingsRow({
   );
 }
 
+// `valueColor` is the consumer-facing API (kept as 'accent' for the
+// strong-interactivity signal). Internally the value text + matching
+// chevron use `accentText` so light-theme text passes WCAG AA — see
+// ADR-0009.
+function pickValueTextColor(
+  valueColor: NavigableSettingsRowValueColor,
+): 'textSecondary' | 'accentText' {
+  return valueColor === 'accent' ? 'accentText' : 'textSecondary';
+}
+
 function pickChevronTone(
   palette: ColorPalette,
   valueColor: NavigableSettingsRowValueColor,
 ): string {
   // When the row's value carries the strong interactivity signal
-  // (accent), the chevron matches it. Otherwise the chevron uses the
-  // muted textTertiary so the value text remains the dominant element.
-  return valueColor === 'accent' ? palette.accent : palette.textTertiary;
+  // ('accent'), the chevron matches via `accentText` so light-theme
+  // contrast passes WCAG AA. Otherwise the chevron stays muted via
+  // textTertiary so the value text remains the dominant element.
+  return valueColor === 'accent' ? palette.accentText : palette.textTertiary;
 }
 
 export interface ToggleSettingsRowProps extends SettingsRowSizingProp {

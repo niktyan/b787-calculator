@@ -161,7 +161,11 @@ function Pill<TId extends string = string>({
       testID={testID}
     >
       <Animated.View style={[styles.pill, isActive ? styles.pillActive : null, animatedStyle]}>
-        <Text variant="caption" color={isActive ? 'accent' : 'textSecondary'} style={styles.label}>
+        <Text
+          variant="caption"
+          color={isActive ? 'accentText' : 'textSecondary'}
+          style={styles.label}
+        >
           {item.label}
         </Text>
       </Animated.View>
