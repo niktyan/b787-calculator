@@ -152,7 +152,7 @@ exports[`ResultPanel renders idle state in light theme 1`] = `
       style={
         [
           {
-            "color": "#00C2A8",
+            "color": "#006B5E",
             "fontFamily": "System",
             "fontSize": 9,
             "fontWeight": "600",

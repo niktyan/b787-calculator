@@ -49,10 +49,10 @@ export function BackButton({
       testID={testID}
     >
       <Row gap="xs" align="center">
-        <Text variant="body" color="accent">
+        <Text variant="body" color="accentText">
           {ARROW}
         </Text>
-        <Text variant="body" color="accent">
+        <Text variant="body" color="accentText">
           {label}
         </Text>
       </Row>

@@ -156,7 +156,7 @@ function IdleView(props: IdleViewProps): ReactNode {
   const statusStyle = isRegular ? STATUS_STYLE_REGULAR : STATUS_STYLE_COMPACT;
   return (
     <CardSurface isRegular={isRegular} fillHeight={fillHeight} testID="crosswind-result-panel">
-      <Text variant={statusVariant} color="accent" style={statusStyle}>
+      <Text variant={statusVariant} color="accentText" style={statusStyle}>
         {statusLabel}
       </Text>
       <ValueRow value={output.maxCrosswindKnots} isRegular={isRegular} />

@@ -175,7 +175,7 @@ export function BottomSheetOption({
         // so it becomes the single accessibility element. The ✓ glyph is
         // not read out separately by VoiceOver — selection is announced
         // via the parent's accessibilityState.
-        <Text variant="caption" color="accent" style={checkStyle}>
+        <Text variant="caption" color="accentText" style={checkStyle}>
           ✓
         </Text>
       ) : null}
