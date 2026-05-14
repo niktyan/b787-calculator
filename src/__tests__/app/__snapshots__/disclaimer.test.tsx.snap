@@ -128,7 +128,7 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
             ]
           }
         >
-          splash.tagline
+          Electronic Performance Tools
            · v
           0.1.0
         </Text>
@@ -206,7 +206,7 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
         </View>
       </View>
       <View
-        accessibilityLabel="disclaimer.continue"
+        accessibilityLabel="I understand · Continue"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -282,7 +282,7 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
               ]
             }
           >
-            disclaimer.continue
+            I understand · Continue
           </Text>
         </View>
       </View>
@@ -419,7 +419,7 @@ exports[`Disclaimer route renders the brand block, the amber disclaimer card, an
             ]
           }
         >
-          splash.tagline
+          Electronic Performance Tools
            · v
           0.1.0
         </Text>
@@ -497,7 +497,7 @@ exports[`Disclaimer route renders the brand block, the amber disclaimer card, an
         </View>
       </View>
       <View
-        accessibilityLabel="disclaimer.continue"
+        accessibilityLabel="I understand · Continue"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -573,7 +573,7 @@ exports[`Disclaimer route renders the brand block, the amber disclaimer card, an
               ]
             }
           >
-            disclaimer.continue
+            I understand · Continue
           </Text>
         </View>
       </View>

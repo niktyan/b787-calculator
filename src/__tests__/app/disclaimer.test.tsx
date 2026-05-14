@@ -20,10 +20,25 @@ jest.mock('expo-application', () => ({
   nativeApplicationVersion: '0.1.0',
 }));
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
-  initReactI18next: { type: '3rdParty', init: jest.fn() },
-}));
+jest.mock('react-i18next', () => {
+  const en = require('../../core/i18n/locales/en.json') as Record<string, unknown>;
+  const resolve = (key: string): string => {
+    const parts = key.split('.');
+    let cur: unknown = en;
+    for (const p of parts) {
+      if (cur !== null && typeof cur === 'object' && p in (cur as Record<string, unknown>)) {
+        cur = (cur as Record<string, unknown>)[p];
+      } else {
+        return key;
+      }
+    }
+    return typeof cur === 'string' ? cur : key;
+  };
+  return {
+    useTranslation: () => ({ t: resolve }),
+    initReactI18next: { type: '3rdParty', init: jest.fn() },
+  };
+});
 
 const SPEC_BODY =
   'Advisory only. Calculations provide conservative reference values for ' +

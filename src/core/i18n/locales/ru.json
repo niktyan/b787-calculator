@@ -9,6 +9,8 @@
     "tagline": "Electronic Performance Tools"
   },
   "disclaimer": {
+    "title": "Advisory only",
+    "body": "Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.",
     "continue": "I understand · Continue"
   },
   "mainMenu": {
@@ -40,6 +42,20 @@
     "emptyIconLabel": "Информация",
     "resultStatusLabel": "Max crosswind · Takeoff",
     "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно",
+    "weightPlaceholder": "напр. 170",
+    "cgPlaceholder": "напр. 25.5",
+    "weightBelowMin": "Ниже минимума {{minTons}} t",
+    "weightAboveMax": "Выше максимума {{maxTons}} t",
+    "cgBelowMin": "Ниже минимума {{minPercent}} %MAC",
+    "cgAboveMax": "Выше максимума {{maxPercent}} %MAC",
+    "errorHeadline": "Расчёт недоступен",
+    "errorInvalidWeight": "Некорректный вес",
+    "errorInvalidCg": "Некорректная CG",
+    "errorDataAircraft": "Нет данных для выбранного типа ВС.",
+    "errorDataCondition": "Нет данных для выбранного состояния ВПП.",
+    "errorPhaseMismatch": "Загруженные данные не соответствуют запрошенному этапу полёта.",
+    "errorOutOfLookup": "Введённые значения вне диапазона таблицы. Измените ввод.",
+    "errorVerifyInputs": "Проверьте ввод и попробуйте снова.",
     "runwayCondition": {
       "dry": "Dry",
       "good": "Good",

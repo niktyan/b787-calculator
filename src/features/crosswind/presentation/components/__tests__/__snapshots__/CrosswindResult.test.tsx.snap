@@ -43,7 +43,7 @@ exports[`CrosswindResult renders the centred number for idle state (default W=17
         ]
       }
     >
-      crosswind.resultStatusLabel
+      Max crosswind · Takeoff
     </Text>
     <View
       style={
@@ -122,7 +122,7 @@ exports[`CrosswindResult renders the data-not-available caption for unimplemente
     testID="crosswind-result-panel-data-not-available"
   >
     <Text
-      accessibilityLabel="crosswind.emptyIconLabel"
+      accessibilityLabel="Information"
       allowFontScaling={false}
       selectable={false}
       style={
@@ -220,7 +220,7 @@ exports[`CrosswindResult renders the empty caption when fields are blank 1`] = `
           ]
         }
       >
-        crosswind.resultEmpty
+        Enter weight and CG to see result
       </Text>
     </View>
   </View>
@@ -271,7 +271,7 @@ exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 
         ]
       }
     >
-      crosswind.resultStatusLabel
+      Max crosswind · Takeoff
     </Text>
     <View
       style={

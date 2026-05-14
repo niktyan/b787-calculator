@@ -179,7 +179,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.title
+                Crosswind · Takeoff
               </Text>
             </View>
             <View
@@ -197,7 +197,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
               }
             >
               <View
-                accessibilityLabel="← common.back"
+                accessibilityLabel="← Back"
                 accessibilityRole="button"
                 accessibilityState={
                   {
@@ -263,11 +263,11 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                     ]
                   }
                 >
-                  ← common.back
+                  ← Back
                 </Text>
               </View>
               <View
-                accessibilityLabel="crosswind.resetLabel"
+                accessibilityLabel="Reset"
                 accessibilityRole="button"
                 accessibilityState={
                   {
@@ -333,7 +333,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                     ]
                   }
                 >
-                  crosswind.resetLabel
+                  Reset
                 </Text>
               </View>
             </View>
@@ -404,10 +404,10 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.aircraftLabel
+                Aircraft
               </Text>
               <View
-                accessibilityLabel="crosswind.aircraftLabel"
+                accessibilityLabel="Aircraft"
                 accessibilityRole="radiogroup"
                 style={
                   {
@@ -602,7 +602,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.towActual
+                TOW actual
               </Text>
               <View
                 style={
@@ -630,7 +630,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   }
                 >
                   <TextInput
-                    accessibilityLabel="crosswind.towActual"
+                    accessibilityLabel="TOW actual"
                     editable={true}
                     keyboardType="numeric"
                     onBlur={[Function]}
@@ -709,7 +709,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.cgLabel
+                Center of gravity
               </Text>
               <View
                 style={
@@ -737,7 +737,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   }
                 >
                   <TextInput
-                    accessibilityLabel="crosswind.cgLabel"
+                    accessibilityLabel="Center of gravity"
                     editable={true}
                     keyboardType="decimal-pad"
                     onBlur={[Function]}
@@ -819,10 +819,10 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.runwayConditionLabel
+                Runway condition
               </Text>
               <View
-                accessibilityLabel="crosswind.runwayConditionLabel"
+                accessibilityLabel="Runway condition"
                 accessibilityRole="radiogroup"
                 style={
                   {
@@ -1306,7 +1306,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
               testID="crosswind-result-panel-empty"
             >
               <Text
-                accessibilityLabel="crosswind.emptyIconLabel"
+                accessibilityLabel="Information"
                 allowFontScaling={false}
                 selectable={false}
                 style={
@@ -1351,7 +1351,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                     ]
                   }
                 >
-                  crosswind.resultEmpty
+                  Enter weight and CG to see result
                 </Text>
               </View>
             </View>
@@ -1542,7 +1542,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.title
+                Crosswind · Takeoff
               </Text>
             </View>
             <View
@@ -1560,7 +1560,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
               }
             >
               <View
-                accessibilityLabel="← common.back"
+                accessibilityLabel="← Back"
                 accessibilityRole="button"
                 accessibilityState={
                   {
@@ -1626,11 +1626,11 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                     ]
                   }
                 >
-                  ← common.back
+                  ← Back
                 </Text>
               </View>
               <View
-                accessibilityLabel="crosswind.resetLabel"
+                accessibilityLabel="Reset"
                 accessibilityRole="button"
                 accessibilityState={
                   {
@@ -1696,7 +1696,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                     ]
                   }
                 >
-                  crosswind.resetLabel
+                  Reset
                 </Text>
               </View>
             </View>
@@ -1767,10 +1767,10 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.aircraftLabel
+                Aircraft
               </Text>
               <View
-                accessibilityLabel="crosswind.aircraftLabel"
+                accessibilityLabel="Aircraft"
                 accessibilityRole="radiogroup"
                 style={
                   {
@@ -1965,7 +1965,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.towActual
+                TOW actual
               </Text>
               <View
                 style={
@@ -1993,7 +1993,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   }
                 >
                   <TextInput
-                    accessibilityLabel="crosswind.towActual"
+                    accessibilityLabel="TOW actual"
                     editable={true}
                     keyboardType="numeric"
                     onBlur={[Function]}
@@ -2072,7 +2072,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.cgLabel
+                Center of gravity
               </Text>
               <View
                 style={
@@ -2100,7 +2100,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   }
                 >
                   <TextInput
-                    accessibilityLabel="crosswind.cgLabel"
+                    accessibilityLabel="Center of gravity"
                     editable={true}
                     keyboardType="decimal-pad"
                     onBlur={[Function]}
@@ -2182,10 +2182,10 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   ]
                 }
               >
-                crosswind.runwayConditionLabel
+                Runway condition
               </Text>
               <View
-                accessibilityLabel="crosswind.runwayConditionLabel"
+                accessibilityLabel="Runway condition"
                 accessibilityRole="radiogroup"
                 style={
                   {
@@ -2669,7 +2669,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
               testID="crosswind-result-panel-empty"
             >
               <Text
-                accessibilityLabel="crosswind.emptyIconLabel"
+                accessibilityLabel="Information"
                 allowFontScaling={false}
                 selectable={false}
                 style={
@@ -2714,7 +2714,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                     ]
                   }
                 >
-                  crosswind.resultEmpty
+                  Enter weight and CG to see result
                 </Text>
               </View>
             </View>

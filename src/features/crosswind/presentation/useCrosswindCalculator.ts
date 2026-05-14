@@ -15,7 +15,9 @@
  */
 
 import { useMemo } from 'react';
+import type { TFunction } from 'i18next';
 
+import { useTranslation } from '../../../core';
 import { isOk } from '../../../core/result';
 import { calculateCrosswindLimit } from '../domain/calculator';
 import type {
@@ -66,6 +68,8 @@ interface FieldErrors {
 
 const EMPTY_FIELD_ERRORS: FieldErrors = { weight: null, cg: null };
 
+type Translator = TFunction;
+
 function parseFloatStrict(text: string): number | null {
   const trimmed = text.trim();
   if (trimmed.length === 0) {
@@ -79,16 +83,16 @@ function parseFloatStrict(text: string): number | null {
   return value;
 }
 
-function fieldErrorFromViolation(violation: EnvelopeViolation): FieldErrors {
+function fieldErrorFromViolation(violation: EnvelopeViolation, t: Translator): FieldErrors {
   switch (violation.kind) {
     case 'weight.below':
-      return { weight: `Below minimum ${violation.minTons} t`, cg: null };
+      return { weight: t('crosswind.weightBelowMin', { minTons: violation.minTons }), cg: null };
     case 'weight.above':
-      return { weight: `Above maximum ${violation.maxTons} t`, cg: null };
+      return { weight: t('crosswind.weightAboveMax', { maxTons: violation.maxTons }), cg: null };
     case 'cg.below':
-      return { weight: null, cg: `Below minimum ${violation.minPercent} %MAC` };
+      return { weight: null, cg: t('crosswind.cgBelowMin', { minPercent: violation.minPercent }) };
     case 'cg.above':
-      return { weight: null, cg: `Above maximum ${violation.maxPercent} %MAC` };
+      return { weight: null, cg: t('crosswind.cgAboveMax', { maxPercent: violation.maxPercent }) };
   }
 }
 
@@ -99,6 +103,7 @@ interface ParsedInputs {
 
 function parseInputs(
   inputs: CrosswindCalculatorInputs,
+  t: Translator,
 ): ParsedInputs | UseCrosswindCalculatorResult {
   const weightNum = parseFloatStrict(inputs.weightText);
   const cgNum = parseFloatStrict(inputs.cgText);
@@ -107,18 +112,20 @@ function parseInputs(
   }
   const weightVO = makeWeightInTons(weightNum);
   if (!weightVO.ok) {
+    const invalidWeight = t('crosswind.errorInvalidWeight');
     return {
-      state: { kind: 'error', headline: 'Calculation unavailable', description: 'Invalid weight' },
-      weightFieldError: 'Invalid weight',
+      state: { kind: 'error', headline: t('crosswind.errorHeadline'), description: invalidWeight },
+      weightFieldError: invalidWeight,
       cgFieldError: null,
     };
   }
   const cgVO = makeCGPercentMAC(cgNum);
   if (!cgVO.ok) {
+    const invalidCg = t('crosswind.errorInvalidCg');
     return {
-      state: { kind: 'error', headline: 'Calculation unavailable', description: 'Invalid CG' },
+      state: { kind: 'error', headline: t('crosswind.errorHeadline'), description: invalidCg },
       weightFieldError: null,
-      cgFieldError: 'Invalid CG',
+      cgFieldError: invalidCg,
     };
   }
   return { weight: weightVO.value, cg: cgVO.value };
@@ -130,14 +137,15 @@ function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is Pa
 
 function describeUnavailable(
   reason: 'aircraft-not-implemented' | 'condition-not-implemented' | 'phase-mismatch',
+  t: Translator,
 ): string {
   switch (reason) {
     case 'aircraft-not-implemented':
-      return 'No data available for the selected aircraft.';
+      return t('crosswind.errorDataAircraft');
     case 'condition-not-implemented':
-      return 'No data available for the selected runway condition.';
+      return t('crosswind.errorDataCondition');
     case 'phase-mismatch':
-      return 'Bundled data does not match the requested flight phase.';
+      return t('crosswind.errorPhaseMismatch');
   }
 }
 
@@ -145,13 +153,15 @@ function compute(
   parsed: ParsedInputs,
   inputs: CrosswindCalculatorInputs,
   data: CrosswindDataFile,
+  t: Translator,
 ): UseCrosswindCalculatorResult {
   const envelopeCheck = validateOperationalEnvelope(
     { weightTons: parsed.weight, cgPercent: parsed.cg },
     data.operationalEnvelope,
   );
   const violation = isOk(envelopeCheck) ? null : envelopeCheck.error;
-  const fieldErrors = violation === null ? EMPTY_FIELD_ERRORS : fieldErrorFromViolation(violation);
+  const fieldErrors =
+    violation === null ? EMPTY_FIELD_ERRORS : fieldErrorFromViolation(violation, t);
 
   const calc = calculateCrosswindLimit(
     {
@@ -176,7 +186,7 @@ function compute(
     return {
       state: {
         kind: 'out-of-envelope',
-        reason: 'Inputs cannot be evaluated by the lookup table. Adjust inputs.',
+        reason: t('crosswind.errorOutOfLookup'),
       },
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
@@ -186,7 +196,7 @@ function compute(
     return {
       state: {
         kind: 'data-not-available',
-        description: describeUnavailable(calc.error.reason),
+        description: describeUnavailable(calc.error.reason, t),
       },
       weightFieldError: fieldErrors.weight,
       cgFieldError: fieldErrors.cg,
@@ -195,8 +205,8 @@ function compute(
   return {
     state: {
       kind: 'error',
-      headline: 'Calculation unavailable',
-      description: 'Verify inputs and try again.',
+      headline: t('crosswind.errorHeadline'),
+      description: t('crosswind.errorVerifyInputs'),
     },
     weightFieldError: fieldErrors.weight,
     cgFieldError: fieldErrors.cg,
@@ -207,11 +217,12 @@ export function useCrosswindCalculator(
   args: UseCrosswindCalculatorArgs,
 ): UseCrosswindCalculatorResult {
   const { inputs, data } = args;
+  const { t } = useTranslation();
   return useMemo(() => {
-    const parsed = parseInputs(inputs);
+    const parsed = parseInputs(inputs, t);
     if (!isParsedInputs(parsed)) {
       return parsed;
     }
-    return compute(parsed, inputs, data);
-  }, [inputs, data]);
+    return compute(parsed, inputs, data, t);
+  }, [inputs, data, t]);
 }

@@ -16,10 +16,25 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
-  initReactI18next: { type: '3rdParty', init: jest.fn() },
-}));
+jest.mock('react-i18next', () => {
+  const en = require('../../../../../core/i18n/locales/en.json') as Record<string, unknown>;
+  const resolve = (key: string): string => {
+    const parts = key.split('.');
+    let cur: unknown = en;
+    for (const p of parts) {
+      if (cur !== null && typeof cur === 'object' && p in (cur as Record<string, unknown>)) {
+        cur = (cur as Record<string, unknown>)[p];
+      } else {
+        return key;
+      }
+    }
+    return typeof cur === 'string' ? cur : key;
+  };
+  return {
+    useTranslation: () => ({ t: resolve }),
+    initReactI18next: { type: '3rdParty', init: jest.fn() },
+  };
+});
 
 function idleOutput(value: number): CrosswindCalculationOutput {
   return {
@@ -68,7 +83,7 @@ describe('CrosswindResult', () => {
     const state: CrosswindUIState = { kind: 'empty' };
     const tree = renderWithTheme(<CrosswindResult state={state} />);
     expect(tree.getByTestId('crosswind-result-panel-empty')).toBeTruthy();
-    expect(tree.getByText('crosswind.resultEmpty')).toBeTruthy();
+    expect(tree.getByText('Enter weight and CG to see result')).toBeTruthy();
     expect(tree.toJSON()).toMatchSnapshot();
   });
 

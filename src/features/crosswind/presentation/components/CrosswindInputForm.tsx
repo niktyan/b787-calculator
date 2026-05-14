@@ -151,7 +151,7 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
         label={t('crosswind.towActual')}
         value={weightText}
         onChange={onWeightChange}
-        placeholder="e.g. 170"
+        placeholder={t('crosswind.weightPlaceholder')}
         unit="t"
         size={sizing.inputSize}
         {...(weightError === null ? {} : { error: weightError })}
@@ -161,7 +161,7 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
         label={t('crosswind.cgLabel')}
         value={cgText}
         onChange={onCGChange}
-        placeholder="e.g. 25.5"
+        placeholder={t('crosswind.cgPlaceholder')}
         unit="%MAC"
         decimal
         size={sizing.inputSize}
