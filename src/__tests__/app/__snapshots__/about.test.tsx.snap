@@ -39,7 +39,9 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
             "gap": 12,
             "justifyContent": "flex-start",
           },
-          undefined,
+          {
+            "paddingHorizontal": 0,
+          },
         ]
       }
     >
@@ -428,10 +430,12 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
             {
               "alignItems": "stretch",
               "flexDirection": "column",
-              "gap": 8,
+              "gap": 4,
               "justifyContent": "flex-start",
             },
-            undefined,
+            {
+              "gap": 8,
+            },
           ]
         }
       >
@@ -465,7 +469,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -478,13 +485,15 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 {
                   "color": "#8B949E",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -521,7 +530,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -534,13 +546,15 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 {
                   "color": "#8B949E",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -577,7 +591,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -590,13 +607,15 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 {
                   "color": "#8B949E",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -633,7 +652,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -646,13 +668,15 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 {
                   "color": "#8B949E",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -661,7 +685,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
         </View>
         <View
           accessibilityLabel="about.privacyPolicy"
-          accessibilityRole="link"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -720,7 +744,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -747,13 +774,15 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   {
                     "color": "#00C2A8",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -777,6 +806,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   {},
                 ]
               }
+              testID="about-row-privacy-policy-chevron"
             >
               
             </Text>
@@ -784,7 +814,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
         </View>
         <View
           accessibilityLabel="about.termsOfUse"
-          accessibilityRole="link"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -843,7 +873,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -870,13 +903,15 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   {
                     "color": "#00C2A8",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -900,6 +935,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   {},
                 ]
               }
+              testID="about-row-terms-of-use-chevron"
             >
               
             </Text>
@@ -907,7 +943,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
         </View>
         <View
           accessibilityLabel="about.support"
-          accessibilityRole="link"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -966,7 +1002,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -993,13 +1032,15 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   {
                     "color": "#00C2A8",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -1023,6 +1064,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   {},
                 ]
               }
+              testID="about-row-support-chevron"
             >
               
             </Text>
@@ -1093,7 +1135,9 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
             "gap": 12,
             "justifyContent": "flex-start",
           },
-          undefined,
+          {
+            "paddingHorizontal": 0,
+          },
         ]
       }
     >
@@ -1482,10 +1526,12 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
             {
               "alignItems": "stretch",
               "flexDirection": "column",
-              "gap": 8,
+              "gap": 4,
               "justifyContent": "flex-start",
             },
-            undefined,
+            {
+              "gap": 8,
+            },
           ]
         }
       >
@@ -1519,7 +1565,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1532,13 +1581,15 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -1575,7 +1626,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1588,13 +1642,15 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -1631,7 +1687,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1644,13 +1703,15 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -1687,7 +1748,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1700,13 +1764,15 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
@@ -1715,7 +1781,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
         </View>
         <View
           accessibilityLabel="about.privacyPolicy"
-          accessibilityRole="link"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -1774,7 +1840,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1801,13 +1870,15 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   {
                     "color": "#00C2A8",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -1831,6 +1902,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   {},
                 ]
               }
+              testID="about-row-privacy-policy-chevron"
             >
               
             </Text>
@@ -1838,7 +1910,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
         </View>
         <View
           accessibilityLabel="about.termsOfUse"
-          accessibilityRole="link"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -1897,7 +1969,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1924,13 +1999,15 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   {
                     "color": "#00C2A8",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -1954,6 +2031,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   {},
                 ]
               }
+              testID="about-row-terms-of-use-chevron"
             >
               
             </Text>
@@ -1961,7 +2039,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
         </View>
         <View
           accessibilityLabel="about.support"
-          accessibilityRole="link"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -2020,7 +2098,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -2047,13 +2128,15 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   {
                     "color": "#00C2A8",
                     "fontFamily": "Menlo",
-                    "fontSize": 11,
-                    "fontWeight": "400",
+                    "fontSize": 16,
+                    "fontWeight": "500",
                     "letterSpacing": 0,
-                    "lineHeight": 16,
+                    "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 11,
+                  },
                 ]
               }
             >
@@ -2077,6 +2160,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   {},
                 ]
               }
+              testID="about-row-support-chevron"
             >
               
             </Text>

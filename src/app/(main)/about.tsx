@@ -10,30 +10,41 @@
  * in Crosswind Takeoff and therefore no longer redundantly displayed
  * here. Privacy/Terms open via expo-web-browser; Support opens the
  * system mail composer via Linking.
+ *
+ * Rows render through the shared DS primitives (`InfoSettingsRow` for
+ * read-only attributes, `NavigableSettingsRow` for tappable
+ * Privacy/Terms/Support) — that gives About the same adaptive
+ * compact/regular sizing as Settings. Tappable rows pass
+ * `valueColor="accent"` to keep the stronger external-destination
+ * affordance from the pre-refactor design.
  */
 
-import { Ionicons } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import { useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
-import { Linking, Pressable, useWindowDimensions, View } from 'react-native';
+import { Linking, useWindowDimensions } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
-import { logger, useTheme, useTranslation } from '../../core';
+import { logger, useTranslation } from '../../core';
 import {
   PRIVACY_POLICY_URL,
   SUPPORT_EMAIL,
   SUPPORT_MAILTO_SUBJECT,
   TERMS_OF_USE_URL,
 } from '../../core/constants';
-import { Row, Screen, ScreenHeader, Stack, Text, tokens } from '../../design-system';
+import {
+  InfoSettingsRow,
+  NavigableSettingsRow,
+  Screen,
+  ScreenHeader,
+  Stack,
+  Text,
+  tokens,
+} from '../../design-system';
 import type { NavPillsItem } from '../../design-system';
 import { createCrosswindRepository } from '../../features/crosswind';
-
-const ROW_BORDER_WIDTH = 1;
-const ABOUT_CHEVRON_SIZE = 18;
 
 type TabId = 'modules' | 'settings' | 'about';
 
@@ -87,9 +98,14 @@ export default function About(): ReactNode {
     });
   }, []);
 
+  const outerStackStyle = useAboutOuterStyle(isRegular);
+  const listGap = isRegular
+    ? tokens.sizing.settingsRow.regular.listGap
+    : tokens.sizing.settingsRow.compact.listGap;
+
   return (
     <Screen testID="about-screen">
-      <Stack gap="md">
+      <Stack gap="md" style={outerStackStyle}>
         <ScreenHeader
           title={t('about.title')}
           tabs={tabs}
@@ -101,6 +117,8 @@ export default function About(): ReactNode {
         />
         <AboutRows
           t={t}
+          isRegular={isRegular}
+          listGap={listGap}
           onOpenPrivacy={handleOpenPrivacy}
           onOpenTerms={handleOpenTerms}
           onOpenSupport={handleOpenSupport}
@@ -113,53 +131,84 @@ export default function About(): ReactNode {
   );
 }
 
+function useAboutOuterStyle(isRegular: boolean): ViewStyle {
+  const padding = isRegular
+    ? tokens.sizing.settingsRow.regular.screenPadding
+    : tokens.sizing.settingsRow.compact.screenPadding;
+  return useMemo<ViewStyle>(() => ({ paddingHorizontal: padding }), [padding]);
+}
+
 interface AboutRowsProps {
   readonly t: (key: string) => string;
+  readonly isRegular: boolean;
+  readonly listGap: number;
   readonly onOpenPrivacy: () => void;
   readonly onOpenTerms: () => void;
   readonly onOpenSupport: () => void;
 }
 
-function AboutRows({ t, onOpenPrivacy, onOpenTerms, onOpenSupport }: AboutRowsProps): ReactNode {
+function AboutRows({
+  t,
+  isRegular,
+  listGap,
+  onOpenPrivacy,
+  onOpenTerms,
+  onOpenSupport,
+}: AboutRowsProps): ReactNode {
   const versionDisplay = resolveVersionDisplay();
   const dataSourceValue = resolveDataSource();
   const viewAffordance = `${t('about.openExternal')} →`;
+  const listStyle = useMemo<ViewStyle>(() => ({ gap: listGap }), [listGap]);
 
   return (
-    <Stack gap="sm">
-      <AboutRow label={t('about.version')} value={versionDisplay} testID="about-row-version" />
-      <AboutRow
+    <Stack gap="xs" style={listStyle}>
+      <InfoSettingsRow
+        label={t('about.version')}
+        value={versionDisplay}
+        testID="about-row-version"
+        isRegular={isRegular}
+      />
+      <InfoSettingsRow
         label={t('about.validation')}
         value={t('about.validationValue')}
         testID="about-row-validation"
+        isRegular={isRegular}
       />
-      <AboutRow
+      <InfoSettingsRow
         label={t('about.dataSource')}
         value={dataSourceValue}
         testID="about-row-data-source"
+        isRegular={isRegular}
       />
-      <AboutRow
+      <InfoSettingsRow
         label={t('about.distribution')}
         value={t('about.distributionValue')}
         testID="about-row-distribution"
+        isRegular={isRegular}
       />
-      <AboutRow
+      <NavigableSettingsRow
         label={t('about.privacyPolicy')}
         value={viewAffordance}
         onPress={onOpenPrivacy}
         testID="about-row-privacy-policy"
+        isRegular={isRegular}
+        valueColor="accent"
       />
-      <AboutRow
+      <NavigableSettingsRow
         label={t('about.termsOfUse')}
         value={viewAffordance}
         onPress={onOpenTerms}
         testID="about-row-terms-of-use"
+        isRegular={isRegular}
+        valueColor="accent"
       />
-      <AboutRow
+      <NavigableSettingsRow
         label={t('about.support')}
         value={SUPPORT_EMAIL}
         onPress={onOpenSupport}
         testID="about-row-support"
+        isRegular={isRegular}
+        valueColor="accent"
       />
     </Stack>
   );
@@ -189,73 +238,4 @@ function resolveDataSource(): string {
   const dataset = result.value.byAircraft.b787_8?.dry;
   const refDoc = dataset?.metadata.referenceDocument ?? 'Boeing 787 FCOM';
   return `${refDoc} · ${result.value.dataVersion}`;
-}
-
-interface AboutRowProps {
-  readonly label: string;
-  readonly value: string;
-  readonly testID: string;
-  readonly onPress?: () => void;
-}
-
-function AboutRow({ label, value, testID, onPress }: AboutRowProps): ReactNode {
-  const { theme } = useTheme();
-  const palette = tokens.colors[theme.resolved];
-
-  const rowStyle = useMemo<ViewStyle>(
-    () => ({
-      alignItems: 'center',
-      backgroundColor: palette.bgCard,
-      borderColor: palette.border,
-      borderRadius: tokens.radii.md,
-      borderWidth: ROW_BORDER_WIDTH,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      minHeight: tokens.layout.minTouchTarget,
-      paddingHorizontal: tokens.spacing.md,
-      paddingVertical: tokens.spacing.sm,
-    }),
-    [palette.bgCard, palette.border],
-  );
-
-  const labelNode = (
-    <Text variant="caption" color="textPrimary">
-      {label}
-    </Text>
-  );
-  const valueNode =
-    onPress === undefined ? (
-      <Text variant="monoSmall" color="textSecondary">
-        {value}
-      </Text>
-    ) : (
-      <Row align="center" gap="xs">
-        <Text variant="monoSmall" color="accent">
-          {value}
-        </Text>
-        <Ionicons name="chevron-forward" size={ABOUT_CHEVRON_SIZE} color={palette.accent} />
-      </Row>
-    );
-
-  if (onPress === undefined) {
-    return (
-      <View style={rowStyle} testID={testID}>
-        {labelNode}
-        {valueNode}
-      </View>
-    );
-  }
-
-  return (
-    <Pressable
-      accessibilityRole="link"
-      accessibilityLabel={label}
-      onPress={onPress}
-      style={rowStyle}
-      testID={testID}
-    >
-      {labelNode}
-      {valueNode}
-    </Pressable>
-  );
 }

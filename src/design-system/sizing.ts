@@ -29,14 +29,19 @@ const MODULE_ICON_MB_COMPACT = 8;
 const MODULE_ICON_MB_REGULAR = 12;
 
 // --- Module-name typography ---
+// `regular` was bumped 18 → 20 in Sprint 6 follow-up Polish-Block-3 so
+// the active card's name aligns with the new Settings/About row label
+// scale (16 pt for the row label + the title-on-card carries more weight).
 const MODULE_NAME_SIZE_COMPACT = 12;
-const MODULE_NAME_SIZE_REGULAR = 18;
+const MODULE_NAME_SIZE_REGULAR = 20;
 
 // --- Module-description typography ---
+// Description bumped 14 → 16 alongside the name bump so the card's
+// content reads at the same scale as Settings row values.
 const MODULE_DESC_SIZE_COMPACT = 10;
-const MODULE_DESC_SIZE_REGULAR = 14;
+const MODULE_DESC_SIZE_REGULAR = 16;
 const MODULE_DESC_LINE_HEIGHT_COMPACT = 14;
-const MODULE_DESC_LINE_HEIGHT_REGULAR = 21; // 14 × 1.5
+const MODULE_DESC_LINE_HEIGHT_REGULAR = 24; // 16 × 1.5
 
 // --- Coming-soon badge typography ---
 const COMING_BADGE_SIZE_COMPACT = 8;

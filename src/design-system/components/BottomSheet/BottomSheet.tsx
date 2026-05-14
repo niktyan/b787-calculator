@@ -10,7 +10,7 @@
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Modal, Pressable, View } from 'react-native';
-import type { ViewStyle } from 'react-native';
+import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
@@ -103,6 +103,13 @@ export interface BottomSheetOptionProps {
   readonly selected: boolean;
   readonly onPress: () => void;
   readonly testID?: string;
+  /**
+   * When true, the option row uses the iPad-regular sizing bundle —
+   * matches the row height + label font of the underlying screen so
+   * the picker doesn't feel visually smaller than the row it opened
+   * from (см. 06-ui-spec.md § Адаптивность iPad ↔ iPhone).
+   */
+  readonly isRegular?: boolean;
 }
 
 export function BottomSheetOption({
@@ -110,9 +117,11 @@ export function BottomSheetOption({
   selected,
   onPress,
   testID,
+  isRegular = false,
 }: BottomSheetOptionProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
+  const sizing = isRegular ? tokens.sizing.settingsRow.regular : tokens.sizing.settingsRow.compact;
 
   const rowStyle = useMemo<ViewStyle>(
     () => ({
@@ -123,12 +132,25 @@ export function BottomSheetOption({
       borderWidth: ROW_BORDER_WIDTH,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      minHeight: tokens.layout.minTouchTarget,
-      paddingHorizontal: tokens.spacing.md,
-      paddingVertical: tokens.spacing.sm,
+      minHeight: sizing.minHeight,
+      paddingHorizontal: sizing.paddingH,
+      paddingVertical: sizing.paddingV,
     }),
-    [palette.accent, palette.bgCard, palette.border, selected],
+    [
+      palette.accent,
+      palette.bgCard,
+      palette.border,
+      selected,
+      sizing.minHeight,
+      sizing.paddingH,
+      sizing.paddingV,
+    ],
   );
+  const labelStyle = useMemo<TextStyle>(
+    () => ({ fontSize: sizing.labelSize, fontWeight: sizing.labelWeight }),
+    [sizing.labelSize, sizing.labelWeight],
+  );
+  const checkStyle = useMemo<TextStyle>(() => ({ fontSize: sizing.labelSize }), [sizing.labelSize]);
 
   return (
     <Pressable
@@ -138,11 +160,11 @@ export function BottomSheetOption({
       style={rowStyle}
       testID={testID}
     >
-      <Text variant="caption" color="textPrimary">
+      <Text variant="caption" color="textPrimary" style={labelStyle}>
         {label}
       </Text>
       {selected ? (
-        <Text variant="caption" color="accent">
+        <Text variant="caption" color="accent" style={checkStyle}>
           ✓
         </Text>
       ) : null}

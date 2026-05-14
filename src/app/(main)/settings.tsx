@@ -116,6 +116,7 @@ export default function Settings(): ReactNode {
         sheet={state.sheet}
         currentLanguage={state.language}
         currentThemeMode={theme.mode}
+        isRegular={isRegular}
         onClose={state.closeSheet}
         onSelectLanguage={state.selectLanguage}
         onSelectTheme={state.selectTheme}
@@ -238,6 +239,7 @@ interface SettingsSheetsProps {
   readonly sheet: SheetKind;
   readonly currentLanguage: SupportedLanguage;
   readonly currentThemeMode: ThemeMode;
+  readonly isRegular: boolean;
   readonly onClose: () => void;
   readonly onSelectLanguage: (next: SupportedLanguage) => void;
   readonly onSelectTheme: (next: ThemeMode) => void;
@@ -248,6 +250,7 @@ function SettingsSheets({
   sheet,
   currentLanguage,
   currentThemeMode,
+  isRegular,
   onClose,
   onSelectLanguage,
   onSelectTheme,
@@ -267,6 +270,7 @@ function SettingsSheets({
               selected={code === currentLanguage}
               onPress={(): void => onSelectLanguage(code)}
               testID={`settings-sheet-language-${code}`}
+              isRegular={isRegular}
             />
           ))
         : null}
@@ -277,6 +281,7 @@ function SettingsSheets({
               label={themeLabelFor(mode, t)}
               selected={mode === currentThemeMode}
               onPress={(): void => onSelectTheme(mode)}
+              isRegular={isRegular}
               testID={`settings-sheet-theme-${mode}`}
             />
           ))

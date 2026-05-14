@@ -45,7 +45,9 @@ interface ComingSoonStyles {
  * `isRegular` prop driven from `useWindowDimensions().width >= 768`.
  */
 
-const NAME_LH_REGULAR = 22;
+// Line-heights sized 1.2× the font size for cockpit-glance density —
+// keeps the card title compact without clipping descenders.
+const NAME_LH_REGULAR = 24;
 const NAME_LH_COMPACT = 16;
 
 type CardSizing = (typeof tokens.sizing.moduleCard)[keyof typeof tokens.sizing.moduleCard];
