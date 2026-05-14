@@ -1,11 +1,10 @@
 import { useRouter } from 'expo-router';
-import type { Href } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
-import { useModules, useModuleVisibility, useTranslation } from '../../core';
+import { logger, useModules, useModuleVisibility, useTranslation } from '../../core';
 import type { ActiveModule, ComingSoonModule, Module } from '../../core/modules';
 import { Button, EmptyState, Screen, ScreenHeader, Stack, tokens } from '../../design-system';
 import type { NavPillsItem } from '../../design-system';
@@ -30,6 +29,18 @@ const GRID_BREAKPOINT = tokens.breakpoints.compact;
 const REGULAR_BREAKPOINT = tokens.breakpoints.regularHeader;
 
 type TabId = 'modules' | 'settings' | 'about';
+
+// Literal-typed routes the Main Menu may push into. Keeping this as a
+// `const`-asserted tuple lets us narrow `module.route` (typed as plain
+// `string` in the bundled JSON) into a typed-routes-compatible literal,
+// avoiding a fragile `as Href` cast that disagrees between local TS and
+// CI typegen.
+const ACTIVE_MODULE_ROUTES = ['/crosswind'] as const;
+type ActiveModuleRoute = (typeof ACTIVE_MODULE_ROUTES)[number];
+
+function isActiveModuleRoute(route: string): route is ActiveModuleRoute {
+  return (ACTIVE_MODULE_ROUTES as readonly string[]).includes(route);
+}
 
 export default function MainMenu(): ReactNode {
   const router = useRouter();
@@ -179,10 +190,18 @@ function useMenuHandlers(router: ReturnType<typeof useRouter>): MenuHandlers {
     [router],
   );
   // Drilldown into Crosswind — keeps `push` so iOS swipe-back / the
-  // in-screen Back pill pops back to the menu.
+  // in-screen Back pill pops back to the menu. The runtime check
+  // narrows the JSON-sourced `route: string` to a literal that the
+  // expo-router typed-routes Href union accepts, with a logger.warn
+  // fallback for unrecognised routes (would indicate a schema /
+  // typegen drift that the developer should fix).
   const onActivePress = useCallback(
     (route: string): void => {
-      router.push(route as Href);
+      if (isActiveModuleRoute(route)) {
+        router.push(route);
+      } else {
+        logger.warn(`menu.onActivePress: unknown route ${route}`);
+      }
     },
     [router],
   );
