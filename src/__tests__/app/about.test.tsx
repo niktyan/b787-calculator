@@ -5,6 +5,7 @@ import About from '../../app/(main)/about';
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
 
 const mockPush = jest.fn();
+const mockReplace = jest.fn();
 const mockOpenBrowserAsync = jest.fn((..._args: unknown[]) => Promise.resolve({ type: 'cancel' }));
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -12,7 +13,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 );
 
 jest.mock('expo-router', () => ({
-  useRouter: () => ({ push: mockPush, replace: jest.fn(), back: jest.fn() }),
+  useRouter: () => ({ push: mockPush, replace: mockReplace, back: jest.fn() }),
   Stack: { Screen: (): null => null },
 }));
 
@@ -28,6 +29,7 @@ jest.mock('react-i18next', () => ({
 describe('About route', () => {
   beforeEach(() => {
     mockPush.mockClear();
+    mockReplace.mockClear();
     mockOpenBrowserAsync.mockClear();
   });
 
@@ -74,22 +76,25 @@ describe('About route', () => {
     openSpy.mockRestore();
   });
 
-  it('navigates to /menu when Modules tab is tapped', () => {
+  it('navigates to /menu via replace when Modules tab is tapped', () => {
     const { getByTestId } = renderWithTheme(<About />, { mode: 'dark' });
     fireEvent.press(getByTestId('about-tabs-modules'));
-    expect(mockPush).toHaveBeenCalledWith('/menu');
+    expect(mockReplace).toHaveBeenCalledWith('/menu');
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
-  it('navigates to /settings when Settings tab is tapped', () => {
+  it('navigates to /settings via replace when Settings tab is tapped', () => {
     const { getByTestId } = renderWithTheme(<About />, { mode: 'dark' });
     fireEvent.press(getByTestId('about-tabs-settings'));
-    expect(mockPush).toHaveBeenCalledWith('/settings');
+    expect(mockReplace).toHaveBeenCalledWith('/settings');
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it('does not navigate when About tab itself is tapped', () => {
     const { getByTestId } = renderWithTheme(<About />, { mode: 'dark' });
     fireEvent.press(getByTestId('about-tabs-about'));
     expect(mockPush).not.toHaveBeenCalled();
+    expect(mockReplace).not.toHaveBeenCalled();
   });
 
   it('renders correctly in dark theme (snapshot)', () => {

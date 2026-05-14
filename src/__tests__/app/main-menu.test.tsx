@@ -6,13 +6,14 @@ import MainMenu from '../../app/(main)/menu';
 import { STORAGE_KEYS, storage } from '../../core/storage';
 
 const mockPush = jest.fn();
+const mockReplace = jest.fn();
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
 jest.mock('expo-router', () => ({
-  useRouter: () => ({ push: mockPush, replace: jest.fn(), back: jest.fn() }),
+  useRouter: () => ({ push: mockPush, replace: mockReplace, back: jest.fn() }),
   Stack: { Screen: (): null => null },
 }));
 
@@ -24,6 +25,7 @@ jest.mock('react-i18next', () => ({
 describe('Main Menu route', () => {
   beforeEach(async () => {
     mockPush.mockClear();
+    mockReplace.mockClear();
     await storage.flushNow();
     await AsyncStorage.clear();
   });
@@ -55,10 +57,11 @@ describe('Main Menu route', () => {
     expect(ids).toEqual(['module-card-crosswind-landing', 'module-card-crosswind-takeoff']);
   });
 
-  it('navigates to /crosswind when the active card is tapped', () => {
+  it('navigates to /crosswind via push when the active card is tapped (drilldown)', () => {
     const { getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     fireEvent.press(getByTestId('module-card-crosswind-takeoff'));
     expect(mockPush).toHaveBeenCalledWith('/crosswind');
+    expect(mockReplace).not.toHaveBeenCalled();
   });
 
   it('does NOT navigate when a coming-soon card is tapped — opens the modal instead', () => {
@@ -68,12 +71,13 @@ describe('Main Menu route', () => {
     expect(getByTestId('coming-soon-modal-sheet')).toBeTruthy();
   });
 
-  it('navigates to /settings and /about via the NavPills', () => {
+  it('navigates to /settings and /about via NavPills using replace (not push)', () => {
     const { getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     fireEvent.press(getByTestId('main-menu-tabs-settings'));
-    expect(mockPush).toHaveBeenCalledWith('/settings');
+    expect(mockReplace).toHaveBeenCalledWith('/settings');
     fireEvent.press(getByTestId('main-menu-tabs-about'));
-    expect(mockPush).toHaveBeenCalledWith('/about');
+    expect(mockReplace).toHaveBeenCalledWith('/about');
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it('filters out a module when its visibility flag is false in storage', async () => {

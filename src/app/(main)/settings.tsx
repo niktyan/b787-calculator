@@ -53,12 +53,14 @@ export default function Settings(): ReactNode {
   const modules = useModules();
   const visibility = useModuleVisibility();
 
+  // Sibling tabs use `replace` to prevent stack accumulation —
+  // see 06-ui-spec.md § Навигация.
   const handleTabChange = useCallback(
     (next: TabId): void => {
       if (next === 'modules') {
-        router.push('/menu');
+        router.replace('/menu');
       } else if (next === 'about') {
-        router.push('/about');
+        router.replace('/about');
       }
     },
     [router],

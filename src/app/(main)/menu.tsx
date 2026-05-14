@@ -165,24 +165,31 @@ interface MenuHandlers {
 }
 
 function useMenuHandlers(router: ReturnType<typeof useRouter>): MenuHandlers {
+  // Sibling tabs (Settings, About) use `replace` — see § Навигация in
+  // 06-ui-spec.md. Stack accumulation from `push` made the iOS swipe-back
+  // gesture cycle through prior NavPill destinations.
   const onTabChange = useCallback(
     (next: TabId): void => {
       if (next === 'settings') {
-        router.push('/settings');
+        router.replace('/settings');
       } else if (next === 'about') {
-        router.push('/about');
+        router.replace('/about');
       }
     },
     [router],
   );
+  // Drilldown into Crosswind — keeps `push` so iOS swipe-back / the
+  // in-screen Back pill pops back to the menu.
   const onActivePress = useCallback(
     (route: string): void => {
-      // Cast: routes come from a zod-validated bundled JSON; typed routes
-      // can't see them at compile time.
       router.push(route as Href);
     },
     [router],
   );
+  // EmptyState deep-link — also a drilldown semantic (Modules tab is
+  // already active when the empty state shows), so `push` is correct
+  // here: the user expects to return to Main Menu after re-enabling
+  // a module.
   const onOpenSettings = useCallback((): void => {
     router.push('/settings');
   }, [router]);

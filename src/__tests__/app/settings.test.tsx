@@ -4,6 +4,7 @@ import Settings from '../../app/(main)/settings';
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
 
 const mockPush = jest.fn();
+const mockReplace = jest.fn();
 const mockSetLanguage = jest.fn((_lang: string) => Promise.resolve());
 let mockCurrentLanguage = 'en';
 
@@ -12,7 +13,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 );
 
 jest.mock('expo-router', () => ({
-  useRouter: () => ({ push: mockPush, replace: jest.fn(), back: jest.fn() }),
+  useRouter: () => ({ push: mockPush, replace: mockReplace, back: jest.fn() }),
   Stack: { Screen: (): null => null },
 }));
 
@@ -33,6 +34,7 @@ jest.mock('../../core/i18n/config', () => {
 describe('Settings route', () => {
   beforeEach(() => {
     mockPush.mockClear();
+    mockReplace.mockClear();
     mockSetLanguage.mockClear();
     mockCurrentLanguage = 'en';
   });
@@ -55,22 +57,25 @@ describe('Settings route', () => {
     expect(getByTestId('settings-row-module-crosswind-landing')).toBeTruthy();
   });
 
-  it('navigates to /menu when Modules tab is tapped', () => {
+  it('navigates to /menu via replace when Modules tab is tapped', () => {
     const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
     fireEvent.press(getByTestId('settings-tabs-modules'));
-    expect(mockPush).toHaveBeenCalledWith('/menu');
+    expect(mockReplace).toHaveBeenCalledWith('/menu');
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
-  it('navigates to /about when About tab is tapped', () => {
+  it('navigates to /about via replace when About tab is tapped', () => {
     const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
     fireEvent.press(getByTestId('settings-tabs-about'));
-    expect(mockPush).toHaveBeenCalledWith('/about');
+    expect(mockReplace).toHaveBeenCalledWith('/about');
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it('does not navigate when Settings tab itself is tapped', () => {
     const { getByTestId } = renderWithTheme(<Settings />, { mode: 'dark' });
     fireEvent.press(getByTestId('settings-tabs-settings'));
     expect(mockPush).not.toHaveBeenCalled();
+    expect(mockReplace).not.toHaveBeenCalled();
   });
 
   it('opens the language bottom sheet when Language row is tapped', () => {

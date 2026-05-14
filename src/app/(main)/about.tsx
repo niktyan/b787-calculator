@@ -45,12 +45,14 @@ export default function About(): ReactNode {
   const { width } = useWindowDimensions();
   const isRegular = width >= tokens.breakpoints.regularHeader;
 
+  // Sibling tabs use `replace` to prevent stack accumulation —
+  // see 06-ui-spec.md § Навигация.
   const handleTabChange = useCallback(
     (next: TabId): void => {
       if (next === 'modules') {
-        router.push('/menu');
+        router.replace('/menu');
       } else if (next === 'settings') {
-        router.push('/settings');
+        router.replace('/settings');
       }
     },
     [router],
