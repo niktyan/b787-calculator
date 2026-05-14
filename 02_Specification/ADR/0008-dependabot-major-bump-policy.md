@@ -330,3 +330,197 @@ inspection-проходу перед merge любого Dependabot PR,
 (см. предыдущий cleanup-prompt от 2026-05-13) воспроизводимо
 ловит SDK-boundary issues, даже если правила в
 `dependabot.yml` для конкретного пакета ещё не добавлены.
+
+---
+
+## Pre-release tooling stability lock (2026-05-14, extended 2026-05-15)
+
+Через сутки после refinement-pass (Gap 1 / Gap 2) Dependabot
+выкатил **четыре PR-а** с major-апдейтами **не-SDK-coordinated**
+core-пакетов (initial discovery batch, 2026-05-14):
+
+- **PR #53** — `lint-staged` 15.5.2 → 17.0.4 (×2 major).
+- **PR #54** — `i18next` 24.2.3 → 26.1.0 (×2 major, production
+  runtime).
+- **PR #55** — `eslint-plugin-react-hooks` 5.1.0 → 7.1.1 (×2
+  major, добавляет ESLint-10 compatibility rules).
+- **PR #56** — `typescript` 5.9.2 → 6.0.3 (×1 major).
+
+День спустя (2026-05-15) inspection-проход по следующему накопленному
+батчу PR-ов выявил **ещё пять** пакетов с тем же risk-профилем
+(extension batch):
+
+- **PR #48** — production-dependencies bundle (9 SDK-coordinated
+  minor bumps) — closed без расширения lock-а; bundle-level risk
+  покрыт существующими ADR-0008 правилами + manual-review protocol.
+- **PR #49** — `zod` 3.24.2 → 4.4.3 (runtime validator, ×1 major).
+- **PR #50** — `react-i18next` 15.5.1 → 17.0.7 (React binding to
+  i18next, ×2 major).
+- **PR #51** — `jest` 29.7.0 → 30.4.2 + `@types/jest` 29.5.14 →
+  30.0.0 (test runner + types, ×1 major каждый).
+- **PR #52** — `eslint` 9.39.4 → 10.3.0 (linter, ×1 major).
+
+Ни один из них **не** пересекает SDK boundary — ADR-0008
+ignore-block их и не должен был блокировать. Но inspection
+выявил отдельную проблему: **major-bumps core dev-tooling /
+production-runtime библиотек во время pre-release polish phase
+имеют нулевую функциональную выгоду до launch и нетривиальный
+breakage surface** (TS 6 stricter inference + новые `lib`
+defaults, i18next 26 typing reshape, lint-staged 17 поднимает
+Node engine, eslint-plugin-react-hooks 7 — новые правила, которые
+могут surface-ить нарушения в текущем codebase, zod 4 — runtime
+schema-validator breaking changes, react-i18next 17 — typing
+reshape lockstep с i18next, jest 30 — paired с jest-expo SDK pin,
+eslint 10 — breaks coupled config-expo + react-hooks 5.x).
+
+### Decision
+
+Расширить ignore-block на **девять конкретных dependency-name**
+с правилом `version-update:semver-major`: initial 4 (2026-05-14)
+плюс extension 5 (2026-05-15). PATCH + MINOR внутри текущего
+major-а остаются auto-proposed (security patches и bug-fixes
+проходят).
+
+```yaml
+# Initial batch (2026-05-14)
+- dependency-name: 'typescript'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'i18next'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'lint-staged'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'eslint-plugin-react-hooks'
+  update-types: ['version-update:semver-major']
+
+# Extension batch (2026-05-15)
+- dependency-name: 'zod'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'react-i18next'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'jest'
+  update-types: ['version-update:semver-major']
+- dependency-name: '@types/jest'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'eslint'
+  update-types: ['version-update:semver-major']
+```
+
+### Why these nine
+
+Это не «все non-SDK майоры запрещены навсегда» — это **именно
+эти девять пакетов на эту фазу проекта**. Каждый выбран сознательно:
+
+**Initial batch (2026-05-14):**
+
+- `typescript` — core dev-tool, держит весь typecheck quality gate.
+  Major-bumps традиционно вытаскивают новые errors из third-party
+  `@types/*` и из собственного codebase. Нужен dedicated upgrade
+  cycle с peer audit.
+- `i18next` — production-runtime библиотека под каждым
+  `useTranslation()`. Sprint 7 (Localization audit) рассчитывает
+  на стабильное состояние; major во время аудита разрушает
+  test-baseline.
+- `lint-staged` — git-hook orchestrator. v17 поднимает Node
+  engine `>=18` → `>=20`; CI на 20 LTS работает, но рассказывает,
+  что lint-staged начинает быть picky про Node-version. Безопаснее
+  отложить.
+- `eslint-plugin-react-hooks` — v7 добавляет ESLint-10 compat
+  rules и compiler-lint improvements (`set-state-in-effect`,
+  ref validation), которые потенциально surface-ят новые
+  warnings в текущем коде. Полезные правила — но не во время
+  feature-freeze.
+
+**Extension batch (2026-05-15):**
+
+- `zod` — runtime validator под `core/storage` schemas,
+  `core/modules` JSON validation, `features/crosswind/data`
+  schema. Major bumps (3 → 4) меняют API и потенциально нарушают
+  parse-семантику validated JSON; unit-тесты на mocked storage
+  не ловят runtime-regression. PR #49 был closed с зелёным CI —
+  static-gate не достаточен для runtime-критичной библиотеки.
+- `react-i18next` — React-binding для i18next, мажорный цикл
+  которого синхронизирован с i18next-ядром. Если i18next
+  заблокирован, react-i18next должен следовать тому же правилу;
+  иначе binding и core драйфят независимо. PR #50 был closed.
+- `jest` (+ `@types/jest` — типы paired) — test runner. Coupled
+  to `jest-expo` (Gap-2 locked) который tracks Expo SDK version.
+  Jest 29 → 30 без bump-а `jest-expo` (≥ 56 для Expo SDK 55+)
+  ломает preset — CI red в PR #51 подтвердил. Lock держит до
+  координированного SDK + jest upgrade.
+- `eslint` — linter quality gate. Coupled to `eslint-config-expo`
+  (Gap-2 locked) и к закрепленному `eslint-plugin-react-hooks`
+  5.x (initial-batch lock + PR #55 closure). ESLint 10 breaks
+  обе зависимости — CI red в PR #52 подтвердил.
+
+### Consequences
+
+**Позитивные:**
+
+- Pre-release polish phase не прерывается майорами core-инструментов.
+- Dependabot не открывает PR-noise для повторных prerelease /
+  RC / major-bumps этих пакетов.
+- Sprint 7 (Localization audit) и Sprint 8 (App Store submission
+  cycle) идут на стабильной tooling-baseline.
+
+**Негативные:**
+
+- Если security advisory выйдет в новой major-версии одного из
+  четырёх пакетов, Dependabot security alerts всё равно откроют
+  PR (security alerts не фильтруются `ignore:` блоком). Это
+  приемлемо.
+- Lift-action требует осознанного post-launch шага. Без него
+  правила накапливаются и `dependabot.yml` дрейфует от реального
+  желания команды.
+
+**Нейтральные:**
+
+- Не влияет на bundle / runtime / Privacy Manifest.
+
+### Lift condition
+
+После **Phase D App Store launch** открыть отдельный PR
+«tooling-evaluation sprint», который:
+
+1. Снимает эти **девять** `ignore:` записей **по одной**.
+2. Для каждого пакета — отдельный child-PR с upgrade-ом, регресс-
+   тестом (lint / typecheck / tests / preview-build) и smoke-
+   тестом на устройстве (Expo Go), если это runtime-пакет.
+3. Решение per-package: merge / postpone / hold.
+
+Tooling-evaluation sprint открывает по одному child-PR, не bundle
+из девяти. Каждый прокатывается через тот же inspection-protocol,
+что Sprint 6 follow-up polish (manual review + manual CI verify +
+device smoke). Recommended order: runtime-критичные пакеты
+(`zod`, `i18next` + `react-i18next` в одном child-PR, потому что
+binding и core должны двигаться вместе) — first; dev-tooling
+(`typescript`, `eslint` + `eslint-plugin-react-hooks` пара,
+`jest` + `@types/jest` пара, `lint-staged`) — second, в любом
+порядке между собой.
+
+### Reference closed PRs
+
+**Initial batch (2026-05-14):**
+
+- #53 lint-staged 15→17 — closed 2026-05-14, comment cites this
+  amendment.
+- #54 i18next 24→26 — closed 2026-05-14, comment cites this
+  amendment.
+- #55 eslint-plugin-react-hooks 5→7 — closed 2026-05-14, comment
+  cites this amendment.
+- #56 typescript 5→6 — closed 2026-05-14, comment cites this
+  amendment.
+
+**Extension batch (2026-05-15):**
+
+- #48 production-dependencies bundle (9 SDK-coordinated minor
+  bumps) — closed 2026-05-15. Bundle-level risk; no lock
+  extension needed (existing ADR-0008 rules + manual-review
+  protocol cover it).
+- #49 zod 3→4 — closed 2026-05-15, comment cites this
+  amendment.
+- #50 react-i18next 15→17 — closed 2026-05-15, comment cites
+  this amendment.
+- #51 jest + @types/jest 29→30 — closed 2026-05-15, comment
+  cites this amendment + Gap-2 jest-expo pairing.
+- #52 eslint 9→10 — closed 2026-05-15, comment cites this
+  amendment + Gap-2 eslint-config-expo coupling.
