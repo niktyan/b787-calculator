@@ -48,6 +48,24 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: 'jest-expo'
         update-types: ['version-update:semver-major']
+
+      # Pre-release tooling stability lock (2026-05-14) — block
+      # major bumps of core dev tools and runtime libraries through
+      # Phase D / App Store submission. Each major listed below has
+      # a non-trivial breakage surface and zero functional benefit
+      # before launch. PATCH + MINOR within the current major still
+      # come through (good — security patches). To be revisited in
+      # a post-launch tooling-evaluation sprint that lifts these
+      # rules one package at a time. Discovered via PRs #53–#56.
+      # See ADR-0008 § "Pre-release tooling stability lock".
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'i18next'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'lint-staged'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint-plugin-react-hooks'
+        update-types: ['version-update:semver-major']
     groups:
       production-dependencies:
         dependency-type: 'production'
