@@ -216,6 +216,7 @@ features/crosswind/
 - **Никакой бизнес-логики в `_layout.tsx`.** Только композиция и навигация.
 - **Feature screens — re-exports из feature-модулей.** Например, `src/app/(main)/crosswind.tsx` это файл из 1-2 строк, который делает `export { CrosswindScreen as default } from '@features/crosswind';`. Реальная реализация — в feature-модуле, а route-файл это «тонкая прослойка», подключающая модуль к URL.
 - **Provider-инициализация может быть асинхронной.** I18n загружается, theme определяется по системе, disclaimer-флаг читается из storage. Splash-screen остаётся видимым, пока все провайдеры готовы (через expo-splash-screen API).
+- **Navigation API: replace для siblings, push для drilldown.** NavPill-переходы между Main Menu / Settings / About используют `router.replace` (sibling tabs — одна координата, не сценарий). Drilldown в Crosswind и deep-link «Open Settings» из empty-state используют `router.push`. iOS swipe-back pop-ит push-стек, не traverse-ит replaced-историю. Подробности и таблица — `06-ui-spec.md` § Навигация. Закрепляется unit-тестами на mock router в `__tests__/app/`.
 
 **Псевдокод `_layout.tsx`** (для понимания, не финальный код):
 

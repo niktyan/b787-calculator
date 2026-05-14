@@ -145,6 +145,20 @@ src/app/
 меняет cold-start. Поэтому splash переехал в `index.tsx`, а Main Menu —
 в `(main)/menu.tsx`.
 
+**Replace vs push semantics для NavPills и drilldown** (зафиксировано в
+Sprint 6 follow-up Polish-Block-1):
+
+| Переход | API | Почему |
+|---------|-----|--------|
+| Sibling tab Main Menu ↔ Settings ↔ About (NavPill) | `router.replace` | Sibling tabs — это одна логическая координата, не вложенный сценарий. `push` накапливает history, и iOS swipe-back gesture начинает циклически возвращать предыдущие NavPill-destinations, что воспринимается как «экраны слоятся бесконечно». `replace` перезаписывает текущую запись истории — swipe-back из любого таб-а всегда возвращает на pre-(main) экран (Disclaimer / cold-start), независимо от количества тапов. |
+| Main Menu → Crosswind (active module card) | `router.push` | Drilldown — пилот ожидает «вернуться обратно». Back-pill + swipe-back должны pop-ить на Main Menu. |
+| Main Menu empty-state → Settings («Open Settings» button) | `router.push` | Тот же drilldown-семантик: пользователь хочет вернуться обратно в Modules-tab после включения модуля. |
+| Crosswind → Main Menu (back-pill) | `router.back()` | Pop стандартного push-стека. |
+| Splash / Disclaimer / Error → Main Menu | `router.replace` | Эти экраны — once-only переходы (splash → menu, disclaimer-accepted → menu, error-retry → menu). История за ними пилоту не нужна. |
+
+Это правило закодировано в `_components` / route-screens и проверено
+unit-тестами (`mockReplace` для NavPills, `mockPush` для card drilldown).
+
 ---
 
 ## Экран 1 · Splash
@@ -770,9 +784,16 @@ tokens.breakpoints.regularHeader` (768 pt — порог iPad-mini portrait).
   `tokens.typography.fontFamily.mono`, цвет
   `tokens.colors.textSecondary`. Размер из таблицы выше.
 - Для строк-«navigate to bottom-sheet» (Language, Theme): после value
-  добавляется `›` chevron — sans, цвет `tokens.colors.textTertiary`,
-  margin-left 8 pt. Опционально иконка `chevron-right` из
-  `@expo/vector-icons` вместо текстового глифа.
+  ОБЯЗАТЕЛЬНО рендерится `<Ionicons name="chevron-forward" />` из
+  `@expo/vector-icons`, размер из таблицы выше (18 pt compact / 22 pt
+  regular), цвет `tokens.colors.textTertiary` (по умолчанию) или
+  `accent` через prop `valueColor="accent"` на `NavigableSettingsRow`.
+  marginLeft 8 pt. **Unicode-глиф `›` (U+203A) явно запрещён** — его
+  baseline нестабилен в системном fallback iOS и приводит к видимому
+  vertical-misalignment с value-текстом (зафиксировано в Sprint 6
+  follow-up Polish-Block-2). Поведение хранится в DS-компоненте
+  `NavigableSettingsRow`, чтобы все consumer-ы получали fix
+  автоматически.
 - Info-rows (Weight units / Wind units) — те же размеры, value
   read-only, никаких сегментов, никакого chevron.
 
@@ -847,19 +868,17 @@ splash-карточку, а напоминает читателю в окне «
 **Visual treatment** (см. `03_Mockups/index.html` секция 4 (правая половина);
 переиспользуем классы `.settings-row`, `.settings-name`, `.settings-val`):
 
-- Та же row-сетка, что у Settings: surface `tokens.colors.bgCard`,
-  граница `tokens.colors.border` (1 pt), `borderRadius: 8 pt`, padding
-  `10 × 12 pt`, gap 8 pt по вертикали между строками,
-  `marginTop: 12 pt` от header.
-- Row name: variant `caption` weight 500 (sans 12), цвет
-  `tokens.colors.textPrimary`.
-- Row value (read-only данные — Version, Aircraft, Validation,
-  Distribution, Data source): variant `bodySmall` mono (mono 11 / 16,
-  400; см. `monoSmall` форвард-сигнал из Crosswind), цвет
-  `tokens.colors.textSecondary`.
-- Tappable rows (Privacy policy, Terms of use, Support): значение —
-  affordance-лейбл («View →» / «Open →» / email-адрес или
-  локализованный «Open mail»). Mono 11 pt, цвет `tokens.colors.accent`
+- Read-only ряды (Version, Validation, Data source, Distribution)
+  рендерятся через DS-примитив `<InfoSettingsRow>`. Tappable ряды
+  (Privacy policy, Terms of use, Support) — через
+  `<NavigableSettingsRow valueColor="accent">` (см. § Экран 5 Visual
+  treatment + § Адаптивность iPad ↔ iPhone). Локальный `AboutRow` был
+  удалён в Sprint 6 follow-up Polish-Block-3, чтобы About и Settings
+  использовали один и тот же sizing-bundle. Sizing и chevron-icon
+  правила те же, что у Settings — описаны выше один раз, не дублируются.
+- Accent override для tappable рядов: значение — affordance-лейбл
+  («View →» / «Open →» / email-адрес или локализованный «Open mail»).
+  Цвет value — `tokens.colors.accent`
   (а не `textSecondary` — accent сигнализирует интерактивность).
   Дополнительно справа — chevron-иконка `chevron-right` из
   `@expo/vector-icons`, цвет `accent`.
@@ -982,8 +1001,27 @@ landscape (`width >= 1024`) Crosswind-screen переходит в
 
 Spacer + `flex: 1` на outer `<Stack>` гарантируют, что Settings-экран
 визуально заполняет cockpit-glance viewport без большой пустой
-области под последним row-ом. About-экран остаётся compact на всех
-viewport-ах — он короче по содержимому и не страдает от пустоты.
+области под последним row-ом.
+
+**Единое правило для всех list-row поверхностей** (зафиксировано в
+Sprint 6 follow-up Polish-Block-3). Все экраны со списками строк —
+Settings, About, BottomSheet picker option-row-ы, Main Menu module
+cards — используют **один** sizing-bundle `tokens.sizing.settingsRow.
+{compact, regular}`, переключаемый по `isRegular = width >= 768`:
+
+| Surface | Источник sizing на regular |
+|---------|---------------------------|
+| Settings rows | `tokens.sizing.settingsRow.regular` (72 / 16 / 16) |
+| About rows | то же — через DS `InfoSettingsRow` / `NavigableSettingsRow` |
+| BottomSheet option row (Language / Theme picker) | то же |
+| Main Menu module cards | `tokens.sizing.moduleCard.regular` (name 20 / desc 16) — синхронизирован с settingsRow.regular для визуального равенства |
+
+Это значит, что один пересмотренный набор размеров покрывает все
+четыре поверхности — нет «бaby-Settings» bottom-sheet-ов или
+«baby-About» рядов. Pre-Polish-Block-3 About имел свой локальный
+`AboutRow` и не масштабировался на iPad regular; локальный компонент
+снят, About теперь делит код-путь с Settings. iPhone compact: ни одна
+из этих поверхностей не меняется.
 | iPhone landscape (compact height) | 2-column compact-spaced (через media-щаблон) | compact | compact |
 
 Поэтому булева переменная `isRegular` в `CrosswindScreen` вычисляется
