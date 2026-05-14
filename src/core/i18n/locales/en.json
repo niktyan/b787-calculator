@@ -9,6 +9,8 @@
     "tagline": "Electronic Performance Tools"
   },
   "disclaimer": {
+    "title": "Advisory only",
+    "body": "Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.",
     "continue": "I understand · Continue"
   },
   "mainMenu": {
@@ -40,6 +42,20 @@
     "emptyIconLabel": "Information",
     "resultStatusLabel": "Max crosswind · Takeoff",
     "warningOutsideEnvelope": "Outside operational envelope — advisory only",
+    "weightPlaceholder": "e.g. 170",
+    "cgPlaceholder": "e.g. 25.5",
+    "weightBelowMin": "Below minimum {{minTons}} t",
+    "weightAboveMax": "Above maximum {{maxTons}} t",
+    "cgBelowMin": "Below minimum {{minPercent}} %MAC",
+    "cgAboveMax": "Above maximum {{maxPercent}} %MAC",
+    "errorHeadline": "Calculation unavailable",
+    "errorInvalidWeight": "Invalid weight",
+    "errorInvalidCg": "Invalid CG",
+    "errorDataAircraft": "No data available for the selected aircraft.",
+    "errorDataCondition": "No data available for the selected runway condition.",
+    "errorPhaseMismatch": "Bundled data does not match the requested flight phase.",
+    "errorOutOfLookup": "Inputs cannot be evaluated by the lookup table. Adjust inputs.",
+    "errorVerifyInputs": "Verify inputs and try again.",
     "runwayCondition": {
       "dry": "Dry",
       "good": "Good",

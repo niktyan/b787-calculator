@@ -14,10 +14,33 @@ jest.mock('expo-router', () => ({
   Stack: { Screen: (): null => null },
 }));
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
-  initReactI18next: { type: '3rdParty', init: jest.fn() },
-}));
+jest.mock('react-i18next', () => {
+  const en = require('../../core/i18n/locales/en.json') as Record<string, unknown>;
+  const resolve = (key: string, options?: Record<string, unknown>): string => {
+    const parts = key.split('.');
+    let cur: unknown = en;
+    for (const p of parts) {
+      if (cur !== null && typeof cur === 'object' && p in (cur as Record<string, unknown>)) {
+        cur = (cur as Record<string, unknown>)[p];
+      } else {
+        return key;
+      }
+    }
+    if (typeof cur !== 'string') {
+      return key;
+    }
+    if (options === undefined) {
+      return cur;
+    }
+    return cur.replace(/\{\{(\w+)\}\}/g, (_, name: string) =>
+      name in options ? String(options[name]) : `{{${name}}}`,
+    );
+  };
+  return {
+    useTranslation: () => ({ t: resolve }),
+    initReactI18next: { type: '3rdParty', init: jest.fn() },
+  };
+});
 
 // Mock just `useWindowDimensions` via its submodule path. Mocking the
 // top-level `react-native` module breaks RN's TurboModule
@@ -65,7 +88,7 @@ describe('Crosswind route', () => {
     expect(tree.getByTestId('crosswind-input-form')).toBeTruthy();
     expect(tree.getByTestId('crosswind-result')).toBeTruthy();
     // Empty-state message visible.
-    expect(tree.getByText('crosswind.resultEmpty')).toBeTruthy();
+    expect(tree.getByText('Enter weight and CG to see result')).toBeTruthy();
   });
 
   it('computes result for W=170, CG=32 — flagship case (34 KT)', () => {
@@ -99,7 +122,7 @@ describe('Crosswind route', () => {
     fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
     expect(tree.getByText('34')).toBeTruthy();
     fireEvent.press(tree.getByTestId('crosswind-reset'));
-    expect(tree.getByText('crosswind.resultEmpty')).toBeTruthy();
+    expect(tree.getByText('Enter weight and CG to see result')).toBeTruthy();
   });
 
   it('back button calls router.back()', () => {

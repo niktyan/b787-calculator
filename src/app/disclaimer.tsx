@@ -18,22 +18,15 @@ import {
  * First-launch advisory disclaimer (см. `02_Specification/06-ui-spec.md` Экран 2).
  *
  * Body text is intentionally fixed English in every locale per
- * `02_Specification/07-app-store-compliance.md` — legal unambiguity.
- * Title and button label remain on the i18n path so non-legal copy can
- * still be localised; today both locales show the same English wording.
+ * `02_Specification/07-app-store-compliance.md` — legal unambiguity. The
+ * `disclaimer.title` / `disclaimer.body` keys ship the same English string
+ * in both `en.json` and `ru.json` to make this invariant explicit and
+ * keep the screen on the standard `useTranslation()` path.
  *
  * Layout mirrors `03_Mockups/index.html` "Splash + first-launch" composition:
  * brand block (B7 logo + heading + subtitle), amber disclaimer card, and the
  * accept button — all stacked centred.
  */
-
-const DISCLAIMER_TITLE_EN = 'Advisory only';
-
-const DISCLAIMER_BODY_EN =
-  'Advisory only. Calculations provide conservative reference values for ' +
-  'Boeing 787 operations. Final operational decisions must always be based ' +
-  "on official Boeing FCOM/QRH and your operator's procedures. Not for " +
-  'primary navigation or operational use.';
 
 const LOGO_SIZE = 56;
 const LOGO_RADIUS = 14;
@@ -91,8 +84,8 @@ export default function Disclaimer(): ReactNode {
           </Text>
         </Stack>
         <DisclaimerCard
-          title={DISCLAIMER_TITLE_EN}
-          body={DISCLAIMER_BODY_EN}
+          title={t('disclaimer.title')}
+          body={t('disclaimer.body')}
           testID="disclaimer-card"
         />
         <Button label={t('disclaimer.continue')} onPress={onAccept} testID="disclaimer-accept" />
