@@ -27,9 +27,12 @@ Core — это базовый модуль приложения, предост
 | `core/disclaimer/useDisclaimerStatus` | 🔵 **React** | React-хук. |
 | `core/feature-flags/flags` | 🟢 **Pure TS** | In-memory store без React. |
 | `core/feature-flags/useFeatureFlag` | 🔵 **React** | React-хук поверх flags. |
-| `core/coming-soon-modules/types` | 🟢 **Pure TS** | Типы. |
-| `core/coming-soon-modules/data.json` | 🟢 **Data** | Bundled JSON. |
-| `core/coming-soon-modules/useComingSoonModules` | 🔵 **React** | React-хук, читающий JSON. |
+| `core/modules/types` | 🟢 **Pure TS** | Типы (discriminated union active/inactive). |
+| `core/modules/data.json` | 🟢 **Data** | Bundled JSON (active + coming-soon entries). |
+| `core/modules/loader` | 🟢 **Pure TS** | zod-validated JSON loader (cached). |
+| `core/modules/visibility` | 🟢 **Pure TS** | Visibility-state schema + pure helpers (`isModuleVisible`, `toggleModuleVisibility`). |
+| `core/modules/useComingSoonModules` | 🔵 **React** | React-хуки `useModules()` + `useComingSoonModules()`. |
+| `core/modules/useModuleVisibility` | 🔵 **React** | Хук-обёртка над storage + pure helpers. |
 
 **Правило:** при имплементации Sprint 1 — submodules с пометкой 🟢 **Pure TS** не должны иметь импортов из `react`, `react-native`, `expo*`. Если случайно импортировал — это ошибка, ESLint должен поймать (через no-restricted-paths правила).
 

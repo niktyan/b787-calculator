@@ -20,11 +20,11 @@ You are Claude Code. Implement Main Menu and Coming Soon Modal.
 - 02_Specification/01-vision.md (section "Что входит в MVP")
 - 02_Specification/06-ui-spec.md (section "Экран 3 · Main Menu" and "3.1 Coming Soon Modal")
 - 02_Specification/ADR/0004-coming-soon-modules-as-config-not-modules.md
-- 02_Specification/module-contracts/core.md (coming-soon-modules submodule)
+- 02_Specification/module-contracts/core.md (`core/modules/` submodule — renamed from `coming-soon-modules` in Sprint 6 follow-up Block 4)
 
 After reading, confirm your understanding of:
 - The 4 module cards (1 active, 3 coming soon).
-- Coming-soon data is read from core's coming-soon-modules.
+- Module data (active + coming-soon) is read from `core/modules` via the `useModules()` hook; Main Menu filters by the discriminator `active`-field.
 - Tap on active card → navigate to Crosswind screen (placeholder for now).
 - Tap on coming-soon card → modal with "This module is planned... Stay tuned."
 
@@ -36,12 +36,14 @@ After my "go":
 
 1. Branch `feat/main-menu`.
 
-2. Update src/core/coming-soon-modules/data.json with the canonical roadmap:
-   - crosswind-takeoff (Phase 2)
-   - weight-balance (Phase 3)
-   - performance (Phase 4)
-   Each entry: id, name, description (1 sentence), icon (text label like "TO"),
-   phase (e.g., "Phase 2").
+2. Update src/core/modules/data.json with the canonical roadmap:
+   - crosswind-takeoff (active, route `/crosswind`)
+   - crosswind-landing (Phase 2, coming-soon)
+   - weight-balance (Phase 3, coming-soon)
+   - performance (Phase 4, coming-soon)
+   Each entry conforms to the discriminated-union schema in
+   `core/modules/types.ts`: active modules carry `route`,
+   coming-soon entries carry `description` + `phase`.
 
 3. Implement src/app/(main)/index.tsx as Main Menu:
    - Header with logo, app title, NavPills (Modules / Settings / About).
@@ -84,7 +86,7 @@ already accepted). Verify:
 
 # Definition of Done
 
-- [ ] coming-soon-modules data populated.
+- [ ] core/modules data populated.
 - [ ] Main Menu shows 1 active + 3 coming-soon cards.
 - [ ] Active card navigates to placeholder Crosswind.
 - [ ] Coming-soon modal works correctly.
