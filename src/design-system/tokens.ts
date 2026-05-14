@@ -74,6 +74,28 @@ export interface ColorPalette {
   readonly accent: string;
   readonly accentSoft: string;
   /**
+   * Theme-aware foreground variant of the brand accent, intended for
+   * **text and icon foregrounds** that must read on the page/card surface
+   * (e.g. result-status label, active NavPill label, Back-arrow text,
+   * NavigableSettingsRow → accent value + chevron, picker ✓).
+   *
+   * Dark theme: `#00C2A8` — identical to `accent`. Brand teal reads
+   * cleanly on the dark page (8:1+).
+   *
+   * Light theme: `#006B5E` — darker variant of the brand teal. Required
+   * because `#00C2A8` is only 2.09:1 on `#F4F6F9` (fails WCAG SC 1.4.3
+   * AA for body text). `#006B5E` is ~5.9:1 on `bgScreen` / 6.4:1 on
+   * `bgCard` (white), passes AA and AAA.
+   *
+   * Use this token whenever `accent` would otherwise be rendered as text
+   * or as a foreground icon glyph. Keep `accent` itself for decorative
+   * surfaces (button fills, segment backgrounds, active borders, focus
+   * rings, gradients) where contrast is not a body-text concern.
+   *
+   * See ADR-0009 and `08-quality-gates.md` § Audit findings.
+   */
+  readonly accentText: string;
+  /**
    * Foreground color for content drawn on a `accent`-colored background
    * (e.g., active segmented-control segment, primary button label, gradient
    * active-card icon glyph). Identical in both themes (`#001A17`) for
@@ -101,6 +123,8 @@ export interface ColorPalette {
 
 const ACCENT_ON_ACCENT = '#001A17';
 const ACCENT_RING = 'rgba(0, 194, 168, 0.2)';
+const ACCENT_TEXT_DARK = '#00C2A8';
+const ACCENT_TEXT_LIGHT = '#006B5E';
 
 const DARK_PALETTE: ColorPalette = {
   bgPage: '#0A0E14',
@@ -115,6 +139,7 @@ const DARK_PALETTE: ColorPalette = {
   borderStrong: 'rgba(255, 255, 255, 0.16)',
   accent: '#00C2A8',
   accentSoft: '#003C36',
+  accentText: ACCENT_TEXT_DARK,
   accentOnAccent: ACCENT_ON_ACCENT,
   accentRing: ACCENT_RING,
   warn: '#FFB020',
@@ -139,6 +164,7 @@ const LIGHT_PALETTE: ColorPalette = {
   borderStrong: 'rgba(0, 0, 0, 0.16)',
   accent: '#00C2A8',
   accentSoft: '#DEF7F3',
+  accentText: ACCENT_TEXT_LIGHT,
   accentOnAccent: ACCENT_ON_ACCENT,
   accentRing: ACCENT_RING,
   warn: '#9A6700',
