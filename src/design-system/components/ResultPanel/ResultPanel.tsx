@@ -101,7 +101,7 @@ function IdleBody(props: {
   const { state, styles } = props;
   return (
     <Stack gap="md">
-      <Text variant="microUppercase" color="accent" style={RESULT_STATUS_STYLE}>
+      <Text variant="microUppercase" color="accentText" style={RESULT_STATUS_STYLE}>
         {state.label}
       </Text>
       <Row gap="xs" align="baseline" justify="center">

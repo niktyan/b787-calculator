@@ -129,7 +129,7 @@ exports[`ErrorState renders error with retry button in light theme 1`] = `
           style={
             [
               {
-                "color": "#00C2A8",
+                "color": "#006B5E",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "400",

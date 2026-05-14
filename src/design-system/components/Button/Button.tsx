@@ -25,7 +25,7 @@ export interface ButtonProps {
 interface VariantTone {
   readonly background: string;
   readonly border: string;
-  readonly text: 'textOnAccent' | 'accent' | 'textPrimary';
+  readonly text: 'textOnAccent' | 'accentText' | 'textPrimary';
 }
 
 function variantTone(variant: ButtonVariant, palette: ColorPalette): VariantTone {
@@ -33,9 +33,9 @@ function variantTone(variant: ButtonVariant, palette: ColorPalette): VariantTone
     return { background: palette.accent, border: palette.accent, text: 'textOnAccent' };
   }
   if (variant === 'secondary') {
-    return { background: 'transparent', border: palette.accent, text: 'accent' };
+    return { background: 'transparent', border: palette.accent, text: 'accentText' };
   }
-  return { background: 'transparent', border: 'transparent', text: 'accent' };
+  return { background: 'transparent', border: 'transparent', text: 'accentText' };
 }
 
 export function Button({

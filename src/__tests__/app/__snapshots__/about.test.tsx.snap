@@ -1491,7 +1491,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   style={
                     [
                       {
-                        "color": "#00C2A8",
+                        "color": "#006B5E",
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
@@ -1868,7 +1868,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#006B5E",
                     "fontFamily": "Menlo",
                     "fontSize": 16,
                     "fontWeight": "500",
@@ -1890,7 +1890,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#006B5E",
                     "fontSize": 18,
                   },
                   undefined,
@@ -1997,7 +1997,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#006B5E",
                     "fontFamily": "Menlo",
                     "fontSize": 16,
                     "fontWeight": "500",
@@ -2019,7 +2019,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#006B5E",
                     "fontSize": 18,
                   },
                   undefined,
@@ -2126,7 +2126,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#006B5E",
                     "fontFamily": "Menlo",
                     "fontSize": 16,
                     "fontWeight": "500",
@@ -2148,7 +2148,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               style={
                 [
                   {
-                    "color": "#00C2A8",
+                    "color": "#006B5E",
                     "fontSize": 18,
                   },
                   undefined,
