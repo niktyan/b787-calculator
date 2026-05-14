@@ -2,7 +2,7 @@
 
 > **Когда использовать:** после завершения Phase B (промпт 00). Это первый sprint реализации.
 >
-> **Что произойдёт:** Claude Code реализует модуль Core (i18n, theming, storage, disclaimer, feature-flags, logger, Result, coming-soon-modules) с тестами.
+> **Что произойдёт:** Claude Code реализует модуль Core (i18n, theming, storage, disclaimer, feature-flags, logger, Result, modules) с тестами.
 >
 > **Ожидаемое время Claude Code:** 30–60 минут. Ваше активное время: 5 минут (review + merge).
 
@@ -50,8 +50,11 @@ After my "go":
      (real tokens come in design-system sprint)
    - src/core/disclaimer/ — disclaimer state hook with persistence
    - src/core/feature-flags/ — simple in-memory flag store with hook
-   - src/core/coming-soon-modules/ — JSON loader + hook, with placeholder data
-     (real data filled when needed in main-menu sprint)
+   - src/core/modules/ — JSON loader + `useModules()` / `useComingSoonModules()` /
+     `useModuleVisibility()` hooks, with placeholder data (real data filled in
+     main-menu sprint). Discriminated-union schema (active vs coming-soon)
+     per `module-contracts/core.md`. Renamed from `coming-soon-modules` in
+     Sprint 6 follow-up Block 4.
 
 3. Create comprehensive unit tests for each submodule:
    - src/core/result/__tests__/Result.test.ts (cover all operations)
