@@ -157,7 +157,10 @@ function AboutRows({
 }: AboutRowsProps): ReactNode {
   const versionDisplay = resolveVersionDisplay();
   const dataSourceValue = resolveDataSource();
-  const viewAffordance = `${t('about.openExternal')} →`;
+  // Affordance text is just the verb — the Ionicons chevron renders the
+  // arrow visually. An inline "→" duplicates the chevron and looks like
+  // "→ ›" (см. Sprint 6 follow-up Polish-Round-2 Block 2).
+  const viewAffordance = t('about.openExternal');
   const listStyle = useMemo<ViewStyle>(() => ({ gap: listGap }), [listGap]);
 
   return (

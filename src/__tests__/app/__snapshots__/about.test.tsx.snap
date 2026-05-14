@@ -786,7 +786,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              about.openExternal
             </Text>
             <Text
               allowFontScaling={false}
@@ -915,7 +915,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              about.openExternal
             </Text>
             <Text
               allowFontScaling={false}
@@ -1882,7 +1882,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              about.openExternal
             </Text>
             <Text
               allowFontScaling={false}
@@ -2011,7 +2011,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              about.openExternal →
+              about.openExternal
             </Text>
             <Text
               allowFontScaling={false}
