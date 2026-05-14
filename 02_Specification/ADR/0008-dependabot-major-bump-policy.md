@@ -330,3 +330,120 @@ inspection-проходу перед merge любого Dependabot PR,
 (см. предыдущий cleanup-prompt от 2026-05-13) воспроизводимо
 ловит SDK-boundary issues, даже если правила в
 `dependabot.yml` для конкретного пакета ещё не добавлены.
+
+---
+
+## Pre-release tooling stability lock (2026-05-14)
+
+Через сутки после refinement-pass (Gap 1 / Gap 2) Dependabot
+выкатил четыре PR-а с major-апдейтами **не-SDK-coordinated**
+core-пакетов:
+
+- **PR #53** — `lint-staged` 15.5.2 → 17.0.4 (×2 major).
+- **PR #54** — `i18next` 24.2.3 → 26.1.0 (×2 major, production
+  runtime).
+- **PR #55** — `eslint-plugin-react-hooks` 5.1.0 → 7.1.1 (×2
+  major, добавляет ESLint-10 compatibility rules).
+- **PR #56** — `typescript` 5.9.2 → 6.0.3 (×1 major).
+
+Ни один из них **не** пересекает SDK boundary — ADR-0008
+ignore-block их и не должен был блокировать. Но inspection
+выявил отдельную проблему: **major-bumps core dev-tooling /
+production-runtime библиотек во время pre-release polish phase
+имеют нулевую функциональную выгоду до launch и нетривиальный
+breakage surface** (TS 6 stricter inference + новые `lib`
+defaults, i18next 26 typing reshape, lint-staged 17 поднимает
+Node engine, eslint-plugin-react-hooks 7 — новые правила, которые
+могут surface-ить нарушения в текущем codebase).
+
+### Decision
+
+Расширить ignore-block на **четыре конкретные dependency-name**
+с правилом `version-update:semver-major`. PATCH + MINOR внутри
+текущего major-а остаются auto-proposed (security patches и
+bug-fixes проходят).
+
+```yaml
+- dependency-name: 'typescript'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'i18next'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'lint-staged'
+  update-types: ['version-update:semver-major']
+- dependency-name: 'eslint-plugin-react-hooks'
+  update-types: ['version-update:semver-major']
+```
+
+### Why these four
+
+Это не «все non-SDK майоры запрещены навсегда» — это **именно
+эти четыре пакета на эту фазу проекта**. Каждый выбран сознательно:
+
+- `typescript` — core dev-tool, держит весь typecheck quality gate.
+  Major-bumps традиционно вытаскивают новые errors из third-party
+  `@types/*` и из собственного codebase. Нужен dedicated upgrade
+  cycle с peer audit.
+- `i18next` — production-runtime библиотека под каждым
+  `useTranslation()`. Sprint 7 (Localization audit) рассчитывает
+  на стабильное состояние; major во время аудита разрушает
+  test-baseline.
+- `lint-staged` — git-hook orchestrator. v17 поднимает Node
+  engine `>=18` → `>=20`; CI на 20 LTS работает, но рассказывает,
+  что lint-staged начинает быть picky про Node-version. Безопаснее
+  отложить.
+- `eslint-plugin-react-hooks` — v7 добавляет ESLint-10 compat
+  rules и compiler-lint improvements (`set-state-in-effect`,
+  ref validation), которые потенциально surface-ят новые
+  warnings в текущем коде. Полезные правила — но не во время
+  feature-freeze.
+
+### Consequences
+
+**Позитивные:**
+
+- Pre-release polish phase не прерывается майорами core-инструментов.
+- Dependabot не открывает PR-noise для повторных prerelease /
+  RC / major-bumps этих пакетов.
+- Sprint 7 (Localization audit) и Sprint 8 (App Store submission
+  cycle) идут на стабильной tooling-baseline.
+
+**Негативные:**
+
+- Если security advisory выйдет в новой major-версии одного из
+  четырёх пакетов, Dependabot security alerts всё равно откроют
+  PR (security alerts не фильтруются `ignore:` блоком). Это
+  приемлемо.
+- Lift-action требует осознанного post-launch шага. Без него
+  правила накапливаются и `dependabot.yml` дрейфует от реального
+  желания команды.
+
+**Нейтральные:**
+
+- Не влияет на bundle / runtime / Privacy Manifest.
+
+### Lift condition
+
+После **Phase D App Store launch** открыть отдельный PR
+«tooling-evaluation sprint», который:
+
+1. Снимает эти четыре `ignore:` записи **по одной**.
+2. Для каждого пакета — отдельный child-PR с upgrade-ом, регресс-
+   тестом (lint / typecheck / tests / preview-build) и smoke-
+   тестом на устройстве (Expo Go), если это runtime-пакет.
+3. Решение per-package: merge / postpone / hold.
+
+Tooling-evaluation sprint открывает по одному child-PR, не bundle
+из четырёх. Каждый прокатывается через тот же inspection-protocol,
+что Sprint 6 follow-up polish (manual review + manual CI verify +
+device smoke).
+
+### Reference closed PRs
+
+- #53 lint-staged 15→17 — closed 2026-05-14, comment cites this
+  amendment.
+- #54 i18next 24→26 — closed 2026-05-14, comment cites this
+  amendment.
+- #55 eslint-plugin-react-hooks 5→7 — closed 2026-05-14, comment
+  cites this amendment.
+- #56 typescript 5→6 — closed 2026-05-14, comment cites this
+  amendment.
