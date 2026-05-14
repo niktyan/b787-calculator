@@ -98,6 +98,8 @@ exports[`NumericInput renders decimal field with value, unit and error 1`] = `
     </View>
   </View>
   <View
+    accessible={true}
+    importantForAccessibility="auto"
     style={
       {
         "justifyContent": "flex-start",
@@ -229,6 +231,8 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
     </View>
   </View>
   <View
+    accessible={false}
+    importantForAccessibility="no-hide-descendants"
     style={
       {
         "justifyContent": "flex-start",
@@ -339,6 +343,8 @@ exports[`NumericInput renders empty integer field with placeholder in light them
     </View>
   </View>
   <View
+    accessible={false}
+    importantForAccessibility="no-hide-descendants"
     style={
       {
         "justifyContent": "flex-start",

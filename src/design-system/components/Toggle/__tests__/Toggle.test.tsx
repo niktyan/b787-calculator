@@ -54,4 +54,27 @@ describe('Toggle', () => {
     fireEvent.press(getByTestId('t'));
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  describe('accessibility', () => {
+    it('exposes role="switch" and the provided accessibilityLabel', () => {
+      const { getByTestId } = renderWithTheme(
+        <Toggle
+          value={false}
+          onChange={jest.fn()}
+          accessibilityLabel="Show data source on result"
+          testID="t"
+        />,
+      );
+      const node = getByTestId('t');
+      expect(node.props.accessibilityRole).toBe('switch');
+      expect(node.props.accessibilityLabel).toBe('Show data source on result');
+    });
+
+    it('exposes checked / disabled state via accessibilityState', () => {
+      const { getByTestId } = renderWithTheme(
+        <Toggle value disabled onChange={jest.fn()} accessibilityLabel="Wind units" testID="t" />,
+      );
+      expect(getByTestId('t').props.accessibilityState).toEqual({ checked: true, disabled: true });
+    });
+  });
 });

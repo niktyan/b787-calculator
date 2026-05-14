@@ -1,5 +1,5 @@
 import { renderWithTheme } from '../../../_testing/renderWithTheme';
-import { NavigableSettingsRow } from '../SettingsRow';
+import { NavigableSettingsRow, ToggleSettingsRow } from '../SettingsRow';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
@@ -83,5 +83,38 @@ describe('NavigableSettingsRow', () => {
       );
       expect(tree.toJSON()).toMatchSnapshot();
     });
+  });
+
+  describe('accessibility', () => {
+    it('exposes role="button" and the row label as accessibilityLabel', () => {
+      const { getByTestId } = renderWithTheme(
+        <NavigableSettingsRow
+          label="Language"
+          value="English"
+          onPress={(): void => undefined}
+          testID="row-language"
+        />,
+      );
+      const node = getByTestId('row-language');
+      expect(node.props.accessibilityRole).toBe('button');
+      expect(node.props.accessibilityLabel).toBe('Language');
+    });
+  });
+});
+
+describe('ToggleSettingsRow', () => {
+  it('forwards the row label to the inner Toggle accessibilityLabel', () => {
+    const { getByTestId } = renderWithTheme(
+      <ToggleSettingsRow
+        label="Crosswind · Takeoff"
+        value
+        onChange={(): void => undefined}
+        testID="row-module"
+      />,
+    );
+    const toggle = getByTestId('row-module-toggle');
+    expect(toggle.props.accessibilityRole).toBe('switch');
+    expect(toggle.props.accessibilityLabel).toBe('Crosswind · Takeoff');
+    expect(toggle.props.accessibilityState).toEqual({ checked: true, disabled: false });
   });
 });

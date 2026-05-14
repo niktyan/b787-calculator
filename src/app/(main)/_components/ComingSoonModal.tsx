@@ -65,15 +65,18 @@ export function ComingSoonModal({ module, onClose, testID }: ComingSoonModalProp
     >
       <Pressable
         accessibilityLabel={t('common.cancel')}
+        accessibilityRole="button"
         onPress={onClose}
         style={styles.backdrop}
         testID={testID === undefined ? undefined : `${testID}-backdrop`}
       >
         {/*
          * Inner Pressable swallows taps so they don't bubble to the backdrop.
-         * Without it, tapping anywhere on the sheet would close the modal.
+         * `accessible={false}` keeps it out of the VoiceOver focus order —
+         * the sheet surface is passive, not a tappable target.
          */}
         <Pressable
+          accessible={false}
           onPress={(): void => undefined}
           style={styles.sheet}
           testID={testID === undefined ? undefined : `${testID}-sheet`}

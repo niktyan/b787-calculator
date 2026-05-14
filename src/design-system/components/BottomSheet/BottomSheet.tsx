@@ -89,7 +89,13 @@ export function BottomSheet({
         style={backdropStyle}
         testID={testID === undefined ? undefined : `${testID}-backdrop`}
       >
-        <Pressable accessibilityRole="none" onPress={(): void => undefined} style={sheetStyle}>
+        {/*
+         * Inner Pressable absorbs taps on the sheet surface so they don't
+         * propagate to the dismiss-backdrop above. `accessible={false}`
+         * keeps it out of the VoiceOver focus order — the sheet itself is
+         * a passive surface, not a tappable target.
+         */}
+        <Pressable accessible={false} onPress={(): void => undefined} style={sheetStyle}>
           <View style={handleStyle} />
           <Stack gap="sm">{children}</Stack>
         </Pressable>
@@ -154,6 +160,7 @@ export function BottomSheetOption({
 
   return (
     <Pressable
+      accessibilityLabel={label}
       accessibilityRole="button"
       accessibilityState={{ selected }}
       onPress={onPress}
@@ -164,6 +171,10 @@ export function BottomSheetOption({
         {label}
       </Text>
       {selected ? (
+        // Parent Pressable carries accessibilityLabel + selected state,
+        // so it becomes the single accessibility element. The ✓ glyph is
+        // not read out separately by VoiceOver — selection is announced
+        // via the parent's accessibilityState.
         <Text variant="caption" color="accent" style={checkStyle}>
           ✓
         </Text>

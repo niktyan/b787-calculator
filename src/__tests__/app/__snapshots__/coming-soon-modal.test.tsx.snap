@@ -10,6 +10,7 @@ exports[`ComingSoonModal renders correctly in light theme 1`] = `
 >
   <View
     accessibilityLabel="common.cancel"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -68,7 +69,7 @@ exports[`ComingSoonModal renders correctly in light theme 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onBlur={[Function]}
@@ -291,6 +292,7 @@ exports[`ComingSoonModal renders the module name, phase, body text and OK button
 >
   <View
     accessibilityLabel="common.cancel"
+    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -349,7 +351,7 @@ exports[`ComingSoonModal renders the module name, phase, body text and OK button
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onBlur={[Function]}
