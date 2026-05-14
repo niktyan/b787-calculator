@@ -34,6 +34,28 @@ describe('design-system tokens · forward-signaled additions', () => {
     });
   });
 
+  describe('colors.accentText', () => {
+    // ADR-0009 — accentText is the text/icon-foreground variant of the
+    // brand accent. Dark theme keeps the brand teal; light theme uses a
+    // darker variant so the same labels pass WCAG SC 1.4.3 AA on cream
+    // and white surfaces.
+    it('keeps the brand teal in dark theme', () => {
+      expect(tokens.colors.dark.accentText).toBe('#00C2A8');
+    });
+
+    it('uses #006B5E in light theme for WCAG AA contrast', () => {
+      expect(tokens.colors.light.accentText).toBe('#006B5E');
+    });
+
+    it('matches the surface accent in dark (no visible change in cockpit mode)', () => {
+      expect(tokens.colors.dark.accentText).toBe(tokens.colors.dark.accent);
+    });
+
+    it('diverges from the surface accent in light (brand teal stays for fills)', () => {
+      expect(tokens.colors.light.accentText).not.toBe(tokens.colors.light.accent);
+    });
+  });
+
   describe('typography.variants.microUppercase', () => {
     it('matches spec: sans 9 / 12, weight 600, letterSpacing 0.54', () => {
       const v = tokens.typography.variants.microUppercase;
