@@ -614,6 +614,13 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
   фон, цвет текста `tokens.colors.textSecondary`).
 - «Back» — leftmost pill, лейбл `← Back` или chevron-иконка.
   Touch-target ≥ 44×44 pt даже если визуальный chip меньше.
+- **Sizing parity (Polish-Round-2 Block 3a):** Back + Reset pills
+  ОБЯЗАНЫ читать `tokens.sizing.header.{compact, regular}` через тот
+  же `isRegular` сигнал, что и весь Crosswind-экран. iPhone-сценарий
+  (compact: label 12 pt, padding 5 × 10 pt, radius 10 pt) и iPad-сценарий
+  (regular: label 16 pt, padding 8 × 16 pt, radius 12 pt) полностью
+  совпадают с NavPills на Main Menu / Settings / About, чтобы при
+  сравнении бок-о-бок Crosswind-header не выглядел старее.
 
 *Input field (input-field) — compact (iPhone, iPad portrait):*
 
@@ -640,6 +647,23 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
     из variant.
   - Unit-суффикс: variant `body` (sans 16 pt).
 - Focus / error state — без изменений (тот же ring + danger border).
+
+*Warning text reserved slot (Polish-Round-2 Block 3b):*
+
+- Под каждым `<NumericInput>` ОБЯЗАТЕЛЬНО рендерится `<View>` с
+  фиксированным `minHeight`, даже когда warning-текста нет. Это
+  предотвращает layout-shift при появлении / исчезновении warning-а
+  (пользователь печатает W=300 → warning появляется → CG / runway
+  / result не должны прыгать вниз).
+- `minHeight` берётся из локальных констант
+  `ERROR_SLOT_HEIGHT_{COMPACT,REGULAR}` (20 pt compact / 24 pt
+  regular) в `src/design-system/components/NumericInput/NumericInput.tsx` —
+  это lineHeight `caption` (16 pt) + breathing room.
+- Когда `error` set: внутри слота — `<Text variant="caption"
+  color="danger">` с текстом ошибки. Когда не set — слот пустой,
+  но всё ещё занимает то же место.
+- Slot выставляет `testID={`${inputTestID}-error-slot`}` для
+  height-stability assertions в unit-тестах.
 
 *Aircraft selector + Runway condition — segmented (compact):*
 
@@ -876,12 +900,15 @@ splash-карточку, а напоминает читателю в окне «
   удалён в Sprint 6 follow-up Polish-Block-3, чтобы About и Settings
   использовали один и тот же sizing-bundle. Sizing и chevron-icon
   правила те же, что у Settings — описаны выше один раз, не дублируются.
-- Accent override для tappable рядов: значение — affordance-лейбл
-  («View →» / «Open →» / email-адрес или локализованный «Open mail»).
-  Цвет value — `tokens.colors.accent`
+- Accent override для tappable рядов: значение — affordance-лейбл-
+  глагол («View» / «Open» / email-адрес или локализованный «Open mail»),
+  **без inline-arrow глифа**. Ionicons chevron справа уже сигнализирует
+  переход — inline «→» дублирует chevron и читается как «→ ›»
+  (зафиксировано в Polish-Round-2 Block 2). Цвет value —
+  `tokens.colors.accent`
   (а не `textSecondary` — accent сигнализирует интерактивность).
-  Дополнительно справа — chevron-иконка `chevron-right` из
-  `@expo/vector-icons`, цвет `accent`.
+  Chevron — `Ionicons name="chevron-forward"` (см. § Экран 5 Visual
+  treatment), цвет `accent`.
 - Data source — пример отрисовки: «787 ACAP · public» (актуальная
   строка определяется `dataVersion` из bundled JSON, см. существующее
   «Содержимое» выше).
@@ -917,11 +944,24 @@ splash-карточку, а напоминает читателю в окне «
 
 Анимации **минимальны и функциональны**, никакого декора:
 
-- Переход между экранами: стандартный slide-from-right (`expo-router` default), 300 ms.
-- Splash → следующий экран: fade-out 200 ms.
-- Modal (Coming Soon, error dialogs): slide-up 300 ms.
-- Press-feedback на интерактивных surface-ах (см. ниже).
-- Result panel update: fade-in нового значения 150 ms.
+- **Sibling-route переходы (NavPill Modules ↔ Settings ↔ About):**
+  `animation: 'fade'`, длительность 200 ms ease-out. NavPill использует
+  `router.replace` (см. § Навигация), а fade — это правильная семантика
+  для tab-style same-level переходов: не push, не slide-from-right.
+  Реализовано в `src/app/(main)/_layout.tsx` через per-`Stack.Screen`
+  options.
+- **Drilldown переходы (Main Menu → Crosswind, EmptyState → Settings):**
+  стандартный `slide_from_right`, длительность 300 ms — иерархический
+  push, swipe-back pop-ит обратно.
+- **Splash → следующий экран:** fade-out 200 ms.
+- **Modal (Coming Soon, error dialogs):** slide-up 300 ms.
+- **Press-feedback на интерактивных surface-ах** (см. ниже).
+- **Result panel update:** fade-in нового значения 150 ms.
+
+При **Reduce Motion** все Stack-screen-переходы коллапсируют в
+`animation: 'none'` — мгновенные. `_layout.tsx` подписан на
+`useReduceMotion()` и rebuild-ит Stack-screen options live, так что
+toggle accessibility-настройки отрабатывает без перезапуска.
 
 **Press-feedback (scale + opacity).** На всех интерактивных surface-ах
 дизайн-системы (`Button` всех вариантов, `NavPills` каждый pill в
