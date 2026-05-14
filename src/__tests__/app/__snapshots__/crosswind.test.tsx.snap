@@ -672,6 +672,15 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                style={
+                  {
+                    "justifyContent": "flex-start",
+                    "minHeight": 20,
+                  }
+                }
+                testID="crosswind-weight-error-slot"
+              />
             </View>
             <View
               style={
@@ -770,6 +779,15 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                style={
+                  {
+                    "justifyContent": "flex-start",
+                    "minHeight": 20,
+                  }
+                }
+                testID="crosswind-cg-error-slot"
+              />
             </View>
             <View
               style={
@@ -2017,6 +2035,15 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                style={
+                  {
+                    "justifyContent": "flex-start",
+                    "minHeight": 20,
+                  }
+                }
+                testID="crosswind-weight-error-slot"
+              />
             </View>
             <View
               style={
@@ -2115,6 +2142,15 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                   </Text>
                 </View>
               </View>
+              <View
+                style={
+                  {
+                    "justifyContent": "flex-start",
+                    "minHeight": 20,
+                  }
+                }
+                testID="crosswind-cg-error-slot"
+              />
             </View>
             <View
               style={

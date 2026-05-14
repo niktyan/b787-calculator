@@ -128,6 +128,7 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
             resetLabel={t('crosswind.resetLabel')}
             onBack={handleBack}
             onReset={handleReset}
+            isRegular={isRegular}
           />
           {isTwoColumn ? (
             <Row align="stretch" gap="lg" style={styles.fillHeight}>
@@ -152,13 +153,18 @@ interface CrosswindHeaderProps {
   readonly resetLabel: string;
   readonly onBack: () => void;
   readonly onReset: () => void;
+  readonly isRegular: boolean;
 }
 
 function CrosswindHeader(props: CrosswindHeaderProps): ReactNode {
-  const { title, backLabel, resetLabel, onBack, onReset } = props;
+  const { title, backLabel, resetLabel, onBack, onReset, isRegular } = props;
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const sizing = tokens.sizing.header.compact;
+  // Match the other screen headers (Main Menu / Settings / About) — they
+  // switch to tokens.sizing.header.regular at the same 768pt threshold.
+  // Hardcoding `compact` here made the Back + Reset pills visibly smaller
+  // than the NavPills on sibling screens (см. Polish-Round-2 Block 3a).
+  const sizing = isRegular ? tokens.sizing.header.regular : tokens.sizing.header.compact;
 
   const dividerStyle = useMemo<ViewStyle>(
     () => ({
@@ -208,10 +214,12 @@ function CrosswindHeader(props: CrosswindHeaderProps): ReactNode {
   );
 }
 
+type HeaderSizingBundle = typeof tokens.sizing.header.compact | typeof tokens.sizing.header.regular;
+
 interface HeaderPillProps {
   readonly label: string;
   readonly onPress: () => void;
-  readonly sizing: typeof tokens.sizing.header.compact;
+  readonly sizing: HeaderSizingBundle;
   readonly testID: string;
 }
 
