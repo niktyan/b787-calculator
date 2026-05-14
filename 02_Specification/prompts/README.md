@@ -47,6 +47,12 @@ claude
 | 07 | `07-sprint-localization-audit.md` | Аудит покрытия RU/EN |
 | 08 | `08-sprint-accessibility-audit.md` | Финальный a11y-аудит перед сабмитом |
 
+### Фаза D · App Store submission (после завершения Фазы C)
+
+| Файл | Назначение |
+|------|------------|
+| `phase-d-playbook.md` | Unified playbook для release engineering + App Store submission — от Apple Developer prerequisites до live App Store presence. 11 секций (0–10), USER DOES vs AGENT DOES split на каждом шаге, DoD checklist per section. |
+
 ### Templates для повседневной работы (по необходимости)
 
 | Файл | Когда использовать |
