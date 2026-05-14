@@ -90,6 +90,7 @@ export type {
   BottomSheetOptionProps,
   // Settings/About list rows
   NavigableSettingsRowProps,
+  NavigableSettingsRowValueColor,
   ToggleSettingsRowProps,
   InfoSettingsRowProps,
 } from './components';

@@ -56,6 +56,7 @@ export type { BottomSheetProps, BottomSheetOptionProps } from './BottomSheet';
 export { NavigableSettingsRow, ToggleSettingsRow, InfoSettingsRow } from './SettingsRow';
 export type {
   NavigableSettingsRowProps,
+  NavigableSettingsRowValueColor,
   ToggleSettingsRowProps,
   InfoSettingsRowProps,
 } from './SettingsRow';

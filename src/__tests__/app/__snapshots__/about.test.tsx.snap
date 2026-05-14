@@ -760,23 +760,25 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               about.openExternal →
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
                   undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
                 ]
               }
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -881,23 +883,25 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               about.openExternal →
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
                   undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
                 ]
               }
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -1002,23 +1006,25 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               support@example.com
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
                   undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
                 ]
               }
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -1808,23 +1814,25 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               about.openExternal →
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
                   undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
                 ]
               }
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -1929,23 +1937,25 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               about.openExternal →
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
                   undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
                 ]
               }
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -2050,23 +2060,25 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               support@example.com
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
                   undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
                 ]
               }
             >
-              ›
+              
             </Text>
           </View>
         </View>

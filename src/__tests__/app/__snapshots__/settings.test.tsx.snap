@@ -803,25 +803,26 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
               settings.languageEnglish
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#6E7681",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
+                  undefined,
                   {
-                    "fontSize": 12,
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
+                  {},
                 ]
               }
+              testID="settings-row-language-chevron"
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -931,25 +932,26 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
               settings.themeDark
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#6E7681",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
+                  undefined,
                   {
-                    "fontSize": 12,
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
+                  {},
                 ]
               }
+              testID="settings-row-theme-chevron"
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -1884,25 +1886,26 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
               settings.languageEnglish
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#6B7280",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
+                  undefined,
                   {
-                    "fontSize": 12,
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
+                  {},
                 ]
               }
+              testID="settings-row-language-chevron"
             >
-              ›
+              
             </Text>
           </View>
         </View>
@@ -2012,25 +2015,26 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
               settings.themeLight
             </Text>
             <Text
-              allowFontScaling={true}
+              allowFontScaling={false}
+              selectable={false}
               style={
                 [
                   {
                     "color": "#6B7280",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
+                    "fontSize": 18,
                   },
+                  undefined,
                   {
-                    "fontSize": 12,
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
                   },
+                  {},
                 ]
               }
+              testID="settings-row-theme-chevron"
             >
-              ›
+              
             </Text>
           </View>
         </View>

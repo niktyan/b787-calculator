@@ -15,6 +15,7 @@
  * iPad regular for cockpit-glance readability.
  */
 
+import { Ionicons } from '@expo/vector-icons';
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
@@ -22,6 +23,7 @@ import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
+import type { ColorPalette } from '../../tokens';
 import { Row } from '../Row/Row';
 import { Text } from '../Text/Text';
 import { Toggle } from '../Toggle/Toggle';
@@ -47,11 +49,22 @@ function pickRowSizing(isRegular: boolean): RowSizing {
   return isRegular ? tokens.sizing.settingsRow.regular : tokens.sizing.settingsRow.compact;
 }
 
+export type NavigableSettingsRowValueColor = 'textSecondary' | 'accent';
+
 export interface NavigableSettingsRowProps extends SettingsRowSizingProp {
   readonly label: string;
   readonly value: string;
   readonly onPress: () => void;
   readonly testID: string;
+  /**
+   * Color of the value text + trailing chevron. Defaults to
+   * `textSecondary` (standard settings affordance). Override to
+   * `accent` for rows that open an external destination — e.g. About →
+   * Privacy policy / Terms of use / Support — where the stronger
+   * interactivity signal is desired (см. 06-ui-spec.md § Экран 6
+   * Visual treatment).
+   */
+  readonly valueColor?: NavigableSettingsRowValueColor;
 }
 
 export function NavigableSettingsRow({
@@ -60,6 +73,7 @@ export function NavigableSettingsRow({
   onPress,
   testID,
   isRegular = false,
+  valueColor = 'textSecondary',
 }: NavigableSettingsRowProps): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
@@ -70,7 +84,7 @@ export function NavigableSettingsRow({
     [s.labelSize, s.labelWeight],
   );
   const valueStyle = useMemo<TextStyle>(() => ({ fontSize: s.valueSize }), [s.valueSize]);
-  const chevronStyle = useMemo<TextStyle>(() => ({ fontSize: s.chevronSize }), [s.chevronSize]);
+  const chevronTone = pickChevronTone(palette, valueColor);
 
   return (
     <Pressable
@@ -84,15 +98,28 @@ export function NavigableSettingsRow({
         {label}
       </Text>
       <Row align="center" gap="xs">
-        <Text variant="mono" color="textSecondary" style={valueStyle}>
+        <Text variant="mono" color={valueColor} style={valueStyle}>
           {value}
         </Text>
-        <Text variant="caption" color="textTertiary" style={chevronStyle}>
-          ›
-        </Text>
+        <Ionicons
+          name="chevron-forward"
+          size={s.chevronSize}
+          color={chevronTone}
+          testID={`${testID}-chevron`}
+        />
       </Row>
     </Pressable>
   );
+}
+
+function pickChevronTone(
+  palette: ColorPalette,
+  valueColor: NavigableSettingsRowValueColor,
+): string {
+  // When the row's value carries the strong interactivity signal
+  // (accent), the chevron matches it. Otherwise the chevron uses the
+  // muted textTertiary so the value text remains the dominant element.
+  return valueColor === 'accent' ? palette.accent : palette.textTertiary;
 }
 
 export interface ToggleSettingsRowProps extends SettingsRowSizingProp {

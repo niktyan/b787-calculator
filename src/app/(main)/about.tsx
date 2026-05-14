@@ -12,6 +12,7 @@
  * system mail composer via Linking.
  */
 
+import { Ionicons } from '@expo/vector-icons';
 import * as Application from 'expo-application';
 import { useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
@@ -32,6 +33,7 @@ import type { NavPillsItem } from '../../design-system';
 import { createCrosswindRepository } from '../../features/crosswind';
 
 const ROW_BORDER_WIDTH = 1;
+const ABOUT_CHEVRON_SIZE = 18;
 
 type TabId = 'modules' | 'settings' | 'about';
 
@@ -231,9 +233,7 @@ function AboutRow({ label, value, testID, onPress }: AboutRowProps): ReactNode {
         <Text variant="monoSmall" color="accent">
           {value}
         </Text>
-        <Text variant="caption" color="accent">
-          ›
-        </Text>
+        <Ionicons name="chevron-forward" size={ABOUT_CHEVRON_SIZE} color={palette.accent} />
       </Row>
     );
 
