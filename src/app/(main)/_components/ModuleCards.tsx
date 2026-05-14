@@ -6,7 +6,7 @@ import type { TextStyle, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useTheme, useTranslation } from '../../../core';
-import type { ComingSoonModule } from '../../../core/coming-soon-modules';
+import type { ActiveModule, ComingSoonModule } from '../../../core/modules';
 import { Text, tokens, useScaleOnPress } from '../../../design-system';
 import type { ColorPalette } from '../../../design-system';
 
@@ -45,14 +45,10 @@ interface ComingSoonStyles {
  * `isRegular` prop driven from `useWindowDimensions().width >= 768`.
  */
 
-const NAME_LH_REGULAR = 22;
+// Line-heights sized 1.2× the font size for cockpit-glance density —
+// keeps the card title compact without clipping descenders.
+const NAME_LH_REGULAR = 24;
 const NAME_LH_COMPACT = 16;
-
-export interface ActiveModule {
-  readonly id: string;
-  readonly name: string;
-  readonly icon: string;
-}
 
 type CardSizing = (typeof tokens.sizing.moduleCard)[keyof typeof tokens.sizing.moduleCard];
 

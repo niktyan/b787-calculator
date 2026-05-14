@@ -474,12 +474,13 @@ Buffer времени в Phase E (App Store submission cycle) — **2–3 ите
 
 ### Support mailto target
 
-- **Где сейчас:** `src/app/error.tsx:20` использует
-  `'mailto:?subject=B787%20Calculator%20support'` — без recipient. Это
-  открывает почтовый клиент с уже заполненной темой, но пустым «To».
-  Никакой реальной почтовой инфраструктуры за этим адресом ещё нет.
-- **Где ещё ожидается:** Settings/About экраны (Sprint 6) будут предлагать
-  ту же ссылку из ряда «Support»; Privacy Policy и Terms of Use
+- **Где сейчас:** `src/core/constants.ts` экспортирует `SUPPORT_EMAIL =
+  "support@example.com"` (Phase-D placeholder). Эту константу читают
+  `src/app/error.tsx` (Contact support button) и `src/app/(main)/about.tsx`
+  (Support row). Соседние константы `PRIVACY_POLICY_URL` и
+  `TERMS_OF_USE_URL` устроены тем же образом — все три заменяются в
+  Phase D одной правкой constants-файла.
+- **Где ещё ожидается:** Privacy Policy и Terms of Use
   (`PRIVACY_POLICY.md`, `TERMS_OF_USE.md`) ссылаются на «[support email]»
   как контакт. Шаблон App Review Notes в этом документе содержит ту же
   заглушку.
@@ -487,14 +488,15 @@ Buffer времени в Phase E (App Store submission cycle) — **2–3 ите
   1. Зарегистрировать почтовый ящик (личный alias или specially-created
      alias вида `support@b787calculator.app` — финализируется
      одновременно с Open question #2 выше).
-  2. Заменить строку в `src/app/error.tsx`. Если адрес используется в
-     нескольких экранах (Settings/About после Sprint 6), вынести в
-     именованную константу `src/core/constants.ts` (или эквивалент) и/или
-     в локализационные строки `src/core/i18n/locales/{en,ru}.json`, чтобы
-     одно изменение покрыло все места.
+  2. Заменить `SUPPORT_EMAIL` в `src/core/constants.ts` — этого
+     достаточно, чтобы покрыть error-screen и About-screen за одно
+     изменение.
   3. Заменить `[support email]` на реальный адрес в `PRIVACY_POLICY.md`,
      `TERMS_OF_USE.md`, и в App Review Notes этого документа.
-  4. Убрать этот пункт из «Outstanding placeholders for Phase D».
+  4. Заменить `<github-username>` в `PRIVACY_POLICY_URL` /
+     `TERMS_OF_USE_URL` (`src/core/constants.ts`) на финальный
+     GitHub-username, на котором хостятся HTML-копии политик.
+  5. Убрать этот пункт из «Outstanding placeholders for Phase D».
 - **Hard rule:** до App Store submission плейсхолдер должен быть закрыт.
   Apple-ревьюеры реально кликают по контактным ссылкам; non-existent или
   bouncing-адрес — гарантированный rejection по 1.5 / 5.6.

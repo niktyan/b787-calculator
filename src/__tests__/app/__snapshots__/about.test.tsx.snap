@@ -39,7 +39,9 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
             "gap": 12,
             "justifyContent": "flex-start",
           },
-          undefined,
+          {
+            "paddingHorizontal": 0,
+          },
         ]
       }
     >
@@ -130,7 +132,9 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                     "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 16,
+                  },
                 ]
               }
             >
@@ -426,10 +430,12 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
             {
               "alignItems": "stretch",
               "flexDirection": "column",
-              "gap": 8,
+              "gap": 4,
               "justifyContent": "flex-start",
             },
-            undefined,
+            {
+              "gap": 8,
+            },
           ]
         }
       >
@@ -443,6 +449,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               "borderWidth": 1,
               "flexDirection": "row",
               "justifyContent": "space-between",
+              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
@@ -462,7 +469,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -475,17 +485,19 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 {
                   "color": "#8B949E",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
-            mock
+            mock (mock)
           </Text>
         </View>
         <View
@@ -498,11 +510,12 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               "borderWidth": 1,
               "flexDirection": "row",
               "justifyContent": "space-between",
+              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
           }
-          testID="about-row-aircraft"
+          testID="about-row-validation"
         >
           <Text
             allowFontScaling={true}
@@ -517,11 +530,14 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
-            about.aircraft
+            about.validation
           </Text>
           <Text
             allowFontScaling={true}
@@ -530,17 +546,19 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 {
                   "color": "#8B949E",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
-            about.aircraftValue
+            about.validationValue
           </Text>
         </View>
         <View
@@ -553,6 +571,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               "borderWidth": 1,
               "flexDirection": "row",
               "justifyContent": "space-between",
+              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
@@ -572,7 +591,10 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -585,20 +607,490 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 {
                   "color": "#8B949E",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
             Boeing 787 FCOM · 2026-05-05.001
           </Text>
         </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-distribution"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.distribution
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 11,
+                },
+              ]
+            }
+          >
+            about.distributionValue
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="about.privacyPolicy"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-privacy-policy"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.privacyPolicy
+          </Text>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              about.openExternal
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontSize": 18,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+              testID="about-row-privacy-policy-chevron"
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="about.termsOfUse"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-terms-of-use"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.termsOfUse
+          </Text>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              about.openExternal
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontSize": 18,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+              testID="about-row-terms-of-use-chevron"
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="about.support"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#11161F",
+              "borderColor": "rgba(255, 255, 255, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-support"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.support
+          </Text>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              support@example.com
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontSize": 18,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+              testID="about-row-support-chevron"
+            >
+              
+            </Text>
+          </View>
+        </View>
       </View>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 11,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+        testID="about-disclaimer"
+      >
+        about.disclaimer
+      </Text>
     </View>
   </View>
 </RNCSafeAreaView>
@@ -643,7 +1135,9 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
             "gap": 12,
             "justifyContent": "flex-start",
           },
-          undefined,
+          {
+            "paddingHorizontal": 0,
+          },
         ]
       }
     >
@@ -734,7 +1228,9 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                     "lineHeight": 22,
                     "textAlign": "auto",
                   },
-                  undefined,
+                  {
+                    "fontSize": 16,
+                  },
                 ]
               }
             >
@@ -1030,10 +1526,12 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
             {
               "alignItems": "stretch",
               "flexDirection": "column",
-              "gap": 8,
+              "gap": 4,
               "justifyContent": "flex-start",
             },
-            undefined,
+            {
+              "gap": 8,
+            },
           ]
         }
       >
@@ -1047,6 +1545,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               "borderWidth": 1,
               "flexDirection": "row",
               "justifyContent": "space-between",
+              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
@@ -1066,7 +1565,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1079,17 +1581,19 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
-            mock
+            mock (mock)
           </Text>
         </View>
         <View
@@ -1102,11 +1606,12 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               "borderWidth": 1,
               "flexDirection": "row",
               "justifyContent": "space-between",
+              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
           }
-          testID="about-row-aircraft"
+          testID="about-row-validation"
         >
           <Text
             allowFontScaling={true}
@@ -1121,11 +1626,14 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
-            about.aircraft
+            about.validation
           </Text>
           <Text
             allowFontScaling={true}
@@ -1134,17 +1642,19 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
-            about.aircraftValue
+            about.validationValue
           </Text>
         </View>
         <View
@@ -1157,6 +1667,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               "borderWidth": 1,
               "flexDirection": "row",
               "justifyContent": "space-between",
+              "minHeight": 44,
               "paddingHorizontal": 12,
               "paddingVertical": 8,
             }
@@ -1176,7 +1687,10 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                   "lineHeight": 16,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
               ]
             }
           >
@@ -1189,20 +1703,490 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
+                  "fontSize": 16,
+                  "fontWeight": "500",
                   "letterSpacing": 0,
-                  "lineHeight": 16,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                undefined,
+                {
+                  "fontSize": 11,
+                },
               ]
             }
           >
             Boeing 787 FCOM · 2026-05-05.001
           </Text>
         </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-distribution"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.distribution
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#4B5563",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 11,
+                },
+              ]
+            }
+          >
+            about.distributionValue
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="about.privacyPolicy"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-privacy-policy"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.privacyPolicy
+          </Text>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              about.openExternal
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontSize": 18,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+              testID="about-row-privacy-policy-chevron"
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="about.termsOfUse"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-terms-of-use"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.termsOfUse
+          </Text>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              about.openExternal
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontSize": 18,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+              testID="about-row-terms-of-use-chevron"
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="about.support"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderColor": "rgba(0, 0, 0, 0.08)",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "minHeight": 44,
+              "paddingHorizontal": 12,
+              "paddingVertical": 8,
+            }
+          }
+          testID="about-row-support"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            about.support
+          </Text>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              support@example.com
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#00C2A8",
+                    "fontSize": 18,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+              testID="about-row-support-chevron"
+            >
+              
+            </Text>
+          </View>
+        </View>
       </View>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#4B5563",
+              "fontFamily": "System",
+              "fontSize": 11,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+        testID="about-disclaimer"
+      >
+        about.disclaimer
+      </Text>
     </View>
   </View>
 </RNCSafeAreaView>

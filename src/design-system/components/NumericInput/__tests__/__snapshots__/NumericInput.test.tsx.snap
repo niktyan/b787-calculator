@@ -97,26 +97,36 @@ exports[`NumericInput renders decimal field with value, unit and error 1`] = `
       </Text>
     </View>
   </View>
-  <Text
-    allowFontScaling={true}
+  <View
     style={
-      [
-        {
-          "color": "#E5484D",
-          "fontFamily": "System",
-          "fontSize": 12,
-          "fontWeight": "400",
-          "letterSpacing": 0,
-          "lineHeight": 16,
-          "textAlign": "auto",
-        },
-        undefined,
-      ]
+      {
+        "justifyContent": "flex-start",
+        "minHeight": 20,
+      }
     }
-    testID="cg-error"
+    testID="cg-error-slot"
   >
-    Above maximum 35 %MAC
-  </Text>
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#E5484D",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+      testID="cg-error"
+    >
+      Above maximum 35 %MAC
+    </Text>
+  </View>
 </View>
 `;
 
@@ -218,6 +228,15 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
       </Text>
     </View>
   </View>
+  <View
+    style={
+      {
+        "justifyContent": "flex-start",
+        "minHeight": 20,
+      }
+    }
+    testID="weight-error-slot"
+  />
 </View>
 `;
 
@@ -319,5 +338,14 @@ exports[`NumericInput renders empty integer field with placeholder in light them
       </Text>
     </View>
   </View>
+  <View
+    style={
+      {
+        "justifyContent": "flex-start",
+        "minHeight": 20,
+      }
+    }
+    testID="weight-error-slot"
+  />
 </View>
 `;

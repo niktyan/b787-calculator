@@ -29,14 +29,19 @@ const MODULE_ICON_MB_COMPACT = 8;
 const MODULE_ICON_MB_REGULAR = 12;
 
 // --- Module-name typography ---
+// `regular` was bumped 18 → 20 in Sprint 6 follow-up Polish-Block-3 so
+// the active card's name aligns with the new Settings/About row label
+// scale (16 pt for the row label + the title-on-card carries more weight).
 const MODULE_NAME_SIZE_COMPACT = 12;
-const MODULE_NAME_SIZE_REGULAR = 18;
+const MODULE_NAME_SIZE_REGULAR = 20;
 
 // --- Module-description typography ---
+// Description bumped 14 → 16 alongside the name bump so the card's
+// content reads at the same scale as Settings row values.
 const MODULE_DESC_SIZE_COMPACT = 10;
-const MODULE_DESC_SIZE_REGULAR = 14;
+const MODULE_DESC_SIZE_REGULAR = 16;
 const MODULE_DESC_LINE_HEIGHT_COMPACT = 14;
-const MODULE_DESC_LINE_HEIGHT_REGULAR = 21; // 14 × 1.5
+const MODULE_DESC_LINE_HEIGHT_REGULAR = 24; // 16 × 1.5
 
 // --- Coming-soon badge typography ---
 const COMING_BADGE_SIZE_COMPACT = 8;
@@ -48,7 +53,7 @@ const APP_LOGO_SIZE_REGULAR = 36;
 const APP_LOGO_RADIUS_COMPACT = 6;
 const APP_LOGO_RADIUS_REGULAR = 8;
 const APP_TITLE_SIZE_COMPACT = 16;
-const APP_TITLE_SIZE_REGULAR = 22;
+const APP_TITLE_SIZE_REGULAR = 24;
 const NAV_PILL_LABEL_COMPACT = 12;
 const NAV_PILL_LABEL_REGULAR = 16;
 const NAV_PILL_PAD_V_COMPACT = 5;
@@ -57,6 +62,34 @@ const NAV_PILL_PAD_H_COMPACT = 10;
 const NAV_PILL_PAD_H_REGULAR = 16;
 const NAV_PILL_RADIUS_COMPACT = 10;
 const NAV_PILL_RADIUS_REGULAR = 12;
+
+// --- Settings/About row sizing ---
+//
+// Compact set matches the original cockpit-handheld density; regular set
+// scales the rows up for cockpit-glance readability on iPad (see Sprint 6
+// follow-up Block 1 / `06-ui-spec.md` § Экран 5 «Visual treatment»).
+// Listed twice — `compact` (iPhone / iPad portrait < 768 pt) and `regular`
+// (iPad ≥ 768 pt) — so a single isRegular bool picks the whole bundle.
+const SETTINGS_ROW_MIN_HEIGHT_COMPACT = 44;
+const SETTINGS_ROW_MIN_HEIGHT_REGULAR = 72;
+const SETTINGS_ROW_PAD_V_COMPACT = 8;
+const SETTINGS_ROW_PAD_V_REGULAR = 16;
+const SETTINGS_ROW_PAD_H_COMPACT = 12;
+const SETTINGS_ROW_PAD_H_REGULAR = 24;
+const SETTINGS_ROW_LABEL_SIZE_COMPACT = 12;
+const SETTINGS_ROW_LABEL_SIZE_REGULAR = 16;
+const SETTINGS_ROW_LABEL_WEIGHT_COMPACT = '500';
+const SETTINGS_ROW_LABEL_WEIGHT_REGULAR = '500';
+const SETTINGS_ROW_VALUE_SIZE_COMPACT = 11;
+const SETTINGS_ROW_VALUE_SIZE_REGULAR = 16;
+const SETTINGS_ROW_CHEVRON_SIZE_COMPACT = 18;
+const SETTINGS_ROW_CHEVRON_SIZE_REGULAR = 22;
+const SETTINGS_LIST_GAP_COMPACT = 8;
+const SETTINGS_LIST_GAP_REGULAR = 12;
+const SETTINGS_LIST_SECTION_TITLE_SIZE_COMPACT = 12;
+const SETTINGS_LIST_SECTION_TITLE_SIZE_REGULAR = 16;
+const SETTINGS_SCREEN_PAD_COMPACT = 0;
+const SETTINGS_SCREEN_PAD_REGULAR = 24;
 
 /**
  * Header layout breakpoint: below this width the header collapses into two
@@ -112,6 +145,32 @@ export const sizing = {
       pillPaddingV: NAV_PILL_PAD_V_REGULAR,
       pillPaddingH: NAV_PILL_PAD_H_REGULAR,
       pillRadius: NAV_PILL_RADIUS_REGULAR,
+    },
+  },
+  settingsRow: {
+    compact: {
+      minHeight: SETTINGS_ROW_MIN_HEIGHT_COMPACT,
+      paddingV: SETTINGS_ROW_PAD_V_COMPACT,
+      paddingH: SETTINGS_ROW_PAD_H_COMPACT,
+      labelSize: SETTINGS_ROW_LABEL_SIZE_COMPACT,
+      labelWeight: SETTINGS_ROW_LABEL_WEIGHT_COMPACT,
+      valueSize: SETTINGS_ROW_VALUE_SIZE_COMPACT,
+      chevronSize: SETTINGS_ROW_CHEVRON_SIZE_COMPACT,
+      listGap: SETTINGS_LIST_GAP_COMPACT,
+      sectionTitleSize: SETTINGS_LIST_SECTION_TITLE_SIZE_COMPACT,
+      screenPadding: SETTINGS_SCREEN_PAD_COMPACT,
+    },
+    regular: {
+      minHeight: SETTINGS_ROW_MIN_HEIGHT_REGULAR,
+      paddingV: SETTINGS_ROW_PAD_V_REGULAR,
+      paddingH: SETTINGS_ROW_PAD_H_REGULAR,
+      labelSize: SETTINGS_ROW_LABEL_SIZE_REGULAR,
+      labelWeight: SETTINGS_ROW_LABEL_WEIGHT_REGULAR,
+      valueSize: SETTINGS_ROW_VALUE_SIZE_REGULAR,
+      chevronSize: SETTINGS_ROW_CHEVRON_SIZE_REGULAR,
+      listGap: SETTINGS_LIST_GAP_REGULAR,
+      sectionTitleSize: SETTINGS_LIST_SECTION_TITLE_SIZE_REGULAR,
+      screenPadding: SETTINGS_SCREEN_PAD_REGULAR,
     },
   },
 } as const;

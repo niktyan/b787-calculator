@@ -38,6 +38,13 @@ export interface NumericInputProps {
 const BORDER_WIDTH = 1;
 const FOCUS_RING_WIDTH = 2;
 const DISABLED_OPACITY = 0.5;
+// Reserved space for the inline warning text. Always rendered (empty
+// when there's no error) so the parent form layout doesn't shift when
+// the error toggles on (см. 06-ui-spec.md § Экран 4 Visual treatment
+// "Warning text reserved slot"). Sized to one line of `caption`
+// (lineHeight 16pt) plus breathing room on regular.
+const ERROR_SLOT_HEIGHT_COMPACT = 20;
+const ERROR_SLOT_HEIGHT_REGULAR = 24;
 const LABEL_COMPACT_STYLE: TextStyle = { textTransform: 'uppercase' };
 const REGULAR_LABEL_FONT_WEIGHT = '600';
 const REGULAR_LABEL_LETTER_SPACING = 1;
@@ -52,6 +59,7 @@ const REGULAR_FIELD_PADDING_HORIZONTAL = 28;
 const REGULAR_INPUT_FONT_SIZE = tokens.typography.variants.monoXL.fontSize;
 
 interface Styles {
+  readonly errorSlot: ViewStyle;
   readonly field: ViewStyle;
   readonly fieldRing: ViewStyle;
   readonly input: TextStyle;
@@ -99,7 +107,13 @@ function buildStyles(args: {
   const fieldBorderColor = hasError ? palette.danger : focused ? palette.accent : palette.border;
   const showRing = focused && !hasError;
   const m = metricsForSize(size);
+  const errorSlotHeight =
+    size === 'regular' ? ERROR_SLOT_HEIGHT_REGULAR : ERROR_SLOT_HEIGHT_COMPACT;
   return StyleSheet.create({
+    errorSlot: {
+      justifyContent: 'flex-start',
+      minHeight: errorSlotHeight,
+    },
     field: {
       alignItems: 'center',
       backgroundColor: palette.bgInput,
@@ -204,11 +218,13 @@ export function NumericInput(props: NumericInputProps): ReactNode {
           ) : null}
         </View>
       </View>
-      {hasError ? (
-        <Text variant="caption" color="danger" testID={suffixId(testID, 'error')}>
-          {error}
-        </Text>
-      ) : null}
+      <View style={styles.errorSlot} testID={suffixId(testID, 'error-slot')}>
+        {hasError ? (
+          <Text variant="caption" color="danger" testID={suffixId(testID, 'error')}>
+            {error}
+          </Text>
+        ) : null}
+      </View>
     </View>
   );
 }

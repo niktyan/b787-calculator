@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 
 import { logger, useTranslation } from '../core';
+import { SUPPORT_EMAIL, SUPPORT_MAILTO_SUBJECT } from '../core/constants';
 import { Button, Screen, Stack, Text } from '../design-system';
 
 /**
@@ -15,9 +16,7 @@ import { Button, Screen, Stack, Text } from '../design-system';
  * mail composer. The screen has no other navigation paths.
  */
 
-// Support email is finalised in Phase B per
-// `02_Specification/07-app-store-compliance.md` Open questions #2.
-const SUPPORT_MAILTO = 'mailto:?subject=B787%20Calculator%20support';
+const SUPPORT_MAILTO = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(SUPPORT_MAILTO_SUBJECT)}`;
 
 export default function ErrorScreen(): ReactNode {
   const router = useRouter();

@@ -1,0 +1,640 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavigableSettingsRow chevron alignment renders chevron next to a long value 1`] = `
+<View
+  accessibilityLabel="Aircraft"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "minHeight": 44,
+      "paddingHorizontal": 12,
+      "paddingVertical": 8,
+    }
+  }
+  testID="row-long"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 12,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 16,
+          "textAlign": "auto",
+        },
+        {
+          "fontSize": 12,
+          "fontWeight": "500",
+        },
+      ]
+    }
+  >
+    Aircraft
+  </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "Menlo",
+            "fontSize": 16,
+            "fontWeight": "500",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontSize": 11,
+          },
+        ]
+      }
+    >
+      Boeing 787-8 (B787-9 — Phase 2)
+    </Text>
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6E7681",
+            "fontSize": 18,
+          },
+          undefined,
+          {
+            "fontFamily": "ionicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+      testID="row-long-chevron"
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`NavigableSettingsRow chevron alignment renders chevron next to a medium value 1`] = `
+<View
+  accessibilityLabel="Language"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "minHeight": 44,
+      "paddingHorizontal": 12,
+      "paddingVertical": 8,
+    }
+  }
+  testID="row-medium"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 12,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 16,
+          "textAlign": "auto",
+        },
+        {
+          "fontSize": 12,
+          "fontWeight": "500",
+        },
+      ]
+    }
+  >
+    Language
+  </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "Menlo",
+            "fontSize": 16,
+            "fontWeight": "500",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontSize": 11,
+          },
+        ]
+      }
+    >
+      Русский
+    </Text>
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6E7681",
+            "fontSize": 18,
+          },
+          undefined,
+          {
+            "fontFamily": "ionicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+      testID="row-medium-chevron"
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`NavigableSettingsRow chevron alignment renders chevron next to a short value 1`] = `
+<View
+  accessibilityLabel="Theme"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "minHeight": 44,
+      "paddingHorizontal": 12,
+      "paddingVertical": 8,
+    }
+  }
+  testID="row-short"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 12,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 16,
+          "textAlign": "auto",
+        },
+        {
+          "fontSize": 12,
+          "fontWeight": "500",
+        },
+      ]
+    }
+  >
+    Theme
+  </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "Menlo",
+            "fontSize": 16,
+            "fontWeight": "500",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontSize": 11,
+          },
+        ]
+      }
+    >
+      Auto
+    </Text>
+    <Text />
+  </View>
+</View>
+`;
+
+exports[`NavigableSettingsRow chevron color uses accent palette when valueColor="accent" 1`] = `
+<View
+  accessibilityLabel="Privacy policy"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "minHeight": 44,
+      "paddingHorizontal": 12,
+      "paddingVertical": 8,
+    }
+  }
+  testID="row-accent"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 12,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 16,
+          "textAlign": "auto",
+        },
+        {
+          "fontSize": 12,
+          "fontWeight": "500",
+        },
+      ]
+    }
+  >
+    Privacy policy
+  </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "Menlo",
+            "fontSize": 16,
+            "fontWeight": "500",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontSize": 11,
+          },
+        ]
+      }
+    >
+      View →
+    </Text>
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontSize": 18,
+          },
+          undefined,
+          {
+            "fontFamily": "ionicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+      testID="row-accent-chevron"
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`NavigableSettingsRow iPad regular sizing bumps chevron + label sizes when isRegular=true 1`] = `
+<View
+  accessibilityLabel="Theme"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#11161F",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "minHeight": 72,
+      "paddingHorizontal": 24,
+      "paddingVertical": 16,
+    }
+  }
+  testID="row-regular"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 12,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 16,
+          "textAlign": "auto",
+        },
+        {
+          "fontSize": 16,
+          "fontWeight": "500",
+        },
+      ]
+    }
+  >
+    Theme
+  </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "Menlo",
+            "fontSize": 16,
+            "fontWeight": "500",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontSize": 16,
+          },
+        ]
+      }
+    >
+      Auto
+    </Text>
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "#6E7681",
+            "fontSize": 22,
+          },
+          undefined,
+          {
+            "fontFamily": "ionicons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+      testID="row-regular-chevron"
+    >
+      
+    </Text>
+  </View>
+</View>
+`;

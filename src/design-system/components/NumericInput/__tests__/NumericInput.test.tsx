@@ -95,4 +95,60 @@ describe('NumericInput', () => {
       dismissSpy.mockRestore();
     }
   });
+
+  describe('reserved warning slot', () => {
+    // The error slot is rendered unconditionally with a fixed minHeight
+    // so toggling `error` on or off does NOT change the outer node's
+    // height. This is what keeps the Crosswind input form stable when a
+    // user types an out-of-envelope value (see 06-ui-spec.md § Экран 4).
+    it('always mounts the error-slot view, even with no error', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      expect(getByTestId('weight-error-slot')).toBeTruthy();
+    });
+
+    it('reserves the same slot minHeight for compact regardless of error state', () => {
+      const compactNoError = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      ).getByTestId('weight-error-slot');
+      const compactWithError = renderWithTheme(
+        <NumericInput
+          label="Weight"
+          value="300"
+          onChange={jest.fn()}
+          error="Above maximum"
+          testID="weight"
+        />,
+      ).getByTestId('weight-error-slot');
+      const heightOf = (node: { props: { style?: { minHeight?: number } } }): number | undefined =>
+        node.props.style?.minHeight;
+      expect(heightOf(compactNoError)).toBe(heightOf(compactWithError));
+    });
+
+    it('reserves the same slot minHeight for regular regardless of error state', () => {
+      const regularNoError = renderWithTheme(
+        <NumericInput
+          label="Weight"
+          value=""
+          onChange={jest.fn()}
+          size="regular"
+          testID="weight"
+        />,
+      ).getByTestId('weight-error-slot');
+      const regularWithError = renderWithTheme(
+        <NumericInput
+          label="Weight"
+          value="300"
+          onChange={jest.fn()}
+          size="regular"
+          error="Above maximum"
+          testID="weight"
+        />,
+      ).getByTestId('weight-error-slot');
+      const heightOf = (node: { props: { style?: { minHeight?: number } } }): number | undefined =>
+        node.props.style?.minHeight;
+      expect(heightOf(regularNoError)).toBe(heightOf(regularWithError));
+    });
+  });
 });
