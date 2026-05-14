@@ -101,17 +101,23 @@ describe('NumericInput', () => {
     // so toggling `error` on or off does NOT change the outer node's
     // height. This is what keeps the Crosswind input form stable when a
     // user types an out-of-envelope value (see 06-ui-spec.md § Экран 4).
+    // The empty error slot is hidden from the accessibility tree
+    // (`accessible={false}` + `importantForAccessibility="no-hide-descendants"`),
+    // so queries must pass `includeHiddenElements: true` to find it via
+    // testID. See `accessibility` describe block below.
+    const QUERY_HIDDEN = { includeHiddenElements: true } as const;
+
     it('always mounts the error-slot view, even with no error', () => {
       const { getByTestId } = renderWithTheme(
         <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
       );
-      expect(getByTestId('weight-error-slot')).toBeTruthy();
+      expect(getByTestId('weight-error-slot', QUERY_HIDDEN)).toBeTruthy();
     });
 
     it('reserves the same slot minHeight for compact regardless of error state', () => {
       const compactNoError = renderWithTheme(
         <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
-      ).getByTestId('weight-error-slot');
+      ).getByTestId('weight-error-slot', QUERY_HIDDEN);
       const compactWithError = renderWithTheme(
         <NumericInput
           label="Weight"
@@ -120,7 +126,7 @@ describe('NumericInput', () => {
           error="Above maximum"
           testID="weight"
         />,
-      ).getByTestId('weight-error-slot');
+      ).getByTestId('weight-error-slot', QUERY_HIDDEN);
       const heightOf = (node: { props: { style?: { minHeight?: number } } }): number | undefined =>
         node.props.style?.minHeight;
       expect(heightOf(compactNoError)).toBe(heightOf(compactWithError));
@@ -135,7 +141,7 @@ describe('NumericInput', () => {
           size="regular"
           testID="weight"
         />,
-      ).getByTestId('weight-error-slot');
+      ).getByTestId('weight-error-slot', QUERY_HIDDEN);
       const regularWithError = renderWithTheme(
         <NumericInput
           label="Weight"
@@ -145,10 +151,56 @@ describe('NumericInput', () => {
           error="Above maximum"
           testID="weight"
         />,
-      ).getByTestId('weight-error-slot');
+      ).getByTestId('weight-error-slot', QUERY_HIDDEN);
       const heightOf = (node: { props: { style?: { minHeight?: number } } }): number | undefined =>
         node.props.style?.minHeight;
       expect(heightOf(regularNoError)).toBe(heightOf(regularWithError));
+    });
+
+    it('hides the empty slot from screen readers (accessible=false)', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      const slot = getByTestId('weight-error-slot', QUERY_HIDDEN);
+      expect(slot.props.accessible).toBe(false);
+      expect(slot.props.importantForAccessibility).toBe('no-hide-descendants');
+    });
+
+    it('exposes the populated slot to screen readers (accessible=true)', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput
+          label="Weight"
+          value="300"
+          onChange={jest.fn()}
+          error="Above maximum 254 t"
+          testID="weight"
+        />,
+      );
+      const slot = getByTestId('weight-error-slot');
+      expect(slot.props.accessible).toBe(true);
+      expect(slot.props.importantForAccessibility).toBe('auto');
+    });
+  });
+
+  describe('accessibility', () => {
+    it('uses the label as accessibilityLabel by default', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="TOW actual" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      expect(getByTestId('weight-input').props.accessibilityLabel).toBe('TOW actual');
+    });
+
+    it('uses an explicit accessibilityLabel when provided', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput
+          label="TOW"
+          value=""
+          onChange={jest.fn()}
+          accessibilityLabel="Takeoff weight in tons"
+          testID="weight"
+        />,
+      );
+      expect(getByTestId('weight-input').props.accessibilityLabel).toBe('Takeoff weight in tons');
     });
   });
 });

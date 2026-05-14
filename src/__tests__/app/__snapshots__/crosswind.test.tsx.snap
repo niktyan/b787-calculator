@@ -673,6 +673,8 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                 </View>
               </View>
               <View
+                accessible={false}
+                importantForAccessibility="no-hide-descendants"
                 style={
                   {
                     "justifyContent": "flex-start",
@@ -780,6 +782,8 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                 </View>
               </View>
               <View
+                accessible={false}
+                importantForAccessibility="no-hide-descendants"
                 style={
                   {
                     "justifyContent": "flex-start",
@@ -2036,6 +2040,8 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                 </View>
               </View>
               <View
+                accessible={false}
+                importantForAccessibility="no-hide-descendants"
                 style={
                   {
                     "justifyContent": "flex-start",
@@ -2143,6 +2149,8 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                 </View>
               </View>
               <View
+                accessible={false}
+                importantForAccessibility="no-hide-descendants"
                 style={
                   {
                     "justifyContent": "flex-start",

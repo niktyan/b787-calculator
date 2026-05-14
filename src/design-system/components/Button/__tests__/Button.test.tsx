@@ -56,4 +56,34 @@ describe('Button', () => {
     fireEvent.press(getByTestId('btn'));
     expect(onPress).not.toHaveBeenCalled();
   });
+
+  describe('accessibility', () => {
+    it('exposes role="button" and falls back to label when no a11y label given', () => {
+      const { getByTestId } = renderWithTheme(
+        <Button label="Continue" onPress={jest.fn()} testID="btn" />,
+      );
+      const node = getByTestId('btn');
+      expect(node.props.accessibilityRole).toBe('button');
+      expect(node.props.accessibilityLabel).toBe('Continue');
+    });
+
+    it('uses an explicit accessibilityLabel when provided', () => {
+      const { getByTestId } = renderWithTheme(
+        <Button
+          label="OK"
+          onPress={jest.fn()}
+          accessibilityLabel="Accept disclaimer and continue"
+          testID="btn"
+        />,
+      );
+      expect(getByTestId('btn').props.accessibilityLabel).toBe('Accept disclaimer and continue');
+    });
+
+    it('reflects disabled state via accessibilityState', () => {
+      const { getByTestId } = renderWithTheme(
+        <Button label="Submit" onPress={jest.fn()} disabled testID="btn" />,
+      );
+      expect(getByTestId('btn').props.accessibilityState).toEqual({ disabled: true });
+    });
+  });
 });

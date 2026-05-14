@@ -163,6 +163,38 @@ function labelStyleForSize(size: NumericInputSize): TextStyle {
   return size === 'regular' ? LABEL_REGULAR_STYLE : LABEL_COMPACT_STYLE;
 }
 
+interface ErrorSlotProps {
+  readonly error: string | undefined;
+  readonly hasError: boolean;
+  readonly style: ViewStyle;
+  readonly testID: string | undefined;
+}
+
+/**
+ * Reserved warning slot. When `hasError` is false, the slot is an empty
+ * layout placeholder — explicitly marked non-accessible so VoiceOver skips
+ * past it instead of pausing on an empty region. When populated, the error
+ * <Text> is the accessibility element encountered right after the input
+ * field. See 06-ui-spec.md § Экран 4 "Warning text reserved slot" — the
+ * slot exists for layout stability, not as a focus target.
+ */
+function ErrorSlot({ error, hasError, style, testID }: ErrorSlotProps): ReactNode {
+  return (
+    <View
+      accessible={hasError}
+      importantForAccessibility={hasError ? 'auto' : 'no-hide-descendants'}
+      style={style}
+      testID={suffixId(testID, 'error-slot')}
+    >
+      {hasError ? (
+        <Text variant="caption" color="danger" testID={suffixId(testID, 'error')}>
+          {error}
+        </Text>
+      ) : null}
+    </View>
+  );
+}
+
 export function NumericInput(props: NumericInputProps): ReactNode {
   const {
     value,
@@ -218,13 +250,7 @@ export function NumericInput(props: NumericInputProps): ReactNode {
           ) : null}
         </View>
       </View>
-      <View style={styles.errorSlot} testID={suffixId(testID, 'error-slot')}>
-        {hasError ? (
-          <Text variant="caption" color="danger" testID={suffixId(testID, 'error')}>
-            {error}
-          </Text>
-        ) : null}
-      </View>
+      <ErrorSlot error={error} hasError={hasError} style={styles.errorSlot} testID={testID} />
     </View>
   );
 }
