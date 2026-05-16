@@ -29,4 +29,14 @@ export { makeCGPercentMAC, makeCrosswindKnots, makeWeightInTons } from './valueO
 export { validateAlgorithmInput, validateOperationalEnvelope } from './validators';
 
 export { calculateCrosswindLimit, calculateMaxCrosswindTakeoff } from './calculator';
-export type { CalculatorInput } from './calculator';
+
+export type {
+  BracketedLinearBracket,
+  BracketedLinearParams,
+  CalculatorInput,
+  CrosswindStrategy,
+  NoLookupData,
+  StrategyResolution,
+  StrategyType,
+} from './strategy';
+export { STRATEGY_TYPES } from './strategy';
