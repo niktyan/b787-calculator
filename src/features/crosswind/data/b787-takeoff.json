@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "2.0.0",
-  "dataVersion": "2026-05-05.001",
+  "schemaVersion": "2.1.0",
+  "dataVersion": "2026-05-17.001",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": {
@@ -18,23 +18,21 @@
   "byAircraft": {
     "b787_8": {
       "dry": {
-        "interpolation": {
-          "model": "piecewise-linear-excel-equivalent",
-          "slope": 0.0576,
-          "breakpoints": [
+        "strategyType": "bracketedLinear",
+        "params": {
+          "brackets": [
             { "crosswindKnots": 40, "intercept": 6.1 },
             { "crosswindKnots": 35, "intercept": 9.3 },
             { "crosswindKnots": 30, "intercept": 12.8 },
             { "crosswindKnots": 25, "intercept": 16.3 },
             { "crosswindKnots": 20, "intercept": 19.8 }
-          ]
-        },
-        "fallback": {
-          "belowEnvelope": "max-crosswind-40",
-          "aboveEnvelope": "ifna-fallback-40-match-excel"
+          ],
+          "slope": 0.0576,
+          "maxCap": null,
+          "decimals": 0
         },
         "metadata": {
-          "createdAt": "2026-05-05",
+          "createdAt": "2026-05-17",
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "Conservative advisory limits. Linear approximation per breakpoint band. Matches Excel formula exactly including IFNA fallback behavior."

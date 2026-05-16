@@ -29,7 +29,7 @@ function vo(weight: number, cg: number): { readonly w: WeightInTons; readonly cg
 }
 
 describe('Calculator edge cases', () => {
-  it('returns CalculationFailed for unknown interpolation.model', () => {
+  it('returns CalculationFailed for an unknown strategyType (future-PR fall-through)', () => {
     const corruptedData = JSON.parse(JSON.stringify(data)) as CrosswindDataFile;
     const aircraftEntry = corruptedData.byAircraft.b787_8;
     if (aircraftEntry === undefined) {
@@ -39,7 +39,7 @@ describe('Calculator edge cases', () => {
     if (dataset === undefined) {
       throw new Error('expected dry dataset');
     }
-    (dataset.interpolation as { model: string }).model = 'some-future-model';
+    (dataset as { strategyType: string }).strategyType = 'constant';
     const { w, cg } = vo(170, 32);
     const r = calculateCrosswindLimit(
       {
@@ -137,12 +137,15 @@ describe('Strategy edge cases', () => {
     if (dataset === undefined) {
       throw new Error('expected dry dataset');
     }
+    if (dataset.strategyType !== 'bracketedLinear') {
+      throw new Error('expected bracketedLinear');
+    }
     const w = Number.MAX_VALUE as WeightInTons;
     const r = calculateExcelEquivalent(
       { weightTons: w, cgPercent: 32 as CGPercentMAC },
       {
         slope: 0.0576,
-        breakpoints: dataset.interpolation.breakpoints,
+        breakpoints: dataset.params.brackets,
         tonsToKilolbsFactor: 2.20462,
         dataVersion: 'test',
         referenceDocument: 'test',

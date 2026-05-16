@@ -63,12 +63,12 @@ export function calculateCrosswindLimit(
     });
   }
 
-  if (dataset.interpolation.model === 'piecewise-linear-excel-equivalent') {
+  if (dataset.strategyType === 'bracketedLinear') {
     return calculateExcelEquivalent(
       { weightTons: input.weightTons, cgPercent: input.cgPercent },
       {
-        slope: dataset.interpolation.slope,
-        breakpoints: dataset.interpolation.breakpoints,
+        slope: dataset.params.slope,
+        breakpoints: dataset.params.brackets,
         tonsToKilolbsFactor: data.weightConversion.tonsToKilolbsFactor,
         dataVersion: data.dataVersion,
         referenceDocument: dataset.metadata.referenceDocument,
@@ -79,7 +79,7 @@ export function calculateCrosswindLimit(
 
   return err({
     kind: 'CalculationFailed',
-    reason: `Unknown interpolation model`,
+    reason: `Unknown strategy type`,
   });
 }
 
