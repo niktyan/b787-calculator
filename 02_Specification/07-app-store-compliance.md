@@ -357,6 +357,13 @@ https://[github-username].github.io/b787-calculator/support.html
 
 - Worldwide (все доступные).
 
+### App Icon
+
+- **Source master:** `assets/images/icon.png` — 1024×1024, 8-bit RGB, **no alpha** (Apple App Store hard requirement; alpha channels cause submission rejection).
+- **Design:** typographic «B7» badge in brand accent `#00C2A8` on Dark page background `#0A0E14`. Both color tokens are defined in `02_Specification/06-ui-spec.md` § Темы.
+- **Splash-screen continuity:** the `expo-splash-screen` plugin in `app.json` uses `backgroundColor: "#0A0E14"` for both light and dark variants, so the iOS launch screen background matches the icon background — no visual jump on app launch.
+- **Variant decision:** Variant A (typographic «B7») was selected from two drafts and approved by the developer prior to Phase D Section 1 integration. Master file was originally exported as 16-bit RGBA with fully opaque alpha; converted to 8-bit RGB during integration as a no-op visual normalization for App Store compliance (RGB values byte-identical at all 1,048,576 pixels).
+
 ---
 
 ## App Review Notes (заполняется в App Store Connect → App Review Information)
