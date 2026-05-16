@@ -78,6 +78,14 @@ Search-able, downloadable, рейтинг 4+, Privacy Label «No data collected�
 
 ## Section 1 · App icon design + assets
 
+> **Status:** ✅ **Completed 2026-05-16** — production icon (Variant A,
+> typographic «B7» badge `#00C2A8` on Dark page `#0A0E14`) integrated
+> via branch `chore/production-icon`. Splash-screen background aligned
+> with icon background (`#0A0E14`, light + dark) for seamless launch
+> → icon transition. Design rationale and master-file specifics: see
+> `02_Specification/07-app-store-compliance.md` § App Store Listing
+> texts → App Icon.
+
 **Цель.** Заменить placeholder Expo-иконку финальной production-иконкой.
 
 ### USER DOES (deliberate design work)
@@ -822,7 +830,7 @@ PR, обычный workflow Phase C.
 D. Каждый пункт = одна секция этого playbook.
 
 - [ ] **§ 0** Prerequisites checklist пройден.
-- [ ] **§ 1** Production app icon merged в main.
+- [x] **§ 1** Production app icon merged в main.
 - [ ] **§ 2** Privacy Policy + Terms of Use опубликованы на стабильных
       URL; `src/core/constants.ts` обновлён.
 - [ ] **§ 3** Support email активен и мониторится; `SUPPORT_EMAIL`
