@@ -2,9 +2,10 @@
 
 ## Назначение документа
 
-Этот документ — **математически точная спецификация алгоритма расчёта максимально допустимого бокового ветра для взлёта Boeing 787-8 на сухой ВПП**. Он содержит:
+Этот документ — **математически точная спецификация алгоритма расчёта максимально допустимого бокового ветра для взлёта Boeing 787-8**. Он содержит:
 
-- Точное описание модели и формул.
+- Описание strategy-dispatched архитектуры и реализованной в PR 1 стратегии `bracketedLinear` (Dry / RWYCC 6).
+- Точное описание модели и формул `bracketedLinear`.
 - Покрытие всех граничных случаев.
 - Авторитативную тест-таблицу (input → expected output) минимум 35 кейсов, по которым будет писаться unit-тест-сьют.
 - Скелет реализации в TypeScript-стиле.
@@ -12,11 +13,36 @@
 
 **Правило точности:** любое расхождение между этим документом и реализацией в коде является багом. Любое расхождение между реализацией и тест-таблицей блокирует merge PR.
 
-Алгоритм **точно повторяет поведение Excel-формулы** из исходного файла заказчика (`123.xlsm`), включая все её особенности (специфика IFNA-fallback, ROUNDDOWN-поведение, разрыв на границах брекетов). Это сознательное проектное решение — см. секцию «Особенности Excel-эквивалентного поведения».
+Алгоритм `bracketedLinear` **точно повторяет поведение Excel-формулы** из исходного файла заказчика (`123.xlsm`), включая все её особенности (специфика IFNA-fallback, ROUNDDOWN-поведение, разрыв на границах брекетов). Это сознательное проектное решение — см. секцию «Особенности Excel-эквивалентного поведения».
 
 ---
 
-## Высокоуровневое описание
+## Strategy dispatch (Architecture)
+
+`calculateCrosswindLimit` — это **тонкая оркестрация**:
+
+1. **Step 0** — `validateAlgorithmInput` (defence-in-depth: NaN / Infinity / phase mismatch).
+2. **Step 1** — `resolveStrategy(input.aircraft, input.runwayCondition, data)` ищет `(aircraft × condition)` dataset и конструирует `CrosswindStrategy` соответствующего типа (или возвращает `NoLookupData` с reason `aircraft-not-implemented` / `condition-not-implemented`).
+3. **Step 2** — `strategy.calculate(input)` выполняет сам расчёт.
+
+`StrategyType` дискриминатор (см. `04-domain-model.md` § «Strategy
+variants»):
+
+| Type | Применяется к | Статус |
+|------|---------------|--------|
+| `bracketedLinear` | Dry (RWYCC 6) | **Active** — описан ниже |
+| `variableSlopeBracketed` | Medium (RWYCC 3) | Stub (PR 5) |
+| `cgOnlyPiecewise` | MediumToPoor (RWYCC 2) | Stub (PR 6) |
+| `constant` | Poor (RWYCC 1) | Stub (PR 7) |
+| `notAllowed` | RWYCC 0 | Stub (PR 8) |
+
+Остальные секции этого документа описывают **`bracketedLinear`**. Когда
+PR 5/6/7/8 активируют свои стратегии, к этому документу добавятся
+аналогичные секции с уравнениями и тест-таблицами для каждой.
+
+---
+
+## Высокоуровневое описание стратегии `bracketedLinear`
 
 Модель: **piecewise-linear surface в 3D-пространстве (Weight, CG, MaxCrosswind)**.
 
@@ -30,17 +56,20 @@
 
 Все константы хранятся в bundled JSON (`b787-takeoff.json`,
 вложенно по пути `byAircraft.b787_8.dry`). В коде они **не
-хардкодятся** — читаются из JSON при инициализации репозитория.
+хардкодятся** — читаются из JSON при инициализации репозитория и
+передаются в стратегию в виде `BracketedLinearParams + StrategyContext`.
 
 | Константа | Значение | Откуда |
 |-----------|----------|--------|
 | Конверсия вес → kilolbs | `tonsToKilolbsFactor = 2.20462` | JSON, top-level `weightConversion.tonsToKilolbsFactor` |
-| Общий наклон | `slope = 0.0576` | JSON, `byAircraft.b787_8.dry.interpolation.slope` |
-| Точка 1 (макс. crosswind) | `crosswind = 40 KT, intercept = 6.1` | JSON, `…dry.interpolation.breakpoints[0]` |
-| Точка 2 | `crosswind = 35 KT, intercept = 9.3` | JSON, `…breakpoints[1]` |
-| Точка 3 | `crosswind = 30 KT, intercept = 12.8` | JSON, `…breakpoints[2]` |
-| Точка 4 | `crosswind = 25 KT, intercept = 16.3` | JSON, `…breakpoints[3]` |
-| Точка 5 (мин. crosswind) | `crosswind = 20 KT, intercept = 19.8` | JSON, `…breakpoints[4]` |
+| Общий наклон | `slope = 0.0576` | JSON, `byAircraft.b787_8.dry.params.slope` |
+| Точка 1 (макс. crosswind) | `crosswind = 40 KT, intercept = 6.1` | JSON, `…dry.params.brackets[0]` |
+| Точка 2 | `crosswind = 35 KT, intercept = 9.3` | JSON, `…params.brackets[1]` |
+| Точка 3 | `crosswind = 30 KT, intercept = 12.8` | JSON, `…params.brackets[2]` |
+| Точка 4 | `crosswind = 25 KT, intercept = 16.3` | JSON, `…params.brackets[3]` |
+| Точка 5 (мин. crosswind) | `crosswind = 20 KT, intercept = 19.8` | JSON, `…params.brackets[4]` |
+| Max-cap | `null` (no clamp) | JSON, `…params.maxCap`; PR 2 переключит на `37` для Dry |
+| Decimals (ROUNDDOWN precision) | `0` (integer floor) | JSON, `…params.decimals` |
 
 ---
 
@@ -343,40 +372,23 @@ Value Object factories (`makeWeightInTons`, `makeCGPercentMAC`), до
 
 ## Скелет TypeScript-реализации
 
-Для агента-реализатора. Это **не финальный код**, а контракт интерфейса:
+Для агента-реализатора. Это **не финальный код**, а контракт интерфейса.
+
+### Top-level orchestrator (strategy dispatch)
 
 ```typescript
 // src/features/crosswind/domain/calculator.ts
 
-import type {
-  AircraftVariant,
-  FlightPhase,
-  RunwayCondition,
-  WeightInTons,
-  CGPercentMAC,
-  CrosswindKnots,
-  CrosswindCalculationOutput,
-  CrosswindCalculationError,
-} from './types';
 import type { Result } from '@/core/result';
 import type { CrosswindDataFile } from '../data/schema';
+import type {
+  CrosswindCalculationError,
+  CrosswindCalculationOutput,
+} from './types';
+import type { CalculatorInput } from './strategy';
 
-/**
- * Computes maximum allowed crosswind for given inputs.
- * Pure function. No side effects. No I/O.
- *
- * Algorithm: precise replica of Excel formula in 123.xlsm,
- * including IFNA-fallback behavior. See 05-crosswind-algorithm.md
- * for full specification.
- */
 export function calculateCrosswindLimit(
-  input: {
-    weightTons: WeightInTons;
-    cgPercent: CGPercentMAC;
-    aircraft: AircraftVariant;
-    phase: FlightPhase;
-    runwayCondition: RunwayCondition;
-  },
+  input: CalculatorInput,
   data: CrosswindDataFile,
 ): Result<CrosswindCalculationOutput, CrosswindCalculationError>;
 ```
@@ -385,55 +397,74 @@ export function calculateCrosswindLimit(
 // псевдокод тела функции (для понимания, не финальный код)
 
 function calculateCrosswindLimit(input, data) {
-  // Step 0a: defence-in-depth NaN/Infinity + phase check.
-  if (input.phase !== data.phase) {
-    return error('DataNotAvailable', 'phase-mismatch');
-  }
-  if (!Number.isFinite(input.weightTons)) return error('NoLookupData', 'NotFinite');
-  if (!Number.isFinite(input.cgPercent)) return error('NoLookupData', 'NotFinite');
+  // Step 0: defence-in-depth NaN/Infinity + phase check.
+  const v = validateAlgorithmInput(input, data);
+  if (!v.ok) return v;
 
-  // Step 0b: resolve the per-(aircraft, condition) dataset.
-  const aircraftEntry = data.byAircraft[input.aircraft];
-  if (!aircraftEntry) {
-    return error('DataNotAvailable', 'aircraft-not-implemented');
-  }
-  const dataset = aircraftEntry[input.runwayCondition];
-  if (!dataset) {
-    return error('DataNotAvailable', 'condition-not-implemented');
+  // Step 1: resolve the strategy for (aircraft, condition).
+  const resolution = resolveStrategy(input.aircraft, input.runwayCondition, data);
+  if (resolution.kind === 'no-lookup-data') {
+    return error('DataNotAvailable', resolution.reason);
   }
 
-  // (Note: operational-envelope validation is NOT performed here.
-  //  See `validateOperationalEnvelope` in the use-case layer.)
+  // Step 2: pure-function calculation inside the strategy.
+  //         (Operational-envelope validation is NOT performed here —
+  //          see `validateOperationalEnvelope` in the use-case layer.)
+  return resolution.strategy.calculate(input);
+}
+```
 
+### Strategy interface (shared across PR 5/6/7/8)
+
+```typescript
+// src/features/crosswind/domain/strategy.ts
+
+export interface CrosswindStrategy {
+  readonly type: StrategyType;  // discriminator
+  calculate(
+    input: CalculatorInput,
+  ): Result<CrosswindCalculationOutput, CrosswindCalculationError>;
+}
+```
+
+### `bracketedLinear` strategy (PR 1)
+
+```typescript
+// src/features/crosswind/domain/strategies/bracketed-linear.ts
+
+export function createBracketedLinearStrategy(
+  params: BracketedLinearParams,    // brackets[5], slope, maxCap, decimals
+  context: BracketedLinearContext,  // aircraft, dataVersion, referenceDocument, tonsToKilolbsFactor
+): CrosswindStrategy;
+```
+
+```typescript
+// псевдокод тела strategy.calculate (для понимания, не финальный код)
+
+function calculate(input) {
   // Step 1: convert weight to kilolbs
-  const weightKilolbs = input.weightTons * data.weightConversion.tonsToKilolbsFactor;
+  const weightKilolbs = input.weightTons * context.tonsToKilolbsFactor;
+  if (!Number.isFinite(weightKilolbs)) return error('NoLookupData', 'NotFinite');
 
-  // Step 2: compute thresholds for all breakpoints
-  // sorted by ascending threshold (== descending crosswind value)
-  const thresholds = dataset.interpolation.breakpoints.map(bp => ({
-    crosswind: bp.crosswindKnots,
-    threshold: dataset.interpolation.slope * weightKilolbs + bp.intercept,
+  // Step 2: compute thresholds for all brackets
+  const thresholds = params.brackets.map(b => ({
+    crosswind: b.crosswindKnots,
+    threshold: params.slope * weightKilolbs + b.intercept,
   }));
 
-  // Step 3: find lower and upper bounds
-  const lowerBound = thresholds.reduce(
-    (acc, x) => (x.threshold <= input.cgPercent && (!acc || x.threshold > acc.threshold)) ? x : acc,
-    null
-  );
-  const upperBound = thresholds.reduce(
-    (acc, x) => (x.threshold >= input.cgPercent && (!acc || x.threshold < acc.threshold)) ? x : acc,
-    null
-  );
+  // Step 3: find lower and upper bounds (XLOOKUP-equivalent)
+  const lowerBound = …largest threshold ≤ cg…
+  const upperBound = …smallest threshold ≥ cg…
 
-  // Step 4: apply formula or fallback
+  // Step 4: apply formula or IFNA fallback (= params.brackets[0].crosswindKnots)
   let result: number;
   let strategy: 'within-bracket' | 'below-envelope' | 'above-envelope';
 
   if (lowerBound === null) {
-    result = 40;
+    result = params.brackets[0].crosswindKnots;   // IFNA fallback
     strategy = 'below-envelope';
   } else if (upperBound === null) {
-    result = 40;            // Excel IFNA quirk
+    result = params.brackets[0].crosswindKnots;   // Excel IFNA quirk
     strategy = 'above-envelope';
   } else {
     const f7 = lowerBound.crosswind;
@@ -441,18 +472,17 @@ function calculateCrosswindLimit(input, data) {
     const e8 = upperBound.threshold;
     const e9 = (e8 - e7) / 5;
     const resultRaw = f7 - (input.cgPercent - e7) * e9;
-    result = Math.floor(resultRaw);
+    result = roundDown(resultRaw, params.decimals);  // ROUNDDOWN at params.decimals precision
     strategy = 'within-bracket';
   }
 
-  // Step 5: build metadata (incl. aircraft for traceability)
-  const metadata = buildMetadata(data, dataset, input.aircraft, lowerBound, upperBound, strategy);
+  // Step 4b: maxCap clamp (PR 2+ Dry: 37; PR 1: null = no-op)
+  if (params.maxCap !== null && result > params.maxCap) {
+    result = params.maxCap;
+  }
 
-  // Step 6: return
-  return ok({
-    maxCrosswindKnots: makeCrosswindKnots(result).unwrap(),
-    metadata,
-  });
+  // Step 5: build metadata, Step 6: return.
+  …
 }
 ```
 

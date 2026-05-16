@@ -1,26 +1,30 @@
 /**
  * zod schema for the bundled Crosswind reference-data file.
  *
- * Spec: 02_Specification/04-domain-model.md § "zod-схема валидации".
+ * Spec: 02_Specification/04-domain-model.md § "zod-схема валидации",
+ *       02_Specification/05-crosswind-algorithm.md § "Strategy variants".
  *
- * Shape (Block 2 / takeoff rebrand): a single per-phase file, with
- * lookup data nested under `byAircraft[aircraft][runwayCondition]`.
- * Aircraft entries that have no operational data simply omit the
- * corresponding key — the calculator surfaces this as
- * `DataNotAvailable` with reason `aircraft-not-implemented` /
- * `condition-not-implemented`.
+ * Shape (PR 1 / strategy refactor): per-(aircraft, runwayCondition)
+ * dataset carries a `strategyType` discriminator and a `params` object
+ * shaped per that strategy. PR 1 activates only the `bracketedLinear`
+ * branch — Dry data. Future PR 5/6/7/8 light up the remaining 4
+ * `strategyType` literals; their schemas are declared as stubs so the
+ * discriminator is exhaustive but they reject all current data.
  *
- * Two-stage validation: structural (zod) + business rules
- * (ascending intercepts, sorted breakpoints, envelope sanity, non-zero
- * slope, file/phase consistency). Both surface as `CorruptedDataBundle`.
+ * Two-stage validation: structural (zod) + business rules (ascending
+ * intercepts, sorted brackets, envelope sanity, non-zero slope,
+ * file/phase consistency). Both surface as `CorruptedDataBundle`.
  */
 
 import { z } from 'zod';
 
 const SCHEMA_VERSION_PATTERN = /^\d+\.\d+\.\d+$/;
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const BREAKPOINT_COUNT = 5;
+const BRACKET_COUNT = 5;
 const MAX_CROSSWIND_KT = 50;
+const MIN_CROSSWIND_KT = 0;
+const DECIMALS_INTEGER = 0;
+const DECIMALS_ONE = 1;
 
 const flightPhaseSchema = z.enum(['takeoff', 'landing']);
 const runwayConditionSchema = z.enum([
@@ -32,20 +36,45 @@ const runwayConditionSchema = z.enum([
   'poor',
 ]);
 
-const breakpointSchema = z.object({
-  crosswindKnots: z.number().int().min(0).max(MAX_CROSSWIND_KT),
+const bracketSchema = z.object({
+  crosswindKnots: z.number().int().min(MIN_CROSSWIND_KT).max(MAX_CROSSWIND_KT),
   intercept: z.number().finite(),
 });
 
-const interpolationSchema = z.object({
-  model: z.literal('piecewise-linear-excel-equivalent'),
+// --- Active strategy: bracketedLinear (PR 1) ---
+
+const bracketedLinearParamsSchema = z.object({
+  brackets: z.array(bracketSchema).length(BRACKET_COUNT),
   slope: z.number().finite(),
-  breakpoints: z.array(breakpointSchema).length(BREAKPOINT_COUNT),
+  maxCap: z.number().finite().nullable(),
+  decimals: z.union([z.literal(DECIMALS_INTEGER), z.literal(DECIMALS_ONE)]),
 });
 
-const fallbackSchema = z.object({
-  belowEnvelope: z.literal('max-crosswind-40'),
-  aboveEnvelope: z.literal('ifna-fallback-40-match-excel'),
+const bracketedLinearDatasetSchema = z.object({
+  strategyType: z.literal('bracketedLinear'),
+  params: bracketedLinearParamsSchema,
+});
+
+// --- Future strategies (PR 5/6/7/8): declared as stub branches that
+// reject all current data. These keep the discriminated union exhaustive
+// so adding new strategyType literals in future PRs is purely additive. ---
+
+const futureNeverParamsSchema = z.object({}).strict();
+const variableSlopeBracketedDatasetSchema = z.object({
+  strategyType: z.literal('variableSlopeBracketed'),
+  params: futureNeverParamsSchema,
+});
+const cgOnlyPiecewiseDatasetSchema = z.object({
+  strategyType: z.literal('cgOnlyPiecewise'),
+  params: futureNeverParamsSchema,
+});
+const constantDatasetSchema = z.object({
+  strategyType: z.literal('constant'),
+  params: futureNeverParamsSchema,
+});
+const notAllowedDatasetSchema = z.object({
+  strategyType: z.literal('notAllowed'),
+  params: futureNeverParamsSchema,
 });
 
 const datasetMetadataSchema = z.object({
@@ -55,13 +84,23 @@ const datasetMetadataSchema = z.object({
   notes: z.string(),
 });
 
-const datasetSchema = z.object({
-  interpolation: interpolationSchema,
-  fallback: fallbackSchema,
-  metadata: datasetMetadataSchema,
-});
+const strategyDiscriminatedSchema = z.discriminatedUnion('strategyType', [
+  bracketedLinearDatasetSchema,
+  variableSlopeBracketedDatasetSchema,
+  cgOnlyPiecewiseDatasetSchema,
+  constantDatasetSchema,
+  notAllowedDatasetSchema,
+]);
+
+const datasetSchema = z.intersection(
+  strategyDiscriminatedSchema,
+  z.object({ metadata: datasetMetadataSchema }),
+);
 
 export type CrosswindDataset = z.infer<typeof datasetSchema>;
+export type BracketedLinearDataset = z.infer<typeof bracketedLinearDatasetSchema> & {
+  readonly metadata: z.infer<typeof datasetMetadataSchema>;
+};
 
 const aircraftEntrySchema = z
   .object({
@@ -118,20 +157,35 @@ function checkEnvelope(data: CrosswindDataFile): string | null {
   return null;
 }
 
+function checkBracketedLinearIntegrity(
+  path: string,
+  dataset: BracketedLinearDataset,
+): string | null {
+  if (dataset.params.slope === 0) {
+    return `${path}.params.slope must be non-zero`;
+  }
+  if (!isCrosswindSortedDescending(dataset.params.brackets)) {
+    return `${path}.params.brackets: crosswindKnots must descend (40, 35, 30, 25, 20)`;
+  }
+  if (!isInterceptAscending(dataset.params.brackets)) {
+    return `${path}.params.brackets: intercept values must strictly ascend`;
+  }
+  return null;
+}
+
 function checkDatasetIntegrity(data: CrosswindDataFile): string | null {
   for (const [aircraftKey, entry] of Object.entries(data.byAircraft)) {
     if (entry === undefined) continue;
     for (const [conditionKey, dataset] of Object.entries(entry)) {
       if (dataset === undefined) continue;
-      if (dataset.interpolation.slope === 0) {
-        return `byAircraft.${aircraftKey}.${conditionKey}.interpolation.slope must be non-zero`;
+      const path = `byAircraft.${aircraftKey}.${conditionKey}`;
+      if (dataset.strategyType === 'bracketedLinear') {
+        const violation = checkBracketedLinearIntegrity(path, dataset);
+        if (violation !== null) return violation;
       }
-      if (!isCrosswindSortedDescending(dataset.interpolation.breakpoints)) {
-        return `byAircraft.${aircraftKey}.${conditionKey}.interpolation.breakpoints: crosswindKnots must descend (40, 35, 30, 25, 20)`;
-      }
-      if (!isInterceptAscending(dataset.interpolation.breakpoints)) {
-        return `byAircraft.${aircraftKey}.${conditionKey}.interpolation.breakpoints: intercept values must strictly ascend`;
-      }
+      // Future strategies will gain their own integrity checks when
+      // PR 5/6/7/8 light them up; for now the schema rejects them at
+      // parse-time so we cannot reach here.
     }
   }
   return null;
@@ -157,11 +211,11 @@ export function checkBusinessRules(
 }
 
 function isCrosswindSortedDescending(
-  breakpoints: readonly { readonly crosswindKnots: number }[],
+  brackets: readonly { readonly crosswindKnots: number }[],
 ): boolean {
-  for (let i = 1; i < breakpoints.length; i += 1) {
-    const prev = breakpoints[i - 1];
-    const curr = breakpoints[i];
+  for (let i = 1; i < brackets.length; i += 1) {
+    const prev = brackets[i - 1];
+    const curr = brackets[i];
     if (prev === undefined || curr === undefined) {
       return false;
     }
@@ -172,10 +226,10 @@ function isCrosswindSortedDescending(
   return true;
 }
 
-function isInterceptAscending(breakpoints: readonly { readonly intercept: number }[]): boolean {
-  for (let i = 1; i < breakpoints.length; i += 1) {
-    const prev = breakpoints[i - 1];
-    const curr = breakpoints[i];
+function isInterceptAscending(brackets: readonly { readonly intercept: number }[]): boolean {
+  for (let i = 1; i < brackets.length; i += 1) {
+    const prev = brackets[i - 1];
+    const curr = brackets[i];
     if (prev === undefined || curr === undefined) {
       return false;
     }

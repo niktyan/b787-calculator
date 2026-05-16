@@ -23,20 +23,24 @@ src/features/crosswind/
 ├── domain/
 │   ├── types.ts                     — domain-типы (Aircraft, RunwayCondition RWYCC scale, RWYCC mapping)
 │   ├── valueObjects.ts              — Value Objects (WeightInTons, CGPercentMAC, CrosswindKnots)
-│   ├── calculator.ts                — чистая функция расчёта (calculateCrosswindLimit + alias calculateMaxCrosswindTakeoff)
-│   ├── strategies.ts                — implementation для 'piecewise-linear-excel-equivalent'
+│   ├── calculator.ts                — тонкая оркестрация (calculateCrosswindLimit + alias calculateMaxCrosswindTakeoff)
+│   ├── strategy.ts                  — CrosswindStrategy interface, StrategyType union, *Params shapes
+│   ├── strategy-resolver.ts         — resolveStrategy(aircraft, condition, data) → StrategyResolution
+│   ├── strategies/
+│   │   └── bracketed-linear.ts      — `bracketedLinear` strategy implementation (Dry / PR 1)
 │   └── validators.ts                — validateAlgorithmInput + validateOperationalEnvelope
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
-│   ├── schema.ts                    — zod-схема (byAircraft / dataset shape)
+│   ├── schema.ts                    — zod-схема (byAircraft / strategy discriminated union)
 │   └── b787-takeoff.json            — bundled lookup data (see 04-domain-model.md)
 ├── __tests__/
-│   ├── calculator.test.ts           — тест-таблица из 05-crosswind-algorithm.md
+│   ├── calculator.test.ts                  — тест-таблица из 05-crosswind-algorithm.md
+│   ├── bracketed-linear-strategy.test.ts   — direct unit tests for `bracketedLinear`
 │   ├── validators.test.ts
 │   ├── edgeCases.test.ts
 │   ├── repository.test.ts
-│   └── acceptance.test.ts           — end-to-end тесты модуля
-└── index.ts                         — barrel
+│   └── acceptance.test.ts                  — end-to-end тесты модуля
+└── index.ts                                — barrel
 ```
 
 **Примечание про расположение JSON-данных.** Bundled JSON-файл живёт
@@ -66,8 +70,39 @@ export type {
 
 // Pure calculation function. `calculateMaxCrosswindTakeoff` is a
 // spec-named alias of `calculateCrosswindLimit` — same signature, same
-// behaviour, documents intent at takeoff call sites.
+// behaviour, documents intent at takeoff call sites. Internally a thin
+// orchestrator: validateAlgorithmInput → resolveStrategy → strategy.calculate.
 export { calculateCrosswindLimit, calculateMaxCrosswindTakeoff } from './domain';
+
+// Strategy pattern surface (Phase D PR 1 — see ADR-0010).
+//
+//   CrosswindStrategy        — interface { type, calculate(input) }.
+//   STRATEGY_TYPES           — 5-literal const array (active: bracketedLinear;
+//                               future: variableSlope.../cgOnly.../constant/notAllowed).
+//   BracketedLinearParams    — full params shape for the active strategy.
+//   StrategyResolution       — { kind: 'strategy', strategy } | NoLookupData.
+export type {
+  BracketedLinearBracket,
+  BracketedLinearParams,
+  CalculatorInput,
+  CrosswindStrategy,
+  NoLookupData,
+  StrategyResolution,
+  StrategyType,
+} from './domain';
+export { STRATEGY_TYPES, createBracketedLinearStrategy, resolveStrategy } from './domain';
+//
+// signatures:
+//   function resolveStrategy(
+//     aircraft: Aircraft,
+//     condition: RunwayCondition,
+//     data: CrosswindDataFile,
+//   ): StrategyResolution;
+//
+//   function createBracketedLinearStrategy(
+//     params: BracketedLinearParams,
+//     context: BracketedLinearContext,  // aircraft, dataVersion, referenceDocument, tonsToKilolbsFactor
+//   ): CrosswindStrategy;
 
 // Use-case validation (operational envelope — отдельно от lookup
 // envelope). См. 04-domain-model.md "Two distinct envelope concepts".
@@ -103,7 +138,11 @@ export type { CrosswindRepository } from './data';
 Что НЕ экспортируется:
 - Внутренние компоненты презентации (InputForm, Result, SourceChip).
 - View-model хук (`useCrosswindCalculator`) — он используется только внутри `CrosswindScreen`.
-- Внутренние strategies, validators, schema.
+- Внутренние validators, schema.
+- Future-strategy params (`VariableSlopeBracketedParams`, `CGOnlyPiecewiseParams`,
+  `ConstantParams`, `NotAllowedParams`) — type-only stubs внутри `domain/strategy.ts`,
+  не экспортируются на уровне модуля. PR 5/6/7/8 поднимут их в публичный API
+  одновременно со своими реализациями.
 - Любые приватные типы и функции.
 
 ## Dependencies
@@ -175,12 +214,12 @@ export type { CrosswindRepository } from './data';
 
 Модуль спроектирован с явной поддержкой эволюции (см. `05-crosswind-algorithm.md`, раздел «Стратегия эволюции алгоритма»). Уровни изменений:
 
-- **Уровень 1** (значения) — только JSON, код не трогается.
-- **Уровень 2** (количество breakpoints) — изменение JSON + zod-схема. Алгоритм работает с любым количеством.
-- **Уровень 3** (interpolation model) — strategy pattern, новая чистая функция в `domain/strategies.ts`. Старые остаются для backward compatibility.
-- **Уровень 4** (структура данных) — major schema bump, новый формат JSON, новая ветка алгоритма. Старая поддерживается до полной миграции.
+- **Уровень 1** (значения) — только JSON (`params.slope`, `params.brackets`, `params.maxCap`, `params.decimals`), код не трогается. `dataVersion` инкрементируется.
+- **Уровень 2** (количество brackets) — изменение JSON + zod (`.length(5)` → `.min(2)`). Алгоритм работает с любым количеством.
+- **Уровень 3** (новая стратегия) — добавляется новая ветка в `StrategyType` union + zod discriminated union + новая чистая функция в `domain/strategies/<name>.ts` + ветка в `resolveStrategy`. Старые стратегии не трогаются (backward compatibility).
+- **Уровень 4** (структура данных) — major schema bump, новый формат JSON. Resolver делает switch на `schemaVersion` (если потребуется).
 
-Strategy dispatcher уже имплементирован с MVP. Это значит, что добавить новую strategy = добавить функцию + ветку в switch.
+Strategy dispatcher имплементирован с PR 1 (см. ADR-0010). Это значит, что добавить новую strategy = (1) описать TS-тип params в `domain/strategy.ts`, (2) добавить zod-схему её params в `data/schema.ts`, (3) реализовать `createXStrategy(params, context)` в `domain/strategies/`, (4) подключить ветку в `resolveStrategy`. Существующий код Dry-стратегии не трогается.
 
 ### Takeoff rebrand structural change (Block 2 of feat/crosswind-takeoff-rebrand)
 
@@ -201,6 +240,37 @@ Public API изменения:
   `EnvelopePositionBar`.
 
 `validateOperationalEnvelope` неизменён.
+
+### Strategy refactor (PR 1 of feat/crosswind-strategy-refactor)
+
+Алгоритм crosswind переехал с monolithic `calculateExcelEquivalent` на
+strategy pattern (см. ADR-0010). `schemaVersion 2.0.0 → 2.1.0`
+(additive, не major: тот же production output, новый дискриминатор в
+JSON). `dataVersion` пересчитан до `2026-05-17.001`.
+
+Изменения шейпа bundled JSON для каждого `byAircraft[*][*]` dataset:
+- Удалены: `interpolation: { model, slope, breakpoints }` и
+  `fallback: { belowEnvelope, aboveEnvelope }`.
+- Добавлены: `strategyType: 'bracketedLinear'` (дискриминатор) и
+  `params: { brackets[5], slope, maxCap: number | null, decimals: 0 | 1 }`.
+  Поле `breakpoints` переименовано в `brackets` (без изменения содержимого).
+- IFNA-fallback derive-ится из `brackets[0].crosswindKnots` (для Dry — 40).
+
+Public API additions:
+- `CrosswindStrategy` interface, `StrategyType` union, `STRATEGY_TYPES`
+  runtime const array.
+- `BracketedLinearParams`, `BracketedLinearBracket`, `BracketedLinearContext`,
+  `CalculatorInput`, `NoLookupData`, `StrategyResolution`.
+- `createBracketedLinearStrategy(params, context)`,
+  `resolveStrategy(aircraft, condition, data)`.
+
+Future-strategy params (`VariableSlopeBracketedParams`,
+`CGOnlyPiecewiseParams`, `ConstantParams`, `NotAllowedParams`)
+объявлены как type-only stubs внутри domain — не экспортируются на
+уровне модуля, поднимутся в публичный API соответствующими PR 5/6/7/8.
+
+Поведение для Dry — bit-for-bit unchanged: все 50+ test cases в
+`calculator.test.ts` проходят без модификаций.
 
 ## Открытые вопросы
 

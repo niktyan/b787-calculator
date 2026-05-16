@@ -14,9 +14,12 @@ import bundled from '../data/b787-takeoff.json';
 type Mutator = (raw: Record<string, unknown>) => Record<string, unknown>;
 
 interface DatasetShape {
-  readonly interpolation: {
+  strategyType: string;
+  readonly params: {
     slope: number;
-    breakpoints: { readonly crosswindKnots: number; readonly intercept: number }[];
+    brackets: { readonly crosswindKnots: number; readonly intercept: number }[];
+    maxCap: number | null;
+    decimals: 0 | 1;
   };
 }
 
@@ -39,10 +42,10 @@ function dryDataset(raw: Record<string, unknown>): DatasetShape {
 }
 
 describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
-  it('case 5.01: breakpoints.length !== 5 → CorruptedDataBundle', () => {
+  it('case 5.01: brackets.length !== 5 → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
       const ds = dryDataset(raw);
-      ds.interpolation.breakpoints = ds.interpolation.breakpoints.slice(0, 4);
+      ds.params.brackets = ds.params.brackets.slice(0, 4);
       return raw;
     });
     const repo = createCrosswindRepository({ raw: corrupted });
@@ -57,7 +60,7 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
   it('case 5.02: slope === 0 → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
       const ds = dryDataset(raw);
-      ds.interpolation.slope = 0;
+      ds.params.slope = 0;
       return raw;
     });
     const repo = createCrosswindRepository({ raw: corrupted });
@@ -73,7 +76,7 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
   it('case 5.04: non-ascending intercepts → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
       const ds = dryDataset(raw);
-      ds.interpolation.breakpoints = [
+      ds.params.brackets = [
         { crosswindKnots: 40, intercept: 6.1 },
         { crosswindKnots: 35, intercept: 5.0 },
         { crosswindKnots: 30, intercept: 12.8 },
@@ -149,7 +152,7 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
   it('non-descending crosswindKnots → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
       const ds = dryDataset(raw);
-      ds.interpolation.breakpoints = [
+      ds.params.brackets = [
         { crosswindKnots: 20, intercept: 6.1 },
         { crosswindKnots: 25, intercept: 9.3 },
         { crosswindKnots: 30, intercept: 12.8 },

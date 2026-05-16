@@ -1,13 +1,15 @@
 /**
  * Public calculator API for the Crosswind module.
  *
- * Looks up the per-(aircraft, runwayCondition) dataset inside
- * `data.byAircraft` and dispatches to the strategy named in the
- * dataset's `interpolation.model`. In MVP only `b787_8 / dry` is
- * populated; everything else surfaces as `DataNotAvailable` with an
- * explanatory `reason`.
+ * Thin orchestration only:
+ *   • Step 0 — `validateAlgorithmInput` (NaN/Infinity/phase mismatch).
+ *   • Step 1 — `resolveStrategy` looks up the per-(aircraft, condition)
+ *     dataset and constructs the appropriate `CrosswindStrategy`, or
+ *     returns `NoLookupData` for missing combos.
+ *   • Step 2 — `strategy.calculate(input)`.
  *
- * Spec: 02_Specification/05-crosswind-algorithm.md.
+ * Spec: 02_Specification/05-crosswind-algorithm.md (algorithm dispatch),
+ *       02_Specification/module-contracts/crosswind.md (Public API).
  */
 
 import { err } from '../../../core/result';
@@ -15,25 +17,12 @@ import type { Result } from '../../../core/result';
 
 import type { CrosswindDataFile } from '../data/schema';
 
-import { calculateExcelEquivalent } from './strategies';
-import type {
-  AircraftVariant,
-  CGPercentMAC,
-  CrosswindCalculationError,
-  CrosswindCalculationOutput,
-  FlightPhase,
-  RunwayCondition,
-  WeightInTons,
-} from './types';
+import { resolveStrategy } from './strategy-resolver';
+import type { CalculatorInput } from './strategy';
+import type { CrosswindCalculationError, CrosswindCalculationOutput } from './types';
 import { validateAlgorithmInput } from './validators';
 
-export interface CalculatorInput {
-  readonly weightTons: WeightInTons;
-  readonly cgPercent: CGPercentMAC;
-  readonly aircraft: AircraftVariant;
-  readonly phase: FlightPhase;
-  readonly runwayCondition: RunwayCondition;
-}
+export type { CalculatorInput } from './strategy';
 
 export function calculateCrosswindLimit(
   input: CalculatorInput,
@@ -44,43 +33,17 @@ export function calculateCrosswindLimit(
     return validation;
   }
 
-  const aircraftEntry = data.byAircraft[input.aircraft];
-  if (aircraftEntry === undefined) {
+  const resolution = resolveStrategy(input.aircraft, input.runwayCondition, data);
+  if (resolution.kind === 'no-lookup-data') {
     return err({
       kind: 'DataNotAvailable',
       aircraft: input.aircraft,
       condition: input.runwayCondition,
-      reason: 'aircraft-not-implemented',
-    });
-  }
-  const dataset = aircraftEntry[input.runwayCondition];
-  if (dataset === undefined) {
-    return err({
-      kind: 'DataNotAvailable',
-      aircraft: input.aircraft,
-      condition: input.runwayCondition,
-      reason: 'condition-not-implemented',
+      reason: resolution.reason,
     });
   }
 
-  if (dataset.interpolation.model === 'piecewise-linear-excel-equivalent') {
-    return calculateExcelEquivalent(
-      { weightTons: input.weightTons, cgPercent: input.cgPercent },
-      {
-        slope: dataset.interpolation.slope,
-        breakpoints: dataset.interpolation.breakpoints,
-        tonsToKilolbsFactor: data.weightConversion.tonsToKilolbsFactor,
-        dataVersion: data.dataVersion,
-        referenceDocument: dataset.metadata.referenceDocument,
-        aircraft: input.aircraft,
-      },
-    );
-  }
-
-  return err({
-    kind: 'CalculationFailed',
-    reason: `Unknown interpolation model`,
-  });
+  return resolution.strategy.calculate(input);
 }
 
 /**
