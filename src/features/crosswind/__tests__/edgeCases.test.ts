@@ -8,7 +8,7 @@
  */
 
 import { calculateCrosswindLimit } from '../domain/calculator';
-import { calculateExcelEquivalent } from '../domain/strategies';
+import { createBracketedLinearStrategy } from '../domain/strategies/bracketed-linear';
 import { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from '../domain/types';
 import type { CGPercentMAC, WeightInTons } from '../domain/types';
 import { validateAlgorithmInput } from '../domain/validators';
@@ -16,6 +16,13 @@ import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import bundled from '../data/b787-takeoff.json';
 import { crosswindDataFileSchema } from '../data/schema';
 import type { CrosswindDataFile } from '../data/schema';
+
+const SYNTHETIC_CONTEXT = {
+  aircraft: 'b787_8' as const,
+  dataVersion: 'test',
+  referenceDocument: 'test',
+  tonsToKilolbsFactor: 2.20462,
+};
 
 const data: CrosswindDataFile = crosswindDataFileSchema.parse(bundled);
 
@@ -29,7 +36,7 @@ function vo(weight: number, cg: number): { readonly w: WeightInTons; readonly cg
 }
 
 describe('Calculator edge cases', () => {
-  it('returns CalculationFailed for an unknown strategyType (future-PR fall-through)', () => {
+  it('returns DataNotAvailable.condition-not-implemented for an unimplemented strategyType (future-PR fall-through)', () => {
     const corruptedData = JSON.parse(JSON.stringify(data)) as CrosswindDataFile;
     const aircraftEntry = corruptedData.byAircraft.b787_8;
     if (aircraftEntry === undefined) {
@@ -55,50 +62,45 @@ describe('Calculator edge cases', () => {
     if (r.ok) {
       throw new Error('expected error');
     }
-    expect(r.error.kind).toBe('CalculationFailed');
+    expect(r.error.kind).toBe('DataNotAvailable');
+    if (r.error.kind !== 'DataNotAvailable') {
+      throw new Error('expected DataNotAvailable');
+    }
+    expect(r.error.reason).toBe('condition-not-implemented');
   });
 });
 
-describe('Strategy edge cases', () => {
-  it('returns CalculationFailed for empty breakpoints array', () => {
-    const { w, cg } = vo(170, 32);
-    const r = calculateExcelEquivalent(
-      { weightTons: w, cgPercent: cg },
-      {
-        slope: 0.0576,
-        breakpoints: [],
-        tonsToKilolbsFactor: 2.20462,
-        dataVersion: 'test',
-        referenceDocument: 'test',
-        aircraft: 'b787_8',
-      },
-    );
-    expect(r.ok).toBe(false);
-    if (r.ok) {
-      throw new Error('expected error');
-    }
-    expect(r.error.kind).toBe('CalculationFailed');
-  });
+describe('Strategy edge cases — bracket labels beyond demonstrated 40 KT', () => {
+  // These guard against corrupted lookup data where a bracket label
+  // exceeds the 40-KT demonstrated maximum. `makeCrosswindKnots` rejects
+  // values above 40, so the strategy must surface CalculationFailed
+  // rather than silently returning the bogus number. Both
+  // `bracketed-linear-strategy.test.ts` and `repository.test.ts` cover
+  // the well-formed-but-invalid paths; this block exercises strategy
+  // construction with deliberately-out-of-bounds synthetic params.
 
-  it('returns CalculationFailed when computed value > demonstrated 40', () => {
-    const { w } = vo(170, 32);
-    const r = calculateExcelEquivalent(
-      { weightTons: w, cgPercent: 27.7 as CGPercentMAC },
+  it('CalculationFailed when computed value > 40 (bracket label 50 used as F7)', () => {
+    const r = createBracketedLinearStrategy(
       {
         slope: 0.0576,
-        breakpoints: [
+        brackets: [
           { crosswindKnots: 50, intercept: 6.1 },
           { crosswindKnots: 35, intercept: 9.3 },
           { crosswindKnots: 30, intercept: 12.8 },
           { crosswindKnots: 25, intercept: 16.3 },
           { crosswindKnots: 20, intercept: 19.8 },
         ],
-        tonsToKilolbsFactor: 2.20462,
-        dataVersion: 'test',
-        referenceDocument: 'test',
-        aircraft: 'b787_8',
+        maxCap: null,
+        decimals: 0,
       },
-    );
+      SYNTHETIC_CONTEXT,
+    ).calculate({
+      weightTons: 170 as WeightInTons,
+      cgPercent: 27.7 as CGPercentMAC,
+      aircraft: 'b787_8',
+      phase: 'takeoff',
+      runwayCondition: 'dry',
+    });
     expect(r.ok).toBe(false);
     if (r.ok) {
       throw new Error('expected error');
@@ -106,57 +108,33 @@ describe('Strategy edge cases', () => {
     expect(r.error.kind).toBe('CalculationFailed');
   });
 
-  it('returns CalculationFailed when bracket-label crosswind > 40 even though value ≤ 40', () => {
-    const { w } = vo(170, 32);
-    const r = calculateExcelEquivalent(
-      { weightTons: w, cgPercent: 30 as CGPercentMAC },
+  it('CalculationFailed when bracket-label crosswind > 40 even though value ≤ 40', () => {
+    const r = createBracketedLinearStrategy(
       {
         slope: 0.0576,
-        breakpoints: [
+        brackets: [
           { crosswindKnots: 50, intercept: 6.1 },
           { crosswindKnots: 35, intercept: 26.1 },
           { crosswindKnots: 30, intercept: 27 },
           { crosswindKnots: 25, intercept: 28 },
           { crosswindKnots: 20, intercept: 29 },
         ],
-        tonsToKilolbsFactor: 2.20462,
-        dataVersion: 'test',
-        referenceDocument: 'test',
-        aircraft: 'b787_8',
+        maxCap: null,
+        decimals: 0,
       },
-    );
+      SYNTHETIC_CONTEXT,
+    ).calculate({
+      weightTons: 170 as WeightInTons,
+      cgPercent: 30 as CGPercentMAC,
+      aircraft: 'b787_8',
+      phase: 'takeoff',
+      runwayCondition: 'dry',
+    });
     expect(r.ok).toBe(false);
     if (r.ok) {
       throw new Error('expected error');
     }
     expect(r.error.kind).toBe('CalculationFailed');
-  });
-
-  it('returns NoLookupData when weight × factor overflows to Infinity', () => {
-    const dataset = data.byAircraft.b787_8?.dry;
-    if (dataset === undefined) {
-      throw new Error('expected dry dataset');
-    }
-    if (dataset.strategyType !== 'bracketedLinear') {
-      throw new Error('expected bracketedLinear');
-    }
-    const w = Number.MAX_VALUE as WeightInTons;
-    const r = calculateExcelEquivalent(
-      { weightTons: w, cgPercent: 32 as CGPercentMAC },
-      {
-        slope: 0.0576,
-        breakpoints: dataset.params.brackets,
-        tonsToKilolbsFactor: 2.20462,
-        dataVersion: 'test',
-        referenceDocument: 'test',
-        aircraft: 'b787_8',
-      },
-    );
-    expect(r.ok).toBe(false);
-    if (r.ok) {
-      throw new Error('expected error');
-    }
-    expect(r.error.kind).toBe('NoLookupData');
   });
 });
 
