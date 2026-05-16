@@ -40,3 +40,4 @@ ADR не нужен для:
 | 0007 | Adopt react-native-svg for crosswind visualization | Accepted |
 | 0008 | Dependabot major-bump policy for SDK-coordinated packages | Accepted |
 | 0009 | Light-theme accent text contrast — split `accent` into `accent` + `accentText` | Accepted |
+| 0010 | Crosswind algorithm — Strategy pattern foundation | Accepted |

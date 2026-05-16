@@ -40,3 +40,8 @@ export type {
   StrategyType,
 } from './strategy';
 export { STRATEGY_TYPES } from './strategy';
+
+export { resolveStrategy } from './strategy-resolver';
+
+export { createBracketedLinearStrategy } from './strategies/bracketed-linear';
+export type { BracketedLinearContext } from './strategies/bracketed-linear';
