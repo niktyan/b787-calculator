@@ -151,6 +151,24 @@ describe('Crosswind route', () => {
     expect(segment.props.accessibilityState.disabled).toBe(false);
   });
 
+  it('Medium runway selection: W=182, CG=20 → 23.9 KT (PR 5 anchor, 1-decimal precision)', () => {
+    const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
+    fireEvent.press(getByTestId('crosswind-runway-medium'));
+    fireEvent.changeText(getByTestId('crosswind-weight-input'), '182');
+    fireEvent.changeText(getByTestId('crosswind-cg-input'), '20');
+    // First condition shipping with decimals=1 — the rendered string
+    // must include the fractional digit ("23.9", not "23" or "24").
+    // Verifies both the strategy correctness AND the ResultPanel's
+    // String(value) coercion preserving sub-integer precision.
+    expect(getByText('23.9')).toBeTruthy();
+  });
+
+  it('Medium runway segment is enabled (was disabled in MVP pre-PR 5)', () => {
+    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
+    const segment = getByTestId('crosswind-runway-medium');
+    expect(segment.props.accessibilityState.disabled).toBe(false);
+  });
+
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
     // W=95 t — below operational minimum of 110, but algorithm still yields a number.
