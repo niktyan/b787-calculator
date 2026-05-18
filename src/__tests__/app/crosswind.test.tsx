@@ -134,6 +134,23 @@ describe('Crosswind route', () => {
     expect(goodSegment.props.accessibilityState.disabled).toBe(false);
   });
 
+  it('MediumToGood runway selection: W=175, CG=24 → 30 KT (PR 4 anchor)', () => {
+    const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
+    fireEvent.press(getByTestId('crosswind-runway-mediumToGood'));
+    fireEvent.changeText(getByTestId('crosswind-weight-input'), '175');
+    fireEvent.changeText(getByTestId('crosswind-cg-input'), '24');
+    // Anchor expectation per Excel "Medium to Good 788" sheet G7:
+    // raw 30.0213 in bracket [T1=19.02, T2=24.02] → ROUNDDOWN 30.
+    // maxCap=null → no clamp.
+    expect(getByText('30')).toBeTruthy();
+  });
+
+  it('MediumToGood runway segment is enabled (was disabled in MVP pre-PR 4)', () => {
+    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
+    const segment = getByTestId('crosswind-runway-mediumToGood');
+    expect(segment.props.accessibilityState.disabled).toBe(false);
+  });
+
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
     // W=95 t — below operational minimum of 110, but algorithm still yields a number.
