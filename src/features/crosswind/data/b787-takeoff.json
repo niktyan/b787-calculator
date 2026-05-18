@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.2.0",
-  "dataVersion": "2026-05-19.005",
+  "dataVersion": "2026-05-19.006",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": {
@@ -114,6 +114,18 @@
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "RWYCC 2 (Medium to Poor) advisory limits per Excel 'Medium to Poor 788' sheet. First condition backed by cgOnlyPiecewiseStrategy — single conditional formula, NO weight dependency. Plateau of 15 KT for CG ≤ 30 %MAC; linear decrease 1 KT per 1.9 %MAC above threshold. Same CG yields same output regardless of weight."
+        }
+      },
+      "poor": {
+        "strategyType": "constant",
+        "params": {
+          "value": 10
+        },
+        "metadata": {
+          "createdAt": "2026-05-19",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 1 (Poor) advisory limit per Excel 'Poor 788' sheet G7 (literal value 10). First condition backed by constantStrategy — output is a single constant regardless of weight, CG, or any other input. Conservative simplification of FCOM RWYCC 1 row (which shows alternating 15/10 pattern) per Q5 user decision: Excel uses the 10 lower-bound uniformly."
         }
       }
     }

@@ -46,7 +46,11 @@ describe('Calculator edge cases', () => {
     if (dataset === undefined) {
       throw new Error('expected dry dataset');
     }
-    (dataset as { strategyType: string }).strategyType = 'constant';
+    // 'notAllowed' is the only remaining unimplemented strategyType
+    // after PR 7 — 'constant' was promoted to active. PR 8 will
+    // implement notAllowed; this test will then need to repurpose
+    // its sentinel or be retired.
+    (dataset as { strategyType: string }).strategyType = 'notAllowed';
     const { w, cg } = vo(170, 32);
     const r = calculateCrosswindLimit(
       {
