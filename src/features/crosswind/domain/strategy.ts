@@ -97,13 +97,31 @@ export interface VariableSlopeBracketedParams {
 }
 
 /**
- * Future PR 6 — MediumToPoor (RWYCC 2).
- * Piecewise-linear in CG with no weight dependence.
+ * PR 6 — MediumToPoor (RWYCC 2). Active in PR 6.
+ *
+ * Plateau-then-linear-decreasing in CG, weight-independent. Excel
+ * formula in "Medium to Poor 788" sheet G7:
+ *     ROUNDDOWN(IF(B5 >= cgThreshold,
+ *                  plateauValue - (B5 - cgThreshold) / slopeDivisor,
+ *                  plateauValue),
+ *               decimals)
+ *
+ * Shape redefined from the PR 1 speculative `points[]` stub to match
+ * the actual Excel formula. The earlier shape was never validated by
+ * zod (futureNeverParamsSchema rejected it) and had zero consumers,
+ * so this is a safe stub redefinition rather than a breaking API
+ * change.
  */
 export interface CGOnlyPiecewiseParams {
-  readonly points: readonly { readonly cgPercent: number; readonly crosswindKnots: number }[];
-  readonly maxCap: number | null;
-  readonly decimals: 0 | 1;
+  readonly plateauValue: number; // KT at-or-below cgThreshold (15 for MediumToPoor)
+  readonly cgThreshold: number; // %MAC at which decrease begins (30)
+  readonly slopeDivisor: number; // %MAC per KT decrease above threshold (1.9)
+  readonly decimals: 0 | 1; // ROUNDDOWN precision (1 for MediumToPoor)
+  // Note: no maxCap. Output is self-capped at plateauValue (max) and
+  // may go negative for very-out-of-envelope CG. Negative outputs are
+  // rejected by `makeCrosswindKnots` at the strategy boundary,
+  // surfacing as `CalculationFailed` — the correct fail-safe signal
+  // for inputs deep beyond the operational envelope.
 }
 
 /**

@@ -32,7 +32,7 @@ variants»):
 |------|---------------|--------|
 | `bracketedLinear` | Dry (RWYCC 6), Good (RWYCC 5), MediumToGood (RWYCC 4) | **Active** — описан ниже |
 | `variableSlopeBracketed` | Medium (RWYCC 3) | **Active** (PR 5) — описан ниже |
-| `cgOnlyPiecewise` | MediumToPoor (RWYCC 2) | Stub (PR 6) |
+| `cgOnlyPiecewise` | MediumToPoor (RWYCC 2) | **Active** (PR 6) — описан ниже |
 | `constant` | Poor (RWYCC 1) | Stub (PR 7) |
 | `notAllowed` | RWYCC 0 | Stub (PR 8) |
 
@@ -307,6 +307,160 @@ Total: 14+11+8+6 = **39 case** для Medium; плюс standalone anchor,
 ordering (Dry 37 ≥ Good 33 ≥ MediumToGood 23 ≥ Medium 18.1 at
 W=170/CG=30) и metadata sanity. Файл:
 `src/features/crosswind/__tests__/medium.test.ts`.
+
+---
+
+## CGOnlyPiecewiseStrategy (PR 6)
+
+Третья активная strategy, **простейшая из всех**: single conditional
+formula, без брекетов, без weight dependency, без XLOOKUP, без IFNA.
+Только CG влияет на результат.
+
+### Алгоритм
+
+Шаг 0 (валидация data-availability) идентичен другим стратегиям.
+Шаг 1 (конвертация веса в kilolbs) **отсутствует** — strategy не
+использует вес.
+
+**Шаг 2.** Conditional formula per Excel "Medium to Poor 788" sheet G7:
+
+```
+if (cg < cgThreshold):
+  raw = plateauValue                                  // плато
+else:
+  raw = plateauValue − (cg − cgThreshold) / slopeDivisor   // linear decrease
+```
+
+**Шаг 3.** ROUNDDOWN(raw, decimals).
+
+**Шаг 4.** Валидация результата через `makeCrosswindKnots`:
+- raw ≥ 0 → ok.
+- raw < 0 (для очень большого CG, deep beyond envelope) → reject
+  через `CrosswindError.Negative` → `Result.error({ kind: 'CalculationFailed' })`.
+
+**Шаг 5/6.** Metadata / return.
+
+### Отличия от прочих стратегий
+
+| Аспект | bracketedLinear | variableSlopeBracketed | cgOnlyPiecewise |
+|--------|-----------------|------------------------|------------------|
+| Brackets | Sorted array | Sorted array | None — single conditional |
+| XLOOKUP / IFNA | Yes | Yes | No (formula total) |
+| Weight dependency | `slope · W + intercept` | `slope_i · W + intercept_i` | **None — weight ignored** |
+| maxCap | Optional | Optional | None (self-caps at plateau) |
+| Декимали | 0 \| 1 | 0 \| 1 | 0 \| 1 |
+| Active for | Dry, Good, MediumToGood | Medium | MediumToPoor |
+
+**Weight independence** — defining property. Same CG produces the
+same output regardless of weight (`input.weightTons` is accepted
+for interface uniformity but unused).
+
+### Out-of-envelope negative output (Recommendation A1)
+
+Для очень больших CG (~58.5 %MAC и выше для MediumToPoor) формула
+производит отрицательный raw. Excel-faithful: not floored at zero.
+
+`makeCrosswindKnots` отвергает negative → strategy returns
+`CalculationFailed`. UI fail-safe экран показывает "Calculation
+unavailable" — корректный сигнал для inputs deep beyond operational
+envelope. До того, как формула уходит в отрицательную зону,
+`validateOperationalEnvelope` уже даёт warning chip (CG > 35).
+
+Альтернативы (clamp at 0, return out-of-envelope status) рассмотрены
+и отклонены — A1 maintains Excel parity и ясно сигнализирует
+непригодность результата.
+
+### MediumToPoor (`byAircraft.b787_8.mediumToPoor`, RWYCC 2)
+
+Params per Excel "Medium to Poor 788" sheet:
+
+| Константа | Значение | Комментарий |
+|-----------|----------|-------------|
+| plateauValue | `15` KT | Max output (CG ≤ threshold) |
+| cgThreshold | `30` %MAC | Начало decreasing-ветки |
+| slopeDivisor | `1.9` %MAC / KT | Уклон: 1 KT падения на 1.9 %MAC роста CG |
+| decimals | `1` | ROUNDDOWN precision (как у Medium) |
+| maxCap | — | Нет (formula self-caps at plateau) |
+
+**Observable output range:** `[0+, 15]` KT (positive). Для CG > ~58.5
+strategy returns `CalculationFailed` (negative raw rejected).
+
+`calculationStrategy` enum reuse:
+- CG < threshold (плато) → `'below-envelope'` (semantic stretch).
+- CG ≥ threshold (decreasing) → `'within-bracket'` (semantic stretch).
+- Above-envelope branch недостижим — strategy всегда либо even or
+  exceeds, или CalculationFailed.
+
+User direction для PR 6: enum union **не расширяется**; pre-Sprint-5
+C4-decision концерн. Если labels окажутся misleading в долгосрочной
+перспективе, future cleanup PR может добавить `'piecewise-plateau'`
+/ `'piecewise-decreasing'` values.
+
+### Test set #9 · MediumToPoor (RWYCC 2)
+
+Все cases фиксируют `aircraft: 'b787_8'`, `phase: 'takeoff'`,
+`runwayCondition: 'mediumToPoor'`.
+
+Excel-verified anchor: **W=182 t, CG=32 %MAC → 13.9 KT** (sheet G7).
+Computation: CG=32 ≥ 30 → decreasing branch; raw = 15 − (32 − 30)/1.9
+= 13.94737; ROUNDDOWN(1) = 13.9. No cap.
+
+#### Test set #9.1 · Plateau branch (CG ≤ 30) — weight independence
+
+Plateau-зона всегда возвращает `plateauValue=15` независимо от веса.
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 9.1.01 | 110 | 8.0 | 15 | below-envelope |
+| 9.1.02 | 130 | 15.0 | 15 | below-envelope |
+| 9.1.03 | 150 | 20.0 | 15 | below-envelope |
+| 9.1.04 | 170 | 25.0 | 15 | below-envelope |
+| 9.1.05 | 172 | 29.9 | 15 | below-envelope |
+| 9.1.06 | 182 | 30.0 | 15 | within-bracket (boundary) |
+
+#### Test set #9.2 · Decreasing branch (CG > 30)
+
+Линейное уменьшение `1 KT per 1.9 %MAC`.
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 9.2.01 | 170 | 30.1 | 14.9 | within-bracket |
+| 9.2.02 | 170 | 31.0 | 14.4 | within-bracket |
+| 9.2.03 | 170 | 32.0 | 13.9 | within-bracket |
+| 9.2.04 | 170 | 33.0 | 13.4 | within-bracket |
+| 9.2.05 | 170 | 34.0 | 12.8 | within-bracket |
+| 9.2.06 | 170 | 35.0 | 12.3 | within-bracket |
+| 9.2.07 | 170 | 36.9 | 11.3 | within-bracket |
+| 9.2.08 | 170 | 40.0 | 9.7 | within-bracket |
+| 9.2.09 | 170 | 50.0 | 4.4 | within-bracket |
+
+#### Test set #9.3 · User-anchor (W=182 t)
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 9.3.01 | 182 | 30.0 | 15 | within-bracket (boundary) |
+| 9.3.02 | 182 | 32.0 | **13.9** | within-bracket (Excel-verified anchor) |
+| 9.3.03 | 182 | 35.0 | 12.3 | within-bracket |
+
+#### Test set #9.4 · Weight independence regression
+
+Не table-driven — assertion-stack тест: `CG=32 × W ∈ {110, 130, 150,
+170, 182}` → все возвращают 13.9. И `CG=25 × W ∈ {110, 150, 200}` →
+все возвращают 15. Это load-bearing assertion для defining-property
+strategy.
+
+#### Test set #9.5 · Out-of-envelope CG (Recommendation A1)
+
+| # | Weight (t) | CG (%MAC) | Expected | Комментарий |
+|---|------------|-----------|----------|-------------|
+| 9.5.01 | 170 | 50 | 4.4 KT | Still positive |
+| 9.5.02 | 170 | 60 | `CalculationFailed` | raw=-0.789 → A1 reject |
+
+Total: 6+9+3+2+2 = **22 case** в таблице; плюс standalone anchor,
+weight-independence regression, full 5-condition cross-condition
+ordering (Dry 34 ≥ Good 32 ≥ MediumToGood 21 ≥ Medium 17.1 ≥
+MediumToPoor 13.9 at W=170/CG=32) и metadata sanity. Файл:
+`src/features/crosswind/__tests__/medium-to-poor.test.ts`.
 
 ---
 

@@ -169,6 +169,25 @@ describe('Crosswind route', () => {
     expect(segment.props.accessibilityState.disabled).toBe(false);
   });
 
+  it('MediumToPoor runway selection: W=182, CG=32 → 13.9 KT (PR 6 anchor, weight-independent)', () => {
+    const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
+    fireEvent.press(getByTestId('crosswind-runway-mediumToPoor'));
+    fireEvent.changeText(getByTestId('crosswind-weight-input'), '182');
+    fireEvent.changeText(getByTestId('crosswind-cg-input'), '32');
+    // The cgOnlyPiecewise strategy ignores weight — same CG=32 with
+    // W=110 or W=200 would yield the same 13.9. Verifying the rendered
+    // result panel shows the 1-decimal value confirms the strategy
+    // resolves correctly and the ResultPanel's String() coercion
+    // preserves the fractional digit.
+    expect(getByText('13.9')).toBeTruthy();
+  });
+
+  it('MediumToPoor runway segment is enabled (was disabled in MVP pre-PR 6)', () => {
+    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
+    const segment = getByTestId('crosswind-runway-mediumToPoor');
+    expect(segment.props.accessibilityState.disabled).toBe(false);
+  });
+
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
     // W=95 t — below operational minimum of 110, but algorithm still yields a number.

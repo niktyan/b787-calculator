@@ -77,15 +77,25 @@ const variableSlopeBracketedDatasetSchema = z.object({
   params: variableSlopeBracketedParamsSchema,
 });
 
-// --- Future strategies (PR 6/7/8): declared as stub branches that
+// --- Active strategy: cgOnlyPiecewise (PR 6) ---
+
+const cgOnlyPiecewiseParamsSchema = z.object({
+  plateauValue: z.number().finite().positive(),
+  cgThreshold: z.number().finite().positive(),
+  slopeDivisor: z.number().finite(),
+  decimals: z.union([z.literal(DECIMALS_INTEGER), z.literal(DECIMALS_ONE)]),
+});
+
+const cgOnlyPiecewiseDatasetSchema = z.object({
+  strategyType: z.literal('cgOnlyPiecewise'),
+  params: cgOnlyPiecewiseParamsSchema,
+});
+
+// --- Future strategies (PR 7/8): declared as stub branches that
 // reject all current data. These keep the discriminated union exhaustive
 // so adding new strategyType literals in future PRs is purely additive. ---
 
 const futureNeverParamsSchema = z.object({}).strict();
-const cgOnlyPiecewiseDatasetSchema = z.object({
-  strategyType: z.literal('cgOnlyPiecewise'),
-  params: futureNeverParamsSchema,
-});
 const constantDatasetSchema = z.object({
   strategyType: z.literal('constant'),
   params: futureNeverParamsSchema,
@@ -120,6 +130,9 @@ export type BracketedLinearDataset = z.infer<typeof bracketedLinearDatasetSchema
   readonly metadata: z.infer<typeof datasetMetadataSchema>;
 };
 export type VariableSlopeBracketedDataset = z.infer<typeof variableSlopeBracketedDatasetSchema> & {
+  readonly metadata: z.infer<typeof datasetMetadataSchema>;
+};
+export type CGOnlyPiecewiseDataset = z.infer<typeof cgOnlyPiecewiseDatasetSchema> & {
   readonly metadata: z.infer<typeof datasetMetadataSchema>;
 };
 
@@ -194,6 +207,16 @@ function checkBracketedLinearIntegrity(
   return null;
 }
 
+function checkCGOnlyPiecewiseIntegrity(
+  path: string,
+  dataset: CGOnlyPiecewiseDataset,
+): string | null {
+  if (dataset.params.slopeDivisor === 0) {
+    return `${path}.params.slopeDivisor must be non-zero`;
+  }
+  return null;
+}
+
 function checkVariableSlopeBracketedIntegrity(
   path: string,
   dataset: VariableSlopeBracketedDataset,
@@ -213,22 +236,30 @@ function checkVariableSlopeBracketedIntegrity(
   return null;
 }
 
+function checkOneDataset(path: string, dataset: CrosswindDataset): string | null {
+  // Strategy-typed dispatch. Future strategies (constant / notAllowed)
+  // will get their cases here when PR 7/8 light them up; the schema
+  // rejects them at parse-time so reaching this function for those
+  // discriminator values is currently unreachable.
+  if (dataset.strategyType === 'bracketedLinear') {
+    return checkBracketedLinearIntegrity(path, dataset);
+  }
+  if (dataset.strategyType === 'variableSlopeBracketed') {
+    return checkVariableSlopeBracketedIntegrity(path, dataset);
+  }
+  if (dataset.strategyType === 'cgOnlyPiecewise') {
+    return checkCGOnlyPiecewiseIntegrity(path, dataset);
+  }
+  return null;
+}
+
 function checkDatasetIntegrity(data: CrosswindDataFile): string | null {
   for (const [aircraftKey, entry] of Object.entries(data.byAircraft)) {
     if (entry === undefined) continue;
     for (const [conditionKey, dataset] of Object.entries(entry)) {
       if (dataset === undefined) continue;
-      const path = `byAircraft.${aircraftKey}.${conditionKey}`;
-      if (dataset.strategyType === 'bracketedLinear') {
-        const violation = checkBracketedLinearIntegrity(path, dataset);
-        if (violation !== null) return violation;
-      } else if (dataset.strategyType === 'variableSlopeBracketed') {
-        const violation = checkVariableSlopeBracketedIntegrity(path, dataset);
-        if (violation !== null) return violation;
-      }
-      // Future strategies will gain their own integrity checks when
-      // PR 6/7/8 light them up; for now the schema rejects them at
-      // parse-time so we cannot reach here.
+      const violation = checkOneDataset(`byAircraft.${aircraftKey}.${conditionKey}`, dataset);
+      if (violation !== null) return violation;
     }
   }
   return null;

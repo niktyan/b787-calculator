@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.2.0",
-  "dataVersion": "2026-05-19.004",
+  "dataVersion": "2026-05-19.005",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": {
@@ -99,6 +99,21 @@
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "RWYCC 3 (Medium) advisory limits per Excel 'Medium 788' sheet. First condition backed by variableSlopeBracketedStrategy: each of the 4 brackets carries its own slope (0.032/0.0384/0.0388/0.044). Bracket labels narrowed (max 25, min 10). First condition shipped with decimals=1 — UI must display fractional KT (e.g. 23.9, not 23). maxCap=null: Excel sheet has no G8 clamp."
+        }
+      },
+      "mediumToPoor": {
+        "strategyType": "cgOnlyPiecewise",
+        "params": {
+          "plateauValue": 15,
+          "cgThreshold": 30,
+          "slopeDivisor": 1.9,
+          "decimals": 1
+        },
+        "metadata": {
+          "createdAt": "2026-05-19",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 2 (Medium to Poor) advisory limits per Excel 'Medium to Poor 788' sheet. First condition backed by cgOnlyPiecewiseStrategy — single conditional formula, NO weight dependency. Plateau of 15 KT for CG ≤ 30 %MAC; linear decrease 1 KT per 1.9 %MAC above threshold. Same CG yields same output regardless of weight."
         }
       }
     }

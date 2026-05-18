@@ -51,7 +51,7 @@ const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
   { value: 'good', label: 'Good' },
   { value: 'mediumToGood', label: 'Medium to Good' },
   { value: 'medium', label: 'Medium' },
-  { value: 'mediumToPoor', label: 'Medium to Poor', disabled: true },
+  { value: 'mediumToPoor', label: 'Medium to Poor' },
   { value: 'poor', label: 'Poor', disabled: true },
 ];
 
