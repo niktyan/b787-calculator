@@ -40,7 +40,7 @@ MVP — это первая публичная версия в App Store. Осо
 
 **MVP включает:**
 
-1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787-8 на сухой ВПП (Dry runway)**. Входы: вариант ВС (Aircraft, B787-8 активен / B787-9 disabled-тизер), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale, Dry активен / 5 остальных disabled-тизеры). Выход: одно число — максимально допустимый боковой ветер в узлах.
+1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787-8 на Dry и Good ВПП (RWYCC 6 + 5)**. Входы: вариант ВС (Aircraft, B787-8 активен / B787-9 disabled-тизер), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale, Dry и Good активны / 4 остальных disabled-тизеры). Выход: одно число — максимально допустимый боковой ветер в узлах.
 2. **Splash-экран с обязательным advisory-дисклеймером** при первом запуске. Подтверждение пользователя сохраняется и больше не показывается.
 3. **Главное меню — crosswind-семья.** В MVP Main Menu показывает только два модуля одной семьи (crosswind), в порядке хронологии фазы полёта:
    - **Crosswind · Landing** — Phase 2, неактивная карточка-«тизер» (слот #1).
@@ -72,7 +72,7 @@ MVP — это первая публичная версия в App Store. Осо
 Следующие фичи **не включены** в MVP. Они задокументированы как Future Enhancements в `01-vision.md` (этот документ, секция ниже) и ADR `0001-mvp-scope.md` (создаётся в Phase B).
 
 - Boeing 787-9 — будет добавлен в Phase 2 после релиза. В MVP виден как disabled-сегмент в Aircraft selector.
-- Non-dry RWYCC runway conditions (Good / Medium to Good / Medium / Medium to Poor / Poor) — Phase 2. В MVP видны как disabled-сегменты Runway condition selector-а.
+- Lower-RWYCC runway conditions (Medium to Good / Medium / Medium to Poor / Poor — RWYCC 4/3/2/1) — Phase 2. В MVP видны как disabled-сегменты Runway condition selector-а. Dry (RWYCC 6) и Good (RWYCC 5) — активны в MVP.
 - Wind direction + runway heading inputs с автоматическим расчётом crosswind component — Phase 2.
 - Save / History calculations с экспортом в PDF — Phase 2/3.
 - Crosswind Landing модуль — Phase 2 (та же piecewise-linear модель, отдельная таблица констант).

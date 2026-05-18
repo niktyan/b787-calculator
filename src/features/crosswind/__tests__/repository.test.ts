@@ -42,10 +42,15 @@ function dryDataset(raw: Record<string, unknown>): DatasetShape {
 }
 
 describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
-  it('case 5.01: brackets.length !== 5 → CorruptedDataBundle', () => {
+  it('case 5.01: brackets.length < 2 (zod min) → CorruptedDataBundle', () => {
+    // Repurposed in PR 3: the previous "length !== 5" rule was relaxed
+    // to ".min(2)" per schema 2.2.0 (Level-2 evolution, see
+    // 05-crosswind-algorithm.md § Стратегия эволюции). The new business
+    // rule enforced by zod is that brackets must contain at least 2
+    // entries to define a piecewise-linear surface.
     const corrupted = withCorruption((raw) => {
       const ds = dryDataset(raw);
-      ds.params.brackets = ds.params.brackets.slice(0, 4);
+      ds.params.brackets = ds.params.brackets.slice(0, 1);
       return raw;
     });
     const repo = createCrosswindRepository({ raw: corrupted });

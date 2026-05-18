@@ -171,11 +171,13 @@ type RunwayCondition = typeof RUNWAY_CONDITIONS[number];
 ВПП (`dry` — лучшее, `poor` — худшее). Каждое значение имеет
 собственный набор breakpoints в bundled JSON; UI рендерит их
 шестью сегментами segmented control (single-row на iPad-regular,
-2 ряда по 3 на compact). В **MVP активен только `dry`** — все
-остальные 5 значений валидны на уровне типов и UI (видимы как
-disabled-сегменты с capability disclosure), но соответствующие
-lookup-данные отсутствуют, выбор даёт
-`DataNotAvailable.reason: 'condition-not-implemented'`.
+2 ряда по 3 на compact). В **MVP активны `dry` (RWYCC 6) и `good`
+(RWYCC 5)**; остальные четыре значения (`mediumToGood` / `medium`
+/ `mediumToPoor` / `poor`) валидны на уровне типов и UI (видимы
+как disabled-сегменты с capability disclosure), но соответствующие
+lookup-данные отсутствуют — выбор даёт
+`DataNotAvailable.reason: 'condition-not-implemented'`. Активация
+оставшихся четырёх — PR 5/6/7/8.
 
 ### `RunwayConditionCode` (RWYCC) и numeric mapping
 
@@ -330,14 +332,20 @@ data)`: либо `{ kind: 'strategy', strategy: CrosswindStrategy }`, либо
 
 Bundled-файл — **один на phase**, ключующий lookup-данные по
 `(aircraft, runwayCondition)`. В MVP файл — `b787-takeoff.json`,
-содержит только `byAircraft.b787_8.dry`.
+содержит `byAircraft.b787_8.dry` и `byAircraft.b787_8.good`.
 
-### Структура файла (schemaVersion 2.1.0 — strategy refactor)
+### Структура файла (schemaVersion 2.2.0 — variable bracket count, PR 3)
+
+`schemaVersion 2.2.0` (PR 3) — Level-2 evolution: relaxation
+ограничения количества брекетов с фиксированного `length(5)` на
+`min(2)`. Структурно совместимо с предыдущим 2.1.0 (Dry's 5 brackets
+проходят валидацию без изменений), но позволяет Good's 6-bracket
+shape. См. `05-crosswind-algorithm.md` § «Стратегия эволюции».
 
 ```json
 {
-  "schemaVersion": "2.1.0",
-  "dataVersion": "2026-05-17.001",
+  "schemaVersion": "2.2.0",
+  "dataVersion": "2026-05-19.002",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": { "minTons": 110, "maxTons": 172 },
@@ -363,10 +371,32 @@ Bundled-файл — **один на phase**, ключующий lookup-данн
           "decimals": 0
         },
         "metadata": {
-          "createdAt": "2026-05-17",
+          "createdAt": "2026-05-19",
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "Conservative advisory limits. Linear approximation per breakpoint band. Matches Excel formula exactly including IFNA fallback behavior."
+        }
+      },
+      "good": {
+        "strategyType": "bracketedLinear",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 40, "intercept": 2 },
+            { "crosswindKnots": 35, "intercept": 6 },
+            { "crosswindKnots": 30, "intercept": 10 },
+            { "crosswindKnots": 25, "intercept": 14 },
+            { "crosswindKnots": 20, "intercept": 18 },
+            { "crosswindKnots": 15, "intercept": 22 }
+          ],
+          "slope": 0.06,
+          "maxCap": 37,
+          "decimals": 0
+        },
+        "metadata": {
+          "createdAt": "2026-05-19",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 5 (Good) advisory limits. 6-bracket bracketedLinear with added crosswindKnots=15 endpoint. Shares maxCap=37 with Dry per FCOM Tab 2.29.2a."
         }
       }
     }
@@ -378,7 +408,7 @@ Bundled-файл — **один на phase**, ключующий lookup-данн
 
 | Поле | Тип | Назначение |
 |------|-----|------------|
-| `schemaVersion` | string (semver) | Версия структуры файла. `2.0.0` — takeoff rebrand (Block 2); `2.1.0` — strategy refactor (PR 1, эта итерация). |
+| `schemaVersion` | string (semver) | Версия структуры файла. `2.0.0` — takeoff rebrand (Block 2); `2.1.0` — strategy refactor (PR 1); `2.2.0` — variable bracket count (PR 3, `brackets.length(5)` → `.min(2)`). |
 | `dataVersion` | string (date-based) | Версия конкретного набора значений. Инкрементируется при любом изменении brackets/params или envelope. |
 | `phase` | FlightPhase | Phase, к которой относится файл. MVP: `takeoff`. |
 | `operationalEnvelope.weight` | { minTons, maxTons } | Регуляторный диапазон веса. Алгоритм этот диапазон не проверяет — проверка делается use-case-функцией `validateOperationalEnvelope` (см. crosswind contract). За границами envelope UI показывает warning chip рядом с числом. |
@@ -386,11 +416,11 @@ Bundled-файл — **один на phase**, ключующий lookup-данн
 | `weightConversion.tonsToKilolbsFactor` | number | Коэффициент перевода тонн в kilolbs (2.20462 — стандарт). |
 | `byAircraft` | object | **Lookup-сетка**: ключи `b787_8` / `b787_9`, значения — `AircraftEntry`. Отсутствие ключа → `DataNotAvailable.reason: 'aircraft-not-implemented'`. zod применяет `.strict()` — неизвестные ключи (например `b777_300`) валятся как `CorruptedDataBundle`. |
 | `byAircraft.<aircraft>` | object (`AircraftEntry`) | Опциональные ключи на каждое значение `RunwayCondition` (6 RWYCC). Отсутствие condition-ключа → `DataNotAvailable.reason: 'condition-not-implemented'`. |
-| `byAircraft.<aircraft>.<condition>.strategyType` | `StrategyType` | Discriminator: одна из 5 strategy variants. В MVP только `'bracketedLinear'` валидируется реальной zod-схемой; остальные 4 литерала есть в union, но их `params` отклоняется (PR 5/6/7/8 их активируют). |
-| `byAircraft.<aircraft>.<condition>.params` | object | Содержимое зависит от `strategyType`. Для `bracketedLinear`: `{ brackets[5], slope, maxCap, decimals }`. |
-| `byAircraft.<aircraft>.<condition>.params.brackets[]` | `{ crosswindKnots, intercept }` | 5 брекетов, отсортированы по убыванию `crosswindKnots` (40, 35, 30, 25, 20) и возрастанию `intercept`. |
-| `byAircraft.<aircraft>.<condition>.params.slope` | number | Общий наклон threshold-линий по весу (kilolbs). Должен быть ≠ 0. |
-| `byAircraft.<aircraft>.<condition>.params.maxCap` | number ⎮ null | Верхний clamp результата. `null` — без clamp; число — clamp применяется после ROUNDDOWN при `result > maxCap` (cap inclusive). Для Dry — `37` (PR 2, per FCOM Tab 2.29.2a + Excel G8 `IF(G7>37,37,G7)`). Будущие conditions: Good `37` (планируется), MediumToGood/Medium/MediumToPoor/Poor — TBD (ожидается `null`). |
+| `byAircraft.<aircraft>.<condition>.strategyType` | `StrategyType` | Discriminator: одна из 5 strategy variants. В MVP `'bracketedLinear'` валидируется реальной zod-схемой и активна для Dry + Good; остальные 4 литерала есть в union, но их `params` отклоняется (PR 5/6/7/8 их активируют). |
+| `byAircraft.<aircraft>.<condition>.params` | object | Содержимое зависит от `strategyType`. Для `bracketedLinear`: `{ brackets[≥2], slope, maxCap, decimals }`. |
+| `byAircraft.<aircraft>.<condition>.params.brackets[]` | `{ crosswindKnots, intercept }` | ≥ 2 брекета, отсортированы по убыванию `crosswindKnots` (Dry: 40,35,30,25,20; Good: 40,35,30,25,20,15) и возрастанию `intercept`. |
+| `byAircraft.<aircraft>.<condition>.params.slope` | number | Общий наклон threshold-линий по весу (kilolbs). Должен быть ≠ 0. Dry — `0.0576`; Good — `0.06`. |
+| `byAircraft.<aircraft>.<condition>.params.maxCap` | number ⎮ null | Верхний clamp результата. `null` — без clamp; число — clamp применяется после ROUNDDOWN при `result > maxCap` (cap inclusive). Для Dry — `37` (PR 2, per FCOM Tab 2.29.2a + Excel G8 `IF(G7>37,37,G7)`). Для Good — `37` (PR 3, shared с Dry per FCOM Tab 2.29.2a). MediumToGood/Medium/MediumToPoor/Poor — TBD (ожидается `null`). |
 | `byAircraft.<aircraft>.<condition>.params.decimals` | `0` ⎮ `1` | Точность ROUNDDOWN финального значения. Dry — `0` (целые KT). |
 | `byAircraft.<aircraft>.<condition>.metadata` | object | `createdAt`, `validatedBy`, `referenceDocument`, `notes` — описательно, читается About-экраном. |
 
@@ -428,9 +458,9 @@ const bracketSchema = z.object({
   intercept: z.number().finite(),
 });
 
-// Active strategy — bracketedLinear (Dry / PR 1)
+// Active strategy — bracketedLinear (Dry / PR 1; Good / PR 3)
 const bracketedLinearParamsSchema = z.object({
-  brackets: z.array(bracketSchema).length(5),
+  brackets: z.array(bracketSchema).min(2), // schema 2.2.0: was .length(5)
   slope: z.number().finite(),
   maxCap: z.number().finite().nullable(),
   decimals: z.union([z.literal(0), z.literal(1)]),

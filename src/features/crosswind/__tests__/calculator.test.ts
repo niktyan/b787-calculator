@@ -288,8 +288,8 @@ describe('Calculator metadata', () => {
     expect(r.error.reason).toBe('phase-mismatch');
   });
 
-  it.each(['good', 'mediumToGood', 'medium', 'mediumToPoor', 'poor'] as const)(
-    'returns DataNotAvailable.condition-not-implemented for non-dry condition %s',
+  it.each(['mediumToGood', 'medium', 'mediumToPoor', 'poor'] as const)(
+    'returns DataNotAvailable.condition-not-implemented for not-yet-active condition %s',
     (condition) => {
       const { w, cg } = vo(170, 32);
       const r = calculateCrosswindLimit(

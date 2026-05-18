@@ -20,7 +20,10 @@ import { z } from 'zod';
 
 const SCHEMA_VERSION_PATTERN = /^\d+\.\d+\.\d+$/;
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const BRACKET_COUNT = 5;
+// schemaVersion 2.2.0 (PR 3): variable bracket count, lower bound = 2.
+// Per spec § "Стратегия эволюции / Уровень 2 — Добавление breakpoints".
+// Dry retains 5; Good adds 6th bracket at crosswindKnots=15.
+const MIN_BRACKET_COUNT = 2;
 const MAX_CROSSWIND_KT = 50;
 const MIN_CROSSWIND_KT = 0;
 const DECIMALS_INTEGER = 0;
@@ -44,7 +47,7 @@ const bracketSchema = z.object({
 // --- Active strategy: bracketedLinear (PR 1) ---
 
 const bracketedLinearParamsSchema = z.object({
-  brackets: z.array(bracketSchema).length(BRACKET_COUNT),
+  brackets: z.array(bracketSchema).min(MIN_BRACKET_COUNT),
   slope: z.number().finite(),
   maxCap: z.number().finite().nullable(),
   decimals: z.union([z.literal(DECIMALS_INTEGER), z.literal(DECIMALS_ONE)]),

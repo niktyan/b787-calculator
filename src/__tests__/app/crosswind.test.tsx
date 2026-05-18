@@ -111,6 +111,29 @@ describe('Crosswind route', () => {
     expect(getByText('37')).toBeTruthy();
   });
 
+  it('Good runway selection: W=150, CG=26 → 34 KT (PR 3 anchor case)', () => {
+    const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
+    // Default Aircraft is B787-8 and default Runway is Dry. Switch to
+    // Good, then enter the Excel-verified anchor inputs.
+    fireEvent.press(getByTestId('crosswind-runway-good'));
+    fireEvent.changeText(getByTestId('crosswind-weight-input'), '150');
+    fireEvent.changeText(getByTestId('crosswind-cg-input'), '26');
+    // Anchor expectation: raw 34.873 → ROUNDDOWN 34, below maxCap=37 so
+    // not clamped. The same inputs on Dry runway give a different value
+    // (Dry's brackets and slope differ); switching runway must
+    // recompute, NOT carry the previous Dry result.
+    expect(getByText('34')).toBeTruthy();
+  });
+
+  it('Good runway segment is enabled (was disabled in MVP pre-PR 3)', () => {
+    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
+    const goodSegment = getByTestId('crosswind-runway-good');
+    // accessibilityState.disabled was `true` before PR 3 (MVP shipped
+    // Good as a capability-disclosure teaser). With Good now active,
+    // the segment must be selectable.
+    expect(goodSegment.props.accessibilityState.disabled).toBe(false);
+  });
+
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
     // W=95 t — below operational minimum of 110, but algorithm still yields a number.

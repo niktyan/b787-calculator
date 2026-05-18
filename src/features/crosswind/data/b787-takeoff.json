@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "2.1.0",
-  "dataVersion": "2026-05-19.001",
+  "schemaVersion": "2.2.0",
+  "dataVersion": "2026-05-19.002",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": {
@@ -36,6 +36,28 @@
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "Conservative advisory limits. Linear approximation per breakpoint band. Matches Excel formula exactly including IFNA fallback. maxCap=37 KT applied per FCOM Tab 2.29.2a (Excel formula G8: =IF(G7>37,37,G7))."
+        }
+      },
+      "good": {
+        "strategyType": "bracketedLinear",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 40, "intercept": 2 },
+            { "crosswindKnots": 35, "intercept": 6 },
+            { "crosswindKnots": 30, "intercept": 10 },
+            { "crosswindKnots": 25, "intercept": 14 },
+            { "crosswindKnots": 20, "intercept": 18 },
+            { "crosswindKnots": 15, "intercept": 22 }
+          ],
+          "slope": 0.06,
+          "maxCap": 37,
+          "decimals": 0
+        },
+        "metadata": {
+          "createdAt": "2026-05-19",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 5 (Good) advisory limits. Same bracketedLinear strategy as Dry, with 6 brackets (additional crosswindKnots=15 endpoint per Excel 'Good 788' sheet). Uniform slope 0.06, uniform intercept step +4. Shares maxCap=37 KT with Dry per FCOM Tab 2.29.2a (Good row upper bound also 37 KT)."
         }
       }
     }
