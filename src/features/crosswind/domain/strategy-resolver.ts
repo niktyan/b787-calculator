@@ -10,14 +10,15 @@
  *
  * Active strategies: `bracketedLinear` (PR 1 — Dry/Good/MediumToGood),
  * `variableSlopeBracketed` (PR 5 — Medium), `cgOnlyPiecewise`
- * (PR 6 — MediumToPoor). Remaining (constant / notAllowed) are
- * stubbed in the schema and unreachable here.
+ * (PR 6 — MediumToPoor), `constant` (PR 7 — Poor). Remaining
+ * (`notAllowed`) is stubbed in the schema and unreachable here.
  */
 
 import type { CrosswindDataFile } from '../data/schema';
 
 import { createBracketedLinearStrategy } from './strategies/bracketed-linear';
 import { createCGOnlyPiecewiseStrategy } from './strategies/cg-only-piecewise';
+import { createConstantStrategy } from './strategies/constant';
 import { createVariableSlopeBracketedStrategy } from './strategies/variable-slope-bracketed';
 import type { StrategyResolution } from './strategy';
 import type { Aircraft, RunwayCondition } from './types';
@@ -70,10 +71,23 @@ export function resolveStrategy(
     };
   }
 
-  // Future strategies (constant / notAllowed) — their schemas currently
-  // reject all data at parse-time, so this branch is unreachable.
-  // Returning condition-not-implemented matches the user-facing
-  // semantics if it were somehow reached (e.g. a future data drop
-  // ahead of the corresponding strategy implementation).
+  if (dataset.strategyType === 'constant') {
+    return {
+      kind: 'strategy',
+      // ConstantContext is the same shape as CGOnlyPiecewise's — no
+      // weight conversion needed since the strategy ignores all inputs.
+      strategy: createConstantStrategy(dataset.params, {
+        aircraft: context.aircraft,
+        dataVersion: context.dataVersion,
+        referenceDocument: context.referenceDocument,
+      }),
+    };
+  }
+
+  // Future strategy (notAllowed) — schema currently rejects all data
+  // at parse-time, so this branch is unreachable. Returning
+  // condition-not-implemented matches the user-facing semantics if it
+  // were somehow reached (e.g. a future data drop ahead of the PR 8
+  // strategy implementation).
   return { kind: 'no-lookup-data', reason: 'condition-not-implemented' };
 }
