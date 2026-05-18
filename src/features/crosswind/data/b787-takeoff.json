@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.2.0",
-  "dataVersion": "2026-05-19.002",
+  "dataVersion": "2026-05-19.003",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": {
@@ -58,6 +58,28 @@
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "RWYCC 5 (Good) advisory limits. Same bracketedLinear strategy as Dry, with 6 brackets (additional crosswindKnots=15 endpoint per Excel 'Good 788' sheet). Uniform slope 0.06, uniform intercept step +4. Shares maxCap=37 KT with Dry per FCOM Tab 2.29.2a (Good row upper bound also 37 KT)."
+        }
+      },
+      "mediumToGood": {
+        "strategyType": "bracketedLinear",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 35, "intercept": 2.2 },
+            { "crosswindKnots": 30, "intercept": 7.2 },
+            { "crosswindKnots": 25, "intercept": 12.2 },
+            { "crosswindKnots": 20, "intercept": 17.2 },
+            { "crosswindKnots": 15, "intercept": 22.2 },
+            { "crosswindKnots": 10, "intercept": 27.2 }
+          ],
+          "slope": 0.0436,
+          "maxCap": null,
+          "decimals": 0
+        },
+        "metadata": {
+          "createdAt": "2026-05-19",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 4 (Medium to Good) advisory limits per Excel 'Medium to Good 788' sheet. Bracket labels shifted down vs Good (max 35, min 10) and slope is gentler (0.0436 vs 0.06). Uniform intercept step +5 yields E9 ≡ 1 KT per %MAC within any bracket. maxCap=null: Excel sheet has no G8 clamp formula — observable output range is [10, 35] KT regardless, so null is the source-faithful and forward-defensive choice."
         }
       }
     }
