@@ -175,6 +175,42 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
     expect(r.error.kind).toBe('CorruptedDataBundle');
   });
 
+  it('variableSlopeBracketed: zero-slope bracket → CorruptedDataBundle (PR 5)', () => {
+    // Inject a malformed Medium-shape dataset directly so the per-bracket
+    // slope=0 integrity check fires regardless of which condition holds it.
+    const corrupted = withCorruption((raw) => {
+      const byAircraft = raw['byAircraft'] as Record<string, Record<string, unknown>>;
+      const entry = byAircraft['b787_8'];
+      if (entry === undefined) throw new Error('expected b787_8 entry');
+      entry['medium'] = {
+        strategyType: 'variableSlopeBracketed',
+        params: {
+          brackets: [
+            { crosswindKnots: 25, slope: 0, intercept: 5.1 }, // <-- zero slope
+            { crosswindKnots: 20, slope: 0.0384, intercept: 11.9 },
+          ],
+          maxCap: null,
+          decimals: 1,
+        },
+        metadata: {
+          createdAt: '2026-05-19',
+          validatedBy: 'active-line-pilots',
+          referenceDocument: 'Boeing 787 FCOM',
+          notes: 'test fixture',
+        },
+      };
+      return raw;
+    });
+    const repo = createCrosswindRepository({ raw: corrupted });
+    const r = repo.load();
+    expect(r.ok).toBe(false);
+    if (r.ok) {
+      throw new Error('expected error');
+    }
+    expect(r.error.kind).toBe('CorruptedDataBundle');
+    expect(r.error.details).toMatch(/slope/);
+  });
+
   it('phase mismatch → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
       raw['phase'] = 'landing';
