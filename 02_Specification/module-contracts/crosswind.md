@@ -6,7 +6,7 @@
 
 ## Ответственность
 
-Feature-модуль Crosswind реализует **главную функциональность приложения в MVP** — расчёт максимально допустимого бокового ветра для взлёта (Takeoff) Boeing 787-8 на Dry (RWYCC 6), Good (RWYCC 5) и MediumToGood (RWYCC 4) ВПП. Модуль самодостаточен: содержит свою domain-логику, источник данных, UI-экран и тесты.
+Feature-модуль Crosswind реализует **главную функциональность приложения в MVP** — расчёт максимально допустимого бокового ветра для взлёта (Takeoff) Boeing 787-8 на Dry (RWYCC 6), Good (RWYCC 5), MediumToGood (RWYCC 4) и Medium (RWYCC 3) ВПП. Модуль самодостаточен: содержит свою domain-логику, источник данных, UI-экран и тесты.
 
 Алгоритм расчёта детально описан в `02_Specification/05-crosswind-algorithm.md`. Этот контракт фокусируется на **публичном API** модуля и его зависимостях.
 
@@ -27,21 +27,24 @@ src/features/crosswind/
 │   ├── strategy.ts                  — CrosswindStrategy interface, StrategyType union, *Params shapes
 │   ├── strategy-resolver.ts         — resolveStrategy(aircraft, condition, data) → StrategyResolution
 │   ├── strategies/
-│   │   └── bracketed-linear.ts      — `bracketedLinear` strategy implementation (Dry / PR 1; Good / PR 3; MediumToGood / PR 4)
+│   │   ├── bracketed-linear.ts      — `bracketedLinear` strategy (Dry / PR 1; Good / PR 3; MediumToGood / PR 4)
+│   │   └── variable-slope-bracketed.ts — `variableSlopeBracketed` strategy (Medium / PR 5)
 │   └── validators.ts                — validateAlgorithmInput + validateOperationalEnvelope
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
 │   ├── schema.ts                    — zod-схема (byAircraft / strategy discriminated union)
 │   └── b787-takeoff.json            — bundled lookup data (see 04-domain-model.md)
 ├── __tests__/
-│   ├── calculator.test.ts                  — тест-таблица из 05-crosswind-algorithm.md (Dry / Sets #1-#3)
-│   ├── good.test.ts                        — Good (RWYCC 5) тест-таблица: Set #6 (PR 3)
-│   ├── medium-to-good.test.ts              — MediumToGood (RWYCC 4) тест-таблица: Set #7 (PR 4)
-│   ├── bracketed-linear-strategy.test.ts   — direct unit tests for `bracketedLinear`
+│   ├── calculator.test.ts                          — тест-таблица из 05-crosswind-algorithm.md (Dry / Sets #1-#3)
+│   ├── good.test.ts                                — Good (RWYCC 5) тест-таблица: Set #6 (PR 3)
+│   ├── medium-to-good.test.ts                      — MediumToGood (RWYCC 4) тест-таблица: Set #7 (PR 4)
+│   ├── medium.test.ts                              — Medium (RWYCC 3) тест-таблица: Set #8 (PR 5)
+│   ├── bracketed-linear-strategy.test.ts           — direct unit tests for `bracketedLinear`
+│   ├── variable-slope-bracketed-strategy.test.ts   — direct unit tests for `variableSlopeBracketed` (PR 5)
 │   ├── validators.test.ts
 │   ├── edgeCases.test.ts
 │   ├── repository.test.ts
-│   └── acceptance.test.ts                  — end-to-end тесты модуля
+│   └── acceptance.test.ts                          — end-to-end тесты модуля
 └── index.ts                                — barrel
 ```
 
@@ -186,6 +189,8 @@ export type { CrosswindRepository } from './data';
 - `calculator.test.ts` — Test Sets #1, #2, #3 (Dry) + algorithm-only NaN/Infinity cases. ≥ 40 кейсов из тест-таблицы `05-crosswind-algorithm.md`. Тестирует `calculateCrosswindLimit`.
 - `good.test.ts` — Test Set #6 (Good / RWYCC 5, PR 3). 41 кейс в 4 sub-sets по весовым диапазонам (W=170/130/160/150) + standalone Excel-verified anchor (W=150/CG=26 → 34 KT) + cap-mechanism regressions.
 - `medium-to-good.test.ts` — Test Set #7 (MediumToGood / RWYCC 4, PR 4). 41 кейс в 4 sub-sets по весовым диапазонам (W=170/130/160/175) + standalone Excel-verified anchor (W=175/CG=24 → 30 KT) + cap-absence regressions (verifying `maxCap=null` ≠ Dry/Good cap=37) + cross-condition ordering invariant (Dry ≥ Good ≥ MediumToGood).
+- `medium.test.ts` — Test Set #8 (Medium / RWYCC 3, PR 5). 39 кейсов в 4 sub-sets (W=170/130/160/182) + standalone Excel-verified anchor (W=182/CG=20 → **23.9 KT** — first sub-integer condition; asserts both numeric value AND `String(value) === '23.9'`) + 1-decimal precision regression + cap-absence + full cross-condition ordering chain (Dry ≥ Good ≥ MediumToGood ≥ Medium).
+- `variable-slope-bracketed-strategy.test.ts` — direct unit tests for the new `variableSlopeBracketed` strategy (PR 5). 16 cases including anchor, both `/E9` and `·E9` formula branches (the latter exercised with synthetic tight-bracket params), decimals=0 vs 1, IFNA fallback derived from `brackets[0]`, maxCap clamp/no-clamp, empty brackets, Infinity defence in depth.
 - `validators.test.ts` — Test Set #4: кейсы #4.01–4.04 для `validateOperationalEnvelope` плюс кейсы #4.05–4.07 для Value Object factories (`makeWeightInTons` / `makeCGPercentMAC` отвергают NaN / Infinity / negative).
 - `edgeCases.test.ts` — strategy-dispatcher fall-through, validateAlgorithmInput defence-in-depth NaN/Infinity guards, runtime const arrays.
 - Coverage: ≥ 90%.

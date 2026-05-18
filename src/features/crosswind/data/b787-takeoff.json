@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.2.0",
-  "dataVersion": "2026-05-19.003",
+  "dataVersion": "2026-05-19.004",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": {
@@ -80,6 +80,25 @@
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "RWYCC 4 (Medium to Good) advisory limits per Excel 'Medium to Good 788' sheet. Bracket labels shifted down vs Good (max 35, min 10) and slope is gentler (0.0436 vs 0.06). Uniform intercept step +5 yields E9 ≡ 1 KT per %MAC within any bracket. maxCap=null: Excel sheet has no G8 clamp formula — observable output range is [10, 35] KT regardless, so null is the source-faithful and forward-defensive choice."
+        }
+      },
+      "medium": {
+        "strategyType": "variableSlopeBracketed",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 25, "slope": 0.032, "intercept": 5.1 },
+            { "crosswindKnots": 20, "slope": 0.0384, "intercept": 11.9 },
+            { "crosswindKnots": 15, "slope": 0.0388, "intercept": 21.8 },
+            { "crosswindKnots": 10, "slope": 0.044, "intercept": 29.8 }
+          ],
+          "maxCap": null,
+          "decimals": 1
+        },
+        "metadata": {
+          "createdAt": "2026-05-19",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 3 (Medium) advisory limits per Excel 'Medium 788' sheet. First condition backed by variableSlopeBracketedStrategy: each of the 4 brackets carries its own slope (0.032/0.0384/0.0388/0.044). Bracket labels narrowed (max 25, min 10). First condition shipped with decimals=1 — UI must display fractional KT (e.g. 23.9, not 23). maxCap=null: Excel sheet has no G8 clamp."
         }
       }
     }

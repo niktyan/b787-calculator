@@ -40,7 +40,7 @@ MVP — это первая публичная версия в App Store. Осо
 
 **MVP включает:**
 
-1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787-8**. B787-8 RWYCC coverage progressing — 3 из 6 условий ВПП активны (Dry, Good, MediumToGood); оставшиеся 3 (Medium, MediumToPoor, Poor) land в PRs 5-7 текущего crosswind expansion cycle; RWYCC 0 handled separately in PR 8. Входы: вариант ВС (Aircraft, B787-8 активен / B787-9 disabled-тизер), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale). Выход: одно число — максимально допустимый боковой ветер в узлах.
+1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787-8**. B787-8 RWYCC coverage progressing — 4 из 6 условий ВПП активны (Dry, Good, MediumToGood, Medium); оставшиеся 2 (MediumToPoor, Poor) land в PRs 6-7 текущего crosswind expansion cycle; RWYCC 0 handled separately in PR 8. Входы: вариант ВС (Aircraft, B787-8 активен / B787-9 disabled-тизер), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale). Выход: одно число — максимально допустимый боковой ветер в узлах.
 2. **Splash-экран с обязательным advisory-дисклеймером** при первом запуске. Подтверждение пользователя сохраняется и больше не показывается.
 3. **Главное меню — crosswind-семья.** В MVP Main Menu показывает только два модуля одной семьи (crosswind), в порядке хронологии фазы полёта:
    - **Crosswind · Landing** — Phase 2, неактивная карточка-«тизер» (слот #1).
@@ -72,7 +72,7 @@ MVP — это первая публичная версия в App Store. Осо
 Следующие фичи **не включены** в MVP. Они задокументированы как Future Enhancements в `01-vision.md` (этот документ, секция ниже) и ADR `0001-mvp-scope.md` (создаётся в Phase B).
 
 - Boeing 787-9 — будет добавлен в Phase 2 после релиза (architectural decision: deferred to post-launch update). В MVP виден как disabled-сегмент в Aircraft selector.
-- Lower-RWYCC runway conditions (Medium / Medium to Poor / Poor — RWYCC 3/2/1) — land в PRs 5/6/7 текущего crosswind expansion cycle, остаются в MVP scope. Dry (RWYCC 6), Good (RWYCC 5) и MediumToGood (RWYCC 4) — активны. PR 8 закроет RWYCC 0 (takeoff-prohibited).
+- Lower-RWYCC runway conditions (Medium to Poor / Poor — RWYCC 2/1) — land в PRs 6/7 текущего crosswind expansion cycle, остаются в MVP scope. Dry (RWYCC 6), Good (RWYCC 5), MediumToGood (RWYCC 4) и Medium (RWYCC 3) — активны. PR 8 закроет RWYCC 0 (takeoff-prohibited).
 - Wind direction + runway heading inputs с автоматическим расчётом crosswind component — Phase 2.
 - Save / History calculations с экспортом в PDF — Phase 2/3.
 - Crosswind Landing модуль — Phase 2 (та же piecewise-linear модель, отдельная таблица констант).

@@ -8,14 +8,15 @@
  * Spec: 02_Specification/05-crosswind-algorithm.md § "Strategy variants",
  *       02_Specification/module-contracts/crosswind.md § "Public API".
  *
- * PR 1 wires only the `bracketedLinear` branch. Future strategies will
- * extend the switch; the discriminated union in `data/schema.ts` keeps
- * the set of strategyType literals exhaustive at the type level.
+ * Active strategies: `bracketedLinear` (PR 1 — Dry/Good/MediumToGood),
+ * `variableSlopeBracketed` (PR 5 — Medium). Remaining (cgOnlyPiecewise /
+ * constant / notAllowed) are stubbed in the schema and unreachable here.
  */
 
 import type { CrosswindDataFile } from '../data/schema';
 
 import { createBracketedLinearStrategy } from './strategies/bracketed-linear';
+import { createVariableSlopeBracketedStrategy } from './strategies/variable-slope-bracketed';
 import type { StrategyResolution } from './strategy';
 import type { Aircraft, RunwayCondition } from './types';
 
@@ -33,23 +34,31 @@ export function resolveStrategy(
     return { kind: 'no-lookup-data', reason: 'condition-not-implemented' };
   }
 
+  const context = {
+    aircraft,
+    dataVersion: data.dataVersion,
+    referenceDocument: dataset.metadata.referenceDocument,
+    tonsToKilolbsFactor: data.weightConversion.tonsToKilolbsFactor,
+  };
+
   if (dataset.strategyType === 'bracketedLinear') {
     return {
       kind: 'strategy',
-      strategy: createBracketedLinearStrategy(dataset.params, {
-        aircraft,
-        dataVersion: data.dataVersion,
-        referenceDocument: dataset.metadata.referenceDocument,
-        tonsToKilolbsFactor: data.weightConversion.tonsToKilolbsFactor,
-      }),
+      strategy: createBracketedLinearStrategy(dataset.params, context),
     };
   }
 
-  // Future strategies (variableSlopeBracketed / cgOnlyPiecewise /
-  // constant / notAllowed) — their schemas currently reject all data at
-  // parse-time, so this branch is unreachable in PR 1. Returning
-  // condition-not-implemented matches the user-facing semantics if it
-  // were somehow reached (e.g. a future data drop ahead of the
-  // corresponding strategy implementation).
+  if (dataset.strategyType === 'variableSlopeBracketed') {
+    return {
+      kind: 'strategy',
+      strategy: createVariableSlopeBracketedStrategy(dataset.params, context),
+    };
+  }
+
+  // Future strategies (cgOnlyPiecewise / constant / notAllowed) — their
+  // schemas currently reject all data at parse-time, so this branch is
+  // unreachable. Returning condition-not-implemented matches the
+  // user-facing semantics if it were somehow reached (e.g. a future
+  // data drop ahead of the corresponding strategy implementation).
   return { kind: 'no-lookup-data', reason: 'condition-not-implemented' };
 }

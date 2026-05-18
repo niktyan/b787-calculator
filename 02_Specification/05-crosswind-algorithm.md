@@ -31,7 +31,7 @@ variants»):
 | Type | Применяется к | Статус |
 |------|---------------|--------|
 | `bracketedLinear` | Dry (RWYCC 6), Good (RWYCC 5), MediumToGood (RWYCC 4) | **Active** — описан ниже |
-| `variableSlopeBracketed` | Medium (RWYCC 3) | Stub (PR 5) |
+| `variableSlopeBracketed` | Medium (RWYCC 3) | **Active** (PR 5) — описан ниже |
 | `cgOnlyPiecewise` | MediumToPoor (RWYCC 2) | Stub (PR 6) |
 | `constant` | Poor (RWYCC 1) | Stub (PR 7) |
 | `notAllowed` | RWYCC 0 | Stub (PR 8) |
@@ -136,6 +136,177 @@ clamping, что бит-в-бит соответствует Excel.
 Эта тройка (Dry: cap=37, Good: cap=37, MediumToGood: cap=null)
 служит примером того, как один strategy-mechanism (post-ROUNDDOWN
 clamp) выбирается per-condition через данные, без изменения кода.
+
+---
+
+## VariableSlopeBracketedStrategy (PR 5)
+
+Вторая активная strategy, для условий с **per-bracket slope**.
+В отличие от `bracketedLinear`, где один `slope` применяется ко
+всем breakpoints, здесь каждый bracket несёт собственный slope —
+это позволяет threshold-линиям иметь разный наклон по весу.
+
+### Алгоритм
+
+Шаги 0/1 (валидация, конвертация веса в kilolbs) идентичны
+`bracketedLinear`. Различия начинаются с шага 2:
+
+**Шаг 2.** Per-bracket thresholds:
+```
+D[i] = brackets[i].slope · weightKilolbs + brackets[i].intercept
+```
+(против общего `D[i] = slope · W + intercept[i]` в bracketedLinear)
+
+**Шаг 3.** XLOOKUP-equivalent поиск нижнего/верхнего bound вокруг
+CG — идентично bracketedLinear.
+
+**Шаг 4 (отличается).** Условная интерполяция:
+
+```
+E9 = (E8 − E7) / 5
+
+if (E9 ≥ 1):
+  G7 = F7 − (CG − E7) / E9      ← истинная линейная интерполяция
+else:
+  G7 = F7 − (CG − E7) · E9      ← BracketedLinear-equivalent
+```
+
+**Геометрический смысл условного branch:**
+- При `E9 ≥ 1` (брекеты широко разнесены по CG — типичный кейс
+  для variableSlopeBracketed): формула возвращает true linear
+  interpolation между F7 (at cg=E7) и F8 (at cg=E8). На границе
+  bracket cg=E8 даёт `F7 − (E8−E7)/E9 = F7 − 5 = F8` ровно.
+- При `E9 < 1` (брекеты тесно сгруппированы — типичный кейс для
+  bracketedLinear): формула совпадает с BracketedLinear's
+  Excel-quirk (discontinuity at boundary).
+
+Для Medium при всех in-envelope весах `E9 ∈ [1.7, 2.0]` — всегда
+используется ветка `/E9`. Ветка `·E9` сохранена для forward-compat
+с potential future VariableSlope datasets с тесно расположенными
+брекетами.
+
+**Шаг 5 (cap clamp), Шаг 6 (metadata), Шаг 7 (return)** — идентично
+bracketedLinear.
+
+### Сравнение с BracketedLinearStrategy
+
+| Аспект | bracketedLinear | variableSlopeBracketed |
+|--------|-----------------|------------------------|
+| slope-параметр | Один общий | Один на bracket |
+| Threshold формула | `slope · W + intercept[i]` | `slope[i] · W + intercept[i]` |
+| Interpolation | `F7 − (cg − E7) · E9` (всегда) | `F7 − (cg − E7) / E9` (when E9 ≥ 1) |
+| Behavior at bracket boundary | Discontinuity (Excel-quirk) | Continuous |
+| ROUNDDOWN, IFNA fallback, maxCap | Identical |
+| Активная для | Dry, Good, MediumToGood | Medium |
+
+### Medium (`byAircraft.b787_8.medium`, RWYCC 3)
+
+Per-bracket params per Excel "Medium 788" sheet:
+
+| Bracket | crosswindKnots | slope | intercept |
+|---------|----------------|-------|-----------|
+| 0 (макс) | 25 | 0.032 | 5.1 |
+| 1 | 20 | 0.0384 | 11.9 |
+| 2 | 15 | 0.0388 | 21.8 |
+| 3 (мин) | 10 | 0.044 | 29.8 |
+
+| Константа | Значение | Комментарий |
+|-----------|----------|-------------|
+| Max-cap | `null` | Excel sheet «Medium 788» не содержит G8 clamp |
+| Decimals | `1` | **Первое условие с sub-integer precision**; UI отображает 23.9 не 23 |
+
+**Observable output range:** `[10.0, 25.0]` KT (max = brackets[0]
+= 25; min = brackets[3] = 10).
+
+**1-decimal precision via UI layer.** `String(value)` in
+`CrosswindResult.tsx` корректно отображает дробное число:
+`String(23.9) === '23.9'`, `String(20) === '20'`. Никаких изменений
+в presentation layer для поддержки decimals=1 не потребовалось — это
+свойство JS coercion и осознанное проектное решение PR 5.
+
+### Test set #8 · Medium (RWYCC 3)
+
+Параметры Medium (см. таблицу выше). Все cases фиксируют
+`aircraft: 'b787_8'`, `phase: 'takeoff'`, `runwayCondition: 'medium'`.
+**`maxCap = null` — no clamp applies**.
+
+Excel-verified anchor: **W=182 t, CG=20 %MAC → 23.9 KT** (sheet G7).
+Computation: `W_kilolbs = 401.2408`, T1=17.9397 (25), T2=27.3076 (20);
+CG=20 в бракете [T1, T2]; E9 = (T2−T1)/5 = 1.8736 (≥ 1, /E9 branch);
+raw = 25 − (20 − 17.9397)/1.8736 = 23.9003; ROUNDDOWN(1) = 23.9.
+
+#### Test set #8.1 · Medium at W=170 t
+
+Thresholds: T1=17.093 (25) · T2=26.292 (20) · T3=36.342 (15) · T4=46.290 (10).
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 8.1.01 | 170 | 8.0 | 25 | below-envelope |
+| 8.1.02 | 170 | 15.0 | 25 | below-envelope |
+| 8.1.03 | 170 | 17.0931328 | 25 | within-bracket (exact T1) |
+| 8.1.04 | 170 | 18.0 | 24.5 | within-bracket |
+| 8.1.05 | 170 | 20.0 | 23.4 | within-bracket |
+| 8.1.06 | 170 | 22.0 | 22.3 | within-bracket |
+| 8.1.07 | 170 | 26.29175936 | 20 | within-bracket (exact T2) |
+| 8.1.08 | 170 | 27.0 | 19.6 | within-bracket |
+| 8.1.09 | 170 | 30.0 | 18.1 | within-bracket |
+| 8.1.10 | 170 | 36.34167352 | 15 | within-bracket (exact T3) |
+| 8.1.11 | 170 | 37.0 | 14.6 | within-bracket |
+| 8.1.12 | 170 | 40.0 | 13.1 | within-bracket |
+| 8.1.13 | 170 | 46.2905576 | 10 | within-bracket (exact T4) |
+| 8.1.14 | 170 | 47.0 | 25 | above-envelope |
+
+#### Test set #8.2 · Medium at W=130 t
+
+Thresholds: T1=14.271 · T2=22.905 · T3=32.920 · T4=42.410.
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 8.2.01 | 130 | 10.0 | 25 | below-envelope |
+| 8.2.02 | 130 | 14.2712192 | 25 | within-bracket (exact T1) |
+| 8.2.03 | 130 | 15.0 | 24.5 | within-bracket |
+| 8.2.04 | 130 | 20.0 | 21.6 | within-bracket |
+| 8.2.05 | 130 | 22.90546304 | 20 | within-bracket (exact T2) |
+| 8.2.06 | 130 | 25.0 | 18.9 | within-bracket |
+| 8.2.07 | 130 | 30.0 | 16.4 | within-bracket |
+| 8.2.08 | 130 | 32.92010328 | 15 | within-bracket (exact T3) |
+| 8.2.09 | 130 | 35.0 | 13.9 | within-bracket |
+| 8.2.10 | 130 | 42.4104264 | 10 | within-bracket (exact T4) |
+| 8.2.11 | 130 | 45.0 | 25 | above-envelope |
+
+#### Test set #8.3 · Medium at W=160 t
+
+Thresholds: T1=16.388 · T2=25.445 · T3=35.486 · T4=45.321.
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 8.3.01 | 160 | 15.0 | 25 | below-envelope |
+| 8.3.02 | 160 | 16.3876544 | 25 | within-bracket (exact T1) |
+| 8.3.03 | 160 | 20.0 | 23.0 | within-bracket |
+| 8.3.04 | 160 | 25.44518528 | 20 | within-bracket (exact T2) |
+| 8.3.05 | 160 | 30.0 | 17.7 | within-bracket |
+| 8.3.06 | 160 | 35.48628096 | 15 | within-bracket (exact T3) |
+| 8.3.07 | 160 | 40.0 | 12.7 | within-bracket |
+| 8.3.08 | 160 | 45.3205248 | 10 | within-bracket (exact T4) |
+
+#### Test set #8.4 · Medium user-anchor (W=182 t)
+
+Thresholds: T1=17.940 · T2=27.308 · T3=37.368 · T4=47.455.
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 8.4.01 | 182 | 10.0 | 25 | below-envelope |
+| 8.4.02 | 182 | 20.0 | **23.9** | within-bracket (Excel-verified anchor) |
+| 8.4.03 | 182 | 25.0 | 21.2 | within-bracket |
+| 8.4.04 | 182 | 30.0 | 18.6 | within-bracket |
+| 8.4.05 | 182 | 35.0 | 16.1 | within-bracket |
+| 8.4.06 | 182 | 48.0 | 25 | above-envelope |
+
+Total: 14+11+8+6 = **39 case** для Medium; плюс standalone anchor,
+1-decimal precision regression, два cap-absence теста, cross-condition
+ordering (Dry 37 ≥ Good 33 ≥ MediumToGood 23 ≥ Medium 18.1 at
+W=170/CG=30) и metadata sanity. Файл:
+`src/features/crosswind/__tests__/medium.test.ts`.
 
 ---
 

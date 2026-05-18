@@ -1074,7 +1074,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                       {
                         "busy": undefined,
                         "checked": undefined,
-                        "disabled": true,
+                        "disabled": false,
                         "expanded": undefined,
                         "selected": false,
                       }
@@ -1111,9 +1111,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                           "paddingVertical": 4,
                         },
                         null,
-                        {
-                          "opacity": 0.5,
-                        },
+                        null,
                       ]
                     }
                     testID="crosswind-runway-medium"
@@ -1123,7 +1121,7 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                       style={
                         [
                           {
-                            "color": "#6E7681",
+                            "color": "#8B949E",
                             "fontFamily": "System",
                             "fontSize": 10,
                             "fontWeight": "500",
@@ -2437,7 +2435,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                       {
                         "busy": undefined,
                         "checked": undefined,
-                        "disabled": true,
+                        "disabled": false,
                         "expanded": undefined,
                         "selected": false,
                       }
@@ -2474,9 +2472,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                           "paddingVertical": 4,
                         },
                         null,
-                        {
-                          "opacity": 0.5,
-                        },
+                        null,
                       ]
                     }
                     testID="crosswind-runway-medium"
@@ -2486,7 +2482,7 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                       style={
                         [
                           {
-                            "color": "#6B7280",
+                            "color": "#4B5563",
                             "fontFamily": "System",
                             "fontSize": 10,
                             "fontWeight": "500",
