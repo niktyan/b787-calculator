@@ -33,8 +33,8 @@ variants»):
 | `bracketedLinear` | Dry (RWYCC 6), Good (RWYCC 5), MediumToGood (RWYCC 4) | **Active** — описан ниже |
 | `variableSlopeBracketed` | Medium (RWYCC 3) | **Active** (PR 5) — описан ниже |
 | `cgOnlyPiecewise` | MediumToPoor (RWYCC 2) | **Active** (PR 6) — описан ниже |
-| `constant` | Poor (RWYCC 1) | Stub (PR 7) |
-| `notAllowed` | RWYCC 0 | Stub (PR 8) |
+| `constant` | Poor (RWYCC 1) | **Active** (PR 7) — описан ниже |
+| `notAllowed` | RWYCC 0 | Intentional non-implementation (см. Open questions) |
 
 Остальные секции этого документа описывают **`bracketedLinear`**. Когда
 PR 5/6/7/8 активируют свои стратегии, к этому документу добавятся
@@ -461,6 +461,104 @@ weight-independence regression, full 5-condition cross-condition
 ordering (Dry 34 ≥ Good 32 ≥ MediumToGood 21 ≥ Medium 17.1 ≥
 MediumToPoor 13.9 at W=170/CG=32) и metadata sanity. Файл:
 `src/features/crosswind/__tests__/medium-to-poor.test.ts`.
+
+---
+
+## ConstantStrategy (PR 7)
+
+Четвёртая активная strategy, **simplest of all**: returns a single
+constant value regardless of input. No formula, no conditional,
+no XLOOKUP, no IFNA, no maxCap. Most data-driven strategy in the
+module — `params` consists of a single number.
+
+### Алгоритм
+
+```
+calculate(_input): { value: params.value, kind: 'ok' }
+```
+
+Шаги 0 (валидация data-availability), 5 (metadata) и 6 (return)
+формально присутствуют для interface uniformity, но шаги 1–4
+(weight conversion, threshold computation, XLOOKUP, interpolation)
+**отсутствуют**. `input.weightTons` и `input.cgPercent` принимаются
+для interface symmetry но не читаются.
+
+`makeCrosswindKnots(params.value)` всё-таки применяется как
+defence in depth — surfaces out-of-band values (negative,
+> demonstrated 40 KT) as `CalculationFailed`.
+
+### Отличия от прочих стратегий
+
+| Аспект | bracketedLinear | variableSlopeBracketed | cgOnlyPiecewise | constant |
+|--------|-----------------|------------------------|------------------|----------|
+| Brackets | Sorted array | Sorted array | None | None |
+| Formula | Excel-quirk | Conditional /E9 \| ·E9 | Plateau-decreasing | None — literal |
+| Weight | `slope·W` | `slope_i·W` | Ignored | Ignored |
+| CG | XLOOKUP | XLOOKUP | Conditional | Ignored |
+| maxCap | Optional | Optional | None (self-cap) | None |
+| Decimals | 0 \| 1 | 0 \| 1 | 0 \| 1 | N/A (integer constant) |
+| Active for | Dry, Good, MediumToGood | Medium | MediumToPoor | Poor |
+
+### Poor (`byAircraft.b787_8.poor`, RWYCC 1)
+
+Single-param dataset per Excel "Poor 788" sheet G7 (literal value
+10) and Q5 user decision:
+
+| Константа | Значение | Комментарий |
+|-----------|----------|-------------|
+| value | `10` KT | Conservative simplification of FCOM RWYCC 1 row (alternating 15/10 pattern) |
+
+**Observable output:** ровно `10` KT для любого валидного input.
+
+`calculationStrategy` metadata reuses `'within-bracket'` (semantic
+stretch matching PR 6 convention — enum union не расширяется per
+user direction).
+
+### Test set #10 · Poor (RWYCC 1)
+
+Все cases фиксируют `aircraft: 'b787_8'`, `phase: 'takeoff'`,
+`runwayCondition: 'poor'`. **Output is always 10 KT regardless
+of inputs**.
+
+#### Test set #10.1 · Anchor + sanity
+
+| # | Weight (t) | CG (%MAC) | Expected (KT) | Strategy |
+|---|------------|-----------|---------------|----------|
+| 10.1.01 | 182 | 20.0 | 10 | within-bracket |
+| 10.1.02 | 170 | 30.0 | 10 | within-bracket |
+| 10.1.03 | 110 | 10.0 | 10 | within-bracket |
+
+#### Test set #10.2 · Full input-independence matrix
+
+**Defining property test.** Single jest case asserts that all
+25 combinations `(W ∈ {110, 130, 150, 170, 200}) × (CG ∈
+{10, 20, 30, 40, 50})` produce 10 KT. Implementation uses
+`expect(outputs).toEqual(Array.from({length:25}, () => 10))`.
+
+#### Cross-condition ordering test
+
+Full 6-condition chain at W=170/CG=30:
+
+| Condition | Expected (KT) |
+|-----------|---------------|
+| Dry | 37 |
+| Good | 33 |
+| MediumToGood | 23 |
+| Medium | 18.1 |
+| MediumToPoor | 15 (plateau boundary — CG=30 exactly) |
+| Poor | 10 |
+
+Note: MediumToPoor at CG=30 is **15** (plateau boundary value),
+NOT 13.9 (which is the W=182/CG=32 anchor — different case).
+Monotonic invariant `Dry ≥ Good ≥ MTG ≥ Med ≥ MTP ≥ Poor`
+asserted explicitly across all six.
+
+Total: 3+1+1 = **5 case** в таблице; плюс standalone anchor,
+full 6-condition ordering, metadata sanity. Файл:
+`src/features/crosswind/__tests__/poor.test.ts`.
+
+After PR 7 ALL 6 RWYCC conditions для B787-8 active. См.
+"Open questions" о RWYCC 0.
 
 ---
 
@@ -1205,6 +1303,7 @@ UI **никогда не показывает число**, если есть л
 
 1. Точные значения `envelope` (weight 110–172 t, CG 8–35 %MAC) — отложены, см. `04-domain-model.md`. Если в Phase B они изменятся — тест-таблица под Test Set #4 пересчитывается.
 2. Должен ли `metadata.calculationStrategy` отображаться в UI явно, или это только debug-информация? Решение: в MVP — debug-only, не показываем пользователю. В Phase 2+ может появиться в expanded-mode.
+3. **RWYCC 0 (TAKE OFF NOT ALLOWED) — intentional non-implementation для MVP.** Per user direction (post-PR 7): RWYCC 0 — это **operational prohibition, not a calculation**. Соответствующего runway-condition литерала в union типов **нет** и `byAircraft.<aircraft>.<RWYCC0>` записи в bundled data **не должно быть**. Strategy stub `notAllowed` остаётся в discriminated union на уровне типов (для exhaustiveness), но в schema его params отвергается — то есть данные с этим discriminator-ом не проходят validation. Post-launch evaluation может revisit это решение (например, если UX-исследования покажут что пилоты ожидают увидеть явное "TAKE OFF NOT ALLOWED" сообщение при попытке выбрать RWYCC 0). Текущая позиция: pilot-decision-tree выводит RWYCC 0 → "do not take off" вне приложения, calculator-у не нужно знать об этом состоянии.
 
 ---
 
