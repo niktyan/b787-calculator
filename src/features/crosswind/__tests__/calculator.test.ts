@@ -69,15 +69,17 @@ function runCase(c: Case): void {
 
 describe('Test Set #1 · Weight = 170 t', () => {
   // Thresholds: T1=27.6876, T2=30.8876, T3=34.3876, T4=37.8876, T5=41.3876
+  // Cases whose raw result > 37 are clamped to 37 by Dry maxCap (PR 2,
+  // per FCOM Tab 2.29.2a; Excel G8: =IF(G7>37,37,G7)).
   const cases: readonly Case[] = [
-    { id: '1.01', weight: 170, cg: 8.0, expected: 40, strategy: 'below-envelope' },
-    { id: '1.02', weight: 170, cg: 15.0, expected: 40, strategy: 'below-envelope' },
-    { id: '1.03', weight: 170, cg: 25.0, expected: 40, strategy: 'below-envelope' },
-    { id: '1.04', weight: 170, cg: 27.0, expected: 40, strategy: 'below-envelope' },
-    { id: '1.05', weight: 170, cg: 27.68763904, expected: 40, strategy: 'within-bracket' },
-    { id: '1.06', weight: 170, cg: 27.7, expected: 39, strategy: 'within-bracket' },
-    { id: '1.07', weight: 170, cg: 28.0, expected: 39, strategy: 'within-bracket' },
-    { id: '1.08', weight: 170, cg: 30.0, expected: 38, strategy: 'within-bracket' },
+    { id: '1.01', weight: 170, cg: 8.0, expected: 37, strategy: 'below-envelope' },
+    { id: '1.02', weight: 170, cg: 15.0, expected: 37, strategy: 'below-envelope' },
+    { id: '1.03', weight: 170, cg: 25.0, expected: 37, strategy: 'below-envelope' },
+    { id: '1.04', weight: 170, cg: 27.0, expected: 37, strategy: 'below-envelope' },
+    { id: '1.05', weight: 170, cg: 27.68763904, expected: 37, strategy: 'within-bracket' },
+    { id: '1.06', weight: 170, cg: 27.7, expected: 37, strategy: 'within-bracket' },
+    { id: '1.07', weight: 170, cg: 28.0, expected: 37, strategy: 'within-bracket' },
+    { id: '1.08', weight: 170, cg: 30.0, expected: 37, strategy: 'within-bracket' },
     { id: '1.09', weight: 170, cg: 30.886, expected: 37, strategy: 'within-bracket' },
     { id: '1.10', weight: 170, cg: 30.88763904, expected: 35, strategy: 'within-bracket' },
     { id: '1.11', weight: 170, cg: 31.0, expected: 34, strategy: 'within-bracket' },
@@ -92,8 +94,8 @@ describe('Test Set #1 · Weight = 170 t', () => {
     { id: '1.20', weight: 170, cg: 38.0, expected: 24, strategy: 'within-bracket' },
     { id: '1.21', weight: 170, cg: 40.0, expected: 23, strategy: 'within-bracket' },
     { id: '1.22', weight: 170, cg: 41.38763904, expected: 20, strategy: 'within-bracket' },
-    { id: '1.23', weight: 170, cg: 42.0, expected: 40, strategy: 'above-envelope' },
-    { id: '1.24', weight: 170, cg: 50.0, expected: 40, strategy: 'above-envelope' },
+    { id: '1.23', weight: 170, cg: 42.0, expected: 37, strategy: 'above-envelope' },
+    { id: '1.24', weight: 170, cg: 50.0, expected: 37, strategy: 'above-envelope' },
   ];
   cases.forEach((c) => {
     it(`case ${c.id}: W=${c.weight}, CG=${c.cg} → ${c.expected} KT (${c.strategy})`, () => {
@@ -104,17 +106,18 @@ describe('Test Set #1 · Weight = 170 t', () => {
 
 describe('Test Set #2 · Weight = 130 t', () => {
   // Thresholds: T1=22.6082, T2=25.8082, T3=29.3082, T4=32.8082, T5=36.3082
+  // Cases whose raw result > 37 are clamped to 37 by Dry maxCap (PR 2).
   const cases: readonly Case[] = [
-    { id: '2.01', weight: 130, cg: 10.0, expected: 40, strategy: 'below-envelope' },
-    { id: '2.02', weight: 130, cg: 22.6, expected: 40, strategy: 'below-envelope' },
-    { id: '2.03', weight: 130, cg: 22.60819456, expected: 40, strategy: 'within-bracket' },
-    { id: '2.04', weight: 130, cg: 23.0, expected: 39, strategy: 'within-bracket' },
-    { id: '2.05', weight: 130, cg: 25.0, expected: 38, strategy: 'within-bracket' },
+    { id: '2.01', weight: 130, cg: 10.0, expected: 37, strategy: 'below-envelope' },
+    { id: '2.02', weight: 130, cg: 22.6, expected: 37, strategy: 'below-envelope' },
+    { id: '2.03', weight: 130, cg: 22.60819456, expected: 37, strategy: 'within-bracket' },
+    { id: '2.04', weight: 130, cg: 23.0, expected: 37, strategy: 'within-bracket' },
+    { id: '2.05', weight: 130, cg: 25.0, expected: 37, strategy: 'within-bracket' },
     { id: '2.06', weight: 130, cg: 27.0, expected: 34, strategy: 'within-bracket' },
     { id: '2.07', weight: 130, cg: 30.0, expected: 29, strategy: 'within-bracket' },
     { id: '2.08', weight: 130, cg: 35.0, expected: 23, strategy: 'within-bracket' },
     { id: '2.09', weight: 130, cg: 36.30819456, expected: 20, strategy: 'within-bracket' },
-    { id: '2.10', weight: 130, cg: 38.0, expected: 40, strategy: 'above-envelope' },
+    { id: '2.10', weight: 130, cg: 38.0, expected: 37, strategy: 'above-envelope' },
   ];
   cases.forEach((c) => {
     it(`case ${c.id}: W=${c.weight}, CG=${c.cg} → ${c.expected} KT (${c.strategy})`, () => {
@@ -125,10 +128,11 @@ describe('Test Set #2 · Weight = 130 t', () => {
 
 describe('Test Set #3 · Weight = 160 t', () => {
   // Thresholds: T1=26.4178, T2=29.6178, T3=33.1178, T4=36.6178, T5=40.1178
+  // Cases whose raw result > 37 are clamped to 37 by Dry maxCap (PR 2).
   const cases: readonly Case[] = [
-    { id: '3.01', weight: 160, cg: 20.0, expected: 40, strategy: 'below-envelope' },
-    { id: '3.02', weight: 160, cg: 26.41777792, expected: 40, strategy: 'within-bracket' },
-    { id: '3.03', weight: 160, cg: 27.0, expected: 39, strategy: 'within-bracket' },
+    { id: '3.01', weight: 160, cg: 20.0, expected: 37, strategy: 'below-envelope' },
+    { id: '3.02', weight: 160, cg: 26.41777792, expected: 37, strategy: 'within-bracket' },
+    { id: '3.03', weight: 160, cg: 27.0, expected: 37, strategy: 'within-bracket' },
     { id: '3.04', weight: 160, cg: 30.0, expected: 34, strategy: 'within-bracket' },
     { id: '3.05', weight: 160, cg: 33.0, expected: 32, strategy: 'within-bracket' },
     { id: '3.06', weight: 160, cg: 35.0, expected: 28, strategy: 'within-bracket' },
@@ -168,11 +172,12 @@ describe('Excel-equivalent peculiarities (regression)', () => {
     if (!r1.ok || !r2.ok) {
       throw new Error('expected both to succeed');
     }
+    // Pre-cap raw: 37.95 → 37 vs exactly 35. Post-cap (≤37) unchanged.
     expect(r1.value.maxCrosswindKnots).toBe(37);
     expect(r2.value.maxCrosswindKnots).toBe(35);
   });
 
-  it('1.23 — IFNA-fallback returns 40 above all thresholds', () => {
+  it('1.23 — IFNA-fallback above all thresholds returns brackets[0] (40), then capped to 37', () => {
     const { w, cg } = vo(170, 42.0);
     const r = calculateCrosswindLimit(
       { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: RUNWAY },
@@ -181,12 +186,20 @@ describe('Excel-equivalent peculiarities (regression)', () => {
     if (!r.ok) {
       throw new Error('expected success');
     }
-    expect(r.value.maxCrosswindKnots).toBe(40);
+    // IFNA-fallback raw is 40 (brackets[0].crosswindKnots), clamped to
+    // maxCap=37 per FCOM Tab 2.29.2a. calculationStrategy still reports
+    // 'above-envelope' (cap is applied post-strategy, does not change
+    // the branch label).
+    expect(r.value.maxCrosswindKnots).toBe(37);
     expect(r.value.metadata.calculationStrategy).toBe('above-envelope');
   });
 
-  it('uses Math.floor (ROUNDDOWN) — 39.992 → 39 not 40', () => {
-    const { w, cg } = vo(170, 27.7);
+  it('uses Math.floor (ROUNDDOWN) — raw 33.521 → 33 not 34', () => {
+    // W=170, CG=33: raw ≈ 33.521. ROUNDDOWN(33.521, 0) = 33; cap=37 does
+    // not trigger (33 ≤ 37), so the floor behavior is observable. The
+    // prior W=170/CG=27.7 case (raw 39.992 → 39) is now masked by the
+    // cap and no longer exercises ROUNDDOWN directly.
+    const { w, cg } = vo(170, 33.0);
     const r = calculateCrosswindLimit(
       { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: RUNWAY },
       data,
@@ -194,7 +207,32 @@ describe('Excel-equivalent peculiarities (regression)', () => {
     if (!r.ok) {
       throw new Error('expected success');
     }
-    expect(r.value.maxCrosswindKnots).toBe(39);
+    expect(r.value.maxCrosswindKnots).toBe(33);
+  });
+});
+
+describe('maxCap mechanism · Dry cap=37 (PR 2)', () => {
+  // Integration check that the bundled Dry maxCap=37 clamps a real-Dry
+  // case at an Excel-verified point. Boundary semantics (raw 37.001 →
+  // 37 inclusive) and null-cap escape hatch are covered by direct unit
+  // tests in `bracketed-linear-strategy.test.ts` → describe `Cap
+  // mechanism (PR 2 boundary)`.
+
+  it('Excel-verified Dry case: W=170, CG=28 → raw 39 (floored) → cap clamps to 37', () => {
+    // Pre-PR 2 this case produced 39 (case 1.07 raw ≈ 39.800). Post-cap:
+    // floor 39 > 37 → clamped to 37, mirroring Excel formula G8 behavior
+    // on a real production input. The 'within-bracket' branch label is
+    // preserved — cap is applied post-strategy.
+    const { w, cg } = vo(170, 28);
+    const r = calculateCrosswindLimit(
+      { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: RUNWAY },
+      data,
+    );
+    if (!r.ok) {
+      throw new Error('expected success');
+    }
+    expect(r.value.maxCrosswindKnots).toBe(37);
+    expect(r.value.metadata.calculationStrategy).toBe('within-bracket');
   });
 });
 

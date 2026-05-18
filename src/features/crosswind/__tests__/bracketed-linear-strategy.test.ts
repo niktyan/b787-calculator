@@ -130,6 +130,46 @@ describe('maxCap behavior', () => {
   });
 });
 
+describe('Cap mechanism (PR 2 boundary)', () => {
+  // These cover the cap mechanism precisely. The general "maxCap
+  // behavior" block above covers typical clamps; these target the
+  // inclusive boundary at 37 and the explicit null-cap escape hatch.
+
+  it('boundary: synthetic raw 37.001 → floor 37 → cap=37 NOT triggered (37 ≤ cap)', () => {
+    // Weight-independent params (slope=0) so thresholds equal intercepts.
+    // Bracket [T1=10, T2=15], F7=40, E9=(15-10)/5=1.
+    // raw = 40 - (cg - 10) * 1 = 40 - (cg - 10).
+    // For raw = 37.001 → cg = 12.999. ROUNDDOWN(37.001,0)=37; cap=37 is
+    // inclusive (kicks in only when result > 37) so output stays at 37.
+    const params: BracketedLinearParams = {
+      slope: 0,
+      brackets: [
+        { crosswindKnots: 40, intercept: 10 },
+        { crosswindKnots: 35, intercept: 15 },
+        { crosswindKnots: 30, intercept: 20 },
+        { crosswindKnots: 25, intercept: 25 },
+        { crosswindKnots: 20, intercept: 30 },
+      ],
+      maxCap: 37,
+      decimals: 0,
+    };
+    const r = createBracketedLinearStrategy(params, CONTEXT).calculate(input(170, 12.999));
+    if (!r.ok) throw new Error('expected ok');
+    expect(r.value.maxCrosswindKnots).toBe(37);
+  });
+
+  it('maxCap=null leaves raw output unchanged (synthetic Dry-shape, raw 40 → 40)', () => {
+    // Explicit-null variant of the maxCap=null test, exercising the same
+    // Dry-shape brackets but with the cap mechanism opted out. PR 5+
+    // MediumToGood will ship with maxCap=null.
+    const noCap: BracketedLinearParams = { ...DRY_PARAMS, maxCap: null };
+    const r = createBracketedLinearStrategy(noCap, CONTEXT).calculate(input(170, 8));
+    if (!r.ok) throw new Error('expected ok');
+    expect(r.value.maxCrosswindKnots).toBe(40);
+    expect(r.value.metadata.calculationStrategy).toBe('below-envelope');
+  });
+});
+
 describe('decimals (ROUNDDOWN precision)', () => {
   it('decimals=0 floors to integer (W=170, CG=30 → 38, raw ≈ 38.520)', () => {
     const r = createBracketedLinearStrategy(DRY_PARAMS, CONTEXT).calculate(input(170, 30));

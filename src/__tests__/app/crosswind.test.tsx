@@ -100,11 +100,15 @@ describe('Crosswind route', () => {
     expect(() => getByText('crosswind.sourceChip')).toThrow();
   });
 
-  it('above-envelope: W=170, CG=42 → 40 KT (Excel quirk)', () => {
+  it('above-envelope: W=170, CG=42 → 37 KT (Excel IFNA quirk, then capped at 37 per FCOM Tab 2.29.2a)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.changeText(getByTestId('crosswind-weight-input'), '170');
     fireEvent.changeText(getByTestId('crosswind-cg-input'), '42');
-    expect(getByText('40')).toBeTruthy();
+    // Pre-PR 2 the IFNA-fallback produced 40 KT (Excel quirk preserved).
+    // PR 2 adds the Dry maxCap=37, which clamps the 40 down to 37. The
+    // 'above-envelope' branch label is unchanged — the cap is applied
+    // after strategy resolution.
+    expect(getByText('37')).toBeTruthy();
   });
 
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {

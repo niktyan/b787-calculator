@@ -359,7 +359,7 @@ Bundled-файл — **один на phase**, ключующий lookup-данн
             { "crosswindKnots": 20, "intercept": 19.8 }
           ],
           "slope": 0.0576,
-          "maxCap": null,
+          "maxCap": 37,
           "decimals": 0
         },
         "metadata": {
@@ -390,7 +390,7 @@ Bundled-файл — **один на phase**, ключующий lookup-данн
 | `byAircraft.<aircraft>.<condition>.params` | object | Содержимое зависит от `strategyType`. Для `bracketedLinear`: `{ brackets[5], slope, maxCap, decimals }`. |
 | `byAircraft.<aircraft>.<condition>.params.brackets[]` | `{ crosswindKnots, intercept }` | 5 брекетов, отсортированы по убыванию `crosswindKnots` (40, 35, 30, 25, 20) и возрастанию `intercept`. |
 | `byAircraft.<aircraft>.<condition>.params.slope` | number | Общий наклон threshold-линий по весу (kilolbs). Должен быть ≠ 0. |
-| `byAircraft.<aircraft>.<condition>.params.maxCap` | number ⎮ null | Верхний clamp результата. `null` — без clamp. Для Dry (PR 1) — `null`; PR 2 переключит на `37`. |
+| `byAircraft.<aircraft>.<condition>.params.maxCap` | number ⎮ null | Верхний clamp результата. `null` — без clamp; число — clamp применяется после ROUNDDOWN при `result > maxCap` (cap inclusive). Для Dry — `37` (PR 2, per FCOM Tab 2.29.2a + Excel G8 `IF(G7>37,37,G7)`). Будущие conditions: Good `37` (планируется), MediumToGood/Medium/MediumToPoor/Poor — TBD (ожидается `null`). |
 | `byAircraft.<aircraft>.<condition>.params.decimals` | `0` ⎮ `1` | Точность ROUNDDOWN финального значения. Dry — `0` (целые KT). |
 | `byAircraft.<aircraft>.<condition>.metadata` | object | `createdAt`, `validatedBy`, `referenceDocument`, `notes` — описательно, читается About-экраном. |
 
