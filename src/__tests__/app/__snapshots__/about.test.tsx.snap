@@ -619,7 +619,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
               ]
             }
           >
-            Boeing 787 FCOM · 2026-05-19.002
+            Boeing 787 FCOM · 2026-05-19.003
           </Text>
         </View>
         <View
@@ -1715,7 +1715,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
               ]
             }
           >
-            Boeing 787 FCOM · 2026-05-19.002
+            Boeing 787 FCOM · 2026-05-19.003
           </Text>
         </View>
         <View
