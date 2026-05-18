@@ -125,11 +125,16 @@ export interface CGOnlyPiecewiseParams {
 }
 
 /**
- * Future PR 7 — Poor (RWYCC 1).
- * Single constant value, independent of weight and CG.
+ * PR 7 — Poor (RWYCC 1). Active in PR 7.
+ *
+ * The simplest strategy in the module: returns a single constant
+ * crosswind limit independent of weight, CG, or any other input.
+ * Per Excel "Poor 788" sheet G7 (literal value 10) and Q5 user
+ * decision: full FCOM RWYCC 1 table shows alternating 15/10 values;
+ * Excel uses the conservative bound 10 uniformly.
  */
 export interface ConstantParams {
-  readonly value: number;
+  readonly value: number; // KT — Poor ships value=10
 }
 
 /**
