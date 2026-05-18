@@ -288,10 +288,26 @@ describe('Calculator metadata', () => {
     expect(r.error.reason).toBe('phase-mismatch');
   });
 
-  it.each(['poor'] as const)(
-    'returns DataNotAvailable.condition-not-implemented for not-yet-active condition %s',
-    (condition) => {
-      const { w, cg } = vo(170, 32);
+  it('all 6 active RWYCC conditions return a computed result for valid B787-8 inputs (PR 7 cross-cutting)', () => {
+    // Replaces the now-empty "non-active condition" it.each loop
+    // (former list `['poor']` became empty when PR 7 promoted Poor).
+    // Converts the negative assertion into a positive cross-cutting
+    // one: every condition in the active RWYCC scale must resolve
+    // to a calculation success — no `DataNotAvailable` leakage.
+    // RWYCC 0 is intentionally absent from the union (it's handled
+    // as an operational prohibition outside the bundled byAircraft
+    // map; user direction: do not add a runway-condition literal
+    // for it in PR 7).
+    const conditions: readonly RunwayCondition[] = [
+      'dry',
+      'good',
+      'mediumToGood',
+      'medium',
+      'mediumToPoor',
+      'poor',
+    ];
+    const { w, cg } = vo(170, 30);
+    for (const condition of conditions) {
       const r = calculateCrosswindLimit(
         {
           weightTons: w,
@@ -302,14 +318,13 @@ describe('Calculator metadata', () => {
         },
         data,
       );
-      if (r.ok) {
-        throw new Error('expected error');
+      if (!r.ok) {
+        throw new Error(`condition ${condition} unexpectedly errored: ${JSON.stringify(r.error)}`);
       }
-      expect(r.error.kind).toBe('DataNotAvailable');
-      if (r.error.kind !== 'DataNotAvailable') {
-        throw new Error('expected DataNotAvailable');
-      }
-      expect(r.error.reason).toBe('condition-not-implemented');
-    },
-  );
+      // Verify the result reports the correct aircraft so the
+      // assertion isn't just "didn't throw" — it's "produced a
+      // properly-attributed value".
+      expect(r.value.metadata.aircraft).toBe(AIRCRAFT);
+    }
+  });
 });

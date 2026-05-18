@@ -91,15 +91,22 @@ const cgOnlyPiecewiseDatasetSchema = z.object({
   params: cgOnlyPiecewiseParamsSchema,
 });
 
-// --- Future strategies (PR 7/8): declared as stub branches that
-// reject all current data. These keep the discriminated union exhaustive
-// so adding new strategyType literals in future PRs is purely additive. ---
+// --- Active strategy: constant (PR 7) ---
 
-const futureNeverParamsSchema = z.object({}).strict();
+const constantParamsSchema = z.object({
+  value: z.number().finite().positive(),
+});
+
 const constantDatasetSchema = z.object({
   strategyType: z.literal('constant'),
-  params: futureNeverParamsSchema,
+  params: constantParamsSchema,
 });
+
+// --- Future strategy (PR 8): declared as a stub branch that rejects
+// all current data. Keeps the discriminated union exhaustive so
+// adding the remaining strategyType literal in PR 8 is purely additive. ---
+
+const futureNeverParamsSchema = z.object({}).strict();
 const notAllowedDatasetSchema = z.object({
   strategyType: z.literal('notAllowed'),
   params: futureNeverParamsSchema,
@@ -133,6 +140,9 @@ export type VariableSlopeBracketedDataset = z.infer<typeof variableSlopeBrackete
   readonly metadata: z.infer<typeof datasetMetadataSchema>;
 };
 export type CGOnlyPiecewiseDataset = z.infer<typeof cgOnlyPiecewiseDatasetSchema> & {
+  readonly metadata: z.infer<typeof datasetMetadataSchema>;
+};
+export type ConstantDataset = z.infer<typeof constantDatasetSchema> & {
   readonly metadata: z.infer<typeof datasetMetadataSchema>;
 };
 
@@ -236,11 +246,23 @@ function checkVariableSlopeBracketedIntegrity(
   return null;
 }
 
+function checkConstantIntegrity(path: string, dataset: ConstantDataset): string | null {
+  // The schema-level `.positive()` constraint already rejects
+  // value ≤ 0, but the integrity check is kept for symmetry with
+  // the other strategy integrity functions and as a stable place
+  // for future business-rule additions (e.g., max-allowed-value
+  // sanity bound).
+  if (dataset.params.value <= 0) {
+    return `${path}.params.value must be positive`;
+  }
+  return null;
+}
+
 function checkOneDataset(path: string, dataset: CrosswindDataset): string | null {
-  // Strategy-typed dispatch. Future strategies (constant / notAllowed)
-  // will get their cases here when PR 7/8 light them up; the schema
-  // rejects them at parse-time so reaching this function for those
-  // discriminator values is currently unreachable.
+  // Strategy-typed dispatch. Future strategy (notAllowed) will get
+  // its case here when PR 8 lights it up; the schema rejects it at
+  // parse-time so reaching this function for that discriminator
+  // value is currently unreachable.
   if (dataset.strategyType === 'bracketedLinear') {
     return checkBracketedLinearIntegrity(path, dataset);
   }
@@ -249,6 +271,9 @@ function checkOneDataset(path: string, dataset: CrosswindDataset): string | null
   }
   if (dataset.strategyType === 'cgOnlyPiecewise') {
     return checkCGOnlyPiecewiseIntegrity(path, dataset);
+  }
+  if (dataset.strategyType === 'constant') {
+    return checkConstantIntegrity(path, dataset);
   }
   return null;
 }

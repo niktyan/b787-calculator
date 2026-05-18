@@ -52,7 +52,7 @@ const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
   { value: 'mediumToGood', label: 'Medium to Good' },
   { value: 'medium', label: 'Medium' },
   { value: 'mediumToPoor', label: 'Medium to Poor' },
-  { value: 'poor', label: 'Poor', disabled: true },
+  { value: 'poor', label: 'Poor' },
 ];
 
 interface FormSizing {
