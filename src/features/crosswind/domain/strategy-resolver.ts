@@ -9,13 +9,15 @@
  *       02_Specification/module-contracts/crosswind.md § "Public API".
  *
  * Active strategies: `bracketedLinear` (PR 1 — Dry/Good/MediumToGood),
- * `variableSlopeBracketed` (PR 5 — Medium). Remaining (cgOnlyPiecewise /
- * constant / notAllowed) are stubbed in the schema and unreachable here.
+ * `variableSlopeBracketed` (PR 5 — Medium), `cgOnlyPiecewise`
+ * (PR 6 — MediumToPoor). Remaining (constant / notAllowed) are
+ * stubbed in the schema and unreachable here.
  */
 
 import type { CrosswindDataFile } from '../data/schema';
 
 import { createBracketedLinearStrategy } from './strategies/bracketed-linear';
+import { createCGOnlyPiecewiseStrategy } from './strategies/cg-only-piecewise';
 import { createVariableSlopeBracketedStrategy } from './strategies/variable-slope-bracketed';
 import type { StrategyResolution } from './strategy';
 import type { Aircraft, RunwayCondition } from './types';
@@ -55,10 +57,23 @@ export function resolveStrategy(
     };
   }
 
-  // Future strategies (cgOnlyPiecewise / constant / notAllowed) — their
-  // schemas currently reject all data at parse-time, so this branch is
-  // unreachable. Returning condition-not-implemented matches the
-  // user-facing semantics if it were somehow reached (e.g. a future
-  // data drop ahead of the corresponding strategy implementation).
+  if (dataset.strategyType === 'cgOnlyPiecewise') {
+    return {
+      kind: 'strategy',
+      // CGOnlyPiecewiseContext omits tonsToKilolbsFactor — the strategy
+      // is weight-independent and does not need the conversion factor.
+      strategy: createCGOnlyPiecewiseStrategy(dataset.params, {
+        aircraft: context.aircraft,
+        dataVersion: context.dataVersion,
+        referenceDocument: context.referenceDocument,
+      }),
+    };
+  }
+
+  // Future strategies (constant / notAllowed) — their schemas currently
+  // reject all data at parse-time, so this branch is unreachable.
+  // Returning condition-not-implemented matches the user-facing
+  // semantics if it were somehow reached (e.g. a future data drop
+  // ahead of the corresponding strategy implementation).
   return { kind: 'no-lookup-data', reason: 'condition-not-implemented' };
 }

@@ -175,6 +175,40 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
     expect(r.error.kind).toBe('CorruptedDataBundle');
   });
 
+  it('cgOnlyPiecewise: zero slopeDivisor → CorruptedDataBundle (PR 6)', () => {
+    // Inject a malformed MediumToPoor-shape dataset with slopeDivisor=0
+    // so the per-strategy integrity check fires.
+    const corrupted = withCorruption((raw) => {
+      const byAircraft = raw['byAircraft'] as Record<string, Record<string, unknown>>;
+      const entry = byAircraft['b787_8'];
+      if (entry === undefined) throw new Error('expected b787_8 entry');
+      entry['mediumToPoor'] = {
+        strategyType: 'cgOnlyPiecewise',
+        params: {
+          plateauValue: 15,
+          cgThreshold: 30,
+          slopeDivisor: 0, // <-- zero, must be rejected
+          decimals: 1,
+        },
+        metadata: {
+          createdAt: '2026-05-19',
+          validatedBy: 'active-line-pilots',
+          referenceDocument: 'Boeing 787 FCOM',
+          notes: 'test fixture',
+        },
+      };
+      return raw;
+    });
+    const repo = createCrosswindRepository({ raw: corrupted });
+    const r = repo.load();
+    expect(r.ok).toBe(false);
+    if (r.ok) {
+      throw new Error('expected error');
+    }
+    expect(r.error.kind).toBe('CorruptedDataBundle');
+    expect(r.error.details).toMatch(/slopeDivisor/);
+  });
+
   it('variableSlopeBracketed: zero-slope bracket → CorruptedDataBundle (PR 5)', () => {
     // Inject a malformed Medium-shape dataset directly so the per-bracket
     // slope=0 integrity check fires regardless of which condition holds it.
