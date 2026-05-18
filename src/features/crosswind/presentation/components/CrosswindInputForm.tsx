@@ -49,7 +49,7 @@ const AIRCRAFT_OPTIONS: readonly SegmentedControlOption<AircraftVariant>[] = [
 const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
   { value: 'dry', label: 'Dry' },
   { value: 'good', label: 'Good' },
-  { value: 'mediumToGood', label: 'Medium to Good', disabled: true },
+  { value: 'mediumToGood', label: 'Medium to Good' },
   { value: 'medium', label: 'Medium', disabled: true },
   { value: 'mediumToPoor', label: 'Medium to Poor', disabled: true },
   { value: 'poor', label: 'Poor', disabled: true },
