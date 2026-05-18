@@ -188,6 +188,35 @@ describe('Crosswind route', () => {
     expect(segment.props.accessibilityState.disabled).toBe(false);
   });
 
+  it('Poor runway selection: W=182, CG=32 → 10 KT (PR 7 anchor, input-independent)', () => {
+    const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
+    fireEvent.press(getByTestId('crosswind-runway-poor'));
+    fireEvent.changeText(getByTestId('crosswind-weight-input'), '182');
+    fireEvent.changeText(getByTestId('crosswind-cg-input'), '32');
+    // The constant strategy ignores all input — same value=10
+    // regardless of W or CG. Verifies the strategy resolves
+    // correctly and the ResultPanel renders the integer constant
+    // without dropping to a different precision/format.
+    expect(getByText('10')).toBeTruthy();
+  });
+
+  it('Poor runway: input-independence check (W=110/CG=10 also → 10 KT)', () => {
+    const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
+    fireEvent.press(getByTestId('crosswind-runway-poor'));
+    fireEvent.changeText(getByTestId('crosswind-weight-input'), '110');
+    fireEvent.changeText(getByTestId('crosswind-cg-input'), '10');
+    // Same Poor segment, very different inputs (light + low CG vs
+    // heavy + mid CG above): result is identically 10. This is the
+    // defining property of the constant strategy in the UI layer.
+    expect(getByText('10')).toBeTruthy();
+  });
+
+  it('Poor runway segment is enabled (last disabled segment activated in PR 7 — ALL 6 RWYCC now active)', () => {
+    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
+    const segment = getByTestId('crosswind-runway-poor');
+    expect(segment.props.accessibilityState.disabled).toBe(false);
+  });
+
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
     // W=95 t — below operational minimum of 110, but algorithm still yields a number.
