@@ -6,7 +6,7 @@
 
 ## Ответственность
 
-Feature-модуль Crosswind реализует **главную функциональность приложения в MVP** — расчёт максимально допустимого бокового ветра для взлёта (Takeoff) Boeing 787-8 на Dry (RWYCC 6) и Good (RWYCC 5) ВПП. Модуль самодостаточен: содержит свою domain-логику, источник данных, UI-экран и тесты.
+Feature-модуль Crosswind реализует **главную функциональность приложения в MVP** — расчёт максимально допустимого бокового ветра для взлёта (Takeoff) Boeing 787-8 на Dry (RWYCC 6), Good (RWYCC 5) и MediumToGood (RWYCC 4) ВПП. Модуль самодостаточен: содержит свою domain-логику, источник данных, UI-экран и тесты.
 
 Алгоритм расчёта детально описан в `02_Specification/05-crosswind-algorithm.md`. Этот контракт фокусируется на **публичном API** модуля и его зависимостях.
 
@@ -27,7 +27,7 @@ src/features/crosswind/
 │   ├── strategy.ts                  — CrosswindStrategy interface, StrategyType union, *Params shapes
 │   ├── strategy-resolver.ts         — resolveStrategy(aircraft, condition, data) → StrategyResolution
 │   ├── strategies/
-│   │   └── bracketed-linear.ts      — `bracketedLinear` strategy implementation (Dry / PR 1; Good / PR 3)
+│   │   └── bracketed-linear.ts      — `bracketedLinear` strategy implementation (Dry / PR 1; Good / PR 3; MediumToGood / PR 4)
 │   └── validators.ts                — validateAlgorithmInput + validateOperationalEnvelope
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
@@ -36,6 +36,7 @@ src/features/crosswind/
 ├── __tests__/
 │   ├── calculator.test.ts                  — тест-таблица из 05-crosswind-algorithm.md (Dry / Sets #1-#3)
 │   ├── good.test.ts                        — Good (RWYCC 5) тест-таблица: Set #6 (PR 3)
+│   ├── medium-to-good.test.ts              — MediumToGood (RWYCC 4) тест-таблица: Set #7 (PR 4)
 │   ├── bracketed-linear-strategy.test.ts   — direct unit tests for `bracketedLinear`
 │   ├── validators.test.ts
 │   ├── edgeCases.test.ts
@@ -184,6 +185,7 @@ export type { CrosswindRepository } from './data';
 **Unit-тесты domain (обязательно):**
 - `calculator.test.ts` — Test Sets #1, #2, #3 (Dry) + algorithm-only NaN/Infinity cases. ≥ 40 кейсов из тест-таблицы `05-crosswind-algorithm.md`. Тестирует `calculateCrosswindLimit`.
 - `good.test.ts` — Test Set #6 (Good / RWYCC 5, PR 3). 41 кейс в 4 sub-sets по весовым диапазонам (W=170/130/160/150) + standalone Excel-verified anchor (W=150/CG=26 → 34 KT) + cap-mechanism regressions.
+- `medium-to-good.test.ts` — Test Set #7 (MediumToGood / RWYCC 4, PR 4). 41 кейс в 4 sub-sets по весовым диапазонам (W=170/130/160/175) + standalone Excel-verified anchor (W=175/CG=24 → 30 KT) + cap-absence regressions (verifying `maxCap=null` ≠ Dry/Good cap=37) + cross-condition ordering invariant (Dry ≥ Good ≥ MediumToGood).
 - `validators.test.ts` — Test Set #4: кейсы #4.01–4.04 для `validateOperationalEnvelope` плюс кейсы #4.05–4.07 для Value Object factories (`makeWeightInTons` / `makeCGPercentMAC` отвергают NaN / Infinity / negative).
 - `edgeCases.test.ts` — strategy-dispatcher fall-through, validateAlgorithmInput defence-in-depth NaN/Infinity guards, runtime const arrays.
 - Coverage: ≥ 90%.
