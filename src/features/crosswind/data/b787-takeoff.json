@@ -1,15 +1,15 @@
 {
   "schemaVersion": "2.2.0",
-  "dataVersion": "2026-05-19.006",
+  "dataVersion": "2026-05-19.007",
   "phase": "takeoff",
   "operationalEnvelope": {
     "weight": {
-      "minTons": 110,
-      "maxTons": 172
+      "minTons": 104.1,
+      "maxTons": 227.93
     },
     "cg": {
-      "minPercent": 8,
-      "maxPercent": 35
+      "minPercent": 6,
+      "maxPercent": 39.5
     }
   },
   "weightConversion": {

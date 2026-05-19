@@ -18,8 +18,11 @@ import { ActiveModuleCard, ComingSoonCard } from './_components/ModuleCards';
  * user's per-module visibility preference; if nothing is visible, falls
  * back to an EmptyState with a deep-link to Settings.
  *
- * Render order preserves the chronological flight phase from `data.json`
- * (Crosswind · Landing teaser before Crosswind · Takeoff active card).
+ * Render order mirrors the canonical operational flight phase sequence
+ * encoded in `data.json`: Crosswind · Takeoff (active) precedes
+ * Crosswind · Landing (Phase 2 teaser). Takeoff is the operationally
+ * earlier phase, and is also the active MVP module — both motivations
+ * point at the same ordering.
  *
  * Tapping the active card → its route from JSON. Tapping a coming-soon
  * card → ComingSoonModal (no navigation away).
