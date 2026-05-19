@@ -30,7 +30,7 @@ describe('Main Menu route', () => {
     await AsyncStorage.clear();
   });
 
-  it('renders the header, NavPills, the landing teaser, and the active takeoff card (dark)', () => {
+  it('renders the header, NavPills, the active takeoff card, and the landing teaser (dark)', () => {
     const tree = renderWithTheme(<MainMenu />, { mode: 'dark' });
     expect(tree.getByTestId('main-menu-screen')).toBeTruthy();
     expect(tree.getByTestId('main-menu-logo')).toBeTruthy();
@@ -50,11 +50,11 @@ describe('Main Menu route', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('renders Crosswind · Landing teaser before Crosswind · Takeoff active in the grid', () => {
+  it('renders Crosswind · Takeoff active before Crosswind · Landing teaser in the grid', () => {
     const { getAllByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     const cards = getAllByTestId(/^module-card-/);
     const ids = cards.map((c) => (c.props as { testID: string }).testID);
-    expect(ids).toEqual(['module-card-crosswind-landing', 'module-card-crosswind-takeoff']);
+    expect(ids).toEqual(['module-card-crosswind-takeoff', 'module-card-crosswind-landing']);
   });
 
   it('navigates to /crosswind via push when the active card is tapped (drilldown)', () => {
