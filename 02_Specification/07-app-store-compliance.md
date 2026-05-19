@@ -475,6 +475,14 @@ Buffer времени в Phase E (App Store submission cycle) — **2–3 ите
 
 ## Outstanding placeholders for Phase D
 
+> **Status:** ✅ **All items resolved 2026-05-19** via PR #78
+> (markdown files + Pages deploy) и PR #79 (`src/core/constants.ts`
+> production-значения). Раздел сохранён ниже для audit trail —
+> inline-аннотации к каждому owner-action пункту фиксируют, какой
+> PR закрыл задачу. Единственный сохранённый template-placeholder —
+> `[support email]` в § App Review Notes ниже — намеренно остаётся
+> до Section 4 (копирование в App Store Connect).
+
 Перед App Store submission все плейсхолдеры из этого списка **должны** быть
 заменены на реальные значения. Каждый пункт связан с действием reviewer-а в
 процессе ревью; нерезолвенный плейсхолдер ≈ rejection.
@@ -493,22 +501,24 @@ Buffer времени в Phase E (App Store submission cycle) — **2–3 ите
   заглушку.
 - **Owner action в Phase D:**
   1. ✅ **Resolved by PR #78** — почтовый ящик
-     `supportb787calculator@protonmail.com` провижинен.
-  2. ⏳ Заменить `SUPPORT_EMAIL` в `src/core/constants.ts` — этого
-     достаточно, чтобы покрыть error-screen и About-screen за одно
-     изменение. (Pending follow-up PR после Pages-deploy verification.)
+     `supportb787calculator@protonmail.com` провижинен на ProtonMail.
+  2. ✅ **Resolved by PR #79** — `SUPPORT_EMAIL` в
+     `src/core/constants.ts` теперь
+     `supportb787calculator@protonmail.com`. Покрывает error-screen
+     и About-screen за одно изменение.
   3. 🔄 **Partially resolved by PR #78** — `PRIVACY_POLICY.md` и
      `TERMS_OF_USE.md` в корне репозитория теперь содержат реальный
      адрес. Placeholder `[support email]` в App Review Notes этого
      документа намеренно оставлен как template — будет заменён
      одноразово на этапе Section 4 (копирование текста в App Store
      Connect → App Review Information).
-  4. ⏳ Заменить `<github-username>` в `PRIVACY_POLICY_URL` /
-     `TERMS_OF_USE_URL` (`src/core/constants.ts`) на финальный
-     GitHub-username (`niktyan`), на котором хостятся HTML-копии
-     политик. (Pending в том же follow-up PR, что и пункт 2.)
-  5. Убрать этот пункт из «Outstanding placeholders for Phase D» —
-     после того, как пункты 2 и 4 закрыты.
+  4. ✅ **Resolved by PR #79** — `PRIVACY_POLICY_URL` /
+     `TERMS_OF_USE_URL` в `src/core/constants.ts` указывают на
+     финальные production URL под `niktyan.github.io`. Обе URL
+     верифицированы 200 OK 2026-05-19.
+  5. ✅ **Resolved by PR #79** — все ключевые пункты (1–2, 4)
+     закрыты; пункт 3 закрывается на этапе Section 4 как template.
+     Раздел оставлен в спеке для audit trail (см. Status block выше).
 - **Hard rule:** до App Store submission плейсхолдер должен быть закрыт.
   Apple-ревьюеры реально кликают по контактным ссылкам; non-existent или
   bouncing-адрес — гарантированный rejection по 1.5 / 5.6.
