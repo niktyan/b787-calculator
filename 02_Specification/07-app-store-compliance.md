@@ -492,18 +492,23 @@ Buffer времени в Phase E (App Store submission cycle) — **2–3 ите
   как контакт. Шаблон App Review Notes в этом документе содержит ту же
   заглушку.
 - **Owner action в Phase D:**
-  1. Зарегистрировать почтовый ящик (личный alias или specially-created
-     alias вида `support@b787calculator.app` — финализируется
-     одновременно с Open question #2 выше).
-  2. Заменить `SUPPORT_EMAIL` в `src/core/constants.ts` — этого
+  1. ✅ **Resolved by PR #78** — почтовый ящик
+     `supportb787calculator@protonmail.com` провижинен.
+  2. ⏳ Заменить `SUPPORT_EMAIL` в `src/core/constants.ts` — этого
      достаточно, чтобы покрыть error-screen и About-screen за одно
-     изменение.
-  3. Заменить `[support email]` на реальный адрес в `PRIVACY_POLICY.md`,
-     `TERMS_OF_USE.md`, и в App Review Notes этого документа.
-  4. Заменить `<github-username>` в `PRIVACY_POLICY_URL` /
+     изменение. (Pending follow-up PR после Pages-deploy verification.)
+  3. 🔄 **Partially resolved by PR #78** — `PRIVACY_POLICY.md` и
+     `TERMS_OF_USE.md` в корне репозитория теперь содержат реальный
+     адрес. Placeholder `[support email]` в App Review Notes этого
+     документа намеренно оставлен как template — будет заменён
+     одноразово на этапе Section 4 (копирование текста в App Store
+     Connect → App Review Information).
+  4. ⏳ Заменить `<github-username>` в `PRIVACY_POLICY_URL` /
      `TERMS_OF_USE_URL` (`src/core/constants.ts`) на финальный
-     GitHub-username, на котором хостятся HTML-копии политик.
-  5. Убрать этот пункт из «Outstanding placeholders for Phase D».
+     GitHub-username (`niktyan`), на котором хостятся HTML-копии
+     политик. (Pending в том же follow-up PR, что и пункт 2.)
+  5. Убрать этот пункт из «Outstanding placeholders for Phase D» —
+     после того, как пункты 2 и 4 закрыты.
 - **Hard rule:** до App Store submission плейсхолдер должен быть закрыт.
   Apple-ревьюеры реально кликают по контактным ссылкам; non-existent или
   bouncing-адрес — гарантированный rejection по 1.5 / 5.6.
