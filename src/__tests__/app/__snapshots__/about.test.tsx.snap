@@ -1044,7 +1044,7 @@ exports[`About route renders correctly in dark theme (snapshot) 1`] = `
                 ]
               }
             >
-              support@example.com
+              supportb787calculator@protonmail.com
             </Text>
             <Text
               allowFontScaling={false}
@@ -2140,7 +2140,7 @@ exports[`About route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              support@example.com
+              supportb787calculator@protonmail.com
             </Text>
             <Text
               allowFontScaling={false}
