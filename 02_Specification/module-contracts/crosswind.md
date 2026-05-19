@@ -293,5 +293,9 @@ Future-strategy params (`VariableSlopeBracketedParams`,
 
 ## Открытые вопросы
 
-1. Точные значения envelope (weight 110–172 t, CG 8–35 %MAC) — отложены до Phase B. При уточнении JSON и тест-таблица обновляются.
+1. ✅ **Resolved 2026-05-19** — envelope финализирован как FCOM /
+   Type Certificate B787-8: weight `[104.1, 227.93]` t, CG `[6, 39.5]`
+   %MAC. Предварительные значения `110–172 / 8–35` были консервативной
+   оценкой; JSON и тест-таблицы обновлены в PR
+   `fix/envelope-bounds-and-menu-order`.
 2. Нужно ли передавать `dataVersion` в `CalculationMetadata` для отображения в UI? Решение: да, это сделано (см. `04-domain-model.md`).

@@ -254,16 +254,25 @@ unit-тестами (`mockReplace` для NavPills, `mockPush` для card drill
 - Header: логотип + название приложения + nav-pills (Modules, Settings, About).
 - Content: 1×2 сетка карточек, render order соответствует хронологии фазы
   полёта (takeoff предшествует landing):
-  - **Crosswind · Landing** — Phase 2, неактивная (тизер). Слот #1.
-  - **Crosswind · Takeoff** — активная, открывает Crosswind Calculator. Слот #2.
+  - **Crosswind · Takeoff** — активная, открывает Crosswind Calculator. Слот #1.
+  - **Crosswind · Landing** — Phase 2, неактивная (тизер). Слот #2.
 
-Активная карточка осознанно во втором слоте, не в первом — это
-отражает физический порядок фаз полёта (takeoff → landing) и
-помогает пилоту читать меню как roadmap «что будет дальше → что
-уже работает» (Landing — следующая фаза, для которой данные пока
-не выгружены). Weight & Balance и Performance в MVP не показываются
-ни в каком виде (см. подсекцию «Long-term backlog (post-MVP)» в
-`01-vision.md`).
+Takeoff занимает первый слот по двум совпадающим причинам: (a) это
+канонический операционный порядок фаз полёта (takeoff → landing) —
+естественное reading-order для пилота; (b) это активный MVP-модуль, и
+размещение активной карточки первой минимизирует когнитивную нагрузку
+при доступе к основной функциональности. Landing-тизер остаётся
+видимым во втором слоте как roadmap-сигнал «следующая фаза, для
+которой данные ещё не выгружены». Weight & Balance и Performance в
+MVP не показываются ни в каком виде (см. подсекцию «Long-term backlog
+(post-MVP)» в `01-vision.md`).
+
+> **Note (2026-05-19):** до PR `fix/envelope-bounds-and-menu-order`
+> render order был инвертирован (Landing Слот #1, Takeoff Слот #2),
+> с docstring в `menu.tsx` и тестом, фиксировавшим инверсию.
+> Описание было «chronological flight phase» — но фактическая
+> последовательность Takeoff → Landing соответствует первому слоту
+> для Takeoff. См. commit history fix-ветки для audit trail.
 
 **Поведение карточек:**
 - **Активная** — `Pressable` с opacity feedback, навигация на `/crosswind` через `expo-router`.
@@ -284,19 +293,19 @@ JSON-конфиге `src/core/modules/data.json`, читаемом через
 ```json
 [
   {
+    "id": "crosswind-takeoff",
+    "name": "Crosswind · Takeoff",
+    "icon": "XW",
+    "active": true,
+    "route": "/crosswind"
+  },
+  {
     "id": "crosswind-landing",
     "name": "Crosswind · Landing",
     "description": "Same crosswind logic applied to the landing phase.",
     "icon": "LD",
     "active": false,
     "phase": "Phase 2"
-  },
-  {
-    "id": "crosswind-takeoff",
-    "name": "Crosswind · Takeoff",
-    "icon": "XW",
-    "active": true,
-    "route": "/crosswind"
   }
 ]
 ```
@@ -549,7 +558,7 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 - Live update: после того как **оба** обязательных поля (TOW, CG) заполнены валидными числами, результат пересчитывается немедленно при любом изменении aircraft / weight / CG / runway condition.
 - Пока хотя бы одно поле пусто → result-секция в состоянии `empty` (см. ниже), расчёт не производится.
 - Валидация формата: ввод не-числовых символов → клавиатура `numeric-pad` не позволяет; для дробных значений — `decimals-pad`.
-- **Operational envelope валидация — мягкая.** Когда ввод за пределами `operationalEnvelope` (см. `04-domain-model.md` «Two distinct envelope concepts»), поле подсвечивается тёплым (warn-цветом, не danger), под ним появляется короткое описание («Below minimum 110 t», «Above maximum 35 %MAC»), но **расчёт всё равно выполняется** и result-секция переходит в состояние `idle` с warning chip-ом рядом с числом. Так пилот видит advisory-результат, плюс явное напоминание, что вход — за пределами регуляторных лимитов.
+- **Operational envelope валидация — мягкая.** Когда ввод за пределами `operationalEnvelope` (см. `04-domain-model.md` «Two distinct envelope concepts» — FCOM B787-8 bounds: weight `[104.1, 227.93]` t, CG `[6, 39.5]` %MAC), поле подсвечивается тёплым (warn-цветом, не danger), под ним появляется короткое описание («Below minimum 104.1 t», «Above maximum 39.5 %MAC»), но **расчёт всё равно выполняется** и result-секция переходит в состояние `idle` с warning chip-ом рядом с числом. Так пилот видит advisory-результат, плюс явное напоминание, что вход — за пределами регуляторных лимитов.
 - **DataNotAvailable.** Когда выбран не-имплементированный aircraft (B787-9) или non-dry condition, алгоритм возвращает `DataNotAvailable` с соответствующим `reason`. Result-секция переходит в состояние `data-not-available` (icon + caption «No data available for the selected aircraft.» / «… runway condition.»). Защита: B787-9 / 5 non-dry условий в MVP помечены disabled в UI и тапы не меняют state, поэтому это состояние реально достижимо только через программную инициализацию.
 - **NoLookupData — жёсткая ошибка.** Когда алгоритм не может произвести расчёт в принципе (NaN / Infinity в Value Object factories, или повреждённые данные) — result-секция переходит в `out-of-envelope` без числа.
 - **Кнопка Reset** в header экрана: очищает оба числовых поля (возвращает в состояние «пусто»), aircraft возвращает к `B787-8`, runway condition — к `Dry`. Без диалога подтверждения.

@@ -867,9 +867,12 @@ Thresholds для этого веса:
 из use-case layer (см. `module-contracts/crosswind.md` Public API), а
 НЕ сам алгоритм. Алгоритм (`calculateCrosswindLimit`) для тех же входов
 вернёт численный результат — operational envelope проверяется отдельно.
-`operationalEnvelope` для MVP взят из bundled JSON (`weight ∈ [110, 172]
-tons`, `cg ∈ [8, 35] %MAC`), но эти числа — placeholder, уточняются на
-Phase B (см. Open questions).
+`operationalEnvelope` берётся из bundled JSON. С 2026-05-19 (PR
+`fix/envelope-bounds-and-menu-order`) envelope соответствует FCOM /
+Type Certificate B787-8: `weight ∈ [104.1, 227.93] tons`, `cg ∈
+[6, 39.5] %MAC`. До этого числа `[110, 172]` / `[8, 35]` были
+консервативной оценкой MVP; алгоритм outputs остаются неизменными,
+сдвинулись только классификации в тест-таблице ниже.
 
 Test cases #4.01–4.04: validator returns `EnvelopeViolation` (не
 `InvalidInput`). UI на эти кейсы реагирует warning chip-ом рядом с
@@ -882,10 +885,10 @@ Value Object factories (`makeWeightInTons`, `makeCGPercentMAC`), до
 
 | # | Layer | Weight (t) | CG (%MAC) | Expected | Reason |
 |---|-------|------------|-----------|----------|--------|
-| 4.01 | Validator | 100 | 25 | EnvelopeViolation.weight.below | weight < 110 |
-| 4.02 | Validator | 200 | 25 | EnvelopeViolation.weight.above | weight > 172 |
-| 4.03 | Validator | 150 | 5 | EnvelopeViolation.cg.below | cg < 8 |
-| 4.04 | Validator | 150 | 40 | EnvelopeViolation.cg.above | cg > 35 |
+| 4.01 | Validator | 100 | 25 | EnvelopeViolation.weight.below | weight < 104.1 |
+| 4.02 | Validator | 230 | 25 | EnvelopeViolation.weight.above | weight > 227.93 (was W=200 under prior `[110, 172]` envelope; W=200 is WITHIN under FCOM bounds) |
+| 4.03 | Validator | 150 | 5 | EnvelopeViolation.cg.below | cg < 6 |
+| 4.04 | Validator | 150 | 40 | EnvelopeViolation.cg.above | cg > 39.5 |
 | 4.05 | Value Object | 150 | NaN | CGError.NotANumber | cg не число |
 | 4.06 | Value Object | NaN | 25 | WeightError.NotANumber | weight не число |
 | 4.07 | Value Object | -5 | 25 | WeightError.Negative | weight отрицательный |
