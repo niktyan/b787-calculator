@@ -1,137 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NumericInput renders decimal field with value, unit and error 1`] = `
-<View
-  style={
-    {
-      "gap": 4,
-    }
-  }
-  testID="cg"
->
-  <Text
-    allowFontScaling={true}
-    style={
-      [
-        {
-          "color": "#8B949E",
-          "fontFamily": "System",
-          "fontSize": 9,
-          "fontWeight": "600",
-          "letterSpacing": 0.54,
-          "lineHeight": 12,
-          "textAlign": "auto",
-        },
-        {
-          "textTransform": "uppercase",
-        },
-      ]
-    }
-  >
-    CG
-  </Text>
-  <View
-    style={
-      {
-        "backgroundColor": "rgba(0, 194, 168, 0.2)",
-        "borderRadius": 10,
-        "padding": 0,
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "backgroundColor": "#11161F",
-          "borderColor": "#E5484D",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "minHeight": 44,
-          "opacity": 1,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        }
-      }
-    >
-      <TextInput
-        accessibilityLabel="CG"
-        editable={true}
-        keyboardType="decimal-pad"
-        onBlur={[Function]}
-        onChangeText={[MockFunction]}
-        onFocus={[Function]}
-        onSubmitEditing={[Function]}
-        placeholderTextColor="#6E7681"
-        returnKeyType="done"
-        style={
-          {
-            "color": "#E6EDF3",
-            "flex": 1,
-            "fontFamily": "Menlo",
-            "fontSize": 16,
-          }
-        }
-        testID="cg-input"
-        value="25.5"
-      />
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#6E7681",
-              "fontFamily": "Menlo",
-              "fontSize": 11,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-      >
-        %MAC
-      </Text>
-    </View>
-  </View>
-  <View
-    accessible={true}
-    importantForAccessibility="auto"
-    style={
-      {
-        "justifyContent": "flex-start",
-        "minHeight": 20,
-      }
-    }
-    testID="cg-error-slot"
-  >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#E5484D",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
-          },
-          undefined,
-        ]
-      }
-      testID="cg-error"
-    >
-      Above maximum 35 %MAC
-    </Text>
-  </View>
-</View>
-`;
-
 exports[`NumericInput renders empty integer field with placeholder in dark theme 1`] = `
 <View
   style={
@@ -172,6 +40,35 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={false}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -189,15 +86,19 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
     >
       <TextInput
         accessibilityLabel="TOW actual"
+        autoComplete="off"
+        autoCorrect={false}
         editable={true}
-        keyboardType="numeric"
+        inputMode="decimal"
+        keyboardType="decimal-pad"
         onBlur={[Function]}
-        onChangeText={[MockFunction]}
+        onChangeText={[Function]}
         onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6E7681"
         returnKeyType="done"
+        spellCheck={false}
         style={
           {
             "color": "#E6EDF3",
@@ -207,6 +108,7 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
           }
         }
         testID="weight-input"
+        textContentType="none"
         value=""
       />
       <Text
@@ -284,6 +186,35 @@ exports[`NumericInput renders empty integer field with placeholder in light them
     }
   >
     <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={false}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -301,15 +232,19 @@ exports[`NumericInput renders empty integer field with placeholder in light them
     >
       <TextInput
         accessibilityLabel="TOW actual"
+        autoComplete="off"
+        autoCorrect={false}
         editable={true}
-        keyboardType="numeric"
+        inputMode="decimal"
+        keyboardType="decimal-pad"
         onBlur={[Function]}
-        onChangeText={[MockFunction]}
+        onChangeText={[Function]}
         onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6B7280"
         returnKeyType="done"
+        spellCheck={false}
         style={
           {
             "color": "#1F2937",
@@ -319,6 +254,7 @@ exports[`NumericInput renders empty integer field with placeholder in light them
           }
         }
         testID="weight-input"
+        textContentType="none"
         value=""
       />
       <Text
@@ -353,5 +289,171 @@ exports[`NumericInput renders empty integer field with placeholder in light them
     }
     testID="weight-error-slot"
   />
+</View>
+`;
+
+exports[`NumericInput renders populated field with value, unit and error 1`] = `
+<View
+  style={
+    {
+      "gap": 4,
+    }
+  }
+  testID="cg"
+>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#8B949E",
+          "fontFamily": "System",
+          "fontSize": 9,
+          "fontWeight": "600",
+          "letterSpacing": 0.54,
+          "lineHeight": 12,
+          "textAlign": "auto",
+        },
+        {
+          "textTransform": "uppercase",
+        },
+      ]
+    }
+  >
+    CG
+  </Text>
+  <View
+    style={
+      {
+        "backgroundColor": "rgba(0, 194, 168, 0.2)",
+        "borderRadius": 10,
+        "padding": 0,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={false}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#11161F",
+          "borderColor": "#E5484D",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "minHeight": 44,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        }
+      }
+    >
+      <TextInput
+        accessibilityLabel="CG"
+        autoComplete="off"
+        autoCorrect={false}
+        editable={true}
+        inputMode="decimal"
+        keyboardType="decimal-pad"
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        onSubmitEditing={[Function]}
+        placeholderTextColor="#6E7681"
+        returnKeyType="done"
+        spellCheck={false}
+        style={
+          {
+            "color": "#E6EDF3",
+            "flex": 1,
+            "fontFamily": "Menlo",
+            "fontSize": 16,
+          }
+        }
+        testID="cg-input"
+        textContentType="none"
+        value="25.5"
+      />
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6E7681",
+              "fontFamily": "Menlo",
+              "fontSize": 11,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        %MAC
+      </Text>
+    </View>
+  </View>
+  <View
+    accessible={true}
+    importantForAccessibility="auto"
+    style={
+      {
+        "justifyContent": "flex-start",
+        "minHeight": 20,
+      }
+    }
+    testID="cg-error-slot"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#E5484D",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+      testID="cg-error"
+    >
+      Above maximum 35 %MAC
+    </Text>
+  </View>
 </View>
 `;
