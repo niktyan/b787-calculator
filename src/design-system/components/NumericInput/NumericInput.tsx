@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Keyboard, StyleSheet, TextInput, View } from 'react-native';
+import { Keyboard, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme } from '../../../core/theming';
@@ -8,6 +8,7 @@ import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
 import { Text } from '../Text/Text';
 import type { TextVariant } from '../Text/Text';
+import { sanitizeDecimalInput } from './sanitizeDecimalInput';
 
 export type NumericInputSize = 'compact' | 'regular';
 
@@ -17,8 +18,6 @@ export interface NumericInputProps {
   readonly label: string;
   readonly placeholder?: string;
   readonly unit?: string;
-  /** When true, uses `decimal-pad`; otherwise `numeric-pad`. */
-  readonly decimal?: boolean;
   /** Error message shown below the field. Triggers the danger border. */
   readonly error?: string;
   readonly disabled?: boolean;
@@ -202,7 +201,6 @@ export function NumericInput(props: NumericInputProps): ReactNode {
     label,
     placeholder,
     unit,
-    decimal = false,
     error,
     disabled = false,
     size = 'compact',
@@ -215,11 +213,26 @@ export function NumericInput(props: NumericInputProps): ReactNode {
   const hasError = error !== undefined && error.length > 0;
   const hasUnit = unit !== undefined && unit.length > 0;
   const { labelVariant, unitVariant } = variantsForSize(size);
+  const inputRef = useRef<TextInput>(null);
 
   const styles = useMemo(
     () => buildStyles({ palette, hasError, focused, disabled, size }),
     [disabled, focused, hasError, palette, size],
   );
+
+  const handleChangeText = useCallback(
+    (next: string): void => {
+      onChange(sanitizeDecimalInput(next));
+    },
+    [onChange],
+  );
+
+  const handleFieldPress = useCallback((): void => {
+    if (disabled) {
+      return;
+    }
+    inputRef.current?.focus();
+  }, [disabled]);
 
   return (
     <View style={styles.root} testID={testID}>
@@ -227,20 +240,31 @@ export function NumericInput(props: NumericInputProps): ReactNode {
         {label}
       </Text>
       <View style={styles.fieldRing}>
-        <View style={styles.field}>
+        <Pressable
+          accessible={false}
+          disabled={disabled}
+          onPress={handleFieldPress}
+          style={styles.field}
+        >
           <TextInput
             accessibilityLabel={accessibilityLabel ?? label}
+            autoComplete="off"
+            autoCorrect={false}
             editable={!disabled}
-            keyboardType={decimal ? 'decimal-pad' : 'numeric'}
+            inputMode="decimal"
+            keyboardType="decimal-pad"
             onBlur={(): void => setFocused(false)}
-            onChangeText={onChange}
+            onChangeText={handleChangeText}
             onFocus={(): void => setFocused(true)}
             onSubmitEditing={(): void => Keyboard.dismiss()}
             placeholder={placeholder}
             placeholderTextColor={palette.textTertiary}
+            ref={inputRef}
             returnKeyType="done"
+            spellCheck={false}
             style={styles.input}
             testID={suffixId(testID, 'input')}
+            textContentType="none"
             value={value}
           />
           {hasUnit ? (
@@ -248,7 +272,7 @@ export function NumericInput(props: NumericInputProps): ReactNode {
               {unit}
             </Text>
           ) : null}
-        </View>
+        </Pressable>
       </View>
       <ErrorSlot error={error} hasError={hasError} style={styles.errorSlot} testID={testID} />
     </View>

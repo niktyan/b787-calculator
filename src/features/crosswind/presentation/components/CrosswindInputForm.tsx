@@ -163,7 +163,6 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
         onChange={onCGChange}
         placeholder={t('crosswind.cgPlaceholder')}
         unit="%MAC"
-        decimal
         size={sizing.inputSize}
         {...(cgError === null ? {} : { error: cgError })}
         testID="crosswind-cg"
