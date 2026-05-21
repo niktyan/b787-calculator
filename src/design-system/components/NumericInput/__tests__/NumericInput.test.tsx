@@ -39,13 +39,12 @@ describe('NumericInput', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('renders decimal field with value, unit and error', () => {
+  it('renders populated field with value, unit and error', () => {
     const tree = renderWithTheme(
       <NumericInput
         label="CG"
         value="25.5"
         onChange={jest.fn()}
-        decimal
         unit="%MAC"
         error="Above maximum 35 %MAC"
         testID="cg"
@@ -61,6 +60,63 @@ describe('NumericInput', () => {
     );
     fireEvent.changeText(getByTestId('weight-input'), '170');
     expect(onChange).toHaveBeenCalledWith('170');
+  });
+
+  describe('keyboard configuration (always decimal-pad)', () => {
+    // iPad's system keyboard exposes an "ABC" mode that can flip a
+    // numeric pad into a full QWERTY. We pin keyboardType +
+    // inputMode + disable autocorrect/autocomplete/spellcheck/text
+    // content suggestions so the OS never offers letters or
+    // password-manager fills on numeric fields. See 06-ui-spec.md
+    // § Экран 4 "Keyboard behavior".
+    it('forces keyboardType="decimal-pad" on every NumericInput', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      expect(getByTestId('weight-input').props.keyboardType).toBe('decimal-pad');
+    });
+
+    it('sets inputMode="decimal" (HTML semantic complement to keyboardType)', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      expect(getByTestId('weight-input').props.inputMode).toBe('decimal');
+    });
+
+    it('disables autocorrect / autocomplete / spell-check / textContentType', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      const input = getByTestId('weight-input');
+      expect(input.props.autoCorrect).toBe(false);
+      expect(input.props.autoComplete).toBe('off');
+      expect(input.props.spellCheck).toBe(false);
+      expect(input.props.textContentType).toBe('none');
+    });
+  });
+
+  describe('input sanitizer (defence in depth)', () => {
+    // Defence-in-depth normalizer fires on every onChangeText so the
+    // value held by callers is always a clean decimal string, regardless
+    // of how it arrived (iPad ABC mode, paste, 3rd-party keyboard).
+    const cases: readonly (readonly [string, string, string])[] = [
+      ['strips letters mixed into a decimal value', '12abc.5kg', '12.5'],
+      ['normalizes the European decimal comma to a dot', '12,5', '12.5'],
+      ['keeps only the first dot when multiple dots are entered', '12.5.7', '12.57'],
+      ['treats a comma after a dot as a duplicate separator', '12.5,7', '12.57'],
+      ['returns an empty string when input has no digits', 'abc', ''],
+      ['preserves a leading dot (user is mid-typing ".5")', '.5', '.5'],
+      ['preserves a trailing dot (user is mid-typing "12.")', '12.', '12.'],
+    ];
+
+    it.each(cases)('%s', (_label, raw, expected) => {
+      const onChange = jest.fn();
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={onChange} testID="weight" />,
+      );
+      fireEvent.changeText(getByTestId('weight-input'), raw);
+      expect(onChange).toHaveBeenCalledWith(expected);
+    });
   });
 
   it('exposes the error message via testID', () => {
