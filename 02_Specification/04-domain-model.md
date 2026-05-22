@@ -81,6 +81,17 @@ The union alias `EnvelopeViolation = WeightViolation | CGViolation` is
 preserved for consumers that only need a generic "any envelope
 violation" type (e.g., the result-panel warning chip).
 
+**Per-field timing is independent of the other field's state.** The
+weight envelope is validated as soon as `weightText` is parseable into
+a Value Object, regardless of whether `cgText` is empty / invalid /
+valid (and vice versa). Field-level errors surface immediately on the
+field that produced them. Result-panel calculation
+(`calculateCrosswindLimit`) runs only when **both** fields parse
+successfully into Value Objects — partial input keeps the result panel
+in `empty` while per-field errors remain visible. See `06-ui-spec.md`
+§ Экран 4 → "Per-field validation timing" and the integration test
+matrix in `src/__tests__/app/crosswind.per-field-timing.test.tsx`.
+
 ### Composition rule for UI
 
 - Inside lookup AND both inside operational → result panel shows
