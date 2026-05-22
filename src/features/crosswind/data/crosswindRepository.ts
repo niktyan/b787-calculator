@@ -14,6 +14,7 @@
 
 import { err, ok } from '../../../core/result';
 import type { Result } from '../../../core/result';
+import type { AircraftVariant, OperationalEnvelope } from '../domain/types';
 
 import b787TakeoffJson from './b787-takeoff.json';
 import { checkBusinessRules, crosswindDataFileSchema } from './schema';
@@ -36,6 +37,26 @@ export interface CrosswindRepositoryOptions {
 const DEFAULT_CONTEXT: BusinessRuleContext = {
   expectedPhase: 'takeoff',
 };
+
+/**
+ * Returns the `OperationalEnvelope` for the requested aircraft from a
+ * parsed data file, or `null` when the file does not ship an entry for
+ * that variant (ADR-0013 — envelope lives per-aircraft).
+ *
+ * The view-model treats `null` as `aircraft-not-implemented` (the same
+ * signal the algorithm raises when `resolveStrategy` cannot find an
+ * `aircraftEntry`), so field-level envelope validation falls through
+ * to the data-not-available state without rendering a misleading
+ * per-field error.
+ */
+export function resolveOperationalEnvelope(
+  data: CrosswindDataFile,
+  aircraft: AircraftVariant,
+): OperationalEnvelope | null {
+  const entry = data.byAircraft[aircraft];
+  if (entry === undefined) return null;
+  return entry.operationalEnvelope;
+}
 
 export function createCrosswindRepository(
   options?: CrosswindRepositoryOptions,

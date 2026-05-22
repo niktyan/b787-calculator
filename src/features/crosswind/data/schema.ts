@@ -2,23 +2,29 @@
  * zod schema for the bundled Crosswind reference-data file.
  *
  * Spec: 02_Specification/04-domain-model.md § "zod-схема валидации",
- *       02_Specification/05-crosswind-algorithm.md § "Strategy variants".
+ *       02_Specification/05-crosswind-algorithm.md § "Strategy variants",
+ *       02_Specification/ADR/0013-per-aircraft-operational-envelope.md.
  *
- * Shape (PR 1 / strategy refactor): per-(aircraft, runwayCondition)
- * dataset carries a `strategyType` discriminator and a `params` object
- * shaped per that strategy. PR 1 activates only the `bracketedLinear`
- * branch — Dry data. Future PR 5/6/7/8 light up the remaining 4
- * `strategyType` literals; their schemas are declared as stubs so the
- * discriminator is exhaustive but they reject all current data.
+ * Shape (Sprint B / schema 2.3.0 — ADR-0013): `operationalEnvelope`
+ * lives **per aircraft** inside `byAircraft.<variant>` instead of at the
+ * top level. Each FCOM-certified variant carries its own bounds (B787-9
+ * differs from B787-8 in both weight and CG limits), so a top-level
+ * envelope would either falsely admit out-of-spec input for one variant
+ * or falsely reject the other. Per-aircraft is the only safety-correct
+ * shape.
  *
- * Two-stage validation: structural (zod) + business rules (ascending
- * intercepts, sorted brackets, envelope sanity, non-zero slope,
- * file/phase consistency). Both surface as `CorruptedDataBundle`.
+ * Two-stage validation: structural (zod) + business rules (per-aircraft
+ * envelope sanity, ascending intercepts, sorted brackets, non-zero
+ * slope, file/phase consistency). Both surface as `CorruptedDataBundle`.
  */
 
 import { z } from 'zod';
 
-const SCHEMA_VERSION_PATTERN = /^\d+\.\d+\.\d+$/;
+// Schema 2.3.0 — ADR-0013: per-aircraft operational envelope.
+// The regex is strict (^2\.3\.\d+$) so legacy 2.2.x files (with top-
+// level envelope) fail loudly at parse time instead of silently
+// loading with no envelope check applied.
+const SCHEMA_VERSION_PATTERN = /^2\.3\.\d+$/;
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 // schemaVersion 2.2.0 (PR 3): variable bracket count, lower bound = 2.
 // Per spec § "Стратегия эволюции / Уровень 2 — Добавление breakpoints".
@@ -146,8 +152,20 @@ export type ConstantDataset = z.infer<typeof constantDatasetSchema> & {
   readonly metadata: z.infer<typeof datasetMetadataSchema>;
 };
 
+const operationalEnvelopeSchema = z.object({
+  weight: z.object({
+    minTons: z.number().positive(),
+    maxTons: z.number().positive(),
+  }),
+  cg: z.object({
+    minPercent: z.number(),
+    maxPercent: z.number(),
+  }),
+});
+
 const aircraftEntrySchema = z
   .object({
+    operationalEnvelope: operationalEnvelopeSchema,
     dry: datasetSchema.optional(),
     good: datasetSchema.optional(),
     mediumToGood: datasetSchema.optional(),
@@ -163,16 +181,6 @@ export const crosswindDataFileSchema = z.object({
   schemaVersion: z.string().regex(SCHEMA_VERSION_PATTERN),
   dataVersion: z.string().min(1),
   phase: flightPhaseSchema,
-  operationalEnvelope: z.object({
-    weight: z.object({
-      minTons: z.number().positive(),
-      maxTons: z.number().positive(),
-    }),
-    cg: z.object({
-      minPercent: z.number(),
-      maxPercent: z.number(),
-    }),
-  }),
   weightConversion: z.object({
     tonsToKilolbsFactor: z.number().positive(),
   }),
@@ -190,13 +198,13 @@ export interface BusinessRuleContext {
   readonly expectedPhase?: 'takeoff' | 'landing';
 }
 
-function checkEnvelope(data: CrosswindDataFile): string | null {
-  const env = data.operationalEnvelope;
+function checkEnvelope(path: string, entry: AircraftEntry): string | null {
+  const env = entry.operationalEnvelope;
   if (env.weight.minTons >= env.weight.maxTons) {
-    return 'operationalEnvelope.weight: minTons must be less than maxTons';
+    return `${path}.operationalEnvelope.weight: minTons must be less than maxTons`;
   }
   if (env.cg.minPercent >= env.cg.maxPercent) {
-    return 'operationalEnvelope.cg: minPercent must be less than maxPercent';
+    return `${path}.operationalEnvelope.cg: minPercent must be less than maxPercent`;
   }
   return null;
 }
@@ -278,14 +286,24 @@ function checkOneDataset(path: string, dataset: CrosswindDataset): string | null
   return null;
 }
 
-function checkDatasetIntegrity(data: CrosswindDataFile): string | null {
+function checkAircraftEntry(aircraftKey: string, entry: AircraftEntry): string | null {
+  const basePath = `byAircraft.${aircraftKey}`;
+  const envelopeViolation = checkEnvelope(basePath, entry);
+  if (envelopeViolation !== null) return envelopeViolation;
+  for (const [conditionKey, dataset] of Object.entries(entry)) {
+    if (conditionKey === 'operationalEnvelope') continue;
+    if (dataset === undefined) continue;
+    const violation = checkOneDataset(`${basePath}.${conditionKey}`, dataset as CrosswindDataset);
+    if (violation !== null) return violation;
+  }
+  return null;
+}
+
+function checkAircraftEntries(data: CrosswindDataFile): string | null {
   for (const [aircraftKey, entry] of Object.entries(data.byAircraft)) {
     if (entry === undefined) continue;
-    for (const [conditionKey, dataset] of Object.entries(entry)) {
-      if (dataset === undefined) continue;
-      const violation = checkOneDataset(`byAircraft.${aircraftKey}.${conditionKey}`, dataset);
-      if (violation !== null) return violation;
-    }
+    const violation = checkAircraftEntry(aircraftKey, entry);
+    if (violation !== null) return violation;
   }
   return null;
 }
@@ -306,7 +324,7 @@ export function checkBusinessRules(
   data: CrosswindDataFile,
   context: BusinessRuleContext = {},
 ): string | null {
-  return checkEnvelope(data) ?? checkDatasetIntegrity(data) ?? checkContextMatch(data, context);
+  return checkAircraftEntries(data) ?? checkContextMatch(data, context);
 }
 
 function isCrosswindSortedDescending(

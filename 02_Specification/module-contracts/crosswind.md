@@ -346,6 +346,35 @@ Spec impact: this contract + `04-domain-model.md` § "Independent weight
 + cg validation" + `06-ui-spec.md` § Экран 4 composition rule +
 `05-crosswind-algorithm.md` cross-refs to the validator name.
 
+### Per-aircraft operational envelope (Sprint B / ADR-0013, 2026-05-23)
+
+`operationalEnvelope` moves from top-level of `b787-takeoff.json` into
+`byAircraft.<aircraft>.operationalEnvelope`. B787-9 ships with its
+own FCOM-certified envelope (weight `[110.677, 259.228]` t, CG
+`[8, 37.5]` %MAC) — different from B787-8 (`[104.1, 227.93]` t /
+`[6, 39.5]` %MAC). A top-level union envelope would have created a
+safety risk for B787-8 inputs above B787-8 MTOW but below B787-9 MTOW.
+
+`schemaVersion` bumped `2.2.0 → 2.3.0` (regex tightened to
+`^2\.3\.\d+$` — legacy files fail loudly). `dataVersion` bumped to
+`2026-05-23.002`. Bundled file now ships envelope + 6/6 RWYCC datasets
+for both `b787_8` and `b787_9`.
+
+Public API additions:
+
+- `resolveOperationalEnvelope(data, aircraft): OperationalEnvelope | null`
+  — exported from `@features/crosswind` (re-exported via `data/`
+  barrel). Returns `null` when the variant is absent (no entry in
+  `byAircraft`).
+
+View-model (`useCrosswindCalculator.compute`) resolves envelope per
+the currently selected aircraft and falls back to `data-not-available`
+when the envelope is missing.
+
+UI: `CrosswindInputForm.AIRCRAFT_OPTIONS` no longer marks B787-9 as
+`disabled: true`. Both segments are equally active; tapping switches
+the resolved envelope and dataset.
+
 ### Hide result on operational envelope violation (PR A3 / ADR-0012, 2026-05-23)
 
 Safety-first follow-up to PR A2. When either field is outside the

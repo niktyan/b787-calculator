@@ -74,6 +74,71 @@ describe('Calculator edge cases', () => {
   });
 });
 
+describe('Strategy resolver — missing entries surface as no-lookup-data', () => {
+  // After Sprint B (ADR-0013) both b787_8 and b787_9 ship full data,
+  // so the standard test sets never reach the resolver's no-lookup
+  // branches. These tests synthesize a partial data file to keep the
+  // branches covered: variant entry absent → aircraft-not-implemented;
+  // condition entry absent → condition-not-implemented.
+
+  it('returns DataNotAvailable.aircraft-not-implemented when byAircraft entry is absent', () => {
+    const partialData = JSON.parse(JSON.stringify(data)) as CrosswindDataFile & {
+      byAircraft: { b787_9?: unknown };
+    };
+    delete partialData.byAircraft.b787_9;
+    const { w, cg } = vo(170, 32);
+    const r = calculateCrosswindLimit(
+      {
+        weightTons: w,
+        cgPercent: cg,
+        aircraft: 'b787_9',
+        phase: 'takeoff',
+        runwayCondition: 'dry',
+      },
+      partialData,
+    );
+    expect(r.ok).toBe(false);
+    if (r.ok) {
+      throw new Error('expected error');
+    }
+    expect(r.error.kind).toBe('DataNotAvailable');
+    if (r.error.kind !== 'DataNotAvailable') {
+      throw new Error('expected DataNotAvailable');
+    }
+    expect(r.error.reason).toBe('aircraft-not-implemented');
+  });
+
+  it('returns DataNotAvailable.condition-not-implemented when condition slot is absent', () => {
+    const partialData = JSON.parse(JSON.stringify(data)) as CrosswindDataFile & {
+      byAircraft: { b787_8?: { poor?: unknown } };
+    };
+    if (partialData.byAircraft.b787_8 === undefined) {
+      throw new Error('expected b787_8 entry');
+    }
+    delete partialData.byAircraft.b787_8.poor;
+    const { w, cg } = vo(170, 32);
+    const r = calculateCrosswindLimit(
+      {
+        weightTons: w,
+        cgPercent: cg,
+        aircraft: 'b787_8',
+        phase: 'takeoff',
+        runwayCondition: 'poor',
+      },
+      partialData,
+    );
+    expect(r.ok).toBe(false);
+    if (r.ok) {
+      throw new Error('expected error');
+    }
+    expect(r.error.kind).toBe('DataNotAvailable');
+    if (r.error.kind !== 'DataNotAvailable') {
+      throw new Error('expected DataNotAvailable');
+    }
+    expect(r.error.reason).toBe('condition-not-implemented');
+  });
+});
+
 describe('Strategy edge cases — bracket labels beyond demonstrated 40 KT', () => {
   // These guard against corrupted lookup data where a bracket label
   // exceeds the 40-KT demonstrated maximum. `makeCrosswindKnots` rejects
