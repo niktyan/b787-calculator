@@ -27,6 +27,8 @@ function withProvider(children: ReactNode): ReactElement {
   return <NumericKeypadProvider>{children}</NumericKeypadProvider>;
 }
 
+const FAKE_ANCHOR = { x: 100, y: 200, width: 160, height: 44 } as const;
+
 function makeField(overrides: Partial<RegisteredField>): RegisteredField {
   const value = { current: '' };
   return {
@@ -36,6 +38,7 @@ function makeField(overrides: Partial<RegisteredField>): RegisteredField {
       value.current = next;
     },
     isRegular: false,
+    getAnchor: () => Promise.resolve(FAKE_ANCHOR),
     ...overrides,
   };
 }
@@ -129,6 +132,7 @@ describe('NumericKeypadProvider', () => {
           getValue: () => valueState.current,
           setValue,
           isRegular: false,
+          getAnchor: () => Promise.resolve(FAKE_ANCHOR),
         });
       });
       act(() => {

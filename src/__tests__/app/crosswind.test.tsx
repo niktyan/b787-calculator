@@ -1,7 +1,37 @@
-import { fireEvent } from '@testing-library/react-native';
+import { act, fireEvent } from '@testing-library/react-native';
 
 import CrosswindRoute from '../../app/(main)/crosswind';
 import { renderWithTheme } from '../../design-system/_testing/renderWithTheme';
+
+// Minimal structural alias for a react-test-renderer instance. We don't pull
+// in the full `ReactTestInstance` type because `@types/react-test-renderer`
+// isn't a project dependency (only testing-library uses it internally) and
+// only the `props.onChangeText` shape matters here.
+interface TestInstance {
+  readonly props: { readonly onChangeText?: (next: string) => void };
+}
+
+/**
+ * Drive a numeric value into a `<NumericInput>` from a test. The production
+ * TextInput is `editable={false}` (system keyboard fully suppressed — see
+ * ADR-0011 Iteration 1), so `fireEvent.changeText` is a no-op on it.
+ * Instead, we invoke the input's `onChangeText` prop directly — the same
+ * handler the in-app keypad calls via `NumericKeypadProvider.pressKey`,
+ * minus the per-keystroke accumulation. This keeps integration tests
+ * concise without re-rendering the entire keypad surface for every digit.
+ *
+ * The state update is wrapped in `act` so the calculator re-render lands
+ * before the next assertion.
+ */
+function setNumericInput(input: TestInstance, value: string): void {
+  const onChangeText = input.props.onChangeText;
+  if (onChangeText === undefined) {
+    throw new Error('NumericInput is missing onChangeText prop');
+  }
+  act(() => {
+    onChangeText(value);
+  });
+}
 
 const mockBack = jest.fn();
 
@@ -93,8 +123,8 @@ describe('Crosswind route', () => {
 
   it('computes result for W=170, CG=32 — flagship case (34 KT)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '170');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '32');
+    setNumericInput(getByTestId('crosswind-weight-input'), '170');
+    setNumericInput(getByTestId('crosswind-cg-input'), '32');
     expect(getByText('34')).toBeTruthy();
     // Source chip moved to About per Принцип 4 — should NOT appear on result panel.
     expect(() => getByText('crosswind.sourceChip')).toThrow();
@@ -102,8 +132,8 @@ describe('Crosswind route', () => {
 
   it('above-envelope: W=170, CG=42 → 37 KT (Excel IFNA quirk, then capped at 37 per FCOM Tab 2.29.2a)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '170');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '42');
+    setNumericInput(getByTestId('crosswind-weight-input'), '170');
+    setNumericInput(getByTestId('crosswind-cg-input'), '42');
     // Pre-PR 2 the IFNA-fallback produced 40 KT (Excel quirk preserved).
     // PR 2 adds the Dry maxCap=37, which clamps the 40 down to 37. The
     // 'above-envelope' branch label is unchanged — the cap is applied
@@ -116,8 +146,8 @@ describe('Crosswind route', () => {
     // Default Aircraft is B787-8 and default Runway is Dry. Switch to
     // Good, then enter the Excel-verified anchor inputs.
     fireEvent.press(getByTestId('crosswind-runway-good'));
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '150');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '26');
+    setNumericInput(getByTestId('crosswind-weight-input'), '150');
+    setNumericInput(getByTestId('crosswind-cg-input'), '26');
     // Anchor expectation: raw 34.873 → ROUNDDOWN 34, below maxCap=37 so
     // not clamped. The same inputs on Dry runway give a different value
     // (Dry's brackets and slope differ); switching runway must
@@ -137,8 +167,8 @@ describe('Crosswind route', () => {
   it('MediumToGood runway selection: W=175, CG=24 → 30 KT (PR 4 anchor)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.press(getByTestId('crosswind-runway-mediumToGood'));
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '175');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '24');
+    setNumericInput(getByTestId('crosswind-weight-input'), '175');
+    setNumericInput(getByTestId('crosswind-cg-input'), '24');
     // Anchor expectation per Excel "Medium to Good 788" sheet G7:
     // raw 30.0213 in bracket [T1=19.02, T2=24.02] → ROUNDDOWN 30.
     // maxCap=null → no clamp.
@@ -154,8 +184,8 @@ describe('Crosswind route', () => {
   it('Medium runway selection: W=182, CG=20 → 23.9 KT (PR 5 anchor, 1-decimal precision)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.press(getByTestId('crosswind-runway-medium'));
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '182');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '20');
+    setNumericInput(getByTestId('crosswind-weight-input'), '182');
+    setNumericInput(getByTestId('crosswind-cg-input'), '20');
     // First condition shipping with decimals=1 — the rendered string
     // must include the fractional digit ("23.9", not "23" or "24").
     // Verifies both the strategy correctness AND the ResultPanel's
@@ -172,8 +202,8 @@ describe('Crosswind route', () => {
   it('MediumToPoor runway selection: W=182, CG=32 → 13.9 KT (PR 6 anchor, weight-independent)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.press(getByTestId('crosswind-runway-mediumToPoor'));
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '182');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '32');
+    setNumericInput(getByTestId('crosswind-weight-input'), '182');
+    setNumericInput(getByTestId('crosswind-cg-input'), '32');
     // The cgOnlyPiecewise strategy ignores weight — same CG=32 with
     // W=110 or W=200 would yield the same 13.9. Verifying the rendered
     // result panel shows the 1-decimal value confirms the strategy
@@ -191,8 +221,8 @@ describe('Crosswind route', () => {
   it('Poor runway selection: W=182, CG=32 → 10 KT (PR 7 anchor, input-independent)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.press(getByTestId('crosswind-runway-poor'));
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '182');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '32');
+    setNumericInput(getByTestId('crosswind-weight-input'), '182');
+    setNumericInput(getByTestId('crosswind-cg-input'), '32');
     // The constant strategy ignores all input — same value=10
     // regardless of W or CG. Verifies the strategy resolves
     // correctly and the ResultPanel renders the integer constant
@@ -203,8 +233,8 @@ describe('Crosswind route', () => {
   it('Poor runway: input-independence check (W=110/CG=10 also → 10 KT)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.press(getByTestId('crosswind-runway-poor'));
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '110');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '10');
+    setNumericInput(getByTestId('crosswind-weight-input'), '110');
+    setNumericInput(getByTestId('crosswind-cg-input'), '10');
     // Same Poor segment, very different inputs (light + low CG vs
     // heavy + mid CG above): result is identically 10. This is the
     // defining property of the constant strategy in the UI layer.
@@ -220,16 +250,16 @@ describe('Crosswind route', () => {
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
     // W=95 t — below operational minimum of 110, but algorithm still yields a number.
-    fireEvent.changeText(getByTestId('crosswind-weight-input'), '95');
-    fireEvent.changeText(getByTestId('crosswind-cg-input'), '25');
+    setNumericInput(getByTestId('crosswind-weight-input'), '95');
+    setNumericInput(getByTestId('crosswind-cg-input'), '25');
     expect(getByTestId('crosswind-warning-chip')).toBeTruthy();
     expect(getByTestId('crosswind-weight-error')).toBeTruthy();
   });
 
   it('reset button clears both fields and returns to empty state', () => {
     const tree = renderWithTheme(<CrosswindRoute />);
-    fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
-    fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
+    setNumericInput(tree.getByTestId('crosswind-weight-input'), '170');
+    setNumericInput(tree.getByTestId('crosswind-cg-input'), '32');
     expect(tree.getByText('34')).toBeTruthy();
     fireEvent.press(tree.getByTestId('crosswind-reset'));
     expect(tree.getByText('Enter weight and CG to see result')).toBeTruthy();
@@ -272,8 +302,8 @@ describe('Crosswind route', () => {
     it('iPad mini portrait (768 x 1024): single-column stack, regular typography (NOT 2-column)', () => {
       mockViewport(IPAD_MINI_PORTRAIT);
       const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
-      fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
-      fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
+      setNumericInput(tree.getByTestId('crosswind-weight-input'), '170');
+      setNumericInput(tree.getByTestId('crosswind-cg-input'), '32');
       const json = JSON.stringify(tree.toJSON());
       // Regular typography is now active on iPad portrait too.
       expect(json).toContain('"fontSize":72');
@@ -283,8 +313,8 @@ describe('Crosswind route', () => {
     it('iPad mini landscape (1024 x 768): 2-column row, regular typography + cockpit-glance value', () => {
       mockViewport(IPAD_MINI_LANDSCAPE);
       const tree = renderWithTheme(<CrosswindRoute />, { mode: 'dark' });
-      fireEvent.changeText(tree.getByTestId('crosswind-weight-input'), '170');
-      fireEvent.changeText(tree.getByTestId('crosswind-cg-input'), '32');
+      setNumericInput(tree.getByTestId('crosswind-weight-input'), '170');
+      setNumericInput(tree.getByTestId('crosswind-cg-input'), '32');
       const json = JSON.stringify(tree.toJSON());
       // Regular typography baseline (variant fontSize is still emitted
       // as part of the Text style array even when overridden inline).
