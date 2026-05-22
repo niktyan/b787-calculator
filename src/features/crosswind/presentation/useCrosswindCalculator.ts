@@ -73,7 +73,21 @@ interface FieldErrors {
 
 type Translator = TFunction;
 
-function parseFloatStrict(text: string): number | null {
+/**
+ * Outcome of parsing a single field's text into a Value Object. Each
+ * branch is meaningful to the caller and surfaces a distinct UI signal:
+ *  - `empty`   — pilot has not entered anything yet; never an error.
+ *  - `invalid` — text is present but cannot become a Value Object
+ *                (format failure or VO factory rejection). Carries the
+ *                localized message to render under the field.
+ *  - `parsed`  — Value Object successfully built; can flow to validators.
+ */
+type FieldParseResult<T> =
+  | { readonly kind: 'empty' }
+  | { readonly kind: 'invalid'; readonly message: string }
+  | { readonly kind: 'parsed'; readonly value: T };
+
+function parseDecimalString(text: string): number | null {
   const trimmed = text.trim();
   if (trimmed.length === 0) {
     return null;
@@ -84,6 +98,36 @@ function parseFloatStrict(text: string): number | null {
     return null;
   }
   return value;
+}
+
+function parseWeightField(text: string, t: Translator): FieldParseResult<WeightInTons> {
+  if (text.trim().length === 0) {
+    return { kind: 'empty' };
+  }
+  const num = parseDecimalString(text);
+  if (num === null) {
+    return { kind: 'invalid', message: t('crosswind.errorInvalidWeight') };
+  }
+  const vo = makeWeightInTons(num);
+  if (!vo.ok) {
+    return { kind: 'invalid', message: t('crosswind.errorInvalidWeight') };
+  }
+  return { kind: 'parsed', value: vo.value };
+}
+
+function parseCGField(text: string, t: Translator): FieldParseResult<CGPercentMAC> {
+  if (text.trim().length === 0) {
+    return { kind: 'empty' };
+  }
+  const num = parseDecimalString(text);
+  if (num === null) {
+    return { kind: 'invalid', message: t('crosswind.errorInvalidCg') };
+  }
+  const vo = makeCGPercentMAC(num);
+  if (!vo.ok) {
+    return { kind: 'invalid', message: t('crosswind.errorInvalidCg') };
+  }
+  return { kind: 'parsed', value: vo.value };
 }
 
 function weightErrorMessage(violation: WeightViolation, t: Translator): string {
@@ -124,30 +168,34 @@ function parseInputs(
   inputs: CrosswindCalculatorInputs,
   t: Translator,
 ): ParsedInputs | UseCrosswindCalculatorResult {
-  const weightNum = parseFloatStrict(inputs.weightText);
-  const cgNum = parseFloatStrict(inputs.cgText);
-  if (weightNum === null || cgNum === null) {
+  const weight = parseWeightField(inputs.weightText, t);
+  const cg = parseCGField(inputs.cgText, t);
+  if (weight.kind === 'empty' || cg.kind === 'empty') {
     return { state: { kind: 'empty' }, weightFieldError: null, cgFieldError: null };
   }
-  const weightVO = makeWeightInTons(weightNum);
-  if (!weightVO.ok) {
-    const invalidWeight = t('crosswind.errorInvalidWeight');
+  if (weight.kind === 'invalid') {
     return {
-      state: { kind: 'error', headline: t('crosswind.errorHeadline'), description: invalidWeight },
-      weightFieldError: invalidWeight,
+      state: {
+        kind: 'error',
+        headline: t('crosswind.errorHeadline'),
+        description: weight.message,
+      },
+      weightFieldError: weight.message,
       cgFieldError: null,
     };
   }
-  const cgVO = makeCGPercentMAC(cgNum);
-  if (!cgVO.ok) {
-    const invalidCg = t('crosswind.errorInvalidCg');
+  if (cg.kind === 'invalid') {
     return {
-      state: { kind: 'error', headline: t('crosswind.errorHeadline'), description: invalidCg },
+      state: {
+        kind: 'error',
+        headline: t('crosswind.errorHeadline'),
+        description: cg.message,
+      },
       weightFieldError: null,
-      cgFieldError: invalidCg,
+      cgFieldError: cg.message,
     };
   }
-  return { weight: weightVO.value, cg: cgVO.value };
+  return { weight: weight.value, cg: cg.value };
 }
 
 function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is ParsedInputs {
