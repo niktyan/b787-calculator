@@ -14,6 +14,7 @@ export type {
   CrosswindKnots,
   CrosswindTakeoffInput,
   DataUnavailableReason,
+  CGViolation,
   EnvelopeViolation,
   FlightPhase,
   OperationalEnvelope,
@@ -21,6 +22,7 @@ export type {
   RunwayConditionCode,
   WeightError,
   WeightInTons,
+  WeightViolation,
 } from './types';
 export { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from './types';
 
