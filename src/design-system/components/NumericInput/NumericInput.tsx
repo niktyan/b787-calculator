@@ -213,7 +213,7 @@ export function NumericInput(props: NumericInputProps): ReactNode {
   const hasError = error !== undefined && error.length > 0;
   const hasUnit = unit !== undefined && unit.length > 0;
   const { labelVariant, unitVariant } = variantsForSize(size);
-  const { isActive, handleFieldPress, fieldRef } = useNumericKeypad({
+  const { isActive, handleFieldPress, anchorRef } = useNumericKeypad({
     value,
     onChange,
     isRegular: size === 'regular',
@@ -233,17 +233,26 @@ export function NumericInput(props: NumericInputProps): ReactNode {
   );
 
   return (
-    <View ref={fieldRef} style={styles.root} testID={testID}>
+    // Outer Pressable so the entire NumericInput surface (label + bordered
+    // field + reserved warning slot) becomes the tap target. The bordered
+    // field box is only ~44 / 80 pt tall, and Iteration 1 limited taps to
+    // that area — pilots tapping the label or below the field saw no
+    // response. See ADR-0011 Iteration 2 §2.
+    <Pressable
+      accessible={false}
+      disabled={disabled}
+      onPress={handleFieldPress}
+      style={styles.root}
+      testID={testID}
+    >
       <Text variant={labelVariant} color="textSecondary" style={labelStyleForSize(size)}>
         {label}
       </Text>
-      <View style={styles.fieldRing}>
-        <Pressable
-          accessible={false}
-          disabled={disabled}
-          onPress={handleFieldPress}
-          style={styles.field}
-        >
+      {/* `anchorRef` lives on the bordered field's outer ring — that's the
+          visual the popover should align to, not the larger Pressable
+          tap-target above. */}
+      <View ref={anchorRef} style={styles.fieldRing}>
+        <View style={styles.field}>
           <TextInput
             accessibilityLabel={accessibilityLabel ?? label}
             autoComplete="off"
@@ -282,9 +291,9 @@ export function NumericInput(props: NumericInputProps): ReactNode {
               {unit}
             </Text>
           ) : null}
-        </Pressable>
+        </View>
       </View>
       <ErrorSlot error={error} hasError={hasError} style={styles.errorSlot} testID={testID} />
-    </View>
+    </Pressable>
   );
 }
