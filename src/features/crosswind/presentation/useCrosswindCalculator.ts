@@ -41,6 +41,7 @@ import type {
 } from '../domain/types';
 import { validateCGEnvelope, validateWeightEnvelope } from '../domain/validators';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
+import { resolveOperationalEnvelope } from '../data/crosswindRepository';
 import type { CrosswindDataFile } from '../data/schema';
 
 export type CrosswindUIState =
@@ -282,11 +283,14 @@ export function useCrosswindCalculator(
   const { inputs, data } = args;
   const { t } = useTranslation();
   return useMemo(() => {
-    // Schema 2.3.0 (ADR-0013): operationalEnvelope lives per-aircraft
-    // under byAircraft.<variant>. MVP-active variant is B787-8; the
-    // dynamic per-active-aircraft resolution lands in the next commit.
-    const envelope = data.byAircraft.b787_8?.operationalEnvelope;
-    if (envelope === undefined) {
+    // Schema 2.3.0 (ADR-0013): envelope lives per-aircraft. Each
+    // selected variant has its own FCOM-certified bounds, so the
+    // validator pair runs against the envelope of the active aircraft,
+    // not a shared file-level one. Missing envelope ⇒ aircraft not
+    // implemented in this bundle ⇒ data-not-available (same signal the
+    // calculator would surface via `resolveStrategy`).
+    const envelope = resolveOperationalEnvelope(data, inputs.aircraft);
+    if (envelope === null) {
       return {
         state: { kind: 'data-not-available', description: t('crosswind.errorDataAircraft') },
         weightFieldError: null,
