@@ -213,7 +213,7 @@ export function NumericInput(props: NumericInputProps): ReactNode {
   const hasError = error !== undefined && error.length > 0;
   const hasUnit = unit !== undefined && unit.length > 0;
   const { labelVariant, unitVariant } = variantsForSize(size);
-  const { isActive, handleFieldPress } = useNumericKeypad({
+  const { isActive, handleFieldPress, fieldRef } = useNumericKeypad({
     value,
     onChange,
     isRegular: size === 'regular',
@@ -233,7 +233,7 @@ export function NumericInput(props: NumericInputProps): ReactNode {
   );
 
   return (
-    <View style={styles.root} testID={testID}>
+    <View ref={fieldRef} style={styles.root} testID={testID}>
       <Text variant={labelVariant} color="textSecondary" style={labelStyleForSize(size)}>
         {label}
       </Text>
@@ -248,14 +248,28 @@ export function NumericInput(props: NumericInputProps): ReactNode {
             accessibilityLabel={accessibilityLabel ?? label}
             autoComplete="off"
             autoCorrect={false}
-            editable={!disabled}
+            caretHidden
+            editable={false}
             inputMode="decimal"
             keyboardType="decimal-pad"
+            /*
+             * `onChangeText` is a dead path while `editable={false}` (TextInput
+             * cannot receive text events from any keyboard). The handler stays
+             * in place as defence-in-depth — if a future change re-enables
+             * editing for a specific keyboard, sanitization still runs.
+             */
             onChangeText={handleChangeText}
             onSubmitEditing={(): void => Keyboard.dismiss()}
             placeholder={placeholder}
             placeholderTextColor={palette.textTertiary}
             returnKeyType="done"
+            /*
+             * `showSoftInputOnFocus={false}` is no longer load-bearing once
+             * the input is non-editable, but iPad has historically shown the
+             * ASCII-capable number pad on repeat focus events even with
+             * `editable={false}`. The prop stays as an extra belt-and-braces
+             * signal to the platform.
+             */
             showSoftInputOnFocus={false}
             spellCheck={false}
             style={styles.input}

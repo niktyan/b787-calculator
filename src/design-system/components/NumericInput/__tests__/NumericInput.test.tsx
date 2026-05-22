@@ -1,5 +1,4 @@
 import { fireEvent } from '@testing-library/react-native';
-import { Keyboard } from 'react-native';
 
 import { renderWithTheme } from '../../../_testing/renderWithTheme';
 import { NumericInput } from '../NumericInput';
@@ -53,31 +52,35 @@ describe('NumericInput', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('forwards user input to onChange', () => {
-    const onChange = jest.fn();
-    const { getByTestId } = renderWithTheme(
-      <NumericInput label="TOW actual" value="" onChange={onChange} testID="weight" />,
-    );
-    fireEvent.changeText(getByTestId('weight-input'), '170');
-    expect(onChange).toHaveBeenCalledWith('170');
-  });
+  describe('keyboard configuration (system keyboard fully suppressed)', () => {
+    // The iOS system keyboard is fully suppressed by combining
+    // `editable={false}` (the load-bearing guarantee — iOS never shows a
+    // keyboard for non-editable TextInputs) with `caretHidden` (no blinking
+    // cursor on a non-typeable field) and `showSoftInputOnFocus={false}`
+    // (belt-and-braces against any platform regression). Input flows
+    // exclusively through the custom in-app keypad (ADR-0011 Iteration 1).
+    it('marks the underlying TextInput as non-editable', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      expect(getByTestId('weight-input').props.editable).toBe(false);
+    });
 
-  describe('keyboard configuration (always decimal-pad, system keyboard suppressed)', () => {
-    // The iOS system keyboard is fully suppressed via
-    // `showSoftInputOnFocus={false}` — input happens through the custom
-    // in-app keypad (ADR-0011). `keyboardType="decimal-pad"` and the
-    // disabled autocorrect/autocomplete/spell-check stack remain as
-    // defence-in-depth for users typing on a Bluetooth hardware keyboard
-    // connected to the iPad. See 06-ui-spec.md § Экран 4 "Keyboard
-    // behavior".
-    it('suppresses the iOS system keyboard via showSoftInputOnFocus={false}', () => {
+    it('hides the caret so the non-editable field reads as display-only', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      expect(getByTestId('weight-input').props.caretHidden).toBe(true);
+    });
+
+    it('also sets showSoftInputOnFocus={false} as a belt-and-braces signal', () => {
       const { getByTestId } = renderWithTheme(
         <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
       );
       expect(getByTestId('weight-input').props.showSoftInputOnFocus).toBe(false);
     });
 
-    it('forces keyboardType="decimal-pad" on every NumericInput', () => {
+    it('keeps keyboardType="decimal-pad" (still useful for Bluetooth hardware keyboards)', () => {
       const { getByTestId } = renderWithTheme(
         <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
       );
@@ -104,54 +107,23 @@ describe('NumericInput', () => {
   });
 
   describe('custom keypad integration', () => {
-    it('registers the field with NumericKeypadProvider on field press', () => {
+    it('does not throw on field press (registers with the Provider)', () => {
       const { getByTestId } = renderWithTheme(
         <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
       );
-      fireEvent.press(getByTestId('weight'));
-      // After press, the Host (rendered separately) would show the keypad.
-      // We assert the visible side-effect inside NumericInput: the focus
-      // ring activates via accent border (active state == focused-look).
-      // The ring `padding` becomes non-zero when focused/active.
-      // Easier proxy: keypad-host backdrop becomes mounted — but since the
-      // Host isn't part of the test tree here, we use the input's
-      // accessibilityLabel as a smoke check that the press did not throw.
-      expect(getByTestId('weight-input').props.accessibilityLabel).toBe('Weight');
+      // The visible side-effect (popover open + isActive=true) is owned by
+      // the Host, which isn't part of this test tree. A press that does
+      // not throw is the smoke check.
+      expect(() => fireEvent.press(getByTestId('weight'))).not.toThrow();
     });
 
-    it('does not register a disabled field on press', () => {
+    it('does not invoke onChange on field press', () => {
       const onChange = jest.fn();
       const { getByTestId } = renderWithTheme(
         <NumericInput label="Weight" value="" onChange={onChange} disabled testID="weight" />,
       );
       fireEvent.press(getByTestId('weight'));
-      // Disabled field's TextInput is non-editable, so no registration
-      // side-effects are observable; we just confirm press is a no-op.
       expect(onChange).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('input sanitizer (defence in depth)', () => {
-    // Defence-in-depth normalizer fires on every onChangeText so the
-    // value held by callers is always a clean decimal string, regardless
-    // of how it arrived (iPad ABC mode, paste, 3rd-party keyboard).
-    const cases: readonly (readonly [string, string, string])[] = [
-      ['strips letters mixed into a decimal value', '12abc.5kg', '12.5'],
-      ['normalizes the European decimal comma to a dot', '12,5', '12.5'],
-      ['keeps only the first dot when multiple dots are entered', '12.5.7', '12.57'],
-      ['treats a comma after a dot as a duplicate separator', '12.5,7', '12.57'],
-      ['returns an empty string when input has no digits', 'abc', ''],
-      ['preserves a leading dot (user is mid-typing ".5")', '.5', '.5'],
-      ['preserves a trailing dot (user is mid-typing "12.")', '12.', '12.'],
-    ];
-
-    it.each(cases)('%s', (_label, raw, expected) => {
-      const onChange = jest.fn();
-      const { getByTestId } = renderWithTheme(
-        <NumericInput label="Weight" value="" onChange={onChange} testID="weight" />,
-      );
-      fireEvent.changeText(getByTestId('weight-input'), raw);
-      expect(onChange).toHaveBeenCalledWith(expected);
     });
   });
 
@@ -173,19 +145,6 @@ describe('NumericInput', () => {
       <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
     );
     expect(getByTestId('weight-input').props.returnKeyType).toBe('done');
-  });
-
-  it('dismisses the keyboard on submit (Done button)', () => {
-    const dismissSpy = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => undefined);
-    try {
-      const { getByTestId } = renderWithTheme(
-        <NumericInput label="Weight" value="170" onChange={jest.fn()} testID="weight" />,
-      );
-      fireEvent(getByTestId('weight-input'), 'submitEditing');
-      expect(dismissSpy).toHaveBeenCalledTimes(1);
-    } finally {
-      dismissSpy.mockRestore();
-    }
   });
 
   describe('reserved warning slot', () => {
