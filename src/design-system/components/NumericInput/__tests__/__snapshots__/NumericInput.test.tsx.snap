@@ -91,13 +91,12 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
         editable={true}
         inputMode="decimal"
         keyboardType="decimal-pad"
-        onBlur={[Function]}
         onChangeText={[Function]}
-        onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6E7681"
         returnKeyType="done"
+        showSoftInputOnFocus={false}
         spellCheck={false}
         style={
           {
@@ -237,13 +236,12 @@ exports[`NumericInput renders empty integer field with placeholder in light them
         editable={true}
         inputMode="decimal"
         keyboardType="decimal-pad"
-        onBlur={[Function]}
         onChangeText={[Function]}
-        onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6B7280"
         returnKeyType="done"
+        showSoftInputOnFocus={false}
         spellCheck={false}
         style={
           {
@@ -383,12 +381,11 @@ exports[`NumericInput renders populated field with value, unit and error 1`] = `
         editable={true}
         inputMode="decimal"
         keyboardType="decimal-pad"
-        onBlur={[Function]}
         onChangeText={[Function]}
-        onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholderTextColor="#6E7681"
         returnKeyType="done"
+        showSoftInputOnFocus={false}
         spellCheck={false}
         style={
           {

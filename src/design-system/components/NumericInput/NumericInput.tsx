@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Keyboard, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
@@ -6,6 +6,7 @@ import type { TextStyle, ViewStyle } from 'react-native';
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
+import { useNumericKeypad } from '../NumericKeypad/useNumericKeypad';
 import { Text } from '../Text/Text';
 import type { TextVariant } from '../Text/Text';
 import { sanitizeDecimalInput } from './sanitizeDecimalInput';
@@ -209,15 +210,19 @@ export function NumericInput(props: NumericInputProps): ReactNode {
   } = props;
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const [focused, setFocused] = useState(false);
   const hasError = error !== undefined && error.length > 0;
   const hasUnit = unit !== undefined && unit.length > 0;
   const { labelVariant, unitVariant } = variantsForSize(size);
-  const inputRef = useRef<TextInput>(null);
+  const { isActive, handleFieldPress } = useNumericKeypad({
+    value,
+    onChange,
+    isRegular: size === 'regular',
+    disabled,
+  });
 
   const styles = useMemo(
-    () => buildStyles({ palette, hasError, focused, disabled, size }),
-    [disabled, focused, hasError, palette, size],
+    () => buildStyles({ palette, hasError, focused: isActive, disabled, size }),
+    [disabled, isActive, hasError, palette, size],
   );
 
   const handleChangeText = useCallback(
@@ -226,13 +231,6 @@ export function NumericInput(props: NumericInputProps): ReactNode {
     },
     [onChange],
   );
-
-  const handleFieldPress = useCallback((): void => {
-    if (disabled) {
-      return;
-    }
-    inputRef.current?.focus();
-  }, [disabled]);
 
   return (
     <View style={styles.root} testID={testID}>
@@ -253,14 +251,12 @@ export function NumericInput(props: NumericInputProps): ReactNode {
             editable={!disabled}
             inputMode="decimal"
             keyboardType="decimal-pad"
-            onBlur={(): void => setFocused(false)}
             onChangeText={handleChangeText}
-            onFocus={(): void => setFocused(true)}
             onSubmitEditing={(): void => Keyboard.dismiss()}
             placeholder={placeholder}
             placeholderTextColor={palette.textTertiary}
-            ref={inputRef}
             returnKeyType="done"
+            showSoftInputOnFocus={false}
             spellCheck={false}
             style={styles.input}
             testID={suffixId(testID, 'input')}
