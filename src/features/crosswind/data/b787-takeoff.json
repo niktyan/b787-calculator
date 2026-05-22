@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.3.0",
-  "dataVersion": "2026-05-23.001",
+  "dataVersion": "2026-05-23.002",
   "phase": "takeoff",
   "weightConversion": {
     "tonsToKilolbsFactor": 2.20462
@@ -126,6 +126,123 @@
           "validatedBy": "active-line-pilots",
           "referenceDocument": "Boeing 787 FCOM",
           "notes": "RWYCC 1 (Poor) advisory limit per Excel 'Poor 788' sheet G7 (literal value 10). First condition backed by constantStrategy — output is a single constant regardless of weight, CG, or any other input. Conservative simplification of FCOM RWYCC 1 row (which shows alternating 15/10 pattern) per Q5 user decision: Excel uses the 10 lower-bound uniformly."
+        }
+      }
+    },
+    "b787_9": {
+      "operationalEnvelope": {
+        "weight": {
+          "minTons": 110.677,
+          "maxTons": 259.228
+        },
+        "cg": {
+          "minPercent": 8,
+          "maxPercent": 37.5
+        }
+      },
+      "dry": {
+        "strategyType": "variableSlopeBracketed",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 40, "slope": 0.046, "intercept": 12.0 },
+            { "crosswindKnots": 35, "slope": 0.0448, "intercept": 15.7 },
+            { "crosswindKnots": 30, "slope": 0.0452, "intercept": 18.7 },
+            { "crosswindKnots": 25, "slope": 0.0452, "intercept": 21.8 }
+          ],
+          "maxCap": 37,
+          "decimals": 0
+        },
+        "metadata": {
+          "createdAt": "2026-05-23",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 6 (Dry) advisory limits for B787-9 per Excel 'Dry 789' sheet. variableSlopeBracketed — each of the 4 brackets carries its own slope (0.046/0.0448/0.0452/0.0452). Bracket labels 40/35/30/25 (no 20 KT row in 789 source). Shares maxCap=37 KT with B787-8 Dry per FCOM Tab 2.29.2a."
+        }
+      },
+      "good": {
+        "strategyType": "variableSlopeBracketed",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 40, "slope": 0.048, "intercept": 5.95 },
+            { "crosswindKnots": 35, "slope": 0.0468, "intercept": 10.25 },
+            { "crosswindKnots": 30, "slope": 0.0462, "intercept": 14.4 },
+            { "crosswindKnots": 25, "slope": 0.0454, "intercept": 18.6 },
+            { "crosswindKnots": 20, "slope": 0.0454, "intercept": 22.45 }
+          ],
+          "maxCap": 37,
+          "decimals": 0
+        },
+        "metadata": {
+          "createdAt": "2026-05-23",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 5 (Good) advisory limits for B787-9 per Excel 'Good 789' sheet. variableSlopeBracketed with 5 brackets (40/35/30/25/20). maxCap=37 KT matches FCOM Tab 2.29.2a Good-row upper bound."
+        }
+      },
+      "mediumToGood": {
+        "strategyType": "variableSlopeBracketed",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 35, "slope": 0.0364, "intercept": 5.0 },
+            { "crosswindKnots": 30, "slope": 0.0356, "intercept": 10.3 },
+            { "crosswindKnots": 25, "slope": 0.0352, "intercept": 15.5 },
+            { "crosswindKnots": 20, "slope": 0.034, "intercept": 21.0 },
+            { "crosswindKnots": 15, "slope": 0.0332, "intercept": 26.4 }
+          ],
+          "maxCap": null,
+          "decimals": 0
+        },
+        "metadata": {
+          "createdAt": "2026-05-23",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 4 (Medium to Good) advisory limits for B787-9 per Excel 'Medium to Good 789' sheet. variableSlopeBracketed with 5 brackets (35/30/25/20/15). maxCap=null — Excel sheet has no G8 clamp."
+        }
+      },
+      "medium": {
+        "strategyType": "variableSlopeBracketed",
+        "params": {
+          "brackets": [
+            { "crosswindKnots": 25, "slope": 0.0276, "intercept": 7.7 },
+            { "crosswindKnots": 20, "slope": 0.0288, "intercept": 16.4 },
+            { "crosswindKnots": 15, "slope": 0.03, "intercept": 25.0 },
+            { "crosswindKnots": 10, "slope": 0.036, "intercept": 32.2 }
+          ],
+          "maxCap": null,
+          "decimals": 1
+        },
+        "metadata": {
+          "createdAt": "2026-05-23",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 3 (Medium) advisory limits for B787-9 per Excel 'Medium 789' sheet. variableSlopeBracketed with 4 brackets (25/20/15/10). decimals=1 — UI displays fractional KT (e.g. 20.9). maxCap=null."
+        }
+      },
+      "mediumToPoor": {
+        "strategyType": "cgOnlyPiecewise",
+        "params": {
+          "plateauValue": 15,
+          "cgThreshold": 30,
+          "slopeDivisor": 1.5,
+          "decimals": 1
+        },
+        "metadata": {
+          "createdAt": "2026-05-23",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 2 (Medium to Poor) advisory limits for B787-9 per Excel 'Medium to Poor 789' sheet. cgOnlyPiecewise — single conditional, NO weight dependency. Plateau 15 KT for CG ≤ 30; linear decrease 1 KT per 1.5 %MAC above threshold. slopeDivisor 1.5 differs from B787-8 (1.9): the B787-9 envelope drops faster above the threshold."
+        }
+      },
+      "poor": {
+        "strategyType": "constant",
+        "params": {
+          "value": 10
+        },
+        "metadata": {
+          "createdAt": "2026-05-23",
+          "validatedBy": "active-line-pilots",
+          "referenceDocument": "Boeing 787 FCOM",
+          "notes": "RWYCC 1 (Poor) advisory limit for B787-9 per Excel 'Poor 789' sheet G7 (literal value 10). Same constant 10 KT as B787-8 Poor."
         }
       }
     }
