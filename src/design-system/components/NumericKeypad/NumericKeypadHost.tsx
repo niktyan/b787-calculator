@@ -21,6 +21,10 @@ const KEYPAD_WIDTH = 280;
 const KEYPAD_HEIGHT = 320;
 const SCREEN_MARGIN = 16;
 const ANCHOR_OFFSET = 8;
+// Match `tokens.breakpoints.regularHeader` — anything from iPad-mini portrait
+// upwards picks the "beside the field" cascade; iPhone-width screens use the
+// "above/below the field" cascade. See ADR-0011 Iteration 2 §3.
+const COMPACT_WIDTH_BREAKPOINT = 768;
 const KEYPAD_BORDER_WIDTH = 1;
 const KEYPAD_SHADOW_OFFSET_Y = 4;
 const KEYPAD_SHADOW_OPACITY = 0.25;
@@ -43,38 +47,81 @@ interface KeypadSize {
   readonly height: number;
 }
 
-function resolveHorizontal(
+function clampVertical(preferredTop: number, keypadHeight: number, screenHeight: number): number {
+  const maxTop = screenHeight - keypadHeight - SCREEN_MARGIN;
+  if (preferredTop > maxTop) {
+    return Math.max(SCREEN_MARGIN, maxTop);
+  }
+  if (preferredTop < SCREEN_MARGIN) {
+    return SCREEN_MARGIN;
+  }
+  return preferredTop;
+}
+
+function horizontalCenterOnField(
   anchor: FieldAnchor,
   screen: ScreenSize,
   keypadSize: KeypadSize,
 ): number {
-  const rightSpace = screen.width - (anchor.x + anchor.width);
-  const leftSpace = anchor.x;
-  const minSideSpace = keypadSize.width + ANCHOR_OFFSET + SCREEN_MARGIN;
-
-  if (rightSpace >= minSideSpace) {
-    return anchor.x + anchor.width + ANCHOR_OFFSET;
-  }
-  if (leftSpace >= minSideSpace) {
-    return anchor.x - keypadSize.width - ANCHOR_OFFSET;
-  }
-  // Neither side has room — center horizontally on screen, never crossing
-  // the screen margin.
-  return Math.max(SCREEN_MARGIN, (screen.width - keypadSize.width) / HALF);
-}
-
-function clampVertical(anchor: FieldAnchor, screen: ScreenSize, keypadSize: KeypadSize): number {
-  // Default: align top with the field. Clamp into screen bounds so the
-  // keypad is never partially off-screen.
-  const desiredTop = anchor.y;
-  const maxTop = screen.height - keypadSize.height - SCREEN_MARGIN;
-  if (desiredTop > maxTop) {
-    return Math.max(SCREEN_MARGIN, maxTop);
-  }
-  if (desiredTop < SCREEN_MARGIN) {
+  const fieldCenterX = anchor.x + anchor.width / HALF;
+  const preferredLeft = fieldCenterX - keypadSize.width / HALF;
+  const maxLeft = screen.width - keypadSize.width - SCREEN_MARGIN;
+  if (preferredLeft < SCREEN_MARGIN) {
     return SCREEN_MARGIN;
   }
-  return desiredTop;
+  if (preferredLeft > maxLeft) {
+    return Math.max(SCREEN_MARGIN, maxLeft);
+  }
+  return preferredLeft;
+}
+
+function positionAboveOrBelow(
+  anchor: FieldAnchor,
+  screen: ScreenSize,
+  keypadSize: KeypadSize,
+): Position {
+  const topSpace = anchor.y;
+  const bottomSpace = screen.height - (anchor.y + anchor.height);
+  const requiredVertical = keypadSize.height + ANCHOR_OFFSET + SCREEN_MARGIN;
+
+  let top: number;
+  if (topSpace >= requiredVertical) {
+    top = anchor.y - keypadSize.height - ANCHOR_OFFSET;
+  } else if (bottomSpace >= requiredVertical) {
+    top = anchor.y + anchor.height + ANCHOR_OFFSET;
+  } else {
+    // Neither side fits — pick the side with more room and clamp.
+    top =
+      topSpace > bottomSpace ? SCREEN_MARGIN : screen.height - keypadSize.height - SCREEN_MARGIN;
+  }
+
+  return { top, left: horizontalCenterOnField(anchor, screen, keypadSize) };
+}
+
+function positionBesideOrAbove(
+  anchor: FieldAnchor,
+  screen: ScreenSize,
+  keypadSize: KeypadSize,
+): Position {
+  const rightSpace = screen.width - (anchor.x + anchor.width);
+  const leftSpace = anchor.x;
+  const requiredHorizontal = keypadSize.width + ANCHOR_OFFSET + SCREEN_MARGIN;
+
+  if (rightSpace >= requiredHorizontal) {
+    return {
+      left: anchor.x + anchor.width + ANCHOR_OFFSET,
+      top: clampVertical(anchor.y, keypadSize.height, screen.height),
+    };
+  }
+  if (leftSpace >= requiredHorizontal) {
+    return {
+      left: anchor.x - keypadSize.width - ANCHOR_OFFSET,
+      top: clampVertical(anchor.y, keypadSize.height, screen.height),
+    };
+  }
+  // Wide screen, no side room (rare — e.g. extra-wide field on iPad mini
+  // portrait) — fall back to the compact-screen above/below behaviour.
+  return positionAboveOrBelow(anchor, screen, keypadSize);
 }
 
 // Exported for unit-testing the pure positioning logic without mounting the
@@ -84,10 +131,10 @@ export function computeKeypadPosition(
   screen: ScreenSize,
   keypadSize: KeypadSize = { width: KEYPAD_WIDTH, height: KEYPAD_HEIGHT },
 ): Position {
-  return {
-    left: resolveHorizontal(anchor, screen, keypadSize),
-    top: clampVertical(anchor, screen, keypadSize),
-  };
+  if (screen.width >= COMPACT_WIDTH_BREAKPOINT) {
+    return positionBesideOrAbove(anchor, screen, keypadSize);
+  }
+  return positionAboveOrBelow(anchor, screen, keypadSize);
 }
 
 interface Styles {
