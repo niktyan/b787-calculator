@@ -669,7 +669,7 @@ chart-визуала, никакой meta-grid, никакого envelope-positi
 - `data-not-available` — `info-outline` 32 pt + caption, описывающий причину: «No data available for the selected aircraft.» / «No data available for the selected runway condition.» Покрывает `DataNotAvailable.reason ∈ {aircraft-not-implemented, condition-not-implemented}`.
 - `error` — danger-headline + опциональная description (рядом с capability disclosure для phase mismatch / `CalculationFailed`).
 
-**Composition: idle + operational-envelope warning.** Когда `validateOperationalEnvelope` возвращает `EnvelopeViolation`, но алгоритм успешно посчитал, result-панель остаётся в `idle` и **под значением** появляется warning chip:
+**Composition: idle + operational-envelope warning.** Когда `validateWeightEnvelope` или `validateCGEnvelope` (или оба) возвращают violation, но алгоритм успешно посчитал, result-панель остаётся в `idle` и **под значением** появляется warning chip. Field-level errors (под TOW / CG) показываются независимо для каждого нарушенного поля — обе ошибки могут гореть одновременно, см. `04-domain-model.md` § "Independent weight + cg validation":
 - Текст chip-а: «Outside operational envelope — advisory only» (локализуется).
 - Цвет: `tokens.colors.warn` foreground.
 - Позиция: marginTop `sm` под value-row.

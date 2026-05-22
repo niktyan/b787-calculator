@@ -364,7 +364,7 @@ for interface uniformity but unused).
 `CalculationFailed`. UI fail-safe экран показывает "Calculation
 unavailable" — корректный сигнал для inputs deep beyond operational
 envelope. До того, как формула уходит в отрицательную зону,
-`validateOperationalEnvelope` уже даёт warning chip (CG > 35).
+`validateCGEnvelope` уже даёт warning chip (CG > 35).
 
 Альтернативы (clamp at 0, return out-of-envelope status) рассмотрены
 и отклонены — A1 maintains Excel parity и ясно сигнализирует
@@ -583,11 +583,12 @@ After PR 7 ALL 6 RWYCC conditions для B787-8 active. См.
 
 **Operational-envelope валидация (вес/CG в регуляторных пределах) здесь
 НЕ выполняется.** Алгоритм — это «pure data lookup». Проверка
-operational envelope — отдельная функция use-case layer
-`validateOperationalEnvelope` (см. `module-contracts/crosswind.md`
-Public API). За пределами envelope UI показывает warning chip рядом с
-вычисленным значением, но число остаётся на экране (см. `06-ui-spec.md`
-Экран 4 ResultPanelState).
+operational envelope — две независимые функции use-case layer
+`validateWeightEnvelope` и `validateCGEnvelope` (см.
+`module-contracts/crosswind.md` Public API). За пределами envelope UI
+показывает warning chip рядом с вычисленным значением + соответствующие
+field-level errors (обе оси независимо), но число остаётся на экране
+(см. `06-ui-spec.md` Экран 4 ResultPanelState).
 
 Если data-availability проверки пройдены — переходим к Шагу 1.
 
@@ -780,7 +781,7 @@ Sets #1–#3:** `aircraft: 'b787_8'`, `phase: 'takeoff'`,
 `calculateCrosswindLimit` call — в таблицах ниже опущены ради
 читаемости.
 
-**Test sets ownership.** Sets #1–#3 + #5 — тесты алгоритма (`calculateCrosswindLimit`); #4 — тесты use-case-функции `validateOperationalEnvelope`. Это разделение явное: алгоритм НЕ проверяет operational envelope (см. Шаг 0 выше), поэтому test cases типа «CG=40 → InvalidInput» относятся к валидатору, а не к алгоритму. То же самое CG=40 при тех же threshold-ах остаётся валидным входом для алгоритма и даёт численный результат.
+**Test sets ownership.** Sets #1–#3 + #5 — тесты алгоритма (`calculateCrosswindLimit`); #4 — тесты use-case-функций `validateWeightEnvelope` / `validateCGEnvelope` (независимые, см. `04-domain-model.md` § "Independent weight + cg validation"). Это разделение явное: алгоритм НЕ проверяет operational envelope (см. Шаг 0 выше), поэтому test cases типа «CG=40 → InvalidInput» относятся к валидаторам, а не к алгоритму. То же самое CG=40 при тех же threshold-ах остаётся валидным входом для алгоритма и даёт численный результат.
 
 **Strategy column note.** Колонка «Strategy» в таблицах ниже отражает поведение `CalculationMetadata.calculationStrategy`. Этот enum имеет ровно три значения: `'within-bracket' | 'below-envelope' | 'above-envelope'`. В тест-описаниях встречается ярлык «exact-breakpoint» — это документационная сабкатегория `within-bracket`, когда `cgPercent` совпадает ровно с одним из threshold-ов (тогда `lower = upper`, `E9 = 0`, `result = F7 = F8`). Алгоритм возвращает `within-bracket` для этого случая; runtime-строка enum-а не равна `'exact-breakpoint'`.
 
@@ -863,10 +864,14 @@ Thresholds для этого веса:
 
 ### Test set #4 · Operational-envelope validator (use-case layer, NOT algorithm)
 
-**Important.** Эти кейсы тестируют функцию `validateOperationalEnvelope`
-из use-case layer (см. `module-contracts/crosswind.md` Public API), а
-НЕ сам алгоритм. Алгоритм (`calculateCrosswindLimit`) для тех же входов
-вернёт численный результат — operational envelope проверяется отдельно.
+**Important.** Эти кейсы тестируют функции `validateWeightEnvelope` и
+`validateCGEnvelope` из use-case layer (см.
+`module-contracts/crosswind.md` Public API), а НЕ сам алгоритм.
+Алгоритм (`calculateCrosswindLimit`) для тех же входов вернёт численный
+результат — operational envelope проверяется отдельно. Два валидатора
+независимы, поэтому "обе оси out of envelope" — это два независимых
+fail-кейса, не один (см. `04-domain-model.md` § "Independent weight +
+cg validation").
 `operationalEnvelope` берётся из bundled JSON. С 2026-05-19 (PR
 `fix/envelope-bounds-and-menu-order`) envelope соответствует FCOM /
 Type Certificate B787-8: `weight ∈ [104.1, 227.93] tons`, `cg ∈
@@ -1134,7 +1139,8 @@ function calculateCrosswindLimit(input, data) {
 
   // Step 2: pure-function calculation inside the strategy.
   //         (Operational-envelope validation is NOT performed here —
-  //          see `validateOperationalEnvelope` in the use-case layer.)
+  //          see `validateWeightEnvelope` / `validateCGEnvelope` in the
+  //          use-case layer.)
   return resolution.strategy.calculate(input);
 }
 ```

@@ -31,7 +31,7 @@ src/features/crosswind/
 │   │   ├── variable-slope-bracketed.ts — `variableSlopeBracketed` strategy (Medium / PR 5)
 │   │   ├── cg-only-piecewise.ts     — `cgOnlyPiecewise` strategy (MediumToPoor / PR 6)
 │   │   └── constant.ts              — `constant` strategy (Poor / PR 7)
-│   └── validators.ts                — validateAlgorithmInput + validateOperationalEnvelope
+│   └── validators.ts                — validateAlgorithmInput + validateWeightEnvelope + validateCGEnvelope
 ├── data/
 │   ├── crosswindRepository.ts       — обёртка над JSON-ресурсом
 │   ├── schema.ts                    — zod-схема (byAircraft / strategy discriminated union)
@@ -73,7 +73,9 @@ export type {
   CrosswindCalculationOutput,
   CrosswindCalculationError,
   CrosswindTakeoffInput,
+  CGViolation,
   EnvelopeViolation,
+  WeightViolation,
   WeightInTons,
   CGPercentMAC,
   CrosswindKnots,
@@ -116,21 +118,33 @@ export { STRATEGY_TYPES, createBracketedLinearStrategy, resolveStrategy } from '
 //   ): CrosswindStrategy;
 
 // Use-case validation (operational envelope — отдельно от lookup
-// envelope). См. 04-domain-model.md "Two distinct envelope concepts".
+// envelope). Independent flow on each axis so the UI can surface both
+// errors at once. См. 04-domain-model.md § "Two distinct envelope
+// concepts" / "Independent weight + cg validation".
 //
-// signature:
-//   function validateOperationalEnvelope(
-//     input: { weightTons: WeightInTons; cgPercent: CGPercentMAC },
-//     envelope: { weight: { minTons: number; maxTons: number };
-//                 cg:     { minPercent: number; maxPercent: number } },
-//   ): Result<void, EnvelopeViolation>;
+// signatures:
+//   function validateWeightEnvelope(
+//     input: { weightTons: WeightInTons },
+//     envelope: { minTons: number; maxTons: number },
+//   ): Result<void, WeightViolation>;
 //
-// EnvelopeViolation covers four cases: weight.below / weight.above /
-// cg.below / cg.above. Use-case calls validateOperationalEnvelope
-// FIRST, then always calls calculateCrosswindLimit. UI shows the
-// algorithm's number unconditionally; the validator's result drives
-// the warning chip next to it.
-export { validateOperationalEnvelope } from './domain';
+//   function validateCGEnvelope(
+//     input: { cgPercent: CGPercentMAC },
+//     envelope: { minPercent: number; maxPercent: number },
+//   ): Result<void, CGViolation>;
+//
+// WeightViolation: { weight.below, weight.above }.
+// CGViolation:     { cg.below,     cg.above }.
+// EnvelopeViolation = WeightViolation | CGViolation (alias for generic
+// consumers — e.g., the result-panel warning chip).
+//
+// Use-case calls BOTH validators FIRST, composes results into
+// `{ weight: WeightViolation | null, cg: CGViolation | null }`, then
+// always calls calculateCrosswindLimit. UI shows the algorithm's number
+// unconditionally; each non-null violation drives the corresponding
+// field error, and the first non-null violation drives the warning chip
+// next to the number.
+export { validateCGEnvelope, validateWeightEnvelope } from './domain';
 
 // Repository factory (для DI, если понадобится альтернативная реализация)
 export { createCrosswindRepository } from './data';
@@ -201,7 +215,7 @@ export type { CrosswindRepository } from './data';
 - `variable-slope-bracketed-strategy.test.ts` — direct unit tests for the new `variableSlopeBracketed` strategy (PR 5). 16 cases including anchor, both `/E9` and `·E9` formula branches (the latter exercised with synthetic tight-bracket params), decimals=0 vs 1, IFNA fallback derived from `brackets[0]`, maxCap clamp/no-clamp, empty brackets, Infinity defence in depth.
 - `cg-only-piecewise-strategy.test.ts` — direct unit tests for the new `cgOnlyPiecewise` strategy (PR 6). 19 cases including plateau (3 in-plateau CGs), decreasing branch with anchor, boundary CG=threshold, weight-independence (5 weights × CG=32 → all 13.9), decimals=0 vs 1, out-of-envelope negative-output transition (CG=40→9.7, CG=50→4.4, CG=60→CalculationFailed, CG=100→CalculationFailed), slopeDivisor=0 defensive guard, Infinity defence in depth, metadata sanity (single-point bracket ranges since CG-only model has no bracket structure).
 - `constant-strategy.test.ts` — direct unit tests for the new `constant` strategy (PR 7). 10 cases: discriminator, input-independence 3×3 matrix asserted as 9-element toEqual, metadata sanity (`calculationStrategy='within-bracket'` per PR 6 enum-stretch convention; cgBracket and bracketCrosswindRange collapse to single-point ranges), it.each over `value ∈ {5, 10, 15, 20}` confirming each instance returns its own constant, defensive paths (negative value and value > 40 KT both → CalculationFailed via `makeCrosswindKnots`).
-- `validators.test.ts` — Test Set #4: кейсы #4.01–4.04 для `validateOperationalEnvelope` плюс кейсы #4.05–4.07 для Value Object factories (`makeWeightInTons` / `makeCGPercentMAC` отвергают NaN / Infinity / negative).
+- `validators.test.ts` — Test Set #4: кейсы #4.01–4.02 для `validateWeightEnvelope` + #4.03–4.04 для `validateCGEnvelope` + boundary edges (just-inside / just-outside) + 4-combination matrix on independent flow (both-ok / weight-only-bad / cg-only-bad / both-bad incl. above-max + below-min + mixed) плюс кейсы #4.05–4.07 для Value Object factories (`makeWeightInTons` / `makeCGPercentMAC` отвергают NaN / Infinity / negative).
 - `edgeCases.test.ts` — strategy-dispatcher fall-through, validateAlgorithmInput defence-in-depth NaN/Infinity guards, runtime const arrays.
 - Coverage: ≥ 90%.
 
@@ -258,7 +272,10 @@ Public API изменения:
 - Удалены: `getLookupCGRange`, `LookupCGRange` — драйверы удалённого
   `EnvelopePositionBar`.
 
-`validateOperationalEnvelope` неизменён.
+`validateOperationalEnvelope` неизменён в этот момент; впоследствии
+заменён независимой парой `validateWeightEnvelope` / `validateCGEnvelope`
+в PR `fix/independent-envelope-validators` — см. § "Independent envelope
+validation split (PR A2)" ниже.
 
 ### Strategy refactor (PR 1 of feat/crosswind-strategy-refactor)
 
@@ -290,6 +307,44 @@ Future-strategy params (`VariableSlopeBracketedParams`,
 
 Поведение для Dry — bit-for-bit unchanged: все 50+ test cases в
 `calculator.test.ts` проходят без модификаций.
+
+### Independent envelope validation split (PR A2 — fix/independent-envelope-validators, 2026-05-23)
+
+User-testing bug #2: with both TOW and CG out of operational envelope
+the form showed only the weight error until the user corrected the
+weight, hiding the CG violation. The single `validateOperationalEnvelope`
+used an early-return chain across four checks and surfaced only the
+first violation.
+
+Replaced by two independent validators:
+
+- `validateWeightEnvelope(input, envelope.weight): Result<void, WeightViolation>`
+- `validateCGEnvelope(input, envelope.cg):       Result<void, CGViolation>`
+
+Type-level split:
+
+- `WeightViolation = { weight.below } | { weight.above }`.
+- `CGViolation     = { cg.below }     | { cg.above }`.
+- `EnvelopeViolation = WeightViolation | CGViolation` — union alias
+  preserved for consumers that need a generic any-violation type
+  (result-panel warning chip).
+
+Public API change:
+
+- Removed: `validateOperationalEnvelope`.
+- Added:   `validateWeightEnvelope`, `validateCGEnvelope`,
+           `WeightViolation`, `CGViolation`.
+- Unchanged: `EnvelopeViolation` (now a union alias).
+
+Use-case (`useCrosswindCalculator.compute`) now calls BOTH validators in
+parallel and composes the two `Result`s into `{ weight, cg }` field
+errors. The result-panel `warning` chip stays bound to the first
+non-null violation; PR A3 will revisit the chip behaviour.
+
+No data shape change, no `schemaVersion` / `dataVersion` bump, no ADR.
+Spec impact: this contract + `04-domain-model.md` § "Independent weight
++ cg validation" + `06-ui-spec.md` § Экран 4 composition rule +
+`05-crosswind-algorithm.md` cross-refs to the validator name.
 
 ## Открытые вопросы
 
