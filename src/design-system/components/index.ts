@@ -51,6 +51,19 @@ export type { ScreenHeaderProps } from './ScreenHeader';
 // Overlays
 export { BottomSheet, BottomSheetOption } from './BottomSheet';
 export type { BottomSheetProps, BottomSheetOptionProps } from './BottomSheet';
+export {
+  NumericKeypad,
+  NumericKeypadProvider,
+  NumericKeypadHost,
+  useNumericKeypad,
+} from './NumericKeypad';
+export type {
+  NumericKeypadProps,
+  NumericKeypadKey,
+  NumericKeypadDigit,
+  UseNumericKeypadArgs,
+  UseNumericKeypadResult,
+} from './NumericKeypad';
 
 // Settings/About list rows
 export { NavigableSettingsRow, ToggleSettingsRow, InfoSettingsRow } from './SettingsRow';

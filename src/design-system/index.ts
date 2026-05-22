@@ -46,6 +46,10 @@ export {
   // Overlays
   BottomSheet,
   BottomSheetOption,
+  NumericKeypad,
+  NumericKeypadProvider,
+  NumericKeypadHost,
+  useNumericKeypad,
   // Settings/About list rows
   NavigableSettingsRow,
   ToggleSettingsRow,
@@ -88,6 +92,11 @@ export type {
   // Overlays
   BottomSheetProps,
   BottomSheetOptionProps,
+  NumericKeypadProps,
+  NumericKeypadKey,
+  NumericKeypadDigit,
+  UseNumericKeypadArgs,
+  UseNumericKeypadResult,
   // Settings/About list rows
   NavigableSettingsRowProps,
   NavigableSettingsRowValueColor,
