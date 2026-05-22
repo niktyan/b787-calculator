@@ -40,13 +40,17 @@ MVP — это первая публичная версия в App Store. Осо
 
 **MVP включает:**
 
-1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787 (оба варианта)**. MVP RWYCC coverage: **6/6 conditions active** для обоих ВС (Dry through Poor) после crosswind expansion series (PR 2-7) и активации B787-9 в Sprint B (см. ADR-0013). RWYCC 0 (TAKE OFF NOT ALLOWED) intentionally not implemented — operationally a prohibition, not a calculation. May revisit in post-launch evaluation. Входы: вариант ВС (Aircraft — оба активны: B787-8 / B787-9, каждый со своим FCOM-сертифицированным operational envelope), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale). Выход: одно число — максимально допустимый боковой ветер в узлах.
-2. **Splash-экран с обязательным advisory-дисклеймером** при первом запуске. Подтверждение пользователя сохраняется и больше не показывается.
-3. **Главное меню — crosswind-семья.** В MVP Main Menu показывает только два модуля одной семьи (crosswind), в порядке хронологии фазы полёта:
-   - **Crosswind · Landing** — Phase 2, неактивная карточка-«тизер» (слот #1).
-   - **Crosswind · Takeoff** — активная карточка (слот #2), открывает Crosswind Calculator.
+1. **Два функциональных модуля — Crosswind Operations Suite для Boeing 787 (оба варианта).**
+   - **Crosswind · Takeoff.** RWYCC coverage 6/6 для обоих ВС (Dry through Poor) после crosswind expansion series (PR 2-7) и активации B787-9 в Sprint B (см. ADR-0013). RWYCC 0 (TAKE OFF NOT ALLOWED) intentionally not implemented — operationally a prohibition, not a calculation. Входы: вариант ВС (Aircraft — оба активны: B787-8 / B787-9, каждый со своим FCOM-сертифицированным operational envelope), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale). Выход: одно число — максимально допустимый боковой ветер в узлах.
+   - **Crosswind · Landing.** Добавлен в Sprint C (см. ADR-0014). Categorical lookup по FCOM Tab 2.29.3 + page 2-105 с тремя FCOM CAUTION корректировками. Входы: 6 категорий — aircraft (B787-8 / B787-9), runway condition (те же 6 RWYCC), landing mode (Manual / Autoland), Asymmetric Reverse Thrust (No / Yes), CAT II-III (No / Yes), ONE ENG INOP (No / Yes); последние два видны только в Autoland. Выход: одно целое число KT.
 
-   Тизер содержит иконку, название, краткое описание (1 предложение), бейдж «Phase 2». Тап по неактивной карточке открывает короткий info-popup «This module is planned for an upcoming release. Stay tuned.» с кнопкой закрытия. Цель — показать, что crosswind-модуль будет дополнен landing-сценарием в ближайшем апдейте, и не перегружать MVP-меню тизерами модулей, до которых ещё далеко.
+   Итого MVP: 2 модуля × 2 ВС × 6 RWYCC = 24 calculation matrices + landing CAUTION adjustments. Этот объём — основной аргумент для closing Apple Guideline 4.2 (Minimum Functionality) на resubmit.
+2. **Splash-экран с обязательным advisory-дисклеймером** при первом запуске. Подтверждение пользователя сохраняется и больше не показывается.
+3. **Главное меню — crosswind-семья (две активные карточки).** В MVP Main Menu показывает оба модуля как активные карточки, в порядке хронологии фазы полёта:
+   - **Crosswind · Takeoff** — активная карточка (слот #1), открывает Takeoff Calculator (`/crosswind`).
+   - **Crosswind · Landing** — активная карточка (слот #2), открывает Landing Calculator (`/crosswind-landing`).
+
+   В MVP coming-soon тизеров нет — карточная инфраструктура (`ComingSoonModal`, `ComingSoonCard`) сохранена в `core/modules/` для Phase 3+ (Weight & Balance, Performance, Fuel). До Sprint C Landing был Phase-2-тизером в слоте #1; ADR-0014 promotes его в активный модуль.
 4. **Settings** — выбор языка (RU/EN), переключение темы (Auto/Light/Dark), управление видимостью модулей (toggle per module, изменения отражаются в Main Menu и empty state если все скрыты). Единицы измерения **зафиксированы на MVP-permanent уровне**: Tons (t) для веса, Knots (KT) для ветра — рендерятся как info-rows без переключателей. Альтернативы (Pounds / m/s) явно вынесены за скобки и в дальнейших релизах не появятся, если только это не пересмотрено отдельным ADR (см. Sprint 6 follow-up Block 2). Это единственный документ, в котором фиксируется «permanent units»-решение — см. `06-ui-spec.md` § Экран 5 для UI-следствий.
 5. **About** — версия приложения, ссылка на Privacy Policy, ссылка на Terms of Use, контактный email поддержки.
 6. **Полная локализация на русский и английский языки.**
@@ -75,7 +79,7 @@ MVP — это первая публичная версия в App Store. Осо
 - ~~Lower-RWYCC runway conditions~~ — все 6 RWYCC (Dry → Poor) активны после crosswind expansion series PR 2-7. RWYCC 0 (TAKE OFF NOT ALLOWED) intentionally not implemented в bundled data — operationally это prohibition state, not a numeric advisory. Pilot decision tree обрабатывает RWYCC 0 → "do not take off" вне приложения. Может revisit в post-launch evaluation.
 - Wind direction + runway heading inputs с автоматическим расчётом crosswind component — Phase 2.
 - Save / History calculations с экспортом в PDF — Phase 2/3.
-- Crosswind Landing модуль — Phase 2 (та же piecewise-linear модель, отдельная таблица констант).
+- ~~Crosswind Landing модуль~~ — **активирован в Sprint C** (см. ADR-0014): categorical lookup + FCOM CAUTION adjustments для обоих ВС. Phase-2 запись сохранена для исторической трассируемости backlog'а; алгоритм оказался **проще** piecewise-linear модели takeoff'а (categorical, без weight/CG зависимости), поэтому реализация уложилась в один sprint.
 - Weight & Balance модуль (CG envelope, MAC%, load sheet) — Phase 4.
 - Performance V-speeds (V1/VR/V2, LDR, ASDA, BFL) — Phase 4+.
 - Fuel Planning (trip / contingency / alternate / final reserve / taxi) — Phase 4+.
@@ -139,7 +143,7 @@ MVP считается успешным, если выполнены **все** 
 **Phase 2 (после первого публичного релиза):**
 - ~~Boeing 787-9 variant~~ — **shipped in MVP** (Sprint B / ADR-0013); запись сохранена для исторической трассируемости backlog'а.
 - ~~Non-dry RWYCC runway conditions~~ — shipped в crosswind expansion series PR 2-7 (Good / Medium to Good / Medium / Medium to Poor / Poor). Сохранено для исторической трассируемости.
-- Crosswind Landing (та же piecewise-linear модель, отдельный per-phase JSON).
+- ~~Crosswind Landing~~ — **shipped in MVP** (Sprint C / ADR-0014); реализован как categorical lookup + FCOM CAUTION adjustments, а не piecewise-linear модель. Запись сохранена для исторической трассируемости backlog'а.
 - Wind direction + runway heading inputs → автоматический crosswind component → Within limit / Exceeded badge.
 - Save / History calculations с экспортом в PDF.
 - OTA-обновления bundled data через EAS Update.
