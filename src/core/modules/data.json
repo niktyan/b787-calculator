@@ -9,9 +9,8 @@
   {
     "id": "crosswind-landing",
     "name": "Crosswind · Landing",
-    "description": "Same crosswind logic applied to the landing phase.",
     "icon": "LD",
-    "active": false,
-    "phase": "Phase 2"
+    "active": true,
+    "route": "/crosswind-landing"
   }
 ]

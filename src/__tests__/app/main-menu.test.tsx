@@ -30,14 +30,14 @@ describe('Main Menu route', () => {
     await AsyncStorage.clear();
   });
 
-  it('renders the header, NavPills, the active takeoff card, and the landing teaser (dark)', () => {
+  it('renders the header, NavPills, and both active crosswind cards (dark)', () => {
     const tree = renderWithTheme(<MainMenu />, { mode: 'dark' });
     expect(tree.getByTestId('main-menu-screen')).toBeTruthy();
     expect(tree.getByTestId('main-menu-logo')).toBeTruthy();
     expect(tree.getByText('B787 Calculator')).toBeTruthy();
     expect(tree.getByTestId('main-menu-tabs')).toBeTruthy();
     expect(tree.getByTestId('main-menu-grid')).toBeTruthy();
-    // MVP scope: only landing teaser + takeoff active. WB/Performance removed.
+    // Sprint C / ADR-0014: both crosswind cards are now active.
     expect(tree.getByTestId('module-card-crosswind-landing')).toBeTruthy();
     expect(tree.getByTestId('module-card-crosswind-takeoff')).toBeTruthy();
     expect(tree.queryByTestId('module-card-weight-balance')).toBeNull();
@@ -50,25 +50,25 @@ describe('Main Menu route', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('renders Crosswind · Takeoff active before Crosswind · Landing teaser in the grid', () => {
+  it('renders Crosswind · Takeoff before Crosswind · Landing in the grid', () => {
     const { getAllByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     const cards = getAllByTestId(/^module-card-/);
     const ids = cards.map((c) => (c.props as { testID: string }).testID);
     expect(ids).toEqual(['module-card-crosswind-takeoff', 'module-card-crosswind-landing']);
   });
 
-  it('navigates to /crosswind via push when the active card is tapped (drilldown)', () => {
+  it('navigates to /crosswind via push when the takeoff card is tapped (drilldown)', () => {
     const { getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     fireEvent.press(getByTestId('module-card-crosswind-takeoff'));
     expect(mockPush).toHaveBeenCalledWith('/crosswind');
     expect(mockReplace).not.toHaveBeenCalled();
   });
 
-  it('does NOT navigate when a coming-soon card is tapped — opens the modal instead', () => {
+  it('navigates to /crosswind-landing via push when the landing card is tapped (drilldown)', () => {
     const { getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     fireEvent.press(getByTestId('module-card-crosswind-landing'));
-    expect(mockPush).not.toHaveBeenCalled();
-    expect(getByTestId('coming-soon-modal-sheet')).toBeTruthy();
+    expect(mockPush).toHaveBeenCalledWith('/crosswind-landing');
+    expect(mockReplace).not.toHaveBeenCalled();
   });
 
   it('navigates to /settings and /about via NavPills using replace (not push)', () => {

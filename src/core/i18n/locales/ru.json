@@ -19,7 +19,10 @@
     "tabSettings": "Настройки",
     "tabAbout": "О приложении",
     "comingSoonBadge": "Скоро",
-    "activeModuleDescription": "Макс. боковой ветер на взлёте: вес, центровка, RWYCC, вариант ВС.",
+    "descriptions": {
+      "crosswind-takeoff": "Макс. боковой ветер на взлёте: вес, центровка, RWYCC, вариант ВС.",
+      "crosswind-landing": "Макс. боковой ветер на посадке: состояние ВПП, Autoland, асимметричный реверс, ENG INOP."
+    },
     "allHidden": "Все модули скрыты. Откройте настройки, чтобы включить.",
     "openSettings": "Открыть настройки"
   },
@@ -64,6 +67,22 @@
       "mediumToPoor": "Medium to Poor",
       "poor": "Poor"
     }
+  },
+  "crosswind-landing": {
+    "title": "Crosswind · Landing",
+    "aircraftLabel": "Тип ВС",
+    "runwayConditionLabel": "Состояние ВПП",
+    "landingModeLabel": "Посадка",
+    "toggleNo": "Нет",
+    "toggleYes": "Да",
+    "resetLabel": "Сброс",
+    "emptyIconLabel": "Информация",
+    "resultStatusLabel": "Max crosswind · Landing",
+    "errorHeadline": "Расчёт недоступен",
+    "errorVerifyInputs": "Проверьте ввод и попробуйте снова.",
+    "errorDataAircraft": "Нет данных для выбранного типа ВС.",
+    "errorDataCondition": "Нет данных для выбранного состояния ВПП.",
+    "errorDataMode": "Нет данных для выбранного режима посадки."
   },
   "settings": {
     "title": "Настройки",

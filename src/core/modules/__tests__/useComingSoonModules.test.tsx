@@ -4,12 +4,12 @@ import { useComingSoonModules, useModules } from '../useComingSoonModules';
 
 describe('modules hooks', () => {
   describe('useComingSoonModules', () => {
-    it('returns the bundled coming-soon module list', () => {
+    // Sprint C / ADR-0014: MVP ships zero coming-soon teasers — both
+    // crosswind modules are active. The hook is kept for the next Phase
+    // (Weight & Balance / Performance / Fuel teasers).
+    it('returns an empty list in MVP (no teasers shipped)', () => {
       const { result } = renderHook(() => useComingSoonModules());
-      expect(result.current.length).toBeGreaterThan(0);
-      const landing = result.current.find((m) => m.id === 'crosswind-landing');
-      expect(landing).toBeDefined();
-      expect(landing?.phase).toBe('Phase 2');
+      expect(result.current).toEqual([]);
     });
 
     it('returns the same memoized reference across re-renders', () => {
@@ -21,7 +21,7 @@ describe('modules hooks', () => {
   });
 
   describe('useModules', () => {
-    it('returns active + coming-soon entries side-by-side', () => {
+    it('returns both active crosswind modules side-by-side', () => {
       const { result } = renderHook(() => useModules());
       const ids = result.current.map((m) => m.id);
       expect(ids).toContain('crosswind-landing');
@@ -33,7 +33,7 @@ describe('modules hooks', () => {
       const takeoff = result.current.find((m) => m.id === 'crosswind-takeoff');
       expect(takeoff?.active).toBe(true);
       const landing = result.current.find((m) => m.id === 'crosswind-landing');
-      expect(landing?.active).toBe(false);
+      expect(landing?.active).toBe(true);
     });
   });
 });

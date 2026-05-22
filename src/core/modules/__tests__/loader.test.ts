@@ -22,12 +22,21 @@ describe('modules loader', () => {
       }
     });
 
-    it('exposes crosswind-takeoff as the active module with a route', () => {
+    it('exposes crosswind-takeoff as an active module with a route', () => {
       const takeoff = loadModules().find((m) => m.id === 'crosswind-takeoff');
       expect(takeoff).toBeDefined();
       expect(takeoff?.active).toBe(true);
       if (takeoff?.active === true) {
         expect(takeoff.route).toBe('/crosswind');
+      }
+    });
+
+    it('exposes crosswind-landing as an active module with a route (Sprint C / ADR-0014)', () => {
+      const landing = loadModules().find((m) => m.id === 'crosswind-landing');
+      expect(landing).toBeDefined();
+      expect(landing?.active).toBe(true);
+      if (landing?.active === true) {
+        expect(landing.route).toBe('/crosswind-landing');
       }
     });
 
@@ -40,20 +49,13 @@ describe('modules loader', () => {
   });
 
   describe('loadComingSoonModules (inactive subset)', () => {
-    it('returns only inactive modules with the expected coming-soon shape', () => {
+    // Sprint C / ADR-0014: MVP ships zero coming-soon teasers — Landing
+    // was promoted to an active module alongside Takeoff. The hook still
+    // exists for future Phase 3+ teasers (Weight & Balance, Performance,
+    // Fuel) so the API surface and Main Menu wiring stay stable.
+    it('returns an empty list because MVP ships no teasers', () => {
       const modules = loadComingSoonModules();
-      expect(modules.length).toBeGreaterThan(0);
-      for (const m of modules) {
-        expect(m.active).toBe(false);
-        expect(typeof m.description).toBe('string');
-        expect(typeof m.phase).toBe('string');
-      }
-    });
-
-    it('exposes crosswind-landing as a Phase 2 teaser', () => {
-      const landing = loadComingSoonModules().find((x) => x.id === 'crosswind-landing');
-      expect(landing).toBeDefined();
-      expect(landing?.phase).toMatch(/^Phase \d+$/);
+      expect(modules).toEqual([]);
     });
 
     it('does not surface weight-balance or performance in MVP', () => {
@@ -62,9 +64,10 @@ describe('modules loader', () => {
       expect(modules.find((x) => x.id === 'performance')).toBeUndefined();
     });
 
-    it('does not include the active takeoff module', () => {
-      const takeoff = loadComingSoonModules().find((m) => m.id === 'crosswind-takeoff');
-      expect(takeoff).toBeUndefined();
+    it('does not include either active crosswind module', () => {
+      const teasers = loadComingSoonModules();
+      expect(teasers.find((m) => m.id === 'crosswind-takeoff')).toBeUndefined();
+      expect(teasers.find((m) => m.id === 'crosswind-landing')).toBeUndefined();
     });
   });
 
