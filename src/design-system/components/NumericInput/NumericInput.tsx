@@ -195,6 +195,55 @@ function ErrorSlot({ error, hasError, style, testID }: ErrorSlotProps): ReactNod
   );
 }
 
+interface FieldTextInputProps {
+  readonly accessibilityLabel: string;
+  readonly onChangeText: (next: string) => void;
+  readonly placeholder: string | undefined;
+  readonly placeholderTextColor: string;
+  readonly style: TextStyle;
+  readonly testID: string | undefined;
+  readonly value: string;
+}
+
+/**
+ * Non-interactive display element. ADR-0011 Iterations 1-3 explain the full
+ * editable / caret / pointerEvents / showSoftInputOnFocus stack and why
+ * `onChangeText` stays attached as a dead-path sanitizer.
+ */
+function FieldTextInput({
+  accessibilityLabel,
+  onChangeText,
+  placeholder,
+  placeholderTextColor,
+  style,
+  testID,
+  value,
+}: FieldTextInputProps): ReactNode {
+  return (
+    <TextInput
+      accessibilityLabel={accessibilityLabel}
+      autoComplete="off"
+      autoCorrect={false}
+      caretHidden
+      editable={false}
+      inputMode="decimal"
+      keyboardType="decimal-pad"
+      onChangeText={onChangeText}
+      onSubmitEditing={(): void => Keyboard.dismiss()}
+      placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor}
+      pointerEvents="none"
+      returnKeyType="done"
+      showSoftInputOnFocus={false}
+      spellCheck={false}
+      style={style}
+      testID={testID}
+      textContentType="none"
+      value={value}
+    />
+  );
+}
+
 export function NumericInput(props: NumericInputProps): ReactNode {
   const {
     value,
@@ -253,37 +302,13 @@ export function NumericInput(props: NumericInputProps): ReactNode {
           tap-target above. */}
       <View ref={anchorRef} style={styles.fieldRing}>
         <View style={styles.field}>
-          <TextInput
+          <FieldTextInput
             accessibilityLabel={accessibilityLabel ?? label}
-            autoComplete="off"
-            autoCorrect={false}
-            caretHidden
-            editable={false}
-            inputMode="decimal"
-            keyboardType="decimal-pad"
-            /*
-             * `onChangeText` is a dead path while `editable={false}` (TextInput
-             * cannot receive text events from any keyboard). The handler stays
-             * in place as defence-in-depth — if a future change re-enables
-             * editing for a specific keyboard, sanitization still runs.
-             */
             onChangeText={handleChangeText}
-            onSubmitEditing={(): void => Keyboard.dismiss()}
             placeholder={placeholder}
             placeholderTextColor={palette.textTertiary}
-            returnKeyType="done"
-            /*
-             * `showSoftInputOnFocus={false}` is no longer load-bearing once
-             * the input is non-editable, but iPad has historically shown the
-             * ASCII-capable number pad on repeat focus events even with
-             * `editable={false}`. The prop stays as an extra belt-and-braces
-             * signal to the platform.
-             */
-            showSoftInputOnFocus={false}
-            spellCheck={false}
             style={styles.input}
             testID={suffixId(testID, 'input')}
-            textContentType="none"
             value={value}
           />
           {hasUnit ? (

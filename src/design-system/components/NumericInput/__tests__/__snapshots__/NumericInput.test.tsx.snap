@@ -96,6 +96,7 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6E7681"
+        pointerEvents="none"
         returnKeyType="done"
         showSoftInputOnFocus={false}
         spellCheck={false}
@@ -242,6 +243,7 @@ exports[`NumericInput renders empty integer field with placeholder in light them
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6B7280"
+        pointerEvents="none"
         returnKeyType="done"
         showSoftInputOnFocus={false}
         spellCheck={false}
@@ -387,6 +389,7 @@ exports[`NumericInput renders populated field with value, unit and error 1`] = `
         onChangeText={[Function]}
         onSubmitEditing={[Function]}
         placeholderTextColor="#6E7681"
+        pointerEvents="none"
         returnKeyType="done"
         showSoftInputOnFocus={false}
         spellCheck={false}
