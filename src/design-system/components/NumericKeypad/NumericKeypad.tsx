@@ -13,18 +13,29 @@ import { Text } from '../Text/Text';
 import { KEYPAD_LAYOUT } from './keys';
 import type { NumericKeypadKey } from './keys';
 
-const KEY_HEIGHT_COMPACT = 52;
-const KEY_HEIGHT_REGULAR = 72;
+// Key heights are slightly tighter than tap-target floor (44 pt) because the
+// keypad lives inside a floating popover with limited screen real-estate, but
+// each key still presents a generous touchable surface (>= 48 / 56 pt).
+const KEY_HEIGHT_COMPACT = 48;
+const KEY_HEIGHT_REGULAR = 56;
 const KEY_GAP_COMPACT = tokens.spacing.sm;
 const KEY_GAP_REGULAR = tokens.spacing.md;
 const KEY_LABEL_FONT_COMPACT = 22;
 const KEY_LABEL_FONT_REGULAR = 28;
+// Explicit lineHeight per key-label font size — without it iOS inherits the
+// `<Text variant="mono">` lineHeight (22 pt), which is smaller than the bumped
+// font size and visually clips digit glyphs ("7" reads as "/", "1" loses its
+// upper flag). lineHeight ≈ fontSize × 1.28 leaves comfortable headroom for
+// ascenders/descenders on the system mono face.
+const KEY_LABEL_LINE_HEIGHT_COMPACT = 28;
+const KEY_LABEL_LINE_HEIGHT_REGULAR = 36;
+const KEY_LABEL_FONT_WEIGHT = '600';
 const KEY_BORDER_WIDTH = 1;
 const KEY_PRESSED_OPACITY = 0.6;
 const KEY_ICON_SIZE_COMPACT = 22;
 const KEY_ICON_SIZE_REGULAR = 28;
-const DONE_MARGIN_TOP_COMPACT = tokens.spacing.md;
-const DONE_MARGIN_TOP_REGULAR = tokens.spacing.lg;
+const DONE_MARGIN_TOP_COMPACT = tokens.spacing.sm;
+const DONE_MARGIN_TOP_REGULAR = tokens.spacing.md;
 
 export interface NumericKeypadProps {
   readonly onKeyPress: (key: NumericKeypadKey) => void;
@@ -37,6 +48,7 @@ interface Sizing {
   readonly keyHeight: number;
   readonly keyGap: number;
   readonly keyLabelFont: number;
+  readonly keyLabelLineHeight: number;
   readonly keyIconSize: number;
   readonly doneMarginTop: number;
 }
@@ -47,6 +59,7 @@ function resolveSizing(isRegular: boolean): Sizing {
       keyHeight: KEY_HEIGHT_REGULAR,
       keyGap: KEY_GAP_REGULAR,
       keyLabelFont: KEY_LABEL_FONT_REGULAR,
+      keyLabelLineHeight: KEY_LABEL_LINE_HEIGHT_REGULAR,
       keyIconSize: KEY_ICON_SIZE_REGULAR,
       doneMarginTop: DONE_MARGIN_TOP_REGULAR,
     };
@@ -55,6 +68,7 @@ function resolveSizing(isRegular: boolean): Sizing {
     keyHeight: KEY_HEIGHT_COMPACT,
     keyGap: KEY_GAP_COMPACT,
     keyLabelFont: KEY_LABEL_FONT_COMPACT,
+    keyLabelLineHeight: KEY_LABEL_LINE_HEIGHT_COMPACT,
     keyIconSize: KEY_ICON_SIZE_COMPACT,
     doneMarginTop: DONE_MARGIN_TOP_COMPACT,
   };
@@ -92,6 +106,9 @@ function buildStyles(args: { readonly palette: ColorPalette; readonly sizing: Si
       color: palette.textPrimary,
       fontFamily: tokens.typography.fontFamily.mono,
       fontSize: sizing.keyLabelFont,
+      fontWeight: KEY_LABEL_FONT_WEIGHT,
+      lineHeight: sizing.keyLabelLineHeight,
+      textAlign: 'center',
     },
     keyPressed: {
       opacity: KEY_PRESSED_OPACITY,
