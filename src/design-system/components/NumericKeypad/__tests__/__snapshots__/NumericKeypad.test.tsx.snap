@@ -957,7 +957,9 @@ exports[`NumericKeypad renders compact layout snapshot (dark theme) 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
+        "alignSelf": "stretch",
         "marginTop": 8,
+        "width": "100%",
       }
     }
     testID="kp-done"
@@ -1989,7 +1991,9 @@ exports[`NumericKeypad renders regular layout snapshot (light theme) 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
+        "alignSelf": "stretch",
         "marginTop": 12,
+        "width": "100%",
       }
     }
     testID="kp-done"

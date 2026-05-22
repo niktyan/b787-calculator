@@ -87,7 +87,12 @@ function buildStyles(args: { readonly palette: ColorPalette; readonly sizing: Si
   const { palette, sizing } = args;
   return StyleSheet.create({
     done: {
+      // `<Button>` carries intrinsic width from its label + padding, which
+      // can exceed the popover's inner area without these constraints. See
+      // ADR-0011 Iteration 2 §1.
+      alignSelf: 'stretch',
       marginTop: sizing.doneMarginTop,
+      width: '100%',
     },
     grid: {
       gap: sizing.keyGap,
