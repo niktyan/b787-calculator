@@ -383,13 +383,28 @@ cached anchor in component state).
 
 ### Done button containment
 
-After Iteration 3 was tested on iPad, the Done button was still found
-to overflow **below** the popover container. Root cause: the fixed
-`KEYPAD_HEIGHT = 320` did not account for `<Button variant="primary">`
-internal padding plus `tokens.spacing.lg` doneMarginTop on regular
-sizing. Bumped `KEYPAD_HEIGHT` to 400 — a safe margin for all sizing
-variants (compact + regular, with worst-case Button padding). The
-positioning algorithm consumes height parametrically (via
-`computeKeypadPosition(anchor, screen, keypadSize)`) so no further
-changes were needed there; existing twelve positioning unit tests
-continue to pass on the parameterized signature.
+Two-step fix. First attempt bumped a single `KEYPAD_HEIGHT` from 320
+to 400 to absorb `<Button variant="primary">` internal padding +
+regular-size `doneMarginTop`. That fixed the overflow on regular
+sizing but left ~108 pt of empty space below the Done button on
+compact — user reported the popover as "huge".
+
+Final fix splits the constant into `KEYPAD_HEIGHT_COMPACT = 304` and
+`KEYPAD_HEIGHT_REGULAR = 352`. `NumericKeypadHost` picks the right
+value from `activeIsRegular` and threads it into both `buildStyles`
+and `computeKeypadPosition`. Each height is the strict content height
+plus a small (12 pt) buffer:
+
+- Compact: `padding 24 + 4 × 48 keys + 3 × 8 row-gaps + 8 doneMargin
+  + 44 Button = 292 + 12 buffer = 304`.
+- Regular: `padding 24 + 4 × 56 keys + 3 × 12 row-gaps + 12 doneMargin
+  + 44 Button = 340 + 12 buffer = 352`.
+
+The Button's intrinsic height (`tokens.layout.minTouchTarget = 44`)
+dominates over its `paddingVertical 8 + body 22 lineHeight = 38`, so
+the visual surface is exactly 44 pt — the constants stay stable as
+long as `minTouchTarget` doesn't move.
+
+Positioning tests are untouched: `computeKeypadPosition` still accepts
+`keypadSize` as a parameter, the unit tests still feed an explicit
+fixture. The pure-function signature is unchanged.

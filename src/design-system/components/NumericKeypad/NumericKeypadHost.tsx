@@ -17,11 +17,16 @@ const KEYPAD_TEST_ID = 'numeric-keypad';
 // Popover dimensions are fixed because (a) the keypad's layout is itself
 // fixed (4×3 grid + Done), and (b) measuring the popover before mount in
 // order to place it would require a layout pass we'd rather avoid.
-// `KEYPAD_HEIGHT` carries a buffer over the strict content height so that
-// `<Button variant="primary">` internal padding + regular-size doneMarginTop
-// always fit. See ADR-0011 Iteration 3 § Done button containment.
+// Height is picked per-`activeIsRegular` so the popover doesn't trail empty
+// space below the Done button on compact sizing. See ADR-0011 Iteration 3
+// § Done button containment.
+//
+// Content height math (4 keys, 3 row gaps, padding, Done margin + button):
+//   compact: 24 + 4×48 + 3×8 + 8 + 44 = 292  →  +12 buffer = 304
+//   regular: 24 + 4×56 + 3×12 + 12 + 44 = 340  →  +12 buffer = 352
 const KEYPAD_WIDTH = 280;
-const KEYPAD_HEIGHT = 400;
+const KEYPAD_HEIGHT_COMPACT = 304;
+const KEYPAD_HEIGHT_REGULAR = 352;
 const SCREEN_MARGIN = 16;
 const ANCHOR_OFFSET = 8;
 // Match `tokens.breakpoints.regularHeader` — anything from iPad-mini portrait
@@ -132,7 +137,7 @@ function positionBesideOrAbove(
 export function computeKeypadPosition(
   anchor: FieldAnchor,
   screen: ScreenSize,
-  keypadSize: KeypadSize = { width: KEYPAD_WIDTH, height: KEYPAD_HEIGHT },
+  keypadSize: KeypadSize = { width: KEYPAD_WIDTH, height: KEYPAD_HEIGHT_COMPACT },
 ): Position {
   if (screen.width >= COMPACT_WIDTH_BREAKPOINT) {
     return positionBesideOrAbove(anchor, screen, keypadSize);
@@ -148,8 +153,9 @@ interface Styles {
 function buildStyles(args: {
   readonly palette: ColorPalette;
   readonly position: Position;
+  readonly height: number;
 }): Styles {
-  const { palette, position } = args;
+  const { palette, position, height } = args;
   return StyleSheet.create({
     backdrop: {
       flex: 1,
@@ -160,7 +166,7 @@ function buildStyles(args: {
       borderRadius: tokens.radii.lg,
       borderWidth: KEYPAD_BORDER_WIDTH,
       elevation: KEYPAD_ELEVATION,
-      height: KEYPAD_HEIGHT,
+      height,
       left: position.left,
       padding: tokens.spacing.md,
       position: 'absolute',
@@ -182,19 +188,25 @@ export function NumericKeypadHost(): ReactNode {
   const palette = tokens.colors[theme.resolved];
   const screen = useWindowDimensions();
 
+  const keypadHeight = activeIsRegular ? KEYPAD_HEIGHT_REGULAR : KEYPAD_HEIGHT_COMPACT;
+
   const position = useMemo<Position | null>(() => {
     if (activeAnchor === null) {
       return null;
     }
-    return computeKeypadPosition(activeAnchor, { width: screen.width, height: screen.height });
-  }, [activeAnchor, screen.width, screen.height]);
+    return computeKeypadPosition(
+      activeAnchor,
+      { width: screen.width, height: screen.height },
+      { width: KEYPAD_WIDTH, height: keypadHeight },
+    );
+  }, [activeAnchor, screen.width, screen.height, keypadHeight]);
 
   const styles = useMemo<Styles | null>(() => {
     if (position === null) {
       return null;
     }
-    return buildStyles({ palette, position });
-  }, [palette, position]);
+    return buildStyles({ palette, position, height: keypadHeight });
+  }, [palette, position, keypadHeight]);
 
   const visible = activeFieldId !== null && activeAnchor !== null && styles !== null;
 
