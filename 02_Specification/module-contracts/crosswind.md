@@ -346,6 +346,32 @@ Spec impact: this contract + `04-domain-model.md` § "Independent weight
 + cg validation" + `06-ui-spec.md` § Экран 4 composition rule +
 `05-crosswind-algorithm.md` cross-refs to the validator name.
 
+### Hide result on operational envelope violation (PR A3 / ADR-0012, 2026-05-23)
+
+Safety-first follow-up to PR A2. When either field is outside the
+operational envelope, the view-model now **skips
+`calculateCrosswindLimit` entirely** and returns
+`{ kind: 'out-of-envelope', reason: "Out of operational envelope —
+adjust inputs" }`. The result-panel warning chip is gone; the `idle`
+state always means "valid result is shown".
+
+Internal changes only — no Public API change:
+
+- `CrosswindUIState.idle` shrinks from `{ kind, output, warning }`
+  to `{ kind, output }`.
+- `CrosswindResult.IdleView` loses warning chip rendering, the
+  `warning` / `warningText` props, and `styles.warningChip`.
+- `EnvelopeViolation` import removed from both `CrosswindResult`
+  and `useCrosswindCalculator` (no remaining in-file consumers); the
+  type itself is still exported from the module barrel.
+- i18n: new key `crosswind.outOfOperationalEnvelope` (EN + RU); the
+  no-longer-referenced `crosswind.warningOutsideEnvelope` removed
+  from both locale files.
+- `crosswind-warning-chip` testID no longer emitted anywhere.
+
+See ADR-0012 for the full rationale (safety, App Store positioning,
+UX consistency).
+
 ## Открытые вопросы
 
 1. ✅ **Resolved 2026-05-19** — envelope финализирован как FCOM /
