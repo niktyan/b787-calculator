@@ -565,24 +565,55 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 
 ### Keyboard behavior
 
-iOS softkeyboard на `numeric-pad` / `decimal-pad` **не имеет встроенной кнопки скрытия**, поэтому экран обеспечивает дисмисс двумя путями:
+Для всех `NumericInput` системная iOS-клавиатура полностью отключена
+через `showSoftInputOnFocus={false}` (см. ADR-0011 · Custom in-app
+numeric keypad). Ввод происходит через **custom in-app numeric keypad**
+— bottom-sheet с 12 клавишами (digits 0-9, decimal separator,
+backspace) и Done button во всю ширину. Появляется автоматически когда
+пилот тапает на любое поле ввода и переключается между полями без
+re-mount.
 
-- **Tap outside-to-dismiss.** Экран обёрнут в `KeyboardDismissView`
-  (DS-компонент, см. `module-contracts/design-system.md`). Любой тап
-  по фону или нечитаемой области (за пределами полей и сегментов)
-  закрывает клавиатуру через `Keyboard.dismiss()`. Тапы по самим
-  TextInput-ам или сегментам не интерпретируются как «вне input» — они
-  обрабатываются adressuemyм компонентом, обёртка не перехватывает.
-- **Done key on keyboard.** Каждый `NumericInput` сконфигурирован с
-  `returnKeyType="done"`; нажатие Done на iOS-клавиатуре триггерит
-  `onSubmitEditing`, который также вызывает `Keyboard.dismiss()`. Это
-  даёт пилоту явную клавишу скрытия без необходимости тапать по
-  свободной области.
+- **Открытие.** `Pressable`-обёртка вокруг визуальной области поля
+  регистрирует поле в `NumericKeypadProvider` через хук
+  `useNumericKeypad`. Provider обновляет `activeFieldId` →
+  `NumericKeypadHost` (BottomSheet, смонтированный в `src/app/_layout.tsx`
+  как сиблинг `<Stack>`) становится visible.
+- **Переключение между полями.** Тап на другое поле перерегистрирует
+  поле через тот же Provider — `activeFieldId` меняется, BottomSheet
+  остаётся visible (no re-mount, no animation), keypad мгновенно
+  retargets. Это убирает 200-400 ms лаг от системной keyboard transition
+  при переходе TOW ↔ CG.
+- **Ввод digit / dot / backspace.** Provider оперирует значением
+  активного поля через `getValue()` closure ref (нет stale closures на
+  re-renders консьюмера). На каждый key press: `sanitizeDecimalInput(value
+  + key)` для digit/dot, `value.slice(0, -1)` для backspace. Sanitizer
+  (PR #81 ADR-стиль defence-in-depth) дополнительно фильтрует ввод с
+  Bluetooth-клавиатур.
+- **Re-press of the already-active field — no-op.** Provider узнаёт по
+  `fieldId === fieldRef.current.id` и не обновляет state. Это убирает
+  «double-focus» класс багов.
+- **Закрытие.** Done button или тап по backdrop вызывает
+  `clearActiveField` — BottomSheet hide. Если поле размонтируется пока
+  оно active, хук `useNumericKeypad` cleanup автоматически вызывает
+  `clearActiveField` на unmount.
+- **Bluetooth keyboard.** TextInput остаётся `editable={true}`, поэтому
+  пилот с подключённой Bluetooth-клавиатурой может печатать через
+  hardware keys. `onChangeText` всё равно проходит через sanitizer —
+  буквы и `,` фильтруются. Визуального echo от keypad на экране нет в
+  этом сценарии (тёплая регрессия — см. ADR-0011 § Consequences).
+- **Focus ring.** Visible border + accent ring выставляются по флагу
+  `isActive` из хука (поле сейчас активно в Provider), а не по локальному
+  `useState(focused)`. Это даёт единый source of truth: ring
+  show-ится **ровно тогда**, когда keypad открыт и таргетит это поле.
 
-Скролл-жесты не перехватываются — `KeyboardDismissView` это
-`Pressable` с `flex: 1`, а не TouchableWithoutFeedback с capturing
-overlay. VoiceOver не объявляет обёртку как тапаемую (`accessible:
-false`), поэтому пилот с VO навигирует напрямую по полям.
+`KeyboardDismissView` остаётся обёрнутой вокруг Crosswind Calculator
+как safety-net (`Keyboard.dismiss()` no-op'ит когда системной клавиатуры
+нет), но **основной дисмисс** keypad-а идёт через backdrop
+`BottomSheet`-а (см. § Overlays · NumericKeypad в
+`module-contracts/design-system.md`). Скролл-жесты не перехватываются —
+`KeyboardDismissView` это `Pressable` с `flex: 1` без capturing overlay.
+VoiceOver не объявляет обёртку как тапаемую (`accessible: false`),
+поэтому пилот с VO навигирует напрямую по полям.
 
 ### Result-секция (правая колонка / нижняя на portrait) — Block 5 single Card
 
