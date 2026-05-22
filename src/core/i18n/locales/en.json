@@ -41,7 +41,7 @@
     "resultEmpty": "Enter weight and CG to see result",
     "emptyIconLabel": "Information",
     "resultStatusLabel": "Max crosswind · Takeoff",
-    "warningOutsideEnvelope": "Outside operational envelope — advisory only",
+    "outOfOperationalEnvelope": "Out of operational envelope — adjust inputs",
     "weightPlaceholder": "e.g. 170",
     "cgPlaceholder": "e.g. 25.5",
     "weightBelowMin": "Below minimum {{minTons}} t",

@@ -130,15 +130,22 @@ describe('Crosswind route', () => {
     expect(() => getByText('crosswind.sourceChip')).toThrow();
   });
 
-  it('above-envelope: W=170, CG=42 → 37 KT (Excel IFNA quirk, then capped at 37 per FCOM Tab 2.29.2a)', () => {
-    const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
+  it('above operational envelope (CG=42 > 39.5): result hidden, out-of-envelope panel shown per ADR-0012', () => {
+    const { getByTestId, queryByText } = renderWithTheme(<CrosswindRoute />);
     setNumericInput(getByTestId('crosswind-weight-input'), '170');
     setNumericInput(getByTestId('crosswind-cg-input'), '42');
-    // Pre-PR 2 the IFNA-fallback produced 40 KT (Excel quirk preserved).
-    // PR 2 adds the Dry maxCap=37, which clamps the 40 down to 37. The
-    // 'above-envelope' branch label is unchanged — the cap is applied
-    // after strategy resolution.
-    expect(getByText('37')).toBeTruthy();
+    // CG=42 is outside the operational envelope (max 39.5 %MAC). The
+    // algorithm would still produce a number here (Dry IFNA-fallback
+    // clamped to maxCap=37, as covered by domain unit tests), but the
+    // view-model now skips the calculator entirely and surfaces the
+    // out-of-envelope state. Pin both halves: no "37" rendered AND the
+    // explicit out-of-envelope panel is present with the localized
+    // reason caption.
+    expect(queryByText('37')).toBeNull();
+    expect(getByTestId('crosswind-result-panel-out-of-envelope')).toBeTruthy();
+    expect(queryByText('Out of operational envelope — adjust inputs')).toBeTruthy();
+    // Per-field error for CG continues to surface the axis violation.
+    expect(getByTestId('crosswind-cg-error')).toBeTruthy();
   });
 
   it('Good runway selection: W=150, CG=26 → 34 KT (PR 3 anchor case)', () => {
@@ -247,26 +254,32 @@ describe('Crosswind route', () => {
     expect(segment.props.accessibilityState.disabled).toBe(false);
   });
 
-  it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
-    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
-    // W=95 t — below operational minimum of 104.1, but algorithm still yields a number.
+  it('below operational envelope (weight=95 < 104.1): result hidden, out-of-envelope panel shown per ADR-0012', () => {
+    const { getByTestId, queryByTestId } = renderWithTheme(<CrosswindRoute />);
+    // W=95 t — below operational minimum of 104.1. Pre-ADR-0012 the
+    // view-model showed the computed number alongside a warning chip;
+    // now the chip is gone and the result panel surfaces the explicit
+    // out-of-envelope caption instead. Per-field weight error stays.
     setNumericInput(getByTestId('crosswind-weight-input'), '95');
     setNumericInput(getByTestId('crosswind-cg-input'), '25');
-    expect(getByTestId('crosswind-warning-chip')).toBeTruthy();
+    expect(getByTestId('crosswind-result-panel-out-of-envelope')).toBeTruthy();
     expect(getByTestId('crosswind-weight-error')).toBeTruthy();
+    // Warning chip is no longer emitted anywhere in the tree.
+    expect(queryByTestId('crosswind-warning-chip')).toBeNull();
   });
 
   it('shows BOTH weight and cg field errors when both inputs are outside operational envelope', () => {
-    // Regression for user-testing bug #2: pre-PR
-    // `fix/independent-envelope-validators` the validator short-circuited
-    // on the first violation, so this scenario rendered only the weight
-    // error. Post-split, both validators run independently and both
-    // field-level errors must appear at the same time.
-    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
+    // Regression for user-testing bug #2 (PR #83): both validators run
+    // independently so both axis errors surface simultaneously. The
+    // ADR-0012 change additionally collapses the result panel itself to
+    // `out-of-envelope` (no number) — both field errors stay visible.
+    const { getByTestId, queryByTestId } = renderWithTheme(<CrosswindRoute />);
     setNumericInput(getByTestId('crosswind-weight-input'), '300'); // > maxTons 227.93
     setNumericInput(getByTestId('crosswind-cg-input'), '50'); // > maxPercent 39.5
     expect(getByTestId('crosswind-weight-error')).toBeTruthy();
     expect(getByTestId('crosswind-cg-error')).toBeTruthy();
+    expect(getByTestId('crosswind-result-panel-out-of-envelope')).toBeTruthy();
+    expect(queryByTestId('crosswind-warning-chip')).toBeNull();
   });
 
   it('reset button clears both fields and returns to empty state', () => {

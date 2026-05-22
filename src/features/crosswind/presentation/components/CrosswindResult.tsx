@@ -14,9 +14,14 @@
  *     larger minHeight floor; on iPhone it uses the compact floor.
  *
  * States:
- *   • idle:               status label + value + KT (+ optional warning chip)
+ *   • idle:               status label + value + KT (clean — no warning
+ *                         chip; per ADR-0012 envelope violations are
+ *                         surfaced as `out-of-envelope` instead).
  *   • empty:              info-outline + caption ("Enter weight and CG …")
- *   • out-of-envelope:    info-outline + reason caption
+ *   • out-of-envelope:    info-outline + reason caption — covers both
+ *                         lookup misses (NoLookupData) AND operational-
+ *                         envelope violations (ADR-0012). Reason text
+ *                         differs; visual treatment identical.
  *   • data-not-available: info-outline + condition/aircraft caption
  *   • error:              danger headline + description (rare; covers
  *                         NaN/Infinity / DataNotAvailable phase mismatch /
@@ -33,7 +38,7 @@ import Animated, { Easing, LinearTransition } from 'react-native-reanimated';
 import { useTheme, useTranslation } from '../../../../core';
 import { Text, tokens, useReduceMotion } from '../../../../design-system';
 import type { TextVariant } from '../../../../design-system';
-import type { CrosswindCalculationOutput, EnvelopeViolation } from '../../domain/types';
+import type { CrosswindCalculationOutput } from '../../domain/types';
 import type { CrosswindUIState } from '../useCrosswindCalculator';
 
 export interface CrosswindResultProps {
@@ -143,15 +148,13 @@ function ValueRow({ value, isRegular }: ValueRowProps): ReactNode {
 
 interface IdleViewProps {
   readonly output: CrosswindCalculationOutput;
-  readonly warning: EnvelopeViolation | null;
   readonly statusLabel: string;
-  readonly warningText: string;
   readonly isRegular: boolean;
   readonly fillHeight: boolean;
 }
 
 function IdleView(props: IdleViewProps): ReactNode {
-  const { output, warning, statusLabel, warningText, isRegular, fillHeight } = props;
+  const { output, statusLabel, isRegular, fillHeight } = props;
   const statusVariant: TextVariant = isRegular ? 'body' : 'microUppercase';
   const statusStyle = isRegular ? STATUS_STYLE_REGULAR : STATUS_STYLE_COMPACT;
   return (
@@ -160,13 +163,6 @@ function IdleView(props: IdleViewProps): ReactNode {
         {statusLabel}
       </Text>
       <ValueRow value={output.maxCrosswindKnots} isRegular={isRegular} />
-      {warning !== null ? (
-        <View style={styles.warningChip} testID="crosswind-warning-chip">
-          <Text variant="caption" color="warn">
-            {warningText}
-          </Text>
-        </View>
-      ) : null}
     </CardSurface>
   );
 }
@@ -319,11 +315,9 @@ function renderContent(
   return (
     <IdleView
       output={state.output}
-      warning={state.warning}
       isRegular={isRegular}
       fillHeight={fillHeight}
       statusLabel={t('crosswind.resultStatusLabel')}
-      warningText={t('crosswind.warningOutsideEnvelope')}
     />
   );
 }
@@ -339,8 +333,5 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  warningChip: {
-    marginTop: tokens.spacing.sm,
   },
 });

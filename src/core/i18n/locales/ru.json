@@ -41,7 +41,7 @@
     "resultEmpty": "Введите вес и центровку, чтобы увидеть результат",
     "emptyIconLabel": "Информация",
     "resultStatusLabel": "Max crosswind · Takeoff",
-    "warningOutsideEnvelope": "За пределами эксплуатационного диапазона — справочно",
+    "outOfOperationalEnvelope": "Вне допустимого диапазона — измените вводимые значения",
     "weightPlaceholder": "напр. 170",
     "cgPlaceholder": "напр. 25.5",
     "weightBelowMin": "Ниже минимума {{minTons}} t",

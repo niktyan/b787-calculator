@@ -560,7 +560,7 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 - Валидация формата: все числовые поля используют `keyboardType="decimal-pad"` + `inputMode="decimal"`. На iPad доступен переключатель «ABC» в системной клавиатуре, поэтому защита от букв реализована вторым уровнем — sanitizer в `onChangeText` стрипает любые не-цифры (regex `/[^0-9.,]/g`), нормализует европейскую запятую в точку и оставляет только один decimal separator. Это покрывает буквы из ABC-режима, paste из буфера и сторонние клавиатуры.
 - **Per-field validation timing.** Field-level error (warn-coloured caption под полем) появляется СРАЗУ как только пилот ввёл значение в это поле и оно не валидно — будь то format error или envelope violation. Состояние другого поля (empty / invalid / valid) не блокирует и не задерживает показ ошибки на текущем поле. Это даёт пилоту мгновенную обратную связь: ввёл `300` для TOW, ещё не успел переключиться на CG — error «Above maximum 227.93 t» уже виден. Закрыть keypad / blur поле для этого не нужно. Пустое поле (`text.trim().length === 0`) **никогда** не показывает ошибку; это валидный in-progress state.
 - **Result-panel state requires both fields.** Result-секция переходит в `idle` (с числом + опциональным warning chip) ТОЛЬКО когда **оба** поля parsed successfully и Value-Object-validated. Пока хотя бы одно поле empty или invalid — result-секция остаётся в `empty`. Per-field errors при этом продолжают гореть независимо.
-- **Operational envelope валидация — мягкая.** Когда ввод за пределами `operationalEnvelope` (см. `04-domain-model.md` «Two distinct envelope concepts» — FCOM B787-8 bounds: weight `[104.1, 227.93]` t, CG `[6, 39.5]` %MAC), поле подсвечивается тёплым (warn-цветом, не danger), под ним появляется короткое описание («Below minimum 104.1 t», «Above maximum 39.5 %MAC»). Когда оба поля parsed, **расчёт всё равно выполняется** и result-секция переходит в состояние `idle` с warning chip-ом рядом с числом. Так пилот видит advisory-результат, плюс явное напоминание, что вход — за пределами регуляторных лимитов.
+- **Operational envelope валидация — жёсткая (ADR-0012).** Когда хотя бы одно поле введено за пределами `operationalEnvelope` (см. `04-domain-model.md` «Two distinct envelope concepts» — FCOM B787-8 bounds: weight `[104.1, 227.93]` t, CG `[6, 39.5]` %MAC), поле подсвечивается warn-цветом, под ним появляется конкретное axis-описание («Below minimum 104.1 t», «Above maximum 39.5 %MAC»), а result-секция переходит в `out-of-envelope` с сообщением «Out of operational envelope — adjust inputs» — **число не показывается, расчёт пропускается**. Это safety-first поведение: пилот никогда не видит advisory-число построенное на out-of-spec входах. См. ADR-0012 для полного rationale.
 - **DataNotAvailable.** Когда выбран не-имплементированный aircraft (B787-9) или non-dry condition, алгоритм возвращает `DataNotAvailable` с соответствующим `reason`. Result-секция переходит в состояние `data-not-available` (icon + caption «No data available for the selected aircraft.» / «… runway condition.»). Защита: B787-9 / 5 non-dry условий в MVP помечены disabled в UI и тапы не меняют state, поэтому это состояние реально достижимо только через программную инициализацию.
 - **NoLookupData — жёсткая ошибка.** Когда алгоритм не может произвести расчёт в принципе (NaN / Infinity в Value Object factories, или повреждённые данные) — result-секция переходит в `out-of-envelope` без числа.
 - **Кнопка Reset** в header экрана: очищает оба числовых поля (возвращает в состояние «пусто»), aircraft возвращает к `B787-8`, runway condition — к `Dry`. Без диалога подтверждения.
@@ -666,23 +666,21 @@ chart-визуала, никакой meta-grid, никакого envelope-positi
 
 **Состояния (`CrosswindUIState` view-model):**
 - `empty` — пустые поля ввода. Centered `info-outline` 32 pt + caption «Enter weight and CG to see result».
-- `idle` — результат расчёта: status label «Max crosswind · Takeoff» (microUppercase accent) + крупное число + KT-суффикс. Может **сосуществовать** с warning chip-ом (когда вход внутри lookup envelope, но за пределами operational envelope) — см. ниже.
-- `out-of-envelope` — `info-outline` 32 pt + caption «Inputs cannot be evaluated by the lookup table. Adjust inputs.». Зарезервировано для `NoLookupData` от алгоритма (NaN/Infinity на входе).
+- `idle` — результат расчёта: status label «Max crosswind · Takeoff» (microUppercase accent) + крупное число + KT-суффикс. **Никакого warning chip — clean state, всегда означает «расчёт валиден».** Идёт ровно когда оба поля parsed AND inside operational envelope (см. ADR-0012).
+- `out-of-envelope` — `info-outline` 32 pt + caption. Два независимых entry-path с разным reason-текстом:
+  - **Lookup miss** (`NoLookupData` от алгоритма — NaN/Infinity): caption «Inputs cannot be evaluated by the lookup table. Adjust inputs.»
+  - **Operational envelope violation** (ADR-0012): caption «Out of operational envelope — adjust inputs.»
+  Визуальный паттерн идентичный; разница только в тексте reason.
 - `data-not-available` — `info-outline` 32 pt + caption, описывающий причину: «No data available for the selected aircraft.» / «No data available for the selected runway condition.» Покрывает `DataNotAvailable.reason ∈ {aircraft-not-implemented, condition-not-implemented}`.
 - `error` — danger-headline + опциональная description (рядом с capability disclosure для phase mismatch / `CalculationFailed`).
 
-**Composition: idle + operational-envelope warning.** Когда `validateWeightEnvelope` или `validateCGEnvelope` (или оба) возвращают violation, но алгоритм успешно посчитал, result-панель остаётся в `idle` и **под значением** появляется warning chip. Field-level errors (под TOW / CG) показываются независимо для каждого нарушенного поля — обе ошибки могут гореть одновременно, см. `04-domain-model.md` § "Independent weight + cg validation":
-- Текст chip-а: «Outside operational envelope — advisory only» (локализуется).
-- Цвет: `tokens.colors.warn` foreground.
-- Позиция: marginTop `sm` под value-row.
-- Tap-detail на chip — не реализован в MVP (минималистичный one-shot read).
+**Composition: idle is always clean (ADR-0012).** До ADR-0012 идле допускал warning chip «Outside operational envelope — advisory only» под значением, когда вход был внутри lookup envelope но за пределами operational. После ADR-0012 chip убран; любое envelope violation коллапсирует panel в `out-of-envelope` без числа. Field-level errors (под TOW / CG) показываются независимо для каждого нарушенного поля — обе ошибки могут гореть одновременно, см. `04-domain-model.md` § "Independent weight + cg validation".
 
 **Содержимое (idle):**
 - Status label «Max crosswind · Takeoff» — variant `microUppercase`, accent color, letter-spacing 0.08em (uppercase).
 - Value-row (baseline-aligned, centered):
   - Number — variant `display` (mono 48 pt) на compact / `displayLarge` (mono 72 pt) на iPad-regular landscape. Цвет `accent`.
   - Unit «KT» — variant `monoMedium` (mono 24 pt) на compact / `monoXL` (mono 36 pt) на iPad-regular. Цвет `textSecondary`. marginLeft 8 pt.
-- Опциональный warning chip — см. выше.
 - **Никаких метаданных, никакого footnote, никакого source-chip-а на result-панели.** Source attribution живёт в About → Data source (см. Принцип 4 + § Экран 6).
 
 **Содержимое (error / data-not-available / out-of-envelope):**

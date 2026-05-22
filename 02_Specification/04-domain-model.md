@@ -78,8 +78,10 @@ hidden from the user until the first was corrected (user-testing bug
 - `validateCGEnvelope(input, envelope.cg): Result<void, CGViolation>`
 
 The union alias `EnvelopeViolation = WeightViolation | CGViolation` is
-preserved for consumers that only need a generic "any envelope
-violation" type (e.g., the result-panel warning chip).
+preserved as a generic "any envelope violation" type for consumers
+that need it. (The result-panel warning chip that previously consumed
+this alias was removed in ADR-0012 — see Composition rule below; the
+alias itself remains in the public API for forward compatibility.)
 
 **Per-field timing is independent of the other field's state.** The
 weight envelope is validated as soon as `weightText` is parseable into
@@ -94,18 +96,27 @@ matrix in `src/__tests__/app/crosswind.per-field-timing.test.tsx`.
 
 ### Composition rule for UI
 
+Per ADR-0012, the result panel never shows a number when inputs are
+outside the operational envelope. Composition collapses to three
+cases:
+
 - Inside lookup AND both inside operational → result panel shows
-  `idle` with the value, no warning chip and no field errors.
-- Inside lookup AND only weight outside operational → result panel
-  shows `idle` with the value, weight field error visible, warning
-  chip "Outside operational envelope — advisory only".
-- Inside lookup AND only cg outside operational → result panel shows
-  `idle` with the value, cg field error visible, warning chip.
-- Inside lookup AND BOTH outside operational → result panel shows
-  `idle` with the value, BOTH field errors visible simultaneously,
-  warning chip. (See `06-ui-spec.md` Экран 4 ResultPanelState.)
+  `idle` with the value.
+- Inside lookup AND at least one axis outside operational → result
+  panel shows `out-of-envelope` with the localized reason "Out of
+  operational envelope — adjust inputs". **No number is rendered.**
+  Per-field errors under TOW / CG inputs continue to surface the
+  specific axis violations (e.g., "Above maximum 227.93 t").
+  Calculator is **skipped** — not just hidden — when an envelope
+  violation is detected.
 - Outside lookup (algorithm returns `NoLookupData`) → result panel
   shows `out-of-envelope` with explanatory message; no number.
+
+Both operational-envelope and lookup-envelope violations render the
+same caption-style panel — different reason strings, identical visual
+treatment. This is intentional (см. ADR-0012 § Consequences) for UX
+consistency: пилот видит один и тот же визуальный паттерн "no result"
+независимо от природы нарушения.
 
 ## Value Objects
 
