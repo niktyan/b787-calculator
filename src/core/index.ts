@@ -37,3 +37,15 @@ export type {
   ModuleVisibility,
   UseModuleVisibilityResult,
 } from './modules';
+
+// aviation — shared domain primitives (aircraft variant, flight phase,
+// runway condition). Consumed by both crosswind takeoff and landing
+// features so they do not need to cross-import each other.
+export { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from './aviation';
+export type {
+  Aircraft,
+  AircraftVariant,
+  FlightPhase,
+  RunwayCondition,
+  RunwayConditionCode,
+} from './aviation';
