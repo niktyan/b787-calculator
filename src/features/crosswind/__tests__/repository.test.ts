@@ -102,7 +102,12 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
 
   it('case 5.05: weight.minTons > weight.maxTons → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
-      const env = raw['operationalEnvelope'] as Record<string, unknown>;
+      // Schema 2.3.0 / ADR-0013: envelope lives per aircraft under
+      // byAircraft.<variant>.operationalEnvelope.
+      const byAircraft = raw['byAircraft'] as Record<string, Record<string, unknown>>;
+      const entry = byAircraft['b787_8'];
+      if (entry === undefined) throw new Error('expected b787_8 entry');
+      const env = entry['operationalEnvelope'] as Record<string, unknown>;
       env['weight'] = { minTons: 200, maxTons: 100 };
       return raw;
     });
@@ -141,7 +146,10 @@ describe('Crosswind repository · Test Set #5 (corrupted JSON)', () => {
 
   it('cg envelope min >= max → CorruptedDataBundle', () => {
     const corrupted = withCorruption((raw) => {
-      const env = raw['operationalEnvelope'] as Record<string, unknown>;
+      const byAircraft = raw['byAircraft'] as Record<string, Record<string, unknown>>;
+      const entry = byAircraft['b787_8'];
+      if (entry === undefined) throw new Error('expected b787_8 entry');
+      const env = entry['operationalEnvelope'] as Record<string, unknown>;
       env['cg'] = { minPercent: 35, maxPercent: 8 };
       return raw;
     });

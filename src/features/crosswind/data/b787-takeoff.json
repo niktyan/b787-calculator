@@ -1,22 +1,22 @@
 {
-  "schemaVersion": "2.2.0",
-  "dataVersion": "2026-05-19.007",
+  "schemaVersion": "2.3.0",
+  "dataVersion": "2026-05-23.001",
   "phase": "takeoff",
-  "operationalEnvelope": {
-    "weight": {
-      "minTons": 104.1,
-      "maxTons": 227.93
-    },
-    "cg": {
-      "minPercent": 6,
-      "maxPercent": 39.5
-    }
-  },
   "weightConversion": {
     "tonsToKilolbsFactor": 2.20462
   },
   "byAircraft": {
     "b787_8": {
+      "operationalEnvelope": {
+        "weight": {
+          "minTons": 104.1,
+          "maxTons": 227.93
+        },
+        "cg": {
+          "minPercent": 6,
+          "maxPercent": 39.5
+        }
+      },
       "dry": {
         "strategyType": "bracketedLinear",
         "params": {

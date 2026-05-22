@@ -282,8 +282,19 @@ export function useCrosswindCalculator(
   const { inputs, data } = args;
   const { t } = useTranslation();
   return useMemo(() => {
-    const weight = evaluateWeightField(inputs.weightText, data.operationalEnvelope.weight, t);
-    const cg = evaluateCGField(inputs.cgText, data.operationalEnvelope.cg, t);
+    // Schema 2.3.0 (ADR-0013): operationalEnvelope lives per-aircraft
+    // under byAircraft.<variant>. MVP-active variant is B787-8; the
+    // dynamic per-active-aircraft resolution lands in the next commit.
+    const envelope = data.byAircraft.b787_8?.operationalEnvelope;
+    if (envelope === undefined) {
+      return {
+        state: { kind: 'data-not-available', description: t('crosswind.errorDataAircraft') },
+        weightFieldError: null,
+        cgFieldError: null,
+      };
+    }
+    const weight = evaluateWeightField(inputs.weightText, envelope.weight, t);
+    const cg = evaluateCGField(inputs.cgText, envelope.cg, t);
 
     // Result panel calculates only when BOTH fields parsed — partial
     // input never feeds the algorithm. Per-field errors are surfaced

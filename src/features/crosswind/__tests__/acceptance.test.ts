@@ -53,11 +53,12 @@ describe('Crosswind module · acceptance', () => {
     if (!w.ok || !cg.ok) {
       throw new Error('expected VOs');
     }
-    const weightCheck = validateWeightEnvelope(
-      { weightTons: w.value },
-      data.operationalEnvelope.weight,
-    );
-    const cgCheck = validateCGEnvelope({ cgPercent: cg.value }, data.operationalEnvelope.cg);
+    const envelope = data.byAircraft.b787_8?.operationalEnvelope;
+    if (envelope === undefined) {
+      throw new Error('expected b787_8 envelope');
+    }
+    const weightCheck = validateWeightEnvelope({ weightTons: w.value }, envelope.weight);
+    const cgCheck = validateCGEnvelope({ cgPercent: cg.value }, envelope.cg);
     expect(weightCheck.ok).toBe(true);
     expect(cgCheck.ok).toBe(true);
     const calc = calculateCrosswindLimit(
@@ -84,11 +85,12 @@ describe('Crosswind module · acceptance', () => {
     if (!w.ok || !cg.ok) {
       throw new Error('expected VOs');
     }
-    const weightCheck = validateWeightEnvelope(
-      { weightTons: w.value },
-      data.operationalEnvelope.weight,
-    );
-    const cgCheck = validateCGEnvelope({ cgPercent: cg.value }, data.operationalEnvelope.cg);
+    const envelope = data.byAircraft.b787_8?.operationalEnvelope;
+    if (envelope === undefined) {
+      throw new Error('expected b787_8 envelope');
+    }
+    const weightCheck = validateWeightEnvelope({ weightTons: w.value }, envelope.weight);
+    const cgCheck = validateCGEnvelope({ cgPercent: cg.value }, envelope.cg);
     expect(weightCheck.ok).toBe(false);
     expect(cgCheck.ok).toBe(true);
     const calc = calculateCrosswindLimit(
