@@ -28,7 +28,7 @@ export { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from './ty
 
 export { makeCGPercentMAC, makeCrosswindKnots, makeWeightInTons } from './valueObjects';
 
-export { validateAlgorithmInput, validateOperationalEnvelope } from './validators';
+export { validateAlgorithmInput, validateCGEnvelope, validateWeightEnvelope } from './validators';
 
 export { calculateCrosswindLimit, calculateMaxCrosswindTakeoff } from './calculator';
 

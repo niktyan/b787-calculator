@@ -20,7 +20,7 @@
  *    `CalculationFailed`. Recommendation A1 per PR 6 design: this is
  *    the correct fail-safe signal — by the time the formula goes
  *    negative the input is deep beyond operational envelope and
- *    `validateOperationalEnvelope` has already flagged it upstream.
+ *    `validateCGEnvelope` has already flagged it upstream.
  *
  * `calculationStrategy` metadata semantic stretch (MVP):
  *  • Plateau branch (CG < cgThreshold) → reuses `'below-envelope'`.
