@@ -1,22 +1,26 @@
 /**
  * View-model hook orchestrating Crosswind input → calculation → result.
  *
- * Flow (per-field independent):
+ * Flow (per-field independent, safety-first on envelope violation):
  *   1. Parse each text field → `FieldParseResult` (empty / invalid / parsed).
  *   2. For each parsed field run its envelope validator
  *      (`validateWeightEnvelope` / `validateCGEnvelope`) — independent of
  *      the other field's state. Format errors and envelope violations
  *      surface in the corresponding `fieldError` immediately, with no
  *      cross-field gating.
- *   3. Run `calculateCrosswindLimit` ONLY when BOTH fields are
- *      `parsed`; partial input never produces a result panel.
- *   4. Resolve UI state: empty (any field unparsed) / idle (both parsed,
- *      possibly with envelope-warning chip) / out-of-envelope /
- *      data-not-available / error.
+ *   3. If EITHER field is outside the operational envelope, **skip the
+ *      calculator entirely** and return `out-of-envelope`. The pilot
+ *      never sees a number derived from out-of-spec inputs (ADR-0012).
+ *   4. Otherwise run `calculateCrosswindLimit`.
+ *   5. Resolve UI state: empty (any field unparsed) / idle (both parsed
+ *      AND inside envelope) / out-of-envelope (lookup miss OR operational
+ *      violation) / data-not-available / error.
  *
  * Spec:
+ *  - ADR-0012 (hide result on operational envelope violation).
  *  - 06-ui-spec.md § Экран 4 (state machine, per-field timing).
- *  - 04-domain-model.md § "Independent weight + cg validation".
+ *  - 04-domain-model.md § "Independent weight + cg validation" /
+ *    "Composition rule for UI".
  */
 
 import { useMemo } from 'react';
@@ -222,7 +226,6 @@ function describeUnavailable(
 interface ComputeArgs {
   readonly weight: WeightInTons;
   readonly cg: CGPercentMAC;
-  readonly warning: EnvelopeViolation | null;
   readonly weightFieldError: string | null;
   readonly cgFieldError: string | null;
   readonly inputs: CrosswindCalculatorInputs;
@@ -231,7 +234,7 @@ interface ComputeArgs {
 }
 
 function computeResultPanel(args: ComputeArgs): UseCrosswindCalculatorResult {
-  const { weight, cg, warning, weightFieldError, cgFieldError, inputs, data, t } = args;
+  const { weight, cg, weightFieldError, cgFieldError, inputs, data, t } = args;
   const calc = calculateCrosswindLimit(
     {
       weightTons: weight,
@@ -245,7 +248,7 @@ function computeResultPanel(args: ComputeArgs): UseCrosswindCalculatorResult {
 
   if (calc.ok) {
     return {
-      state: { kind: 'idle', output: calc.value, warning },
+      state: { kind: 'idle', output: calc.value, warning: null },
       weightFieldError,
       cgFieldError,
     };
@@ -297,14 +300,24 @@ export function useCrosswindCalculator(
         cgFieldError: cg.fieldError,
       };
     }
-    // First non-null envelope violation drives the warning chip. PR A3
-    // will replace the chip with a different behaviour; A2 keeps the
-    // idle+chip flow to bound the bug-fix scope.
-    const warning: EnvelopeViolation | null = weight.envelopeViolation ?? cg.envelopeViolation;
+    // Safety-first per ADR-0012: any operational-envelope violation
+    // collapses the result panel to `out-of-envelope` with an explicit
+    // reason. The calculator is skipped — the pilot never sees a number
+    // derived from out-of-spec inputs. Per-field errors continue to
+    // surface the specific axis violations under TOW/CG inputs.
+    if (weight.envelopeViolation !== null || cg.envelopeViolation !== null) {
+      return {
+        state: {
+          kind: 'out-of-envelope',
+          reason: t('crosswind.outOfOperationalEnvelope'),
+        },
+        weightFieldError: weight.fieldError,
+        cgFieldError: cg.fieldError,
+      };
+    }
     return computeResultPanel({
       weight: weight.parsed.value,
       cg: cg.parsed.value,
-      warning,
       weightFieldError: weight.fieldError,
       cgFieldError: cg.fieldError,
       inputs,
