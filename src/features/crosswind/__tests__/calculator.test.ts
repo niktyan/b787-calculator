@@ -250,20 +250,20 @@ describe('Calculator metadata', () => {
     expect(r.value.metadata.dataVersion).toBe(data.dataVersion);
   });
 
-  it('returns DataNotAvailable.aircraft-not-implemented for b787_9', () => {
+  it('returns a computed result for b787_9 (activated in Sprint B / ADR-0013)', () => {
+    // Before Sprint B this case asserted DataNotAvailable.
+    // aircraft-not-implemented; the variant is now fully shipped
+    // (envelope + 6/6 RWYCC), so the assertion flips to success.
     const { w, cg } = vo(170, 32);
     const r = calculateCrosswindLimit(
       { weightTons: w, cgPercent: cg, aircraft: 'b787_9', phase: PHASE, runwayCondition: RUNWAY },
       data,
     );
-    if (r.ok) {
-      throw new Error('expected error');
+    if (!r.ok) {
+      throw new Error(`expected ok, got ${JSON.stringify(r.error)}`);
     }
-    expect(r.error.kind).toBe('DataNotAvailable');
-    if (r.error.kind !== 'DataNotAvailable') {
-      throw new Error('expected DataNotAvailable');
-    }
-    expect(r.error.reason).toBe('aircraft-not-implemented');
+    expect(r.value.metadata.aircraft).toBe('b787_9');
+    expect(r.value.maxCrosswindKnots).toBeGreaterThan(0);
   });
 
   it('returns DataNotAvailable.phase-mismatch when phase differs from data', () => {

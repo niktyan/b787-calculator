@@ -40,7 +40,7 @@ MVP — это первая публичная версия в App Store. Осо
 
 **MVP включает:**
 
-1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787-8**. MVP RWYCC coverage: **6/6 B787-8 conditions active** (Dry through Poor) после завершения crosswind expansion series (PR 2-7). RWYCC 0 (TAKE OFF NOT ALLOWED) intentionally not implemented — operationally a prohibition, not a calculation. May revisit in post-launch evaluation. Входы: вариант ВС (Aircraft, B787-8 активен / B787-9 disabled-тизер), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale). Выход: одно число — максимально допустимый боковой ветер в узлах.
+1. Один функциональный модуль — **Crosswind Takeoff для Boeing 787 (оба варианта)**. MVP RWYCC coverage: **6/6 conditions active** для обоих ВС (Dry through Poor) после crosswind expansion series (PR 2-7) и активации B787-9 в Sprint B (см. ADR-0013). RWYCC 0 (TAKE OFF NOT ALLOWED) intentionally not implemented — operationally a prohibition, not a calculation. May revisit in post-launch evaluation. Входы: вариант ВС (Aircraft — оба активны: B787-8 / B787-9, каждый со своим FCOM-сертифицированным operational envelope), TOW actual (тонны), центровка (% MAC), runway condition (RWYCC scale). Выход: одно число — максимально допустимый боковой ветер в узлах.
 2. **Splash-экран с обязательным advisory-дисклеймером** при первом запуске. Подтверждение пользователя сохраняется и больше не показывается.
 3. **Главное меню — crosswind-семья.** В MVP Main Menu показывает только два модуля одной семьи (crosswind), в порядке хронологии фазы полёта:
    - **Crosswind · Landing** — Phase 2, неактивная карточка-«тизер» (слот #1).
@@ -71,7 +71,7 @@ MVP — это первая публичная версия в App Store. Осо
 
 Следующие фичи **не включены** в MVP. Они задокументированы как Future Enhancements в `01-vision.md` (этот документ, секция ниже) и ADR `0001-mvp-scope.md` (создаётся в Phase B).
 
-- Boeing 787-9 — будет добавлен в Phase 2 после релиза (architectural decision: deferred to post-launch update). В MVP виден как disabled-сегмент в Aircraft selector.
+- ~~Boeing 787-9~~ — **активирован в Sprint B** (см. ADR-0013): полный 6/6 RWYCC coverage с собственным FCOM operational envelope, эквивалентный B787-8. Прежняя редакция этого документа отмечала B787-9 как disabled-сегмент в Phase 2; после Sprint B оба варианта равноправно активны в MVP.
 - ~~Lower-RWYCC runway conditions~~ — все 6 RWYCC (Dry → Poor) активны после crosswind expansion series PR 2-7. RWYCC 0 (TAKE OFF NOT ALLOWED) intentionally not implemented в bundled data — operationally это prohibition state, not a numeric advisory. Pilot decision tree обрабатывает RWYCC 0 → "do not take off" вне приложения. Может revisit в post-launch evaluation.
 - Wind direction + runway heading inputs с автоматическим расчётом crosswind component — Phase 2.
 - Save / History calculations с экспортом в PDF — Phase 2/3.
@@ -137,8 +137,8 @@ MVP считается успешным, если выполнены **все** 
 Этот список фиксирует все идеи, которые мы обсуждали и которые потенциально интересны, но осознанно отложены. По мере реализации фичей или их отбраковки список обновляется.
 
 **Phase 2 (после первого публичного релиза):**
-- Boeing 787-9 variant (включая `byAircraft.b787_9` lookup-данные).
-- Non-dry RWYCC runway conditions: Good / Medium to Good / Medium / Medium to Poor / Poor (RWYCC 5/4/3/2/1) — собственный набор breakpoints на каждое состояние.
+- ~~Boeing 787-9 variant~~ — **shipped in MVP** (Sprint B / ADR-0013); запись сохранена для исторической трассируемости backlog'а.
+- ~~Non-dry RWYCC runway conditions~~ — shipped в crosswind expansion series PR 2-7 (Good / Medium to Good / Medium / Medium to Poor / Poor). Сохранено для исторической трассируемости.
 - Crosswind Landing (та же piecewise-linear модель, отдельный per-phase JSON).
 - Wind direction + runway heading inputs → автоматический crosswind component → Within limit / Exceeded badge.
 - Save / History calculations с экспортом в PDF.
