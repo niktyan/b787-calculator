@@ -592,8 +592,16 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
   становится visible.
 - **Tap target.** Весь visible area NumericInput (label + bordered
   field + reserved warning slot) tappable благодаря outer Pressable.
-  Inner field остаётся анкер-точкой для positioning popover через
-  отдельный `anchorRef`. См. ADR-0011 Iteration 2 §2.
+  TextInput внутри помечен `pointerEvents="none"` — iOS TextInput на
+  iPad может consume первый тап для context-menu / selection даже с
+  `editable={false}`, поэтому делаем его прозрачным для touch (см.
+  ADR-0011 Iteration 3 §2). Inner field остаётся анкер-точкой для
+  positioning popover через отдельный `anchorRef`. См. ADR-0011
+  Iteration 2 §2.
+- **Modal animation.** `animationType="none"` — popover появляется
+  мгновенно (был `"fade"` с 250-300 ms задержкой, пилоты воспринимали
+  как «лаг»). Backdrop dismiss и `onRequestClose` работают без
+  изменений. См. ADR-0011 Iteration 3 §2.
 - **Keypad positioning.** Pure-функция `computeKeypadPosition` ветвится
   по screen width:
   - **iPad / wide (>=768pt):** prefer right-of-field если есть >=296pt

@@ -327,3 +327,56 @@ and `horizontalCenterOnField` helpers are internal to the Host file;
 `computeKeypadPosition` remains the only exported entry point for
 testing. Twelve unit tests cover the wide + compact branches, all
 clamping paths, and the fallback when wide screen has no side room.
+
+## Iteration 3 (2026-05-22 late evening) — third fix-pass after iPad re-testing
+
+iPad device re-test after Iteration 2 confirmed two regressions still
+surfacing for users:
+
+### 1 · Done button still overflowed the popover container
+
+Iteration 2 added `alignSelf: 'stretch'` + `width: '100%'` to
+`styles.done`, which correctly sized the `<Button>` outer Pressable.
+The root cause turned out to live one level higher: `NumericKeypad`'s
+own outermost `<View>` was unstyled, so it took its intrinsic width
+(max-child) instead of stretching to the popover's content area. Without
+a constrained parent width:
+
+- The keys grid's `flex: 1` had no fixed parent → keys collapsed to
+  intrinsic small widths.
+- Button's `width: '100%'` resolved against the small intrinsic
+  container.
+- Button's inner Animated.View (with `paddingHorizontal:
+  tokens.spacing.lg` and the "Done" label) rendered at its own
+  intrinsic width and visibly overflowed the small parent.
+
+**Fix.** Added a new `styles.root` with `width: '100%'` and attached it
+to the outermost `<View>`. With a stretched parent, the cascade
+resolves correctly: NumericKeypad outer = 256 pt (popover 280 − padding
+24); grid 256 pt; each key 80 pt via `flex: 1`; Done stretches to 256
+pt and its inner content sits inside without overflow.
+
+### 2 · First taps unreliable + visible delay opening the popover
+
+Two compounding causes:
+
+**TextInput intercepted first taps.** Even with `editable={false}` +
+`caretHidden` + `showSoftInputOnFocus={false}`, iOS TextInput on iPad
+still received native touch events (for context-menu / selection
+handles) and intermittently consumed the first tap before the outer
+Pressable could fire `onPress`. Fixed by adding `pointerEvents="none"`
+to the TextInput — taps pass through transparently to the outer
+Pressable. The TextInput remains visible (it's still rendered, just
+non-interactive at the touch layer).
+
+**Modal fade animation added 250-300 ms delay.** `animationType="fade"`
+ran a fade-in on every popover open. Pilots perceived this as a tap-to-
+keypad lag. Switched to `animationType="none"` — popover appears
+instantly. Backdrop dismiss and `onRequestClose` behaviour are
+unchanged.
+
+The async `measureInWindow` indirection (~1 frame ≈ 16 ms) was
+investigated and kept as-is — negligible compared to the two factors
+above. If a future regression points at it, the next step would be to
+hoist anchor measurement synchronously (e.g., via `onLayout` plus a
+cached anchor in component state).
