@@ -150,6 +150,94 @@ describe('validateCGEnvelope', () => {
   });
 });
 
+/**
+ * The defining behaviour of the split: running weight and CG validators
+ * together must surface BOTH violations independently. Pre-PR
+ * `fix/independent-envelope-validators` the combined validator short-
+ * circuited on the first violation, hiding the second axis from the UI.
+ *
+ * The four-combination matrix below pins each cell of the truth table
+ * (weight ok/bad × cg ok/bad) so an accidental re-introduction of an
+ * early-return composition would fail fast.
+ */
+describe('independent flow (both validators run together)', () => {
+  it('both inputs in envelope → both validators return ok', () => {
+    const { w, cg } = vo(170, 25);
+    const weightResult = validateWeightEnvelope({ weightTons: w }, ENVELOPE.weight);
+    const cgResult = validateCGEnvelope({ cgPercent: cg }, ENVELOPE.cg);
+    expect(weightResult.ok).toBe(true);
+    expect(cgResult.ok).toBe(true);
+  });
+
+  it('only weight out of envelope → weight validator errors, cg validator ok', () => {
+    const { w, cg } = vo(300, 25);
+    const weightResult = validateWeightEnvelope({ weightTons: w }, ENVELOPE.weight);
+    const cgResult = validateCGEnvelope({ cgPercent: cg }, ENVELOPE.cg);
+    expect(weightResult).toEqual({
+      ok: false,
+      error: { kind: 'weight.above', given: 300, maxTons: 227.93 },
+    });
+    expect(cgResult.ok).toBe(true);
+  });
+
+  it('only cg out of envelope → weight validator ok, cg validator errors', () => {
+    const { w, cg } = vo(170, 50);
+    const weightResult = validateWeightEnvelope({ weightTons: w }, ENVELOPE.weight);
+    const cgResult = validateCGEnvelope({ cgPercent: cg }, ENVELOPE.cg);
+    expect(weightResult.ok).toBe(true);
+    expect(cgResult).toEqual({
+      ok: false,
+      error: { kind: 'cg.above', given: 50, maxPercent: 39.5 },
+    });
+  });
+
+  it('both inputs out of envelope (above max) → both validators error independently', () => {
+    // Pre-split: single validator returned only the weight error.
+    // Post-split: each axis reports its own violation.
+    const { w, cg } = vo(300, 50);
+    const weightResult = validateWeightEnvelope({ weightTons: w }, ENVELOPE.weight);
+    const cgResult = validateCGEnvelope({ cgPercent: cg }, ENVELOPE.cg);
+    expect(weightResult).toEqual({
+      ok: false,
+      error: { kind: 'weight.above', given: 300, maxTons: 227.93 },
+    });
+    expect(cgResult).toEqual({
+      ok: false,
+      error: { kind: 'cg.above', given: 50, maxPercent: 39.5 },
+    });
+  });
+
+  it('both inputs out of envelope (below min) → both validators error independently', () => {
+    const { w, cg } = vo(50, 2);
+    const weightResult = validateWeightEnvelope({ weightTons: w }, ENVELOPE.weight);
+    const cgResult = validateCGEnvelope({ cgPercent: cg }, ENVELOPE.cg);
+    expect(weightResult).toEqual({
+      ok: false,
+      error: { kind: 'weight.below', given: 50, minTons: 104.1 },
+    });
+    expect(cgResult).toEqual({
+      ok: false,
+      error: { kind: 'cg.below', given: 2, minPercent: 6 },
+    });
+  });
+
+  it('mixed: weight above max, cg below min → both validators error independently', () => {
+    const { w, cg } = vo(250, 2);
+    const weightResult = validateWeightEnvelope({ weightTons: w }, ENVELOPE.weight);
+    const cgResult = validateCGEnvelope({ cgPercent: cg }, ENVELOPE.cg);
+    expect(weightResult.ok).toBe(false);
+    if (weightResult.ok) {
+      throw new Error('expected error');
+    }
+    expect(weightResult.error.kind).toBe('weight.above');
+    expect(cgResult.ok).toBe(false);
+    if (cgResult.ok) {
+      throw new Error('expected error');
+    }
+    expect(cgResult.error.kind).toBe('cg.below');
+  });
+});
+
 describe('Value Object factories', () => {
   it('case 4.05: cg = NaN → CGError.NotANumber', () => {
     const r = makeCGPercentMAC(Number.NaN);
