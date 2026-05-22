@@ -117,6 +117,17 @@ describe('NumericInput', () => {
       expect(() => fireEvent.press(getByTestId('weight'))).not.toThrow();
     });
 
+    it('makes the outer wrapper the press target (Pressable on root, not inner field)', () => {
+      // ADR-0011 Iteration 2 §2: the Pressable lives on the outermost View
+      // (the root container). RN's Pressable exposes its press behaviour
+      // through the responder system rather than a literal `onPress` prop
+      // on the host node, so we check for the responder hook here.
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      expect(typeof getByTestId('weight').props.onResponderRelease).toBe('function');
+    });
+
     it('does not invoke onChange on field press', () => {
       const onChange = jest.fn();
       const { getByTestId } = renderWithTheme(

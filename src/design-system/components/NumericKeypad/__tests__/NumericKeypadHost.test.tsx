@@ -131,54 +131,124 @@ describe('NumericKeypadHost', () => {
 });
 
 describe('computeKeypadPosition', () => {
-  // Defaults for the production-like screen (iPad landscape) — wide enough
-  // that the right side of any field always has room for a 280-pt popover.
+  // Width / height combinations represent the two algorithmic branches:
+  //  - IPAD_LANDSCAPE (>= 768 pt wide) → "beside the field" cascade
+  //    (right / left / above-or-below fallback)
+  //  - IPHONE_PORTRAIT (< 768 pt wide) → "above / below" cascade
+  // See ADR-0011 Iteration 2 §3 for the rationale.
   const IPAD_LANDSCAPE = { width: 1024, height: 768 };
+  const IPHONE_PORTRAIT = { width: 390, height: 844 };
   const KEYPAD_SIZE = { width: 280, height: 320 };
 
-  it('places the popover to the right of the field when there is room', () => {
-    const anchor: FieldAnchor = { x: 100, y: 200, width: 160, height: 44 };
-    const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
-    // anchor.x + anchor.width + ANCHOR_OFFSET = 100 + 160 + 8 = 268
-    expect(position.left).toBe(268);
+  describe('wide screen (>= 768 pt) — beside-the-field cascade', () => {
+    it('places the popover to the right of the field when there is room', () => {
+      const anchor: FieldAnchor = { x: 100, y: 200, width: 160, height: 44 };
+      const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
+      // anchor.x + anchor.width + ANCHOR_OFFSET = 100 + 160 + 8 = 268
+      expect(position.left).toBe(268);
+    });
+
+    it('falls back to the left side when the right side has no room', () => {
+      const anchor: FieldAnchor = { x: 700, y: 200, width: 160, height: 44 };
+      const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
+      // rightSpace = 1024 - 860 = 164 < 280+8+16=304 → left
+      // anchor.x - keypadWidth - ANCHOR_OFFSET = 700 - 280 - 8 = 412
+      expect(position.left).toBe(412);
+    });
+
+    it('falls back to above/below when neither side has horizontal room', () => {
+      // Narrow iPad-mini portrait with a very wide field hugging the
+      // middle of the screen.
+      const screen = { width: 768, height: 1024 };
+      const anchor: FieldAnchor = { x: 200, y: 400, width: 460, height: 44 };
+      const position = computeKeypadPosition(anchor, screen, KEYPAD_SIZE);
+      // topSpace = 400 ≥ 320+8+16=344 → above field
+      // top = 400 - 320 - 8 = 72
+      expect(position.top).toBe(72);
+      // Horizontally centered on field: center = 430, left = 430 - 140 = 290
+      expect(position.left).toBe(290);
+    });
+
+    it('aligns vertically with the top of the field by default', () => {
+      const anchor: FieldAnchor = { x: 100, y: 200, width: 160, height: 44 };
+      const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
+      expect(position.top).toBe(200);
+    });
+
+    it('clamps the vertical position so the popover never spills off-screen', () => {
+      const anchor: FieldAnchor = { x: 100, y: 600, width: 160, height: 44 };
+      const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
+      // maxTop = 768 - 320 - 16 = 432
+      expect(position.top).toBe(432);
+    });
+
+    it('clamps the vertical position to the top safe margin', () => {
+      const anchor: FieldAnchor = { x: 100, y: 4, width: 160, height: 44 };
+      const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
+      expect(position.top).toBe(16);
+    });
   });
 
-  it('falls back to the left side when the right side has no room', () => {
-    const anchor: FieldAnchor = { x: 700, y: 200, width: 160, height: 44 };
-    const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
-    // rightSpace = 1024 - 860 = 164 < 280+8+16=304 → left
-    // anchor.x - keypadWidth - ANCHOR_OFFSET = 700 - 280 - 8 = 412
-    expect(position.left).toBe(412);
-  });
+  describe('compact screen (< 768 pt) — above-or-below cascade', () => {
+    it('places the popover above the field when there is room above', () => {
+      const anchor: FieldAnchor = { x: 16, y: 400, width: 358, height: 44 };
+      const position = computeKeypadPosition(anchor, IPHONE_PORTRAIT, KEYPAD_SIZE);
+      // topSpace = 400 ≥ 320+8+16=344 → above
+      // top = 400 - 320 - 8 = 72
+      expect(position.top).toBe(72);
+    });
 
-  it('horizontally centers the popover when neither side has room', () => {
-    // Narrow iPhone-portrait-like screen; field hugs the right edge.
-    const screen = { width: 360, height: 800 };
-    const anchor: FieldAnchor = { x: 40, y: 100, width: 280, height: 44 };
-    const position = computeKeypadPosition(anchor, screen, KEYPAD_SIZE);
-    // Centered: (360 - 280) / 2 = 40
-    expect(position.left).toBe(40);
-  });
+    it('falls back to below the field when there is no room above', () => {
+      const anchor: FieldAnchor = { x: 16, y: 80, width: 358, height: 44 };
+      const position = computeKeypadPosition(anchor, IPHONE_PORTRAIT, KEYPAD_SIZE);
+      // topSpace = 80 < 344; bottomSpace = 844 - 124 = 720 ≥ 344 → below
+      // top = 80 + 44 + 8 = 132
+      expect(position.top).toBe(132);
+    });
 
-  it('aligns vertically with the top of the field by default', () => {
-    const anchor: FieldAnchor = { x: 100, y: 200, width: 160, height: 44 };
-    const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
-    expect(position.top).toBe(200);
-  });
+    it('horizontally centers the popover on the field', () => {
+      // Field centered on screen: fieldCenter = 16 + 358/2 = 195
+      // left = 195 - 280/2 = 55
+      const anchor: FieldAnchor = { x: 16, y: 400, width: 358, height: 44 };
+      const position = computeKeypadPosition(anchor, IPHONE_PORTRAIT, KEYPAD_SIZE);
+      expect(position.left).toBe(55);
+    });
 
-  it('clamps the vertical position so the popover never spills off-screen', () => {
-    // Anchor near the bottom of the screen: top would push popover below
-    // screen.height - SCREEN_MARGIN.
-    const anchor: FieldAnchor = { x: 100, y: 600, width: 160, height: 44 };
-    const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
-    // maxTop = 768 - 320 - 16 = 432
-    expect(position.top).toBe(432);
-  });
+    it('clamps the popover to the left screen margin', () => {
+      // Field hugs the left edge — centered popover would go off-screen left.
+      const anchor: FieldAnchor = { x: 0, y: 400, width: 80, height: 44 };
+      const position = computeKeypadPosition(anchor, IPHONE_PORTRAIT, KEYPAD_SIZE);
+      expect(position.left).toBe(16);
+    });
 
-  it('clamps the vertical position to the top safe margin', () => {
-    // Anchor near the top of the screen.
-    const anchor: FieldAnchor = { x: 100, y: 4, width: 160, height: 44 };
-    const position = computeKeypadPosition(anchor, IPAD_LANDSCAPE, KEYPAD_SIZE);
-    expect(position.top).toBe(16);
+    it('clamps the popover to the right screen margin', () => {
+      // Field hugs the right edge — centered popover would go off-screen right.
+      const anchor: FieldAnchor = { x: 310, y: 400, width: 80, height: 44 };
+      const position = computeKeypadPosition(anchor, IPHONE_PORTRAIT, KEYPAD_SIZE);
+      // maxLeft = 390 - 280 - 16 = 94
+      expect(position.left).toBe(94);
+    });
+
+    it('clamps to the top margin when neither above nor below fits but more room is above', () => {
+      // Short compact screen with a field below middle.
+      //   topSpace = 300, bottomSpace = 550 - 344 = 206 — both < 344.
+      //   topSpace > bottomSpace → clamp to top margin.
+      const screen = { width: 390, height: 550 };
+      const anchor: FieldAnchor = { x: 16, y: 300, width: 358, height: 44 };
+      const position = computeKeypadPosition(anchor, screen, KEYPAD_SIZE);
+      expect(position.top).toBe(16);
+    });
+
+    it('clamps to the bottom margin when neither above nor below fits but more room is below', () => {
+      // Field near the top — both sides under 344 but bottom has more.
+      //   topSpace = 100, bottomSpace = 550 - 144 = 406 ≥ 344 → below fits.
+      // We want both insufficient — use a smaller screen height:
+      const screen = { width: 390, height: 480 };
+      const anchor: FieldAnchor = { x: 16, y: 100, width: 358, height: 44 };
+      // topSpace = 100, bottomSpace = 480 - 144 = 336 — both < 344.
+      // bottomSpace > topSpace → clamp to bottom: 480 - 320 - 16 = 144.
+      const position = computeKeypadPosition(anchor, screen, KEYPAD_SIZE);
+      expect(position.top).toBe(144);
+    });
   });
 });
