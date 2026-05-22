@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Keyboard, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
@@ -6,6 +6,7 @@ import type { TextStyle, ViewStyle } from 'react-native';
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
+import { useNumericKeypad } from '../NumericKeypad/useNumericKeypad';
 import { Text } from '../Text/Text';
 import type { TextVariant } from '../Text/Text';
 import { sanitizeDecimalInput } from './sanitizeDecimalInput';
@@ -194,6 +195,55 @@ function ErrorSlot({ error, hasError, style, testID }: ErrorSlotProps): ReactNod
   );
 }
 
+interface FieldTextInputProps {
+  readonly accessibilityLabel: string;
+  readonly onChangeText: (next: string) => void;
+  readonly placeholder: string | undefined;
+  readonly placeholderTextColor: string;
+  readonly style: TextStyle;
+  readonly testID: string | undefined;
+  readonly value: string;
+}
+
+/**
+ * Non-interactive display element. ADR-0011 Iterations 1-3 explain the full
+ * editable / caret / pointerEvents / showSoftInputOnFocus stack and why
+ * `onChangeText` stays attached as a dead-path sanitizer.
+ */
+function FieldTextInput({
+  accessibilityLabel,
+  onChangeText,
+  placeholder,
+  placeholderTextColor,
+  style,
+  testID,
+  value,
+}: FieldTextInputProps): ReactNode {
+  return (
+    <TextInput
+      accessibilityLabel={accessibilityLabel}
+      autoComplete="off"
+      autoCorrect={false}
+      caretHidden
+      editable={false}
+      inputMode="decimal"
+      keyboardType="decimal-pad"
+      onChangeText={onChangeText}
+      onSubmitEditing={(): void => Keyboard.dismiss()}
+      placeholder={placeholder}
+      placeholderTextColor={placeholderTextColor}
+      pointerEvents="none"
+      returnKeyType="done"
+      showSoftInputOnFocus={false}
+      spellCheck={false}
+      style={style}
+      testID={testID}
+      textContentType="none"
+      value={value}
+    />
+  );
+}
+
 export function NumericInput(props: NumericInputProps): ReactNode {
   const {
     value,
@@ -209,15 +259,19 @@ export function NumericInput(props: NumericInputProps): ReactNode {
   } = props;
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
-  const [focused, setFocused] = useState(false);
   const hasError = error !== undefined && error.length > 0;
   const hasUnit = unit !== undefined && unit.length > 0;
   const { labelVariant, unitVariant } = variantsForSize(size);
-  const inputRef = useRef<TextInput>(null);
+  const { isActive, handleFieldPress, anchorRef } = useNumericKeypad({
+    value,
+    onChange,
+    isRegular: size === 'regular',
+    disabled,
+  });
 
   const styles = useMemo(
-    () => buildStyles({ palette, hasError, focused, disabled, size }),
-    [disabled, focused, hasError, palette, size],
+    () => buildStyles({ palette, hasError, focused: isActive, disabled, size }),
+    [disabled, isActive, hasError, palette, size],
   );
 
   const handleChangeText = useCallback(
@@ -227,44 +281,34 @@ export function NumericInput(props: NumericInputProps): ReactNode {
     [onChange],
   );
 
-  const handleFieldPress = useCallback((): void => {
-    if (disabled) {
-      return;
-    }
-    inputRef.current?.focus();
-  }, [disabled]);
-
   return (
-    <View style={styles.root} testID={testID}>
+    // Outer Pressable so the entire NumericInput surface (label + bordered
+    // field + reserved warning slot) becomes the tap target. The bordered
+    // field box is only ~44 / 80 pt tall, and Iteration 1 limited taps to
+    // that area — pilots tapping the label or below the field saw no
+    // response. See ADR-0011 Iteration 2 §2.
+    <Pressable
+      accessible={false}
+      disabled={disabled}
+      onPress={handleFieldPress}
+      style={styles.root}
+      testID={testID}
+    >
       <Text variant={labelVariant} color="textSecondary" style={labelStyleForSize(size)}>
         {label}
       </Text>
-      <View style={styles.fieldRing}>
-        <Pressable
-          accessible={false}
-          disabled={disabled}
-          onPress={handleFieldPress}
-          style={styles.field}
-        >
-          <TextInput
+      {/* `anchorRef` lives on the bordered field's outer ring — that's the
+          visual the popover should align to, not the larger Pressable
+          tap-target above. */}
+      <View ref={anchorRef} style={styles.fieldRing}>
+        <View style={styles.field}>
+          <FieldTextInput
             accessibilityLabel={accessibilityLabel ?? label}
-            autoComplete="off"
-            autoCorrect={false}
-            editable={!disabled}
-            inputMode="decimal"
-            keyboardType="decimal-pad"
-            onBlur={(): void => setFocused(false)}
             onChangeText={handleChangeText}
-            onFocus={(): void => setFocused(true)}
-            onSubmitEditing={(): void => Keyboard.dismiss()}
             placeholder={placeholder}
             placeholderTextColor={palette.textTertiary}
-            ref={inputRef}
-            returnKeyType="done"
-            spellCheck={false}
             style={styles.input}
             testID={suffixId(testID, 'input')}
-            textContentType="none"
             value={value}
           />
           {hasUnit ? (
@@ -272,9 +316,9 @@ export function NumericInput(props: NumericInputProps): ReactNode {
               {unit}
             </Text>
           ) : null}
-        </Pressable>
+        </View>
       </View>
       <ErrorSlot error={error} hasError={hasError} style={styles.errorSlot} testID={testID} />
-    </View>
+    </Pressable>
   );
 }

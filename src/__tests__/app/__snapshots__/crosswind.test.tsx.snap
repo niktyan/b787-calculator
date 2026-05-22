@@ -576,6 +576,35 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
               </View>
             </View>
             <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={false}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 {
                   "gap": 4,
@@ -614,35 +643,6 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": false,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={false}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
                       "alignItems": "center",
@@ -662,16 +662,17 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                     accessibilityLabel="TOW actual"
                     autoComplete="off"
                     autoCorrect={false}
-                    editable={true}
+                    caretHidden={true}
+                    editable={false}
                     inputMode="decimal"
                     keyboardType="decimal-pad"
-                    onBlur={[Function]}
                     onChangeText={[Function]}
-                    onFocus={[Function]}
                     onSubmitEditing={[Function]}
                     placeholder="e.g. 170"
                     placeholderTextColor="#6E7681"
+                    pointerEvents="none"
                     returnKeyType="done"
+                    showSoftInputOnFocus={false}
                     spellCheck={false}
                     style={
                       {
@@ -719,6 +720,35 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
               />
             </View>
             <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={false}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 {
                   "gap": 4,
@@ -757,35 +787,6 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": false,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={false}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
                       "alignItems": "center",
@@ -805,16 +806,17 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                     accessibilityLabel="Center of gravity"
                     autoComplete="off"
                     autoCorrect={false}
-                    editable={true}
+                    caretHidden={true}
+                    editable={false}
                     inputMode="decimal"
                     keyboardType="decimal-pad"
-                    onBlur={[Function]}
                     onChangeText={[Function]}
-                    onFocus={[Function]}
                     onSubmitEditing={[Function]}
                     placeholder="e.g. 25.5"
                     placeholderTextColor="#6E7681"
+                    pointerEvents="none"
                     returnKeyType="done"
+                    showSoftInputOnFocus={false}
                     spellCheck={false}
                     style={
                       {
@@ -2001,6 +2003,35 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
               </View>
             </View>
             <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={false}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 {
                   "gap": 4,
@@ -2039,35 +2070,6 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": false,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={false}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
                       "alignItems": "center",
@@ -2087,16 +2089,17 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                     accessibilityLabel="TOW actual"
                     autoComplete="off"
                     autoCorrect={false}
-                    editable={true}
+                    caretHidden={true}
+                    editable={false}
                     inputMode="decimal"
                     keyboardType="decimal-pad"
-                    onBlur={[Function]}
                     onChangeText={[Function]}
-                    onFocus={[Function]}
                     onSubmitEditing={[Function]}
                     placeholder="e.g. 170"
                     placeholderTextColor="#6B7280"
+                    pointerEvents="none"
                     returnKeyType="done"
+                    showSoftInputOnFocus={false}
                     spellCheck={false}
                     style={
                       {
@@ -2144,6 +2147,35 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
               />
             </View>
             <View
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={false}
+              collapsable={false}
+              focusable={true}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 {
                   "gap": 4,
@@ -2182,35 +2214,6 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": false,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={false}
-                  collapsable={false}
-                  focusable={true}
-                  onBlur={[Function]}
-                  onClick={[Function]}
-                  onFocus={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     {
                       "alignItems": "center",
@@ -2230,16 +2233,17 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                     accessibilityLabel="Center of gravity"
                     autoComplete="off"
                     autoCorrect={false}
-                    editable={true}
+                    caretHidden={true}
+                    editable={false}
                     inputMode="decimal"
                     keyboardType="decimal-pad"
-                    onBlur={[Function]}
                     onChangeText={[Function]}
-                    onFocus={[Function]}
                     onSubmitEditing={[Function]}
                     placeholder="e.g. 25.5"
                     placeholderTextColor="#6B7280"
+                    pointerEvents="none"
                     returnKeyType="done"
+                    showSoftInputOnFocus={false}
                     spellCheck={false}
                     style={
                       {

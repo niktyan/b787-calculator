@@ -2,6 +2,35 @@
 
 exports[`NumericInput renders empty integer field with placeholder in dark theme 1`] = `
 <View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={false}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     {
       "gap": 4,
@@ -40,35 +69,6 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
     }
   >
     <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={false}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -88,16 +88,17 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
         accessibilityLabel="TOW actual"
         autoComplete="off"
         autoCorrect={false}
-        editable={true}
+        caretHidden={true}
+        editable={false}
         inputMode="decimal"
         keyboardType="decimal-pad"
-        onBlur={[Function]}
         onChangeText={[Function]}
-        onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6E7681"
+        pointerEvents="none"
         returnKeyType="done"
+        showSoftInputOnFocus={false}
         spellCheck={false}
         style={
           {
@@ -148,6 +149,35 @@ exports[`NumericInput renders empty integer field with placeholder in dark theme
 
 exports[`NumericInput renders empty integer field with placeholder in light theme 1`] = `
 <View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={false}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     {
       "gap": 4,
@@ -186,35 +216,6 @@ exports[`NumericInput renders empty integer field with placeholder in light them
     }
   >
     <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={false}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -234,16 +235,17 @@ exports[`NumericInput renders empty integer field with placeholder in light them
         accessibilityLabel="TOW actual"
         autoComplete="off"
         autoCorrect={false}
-        editable={true}
+        caretHidden={true}
+        editable={false}
         inputMode="decimal"
         keyboardType="decimal-pad"
-        onBlur={[Function]}
         onChangeText={[Function]}
-        onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholder="e.g. 170"
         placeholderTextColor="#6B7280"
+        pointerEvents="none"
         returnKeyType="done"
+        showSoftInputOnFocus={false}
         spellCheck={false}
         style={
           {
@@ -294,6 +296,35 @@ exports[`NumericInput renders empty integer field with placeholder in light them
 
 exports[`NumericInput renders populated field with value, unit and error 1`] = `
 <View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={false}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     {
       "gap": 4,
@@ -332,35 +363,6 @@ exports[`NumericInput renders populated field with value, unit and error 1`] = `
     }
   >
     <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={false}
-      collapsable={false}
-      focusable={true}
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
       style={
         {
           "alignItems": "center",
@@ -380,15 +382,16 @@ exports[`NumericInput renders populated field with value, unit and error 1`] = `
         accessibilityLabel="CG"
         autoComplete="off"
         autoCorrect={false}
-        editable={true}
+        caretHidden={true}
+        editable={false}
         inputMode="decimal"
         keyboardType="decimal-pad"
-        onBlur={[Function]}
         onChangeText={[Function]}
-        onFocus={[Function]}
         onSubmitEditing={[Function]}
         placeholderTextColor="#6E7681"
+        pointerEvents="none"
         returnKeyType="done"
+        showSoftInputOnFocus={false}
         spellCheck={false}
         style={
           {

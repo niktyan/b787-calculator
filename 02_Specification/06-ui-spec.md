@@ -565,24 +565,94 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 
 ### Keyboard behavior
 
-iOS softkeyboard на `numeric-pad` / `decimal-pad` **не имеет встроенной кнопки скрытия**, поэтому экран обеспечивает дисмисс двумя путями:
+Для всех `NumericInput` системная iOS-клавиатура полностью отключена двумя
+независимыми механизмами (см. ADR-0011 Iteration 1):
 
-- **Tap outside-to-dismiss.** Экран обёрнут в `KeyboardDismissView`
-  (DS-компонент, см. `module-contracts/design-system.md`). Любой тап
-  по фону или нечитаемой области (за пределами полей и сегментов)
-  закрывает клавиатуру через `Keyboard.dismiss()`. Тапы по самим
-  TextInput-ам или сегментам не интерпретируются как «вне input» — они
-  обрабатываются adressuemyм компонентом, обёртка не перехватывает.
-- **Done key on keyboard.** Каждый `NumericInput` сконфигурирован с
-  `returnKeyType="done"`; нажатие Done на iOS-клавиатуре триггерит
-  `onSubmitEditing`, который также вызывает `Keyboard.dismiss()`. Это
-  даёт пилоту явную клавишу скрытия без необходимости тапать по
-  свободной области.
+1. `editable={false}` + `caretHidden={true}` — load-bearing guarantee. iOS
+   никогда не показывает software keyboard для non-editable TextInput.
+2. `showSoftInputOnFocus={false}` — belt-and-braces signal, оставлен на случай
+   платформенной регрессии.
 
-Скролл-жесты не перехватываются — `KeyboardDismissView` это
-`Pressable` с `flex: 1`, а не TouchableWithoutFeedback с capturing
-overlay. VoiceOver не объявляет обёртку как тапаемую (`accessible:
-false`), поэтому пилот с VO навигирует напрямую по полям.
+Ввод происходит через **custom in-app numeric keypad** — floating Modal
+**popover**, 280×320 pt, со скруглением и тенью, **anchored к фокусированному
+полю** (НЕ bottom-sheet). 12 клавиш (digits 0-9, decimal separator, backspace)
++ Done button. Появляется автоматически при тапе на поле и переключается
+между полями без re-mount.
+
+- **Открытие.** Outer `Pressable`-обёртка вокруг всего NumericInput
+  (label + bordered field + reserved warning slot — см. ADR-0011
+  Iteration 2 §2) регистрирует поле в `NumericKeypadProvider` через
+  хук `useNumericKeypad`. Хук экспозит `anchorRef`, который консьюмер
+  привязывает к **inner** `<View style={fieldRing}>` (bordered field
+  box) — Provider использует `View.measureInWindow` через
+  `RegisteredField.getAnchor()` для получения window-relative координат
+  именно field-box-а, не tap-target-обёртки. После register Provider
+  обновляет `activeFieldId` + `activeAnchor`, и `NumericKeypadHost`
+  (смонтированный в `src/app/_layout.tsx` как сиблинг `<Stack>`)
+  становится visible.
+- **Tap target.** Весь visible area NumericInput (label + bordered
+  field + reserved warning slot) tappable благодаря outer Pressable.
+  TextInput внутри помечен `pointerEvents="none"` — iOS TextInput на
+  iPad может consume первый тап для context-menu / selection даже с
+  `editable={false}`, поэтому делаем его прозрачным для touch (см.
+  ADR-0011 Iteration 3 §2). Inner field остаётся анкер-точкой для
+  positioning popover через отдельный `anchorRef`. См. ADR-0011
+  Iteration 2 §2.
+- **Modal animation.** `animationType="none"` — popover появляется
+  мгновенно (был `"fade"` с 250-300 ms задержкой, пилоты воспринимали
+  как «лаг»). Backdrop dismiss и `onRequestClose` работают без
+  изменений. См. ADR-0011 Iteration 3 §2.
+- **Keypad positioning.** Pure-функция `computeKeypadPosition` ветвится
+  по screen width:
+  - **iPad / wide (>=768pt):** prefer right-of-field если есть >=296pt
+    (280 keypad + 8 offset + 16 margin) справа; иначе left-of-field под
+    тем же threshold; иначе fallback к above/below как на iPhone.
+    Вертикально align с top-ом поля, clamped в screen bounds.
+  - **iPhone / compact (<768pt):** prefer above-field если есть >=344pt
+    (320 keypad + 8 + 16) сверху; иначе below-field; иначе clamp к
+    стороне с большим запасом. Горизонтально центрируется на field's
+    center, clamped к screen margins (16pt).
+  Field остаётся visible рядом с keypad'ом, не перекрывается. Breakpoint
+  768pt matches `tokens.breakpoints.regularHeader`. См. ADR-0011
+  Iteration 2 §3.
+- **Переключение между полями.** Тап на другое поле перерегистрирует
+  поле через тот же Provider — `activeFieldId` и `activeAnchor`
+  обновляются, Modal остаётся visible (no re-mount, no animation),
+  popover мгновенно retargets к новому полю. Это убирает 200-400 ms
+  лаг от системной keyboard transition при переходе TOW ↔ CG.
+- **Ввод digit / dot / backspace.** Provider оперирует значением
+  активного поля через `getValue()` closure ref (нет stale closures на
+  re-renders консьюмера). На каждый key press: `sanitizeDecimalInput(value
+  + key)` для digit/dot, `value.slice(0, -1)` для backspace.
+- **Re-press of the already-active field — no-op.** Provider узнаёт по
+  `fieldId === fieldRef.current.id` (internal storage) и не обновляет
+  state (anchor re-measure всё-таки делается на случай orientation
+  change). Это убирает «double-focus» класс багов.
+- **Закрытие.** Done button или тап по backdrop вызывает
+  `clearActiveField` — Modal hide, `activeAnchor` сбрасывается в null.
+  Если поле размонтируется пока оно active, хук `useNumericKeypad`
+  cleanup автоматически вызывает `clearActiveField` на unmount.
+- **Bluetooth keyboard — больше не работает.** Из-за `editable={false}`
+  iPad с подключённой Bluetooth-клавиатурой не получает hardware key
+  events для NumericInput. Trade-off accepted per ADR-0011 Iteration 1
+  для cockpit use case — Bluetooth-клавиатуры крайне редки в EFB-сценарии,
+  а нулевая exposure системной keyboard перед App Review Guideline 4.2
+  важнее edge-case ввода. `sanitizeDecimalInput` сохранён как
+  defence-in-depth в `onChangeText` (dead path при editable=false, но
+  готов к platform-regressions).
+- **Focus ring.** Visible border + accent ring выставляются по флагу
+  `isActive` из хука (поле сейчас активно в Provider), а не по локальному
+  `useState(focused)`. Это даёт единый source of truth: ring
+  show-ится **ровно тогда**, когда keypad открыт и таргетит это поле.
+
+`KeyboardDismissView` остаётся обёрнутой вокруг Crosswind Calculator
+как safety-net (`Keyboard.dismiss()` no-op'ит когда системной клавиатуры
+нет), но **основной дисмисс** keypad-а идёт через backdrop
+Modal-popover-а (см. § Overlays · NumericKeypad в
+`module-contracts/design-system.md`). Скролл-жесты не перехватываются —
+`KeyboardDismissView` это `Pressable` с `flex: 1` без capturing overlay.
+VoiceOver не объявляет обёртку как тапаемую (`accessible: false`),
+поэтому пилот с VO навигирует напрямую по полям.
 
 ### Result-секция (правая колонка / нижняя на portrait) — Block 5 single Card
 
