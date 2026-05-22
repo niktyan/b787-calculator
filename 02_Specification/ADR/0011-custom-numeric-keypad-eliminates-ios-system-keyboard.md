@@ -250,3 +250,80 @@ for safety.
 - The `sanitizeDecimalInput` defence-in-depth function is now unit-tested
   directly (`sanitizeDecimalInput.test.ts`) instead of through the NumericInput
   `onChangeText` path, which is now non-reachable in production.
+
+## Iteration 2 (2026-05-22 evening) — second fix-pass after iPad + iPhone testing
+
+After Iteration 1 was tested on both iPad and iPhone, three polish issues
+surfaced:
+
+### 1 · Done button overflowed the popover container
+
+The `<Button>` design-system primitive carries intrinsic width from its
+label + padding; without an explicit width constraint it could exceed the
+popover's 280 pt − 24 pt padding inner area. The Done button visibly bled
+past the right border of the keypad surface.
+
+**Fix.** `styles.done` now sets `alignSelf: 'stretch'` + `width: '100%'`
+alongside `marginTop`. Both properties target slightly different layout
+paths (alignSelf for flex containers, width for explicit sizing) — keeping
+both is cheap insurance against RN behaviour changes between versions.
+
+### 2 · Tap target was limited to the bordered field box
+
+The `<Pressable>` in `NumericInput` previously wrapped only the inner
+`styles.field` (the bordered TextInput box, ~44 pt compact / 80 pt regular).
+Taps on the label region above the field or on the reserved-error-slot
+region below the field did not register, and a non-editable TextInput on
+iOS occasionally absorbed first taps — together producing the "doesn't open
+on first tap" effect pilots reported.
+
+**Fix.** The Pressable moved to the outermost wrapper (`styles.root`), so
+any tap inside the NumericInput's visible area (label + bordered field +
+reserved warning slot) triggers `handleFieldPress`. The bordered field is
+still the visual the popover should align to, so the anchor ref is
+decoupled from the tap-target wrapper:
+
+- `useNumericKeypad` renamed its returned ref from `fieldRef` to
+  `anchorRef` and documented it as "attach to the bordered field box, not
+  the outer tap wrapper."
+- `NumericInput` attaches `anchorRef` to the inner `<View
+  style={styles.fieldRing}>` and uses the outer `<Pressable
+  style={styles.root}>` for taps.
+
+The inner Pressable was removed; the inner `<View style={styles.field}>` is
+now a plain View (it never needed press handling once the outer Pressable
+existed).
+
+### 3 · Popover covered the field on iPhone compact widths
+
+The Iteration 1 algorithm preferred right-of-field, then left-of-field,
+then horizontally centred the popover when no horizontal space was
+available. On iPhone (~375–390 pt width) neither side fits a 280-pt
+popover, so the algorithm always centred — landing directly on top of the
+focused field.
+
+**Fix.** The positioning algorithm splits by screen width:
+
+- **Wide screen (>= 768 pt — iPad, iPad-mini portrait):** prefer right of
+  field, then left of field, then **fall back to above/below** (rather
+  than the old "horizontally center on screen"). The above/below fallback
+  reuses the compact-screen logic so we avoid having two divergent
+  branches for the rare edge case.
+- **Compact screen (< 768 pt — iPhone, iPhone landscape):** prefer above
+  field, then below field. Horizontally centre the popover on the field
+  (clamped to `[SCREEN_MARGIN, screen.width − KEYPAD_WIDTH − SCREEN_MARGIN]`)
+  so it sits visually under or over the same column as the input.
+
+When neither above nor below has enough vertical room (very short screen
++ tall popover), the algorithm picks the side with more room and clamps
+to the screen margin — guarantees the popover is never partially
+off-screen.
+
+The breakpoint constant matches `tokens.breakpoints.regularHeader` (768)
+so any future shifts in the design-system breakpoints propagate naturally.
+
+The new `positionBesideOrAbove`, `positionAboveOrBelow`, `clampVertical`,
+and `horizontalCenterOnField` helpers are internal to the Host file;
+`computeKeypadPosition` remains the only exported entry point for
+testing. Twelve unit tests cover the wide + compact branches, all
+clamping paths, and the fallback when wide screen has no side room.

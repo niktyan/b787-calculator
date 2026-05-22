@@ -271,13 +271,17 @@ behavior» для UX-описания.
   тап / Done button → `clearActiveField` → Modal hide. Когда активного
   поля нет — Modal `visible={false}`, оверлей не рендерится.
 - `useNumericKeypad({value, onChange, isRegular, disabled})` — хук для
-  `NumericInput`. Возвращает `{isActive, handleFieldPress, fieldRef}`.
-  Консьюмер должен привязать `fieldRef` к outer `<View>` поля — Provider
-  использует ref для `measureInWindow` при register / re-register
-  (см. ADR-0011 Iteration 1 §2). Регистрирует поле при первом тапе через
-  `useId()`-сгенерированный stable id; re-press того же поля — no-op
-  для state, но anchor re-measure. На unmount пока field active —
-  автоматически вызывает `clearActiveField`.
+  `NumericInput`. Возвращает `{isActive, handleFieldPress, anchorRef}`.
+  Консьюмер должен привязать `anchorRef` к **inner bordered field box**
+  (не к outer tap-target wrapper) — Provider использует ref для
+  `measureInWindow` при register / re-register (см. ADR-0011 Iteration 1
+  §2 для anchor measurement и Iteration 2 §2 для разделения tap-target /
+  anchor). `handleFieldPress` идёт на outer `<Pressable>` всего поля
+  (label + field + slot), чтобы любой тап открывал keypad.
+  Регистрирует поле при первом тапе через `useId()`-сгенерированный
+  stable id; re-press того же поля — no-op для state, но anchor
+  re-measure. На unmount пока field active — автоматически вызывает
+  `clearActiveField`.
 - `useNumericKeypadContext()` — низкоуровневый accessor для Provider;
   бросает explicit error если provider не смонтирован. Не экспортируется
   на уровне design-system barrel — внешние модули используют

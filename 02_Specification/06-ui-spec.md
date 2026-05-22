@@ -579,21 +579,34 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 + Done button. Появляется автоматически при тапе на поле и переключается
 между полями без re-mount.
 
-- **Открытие.** `Pressable`-обёртка вокруг визуальной области поля
-  регистрирует поле в `NumericKeypadProvider` через хук
-  `useNumericKeypad`. Хук экспозит `fieldRef`, который консьюмер
-  привязывает к outer `<View>` поля — Provider использует
-  `View.measureInWindow` через `RegisteredField.getAnchor()` для
-  получения window-relative координат. После register Provider
+- **Открытие.** Outer `Pressable`-обёртка вокруг всего NumericInput
+  (label + bordered field + reserved warning slot — см. ADR-0011
+  Iteration 2 §2) регистрирует поле в `NumericKeypadProvider` через
+  хук `useNumericKeypad`. Хук экспозит `anchorRef`, который консьюмер
+  привязывает к **inner** `<View style={fieldRing}>` (bordered field
+  box) — Provider использует `View.measureInWindow` через
+  `RegisteredField.getAnchor()` для получения window-relative координат
+  именно field-box-а, не tap-target-обёртки. После register Provider
   обновляет `activeFieldId` + `activeAnchor`, и `NumericKeypadHost`
   (смонтированный в `src/app/_layout.tsx` как сиблинг `<Stack>`)
   становится visible.
-- **Позиционирование popover.** Pure-функция `computeKeypadPosition`:
-  prefer right-of-field если есть >=296pt свободного места (280 keypad
-  + 8 offset + 16 margin); иначе left-of-field под тем же threshold;
-  иначе горизонтально центрируется. Вертикально align с top-ом поля,
-  clamped в `[16, screen.height - 320 - 16]`. Field остаётся visible
-  рядом с keypad'ом, не перекрывается.
+- **Tap target.** Весь visible area NumericInput (label + bordered
+  field + reserved warning slot) tappable благодаря outer Pressable.
+  Inner field остаётся анкер-точкой для positioning popover через
+  отдельный `anchorRef`. См. ADR-0011 Iteration 2 §2.
+- **Keypad positioning.** Pure-функция `computeKeypadPosition` ветвится
+  по screen width:
+  - **iPad / wide (>=768pt):** prefer right-of-field если есть >=296pt
+    (280 keypad + 8 offset + 16 margin) справа; иначе left-of-field под
+    тем же threshold; иначе fallback к above/below как на iPhone.
+    Вертикально align с top-ом поля, clamped в screen bounds.
+  - **iPhone / compact (<768pt):** prefer above-field если есть >=344pt
+    (320 keypad + 8 + 16) сверху; иначе below-field; иначе clamp к
+    стороне с большим запасом. Горизонтально центрируется на field's
+    center, clamped к screen margins (16pt).
+  Field остаётся visible рядом с keypad'ом, не перекрывается. Breakpoint
+  768pt matches `tokens.breakpoints.regularHeader`. См. ADR-0011
+  Iteration 2 §3.
 - **Переключение между полями.** Тап на другое поле перерегистрирует
   поле через тот же Provider — `activeFieldId` и `activeAnchor`
   обновляются, Modal остаётся visible (no re-mount, no animation),
@@ -604,9 +617,9 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
   re-renders консьюмера). На каждый key press: `sanitizeDecimalInput(value
   + key)` для digit/dot, `value.slice(0, -1)` для backspace.
 - **Re-press of the already-active field — no-op.** Provider узнаёт по
-  `fieldId === fieldRef.current.id` и не обновляет state (anchor
-  re-measure всё-таки делается на случай orientation change). Это
-  убирает «double-focus» класс багов.
+  `fieldId === fieldRef.current.id` (internal storage) и не обновляет
+  state (anchor re-measure всё-таки делается на случай orientation
+  change). Это убирает «double-focus» класс багов.
 - **Закрытие.** Done button или тап по backdrop вызывает
   `clearActiveField` — Modal hide, `activeAnchor` сбрасывается в null.
   Если поле размонтируется пока оно active, хук `useNumericKeypad`
