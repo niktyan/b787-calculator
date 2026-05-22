@@ -17,8 +17,11 @@ const KEYPAD_TEST_ID = 'numeric-keypad';
 // Popover dimensions are fixed because (a) the keypad's layout is itself
 // fixed (4×3 grid + Done), and (b) measuring the popover before mount in
 // order to place it would require a layout pass we'd rather avoid.
+// `KEYPAD_HEIGHT` carries a buffer over the strict content height so that
+// `<Button variant="primary">` internal padding + regular-size doneMarginTop
+// always fit. See ADR-0011 Iteration 3 § Done button containment.
 const KEYPAD_WIDTH = 280;
-const KEYPAD_HEIGHT = 320;
+const KEYPAD_HEIGHT = 400;
 const SCREEN_MARGIN = 16;
 const ANCHOR_OFFSET = 8;
 // Match `tokens.breakpoints.regularHeader` — anything from iPad-mini portrait

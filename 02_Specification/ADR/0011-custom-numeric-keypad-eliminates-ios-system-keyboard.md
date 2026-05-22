@@ -380,3 +380,16 @@ investigated and kept as-is — negligible compared to the two factors
 above. If a future regression points at it, the next step would be to
 hoist anchor measurement synchronously (e.g., via `onLayout` plus a
 cached anchor in component state).
+
+### Done button containment
+
+After Iteration 3 was tested on iPad, the Done button was still found
+to overflow **below** the popover container. Root cause: the fixed
+`KEYPAD_HEIGHT = 320` did not account for `<Button variant="primary">`
+internal padding plus `tokens.spacing.lg` doneMarginTop on regular
+sizing. Bumped `KEYPAD_HEIGHT` to 400 — a safe margin for all sizing
+variants (compact + regular, with worst-case Button padding). The
+positioning algorithm consumes height parametrically (via
+`computeKeypadPosition(anchor, screen, keypadSize)`) so no further
+changes were needed there; existing twelve positioning unit tests
+continue to pass on the parameterized signature.
