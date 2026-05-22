@@ -1,20 +1,22 @@
 /**
  * View-model hook orchestrating Crosswind input → calculation → result.
  *
- * Flow:
- *   1. Parse string inputs to numbers (UI-level format check).
- *   2. Build Value Objects via factories.
- *   3. Run `validateWeightEnvelope` AND `validateCGEnvelope` independently
- *      (use-case layer). Both can fail simultaneously and the UI surfaces
- *      both field errors at once — see 04-domain-model.md § "Independent
- *      weight + cg validation".
- *   4. Run `calculateCrosswindLimit` regardless of operational result —
- *      the algorithm covers the lookup envelope; the validators drive
- *      the warning chip alongside the number.
- *   5. Resolve UI state: empty / idle (+optional warning) / out-of-envelope
- *      / data-not-available / error.
+ * Flow (per-field independent):
+ *   1. Parse each text field → `FieldParseResult` (empty / invalid / parsed).
+ *   2. For each parsed field run its envelope validator
+ *      (`validateWeightEnvelope` / `validateCGEnvelope`) — independent of
+ *      the other field's state. Format errors and envelope violations
+ *      surface in the corresponding `fieldError` immediately, with no
+ *      cross-field gating.
+ *   3. Run `calculateCrosswindLimit` ONLY when BOTH fields are
+ *      `parsed`; partial input never produces a result panel.
+ *   4. Resolve UI state: empty (any field unparsed) / idle (both parsed,
+ *      possibly with envelope-warning chip) / out-of-envelope /
+ *      data-not-available / error.
  *
- * Spec: 02_Specification/06-ui-spec.md § Экран 4.
+ * Spec:
+ *  - 06-ui-spec.md § Экран 4 (state machine, per-field timing).
+ *  - 04-domain-model.md § "Independent weight + cg validation".
  */
 
 import { useMemo } from 'react';
@@ -29,6 +31,7 @@ import type {
   CGViolation,
   CrosswindCalculationOutput,
   EnvelopeViolation,
+  OperationalEnvelope,
   RunwayCondition,
   WeightInTons,
   WeightViolation,
@@ -66,11 +69,6 @@ export interface UseCrosswindCalculatorResult {
   readonly cgFieldError: string | null;
 }
 
-interface FieldErrors {
-  readonly weight: string | null;
-  readonly cg: string | null;
-}
-
 type Translator = TFunction;
 
 /**
@@ -86,6 +84,19 @@ type FieldParseResult<T> =
   | { readonly kind: 'empty' }
   | { readonly kind: 'invalid'; readonly message: string }
   | { readonly kind: 'parsed'; readonly value: T };
+
+/**
+ * Outcome of evaluating a single field end-to-end: parse + envelope
+ * validation. `fieldError` is the localized caption that should render
+ * under the field (null when the field is empty or fully valid).
+ * `envelopeViolation` is the underlying violation object, separated
+ * because the result-panel warning chip needs the structured form.
+ */
+interface FieldOutcome<T, V> {
+  readonly parsed: FieldParseResult<T>;
+  readonly envelopeViolation: V | null;
+  readonly fieldError: string | null;
+}
 
 function parseDecimalString(text: string): number | null {
   const trimmed = text.trim();
@@ -148,58 +159,50 @@ function cgErrorMessage(violation: CGViolation, t: Translator): string {
   }
 }
 
-function composeFieldErrors(
-  weightViolation: WeightViolation | null,
-  cgViolation: CGViolation | null,
+function evaluateWeightField(
+  text: string,
+  envelope: OperationalEnvelope['weight'],
   t: Translator,
-): FieldErrors {
+): FieldOutcome<WeightInTons, WeightViolation> {
+  const parsed = parseWeightField(text, t);
+  if (parsed.kind === 'empty') {
+    return { parsed, envelopeViolation: null, fieldError: null };
+  }
+  if (parsed.kind === 'invalid') {
+    return { parsed, envelopeViolation: null, fieldError: parsed.message };
+  }
+  const check = validateWeightEnvelope({ weightTons: parsed.value }, envelope);
+  if (isOk(check)) {
+    return { parsed, envelopeViolation: null, fieldError: null };
+  }
   return {
-    weight: weightViolation === null ? null : weightErrorMessage(weightViolation, t),
-    cg: cgViolation === null ? null : cgErrorMessage(cgViolation, t),
+    parsed,
+    envelopeViolation: check.error,
+    fieldError: weightErrorMessage(check.error, t),
   };
 }
 
-interface ParsedInputs {
-  readonly weight: WeightInTons;
-  readonly cg: CGPercentMAC;
-}
-
-function parseInputs(
-  inputs: CrosswindCalculatorInputs,
+function evaluateCGField(
+  text: string,
+  envelope: OperationalEnvelope['cg'],
   t: Translator,
-): ParsedInputs | UseCrosswindCalculatorResult {
-  const weight = parseWeightField(inputs.weightText, t);
-  const cg = parseCGField(inputs.cgText, t);
-  if (weight.kind === 'empty' || cg.kind === 'empty') {
-    return { state: { kind: 'empty' }, weightFieldError: null, cgFieldError: null };
+): FieldOutcome<CGPercentMAC, CGViolation> {
+  const parsed = parseCGField(text, t);
+  if (parsed.kind === 'empty') {
+    return { parsed, envelopeViolation: null, fieldError: null };
   }
-  if (weight.kind === 'invalid') {
-    return {
-      state: {
-        kind: 'error',
-        headline: t('crosswind.errorHeadline'),
-        description: weight.message,
-      },
-      weightFieldError: weight.message,
-      cgFieldError: null,
-    };
+  if (parsed.kind === 'invalid') {
+    return { parsed, envelopeViolation: null, fieldError: parsed.message };
   }
-  if (cg.kind === 'invalid') {
-    return {
-      state: {
-        kind: 'error',
-        headline: t('crosswind.errorHeadline'),
-        description: cg.message,
-      },
-      weightFieldError: null,
-      cgFieldError: cg.message,
-    };
+  const check = validateCGEnvelope({ cgPercent: parsed.value }, envelope);
+  if (isOk(check)) {
+    return { parsed, envelopeViolation: null, fieldError: null };
   }
-  return { weight: weight.value, cg: cg.value };
-}
-
-function isParsedInputs(x: ParsedInputs | UseCrosswindCalculatorResult): x is ParsedInputs {
-  return 'weight' in x;
+  return {
+    parsed,
+    envelopeViolation: check.error,
+    fieldError: cgErrorMessage(check.error, t),
+  };
 }
 
 function describeUnavailable(
@@ -216,31 +219,23 @@ function describeUnavailable(
   }
 }
 
-function compute(
-  parsed: ParsedInputs,
-  inputs: CrosswindCalculatorInputs,
-  data: CrosswindDataFile,
-  t: Translator,
-): UseCrosswindCalculatorResult {
-  const weightCheck = validateWeightEnvelope(
-    { weightTons: parsed.weight },
-    data.operationalEnvelope.weight,
-  );
-  const cgCheck = validateCGEnvelope({ cgPercent: parsed.cg }, data.operationalEnvelope.cg);
-  const weightViolation = isOk(weightCheck) ? null : weightCheck.error;
-  const cgViolation = isOk(cgCheck) ? null : cgCheck.error;
-  const fieldErrors = composeFieldErrors(weightViolation, cgViolation, t);
+interface ComputeArgs {
+  readonly weight: WeightInTons;
+  readonly cg: CGPercentMAC;
+  readonly warning: EnvelopeViolation | null;
+  readonly weightFieldError: string | null;
+  readonly cgFieldError: string | null;
+  readonly inputs: CrosswindCalculatorInputs;
+  readonly data: CrosswindDataFile;
+  readonly t: Translator;
+}
 
-  // `warning` for the result-panel chip = first non-null violation. PR A3
-  // will replace the chip with a different behaviour (hide the number when
-  // out of envelope); for A2 we preserve the existing idle+chip flow to
-  // keep the bug-fix scope tight.
-  const warning: EnvelopeViolation | null = weightViolation ?? cgViolation;
-
+function computeResultPanel(args: ComputeArgs): UseCrosswindCalculatorResult {
+  const { weight, cg, warning, weightFieldError, cgFieldError, inputs, data, t } = args;
   const calc = calculateCrosswindLimit(
     {
-      weightTons: parsed.weight,
-      cgPercent: parsed.cg,
+      weightTons: weight,
+      cgPercent: cg,
       aircraft: inputs.aircraft,
       phase: data.phase,
       runwayCondition: inputs.runwayCondition,
@@ -251,19 +246,15 @@ function compute(
   if (calc.ok) {
     return {
       state: { kind: 'idle', output: calc.value, warning },
-      weightFieldError: fieldErrors.weight,
-      cgFieldError: fieldErrors.cg,
+      weightFieldError,
+      cgFieldError,
     };
   }
-
   if (calc.error.kind === 'NoLookupData') {
     return {
-      state: {
-        kind: 'out-of-envelope',
-        reason: t('crosswind.errorOutOfLookup'),
-      },
-      weightFieldError: fieldErrors.weight,
-      cgFieldError: fieldErrors.cg,
+      state: { kind: 'out-of-envelope', reason: t('crosswind.errorOutOfLookup') },
+      weightFieldError,
+      cgFieldError,
     };
   }
   if (calc.error.kind === 'DataNotAvailable') {
@@ -272,8 +263,8 @@ function compute(
         kind: 'data-not-available',
         description: describeUnavailable(calc.error.reason, t),
       },
-      weightFieldError: fieldErrors.weight,
-      cgFieldError: fieldErrors.cg,
+      weightFieldError,
+      cgFieldError,
     };
   }
   return {
@@ -282,8 +273,8 @@ function compute(
       headline: t('crosswind.errorHeadline'),
       description: t('crosswind.errorVerifyInputs'),
     },
-    weightFieldError: fieldErrors.weight,
-    cgFieldError: fieldErrors.cg,
+    weightFieldError,
+    cgFieldError,
   };
 }
 
@@ -293,10 +284,32 @@ export function useCrosswindCalculator(
   const { inputs, data } = args;
   const { t } = useTranslation();
   return useMemo(() => {
-    const parsed = parseInputs(inputs, t);
-    if (!isParsedInputs(parsed)) {
-      return parsed;
+    const weight = evaluateWeightField(inputs.weightText, data.operationalEnvelope.weight, t);
+    const cg = evaluateCGField(inputs.cgText, data.operationalEnvelope.cg, t);
+
+    // Result panel calculates only when BOTH fields parsed — partial
+    // input never feeds the algorithm. Per-field errors are surfaced
+    // independently regardless of the other field's state.
+    if (weight.parsed.kind !== 'parsed' || cg.parsed.kind !== 'parsed') {
+      return {
+        state: { kind: 'empty' },
+        weightFieldError: weight.fieldError,
+        cgFieldError: cg.fieldError,
+      };
     }
-    return compute(parsed, inputs, data, t);
+    // First non-null envelope violation drives the warning chip. PR A3
+    // will replace the chip with a different behaviour; A2 keeps the
+    // idle+chip flow to bound the bug-fix scope.
+    const warning: EnvelopeViolation | null = weight.envelopeViolation ?? cg.envelopeViolation;
+    return computeResultPanel({
+      weight: weight.parsed.value,
+      cg: cg.parsed.value,
+      warning,
+      weightFieldError: weight.fieldError,
+      cgFieldError: cg.fieldError,
+      inputs,
+      data,
+      t,
+    });
   }, [inputs, data, t]);
 }
