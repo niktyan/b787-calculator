@@ -199,7 +199,10 @@ export function NumericKeypadHost(): ReactNode {
     <Modal
       visible={visible}
       transparent
-      animationType="fade"
+      // `animationType="none"` removes the 250-300 ms fade-in that pilots
+      // perceived as a tap-to-keypad lag. Backdrop dismiss + `onRequestClose`
+      // are unchanged. See ADR-0011 Iteration 3 §2.
+      animationType="none"
       onRequestClose={clearActiveField}
       testID={HOST_TEST_ID}
     >
