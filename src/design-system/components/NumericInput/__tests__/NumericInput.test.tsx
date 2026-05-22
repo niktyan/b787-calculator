@@ -80,6 +80,22 @@ describe('NumericInput', () => {
       expect(getByTestId('weight-input').props.showSoftInputOnFocus).toBe(false);
     });
 
+    it('sets pointerEvents="none" so taps pass through to the outer Pressable', () => {
+      // iOS TextInput on iPad consumes native touches (context menu /
+      // selection handles) even with `editable={false}`. Without this prop
+      // the outer Pressable misses the first tap. See ADR-0011 Iteration 3 §2.
+      const { getByTestId } = renderWithTheme(
+        <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,
+      );
+      const input = getByTestId('weight-input');
+      const styleArray = Array.isArray(input.props.style)
+        ? (input.props.style as readonly { readonly pointerEvents?: string }[])
+        : [input.props.style as { readonly pointerEvents?: string } | undefined];
+      const styleHasPointerEvents = styleArray.some((s) => s?.pointerEvents === 'none');
+      const hasPointerEventsNone = input.props.pointerEvents === 'none' || styleHasPointerEvents;
+      expect(hasPointerEventsNone).toBe(true);
+    });
+
     it('keeps keyboardType="decimal-pad" (still useful for Bluetooth hardware keyboards)', () => {
       const { getByTestId } = renderWithTheme(
         <NumericInput label="Weight" value="" onChange={jest.fn()} testID="weight" />,

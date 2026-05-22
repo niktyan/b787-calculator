@@ -128,6 +128,16 @@ describe('NumericKeypadHost', () => {
     });
     expect(sink.value?.activeAnchor).toBeNull();
   });
+
+  it('renders the Modal with animationType="none" (no fade lag)', async () => {
+    // Fade animation in Modal added ~250-300ms to tap-to-keypad latency.
+    // ADR-0011 Iteration 3 §2 switches it off. Modal is hidden until a
+    // field registers — we need to register first so the Modal tree mounts.
+    const { tree, sink } = renderHost();
+    await registerAndFlush(sink, fieldOn(valueRef(''), 'weight'));
+    const host = tree.getByTestId('numeric-keypad-host');
+    expect(host.props.animationType).toBe('none');
+  });
 });
 
 describe('computeKeypadPosition', () => {

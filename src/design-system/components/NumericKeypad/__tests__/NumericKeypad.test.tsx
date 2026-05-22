@@ -100,4 +100,18 @@ describe('NumericKeypad', () => {
       }
     });
   });
+
+  describe('layout', () => {
+    it('stretches the outer container to full popover width', () => {
+      // Without `width: 100%` on the root, the keypad takes the intrinsic
+      // width of its children — keys collapse via `flex: 1` and Done overflows.
+      // See ADR-0011 Iteration 3 §1.
+      const { getByTestId } = renderWithTheme(
+        <NumericKeypad onKeyPress={jest.fn()} onDone={jest.fn()} testID="kp" />,
+      );
+      const root = getByTestId('kp');
+      const rootStyle = root.props.style as { readonly width?: string } | undefined;
+      expect(rootStyle?.width).toBe('100%');
+    });
+  });
 });
