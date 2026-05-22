@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ThemeProvider, initI18n, logger, useTheme } from '../core';
-import { tokens } from '../design-system';
+import { NumericKeypadHost, NumericKeypadProvider, tokens } from '../design-system';
 
 /**
  * Composition root for the app shell:
@@ -63,11 +63,14 @@ function ThemedStack(): ReactNode {
   );
 
   return (
-    <Stack screenOptions={screenOptions}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="disclaimer" options={{ gestureEnabled: false }} />
-      <Stack.Screen name="error" />
-      <Stack.Screen name="(main)" />
-    </Stack>
+    <NumericKeypadProvider>
+      <Stack screenOptions={screenOptions}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="disclaimer" options={{ gestureEnabled: false }} />
+        <Stack.Screen name="error" />
+        <Stack.Screen name="(main)" />
+      </Stack>
+      <NumericKeypadHost />
+    </NumericKeypadProvider>
   );
 }

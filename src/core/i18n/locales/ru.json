@@ -98,5 +98,11 @@
     "referenceDataUnavailable": "Справочные данные недоступны",
     "referenceDataDescription": "Приложение не смогло загрузить справочные данные. Свяжитесь со службой поддержки и переустановите приложение.",
     "contactSupport": "Связаться с поддержкой"
+  },
+  "keypad": {
+    "done": "Готово",
+    "closeAccessibilityLabel": "Закрыть цифровую клавиатуру",
+    "decimalSeparator": "Десятичный разделитель",
+    "backspace": "Удалить символ"
   }
 }

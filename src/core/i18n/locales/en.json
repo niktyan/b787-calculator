@@ -98,5 +98,11 @@
     "referenceDataUnavailable": "Reference data unavailable",
     "referenceDataDescription": "The application could not load reference data. Please contact support and reinstall the app.",
     "contactSupport": "Contact support"
+  },
+  "keypad": {
+    "done": "Done",
+    "closeAccessibilityLabel": "Close numeric keypad",
+    "decimalSeparator": "Decimal separator",
+    "backspace": "Backspace"
   }
 }
