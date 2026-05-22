@@ -249,11 +249,24 @@ describe('Crosswind route', () => {
 
   it('shows operational-envelope warning chip when input is below regulatory minimum', () => {
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
-    // W=95 t — below operational minimum of 110, but algorithm still yields a number.
+    // W=95 t — below operational minimum of 104.1, but algorithm still yields a number.
     setNumericInput(getByTestId('crosswind-weight-input'), '95');
     setNumericInput(getByTestId('crosswind-cg-input'), '25');
     expect(getByTestId('crosswind-warning-chip')).toBeTruthy();
     expect(getByTestId('crosswind-weight-error')).toBeTruthy();
+  });
+
+  it('shows BOTH weight and cg field errors when both inputs are outside operational envelope', () => {
+    // Regression for user-testing bug #2: pre-PR
+    // `fix/independent-envelope-validators` the validator short-circuited
+    // on the first violation, so this scenario rendered only the weight
+    // error. Post-split, both validators run independently and both
+    // field-level errors must appear at the same time.
+    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
+    setNumericInput(getByTestId('crosswind-weight-input'), '300'); // > maxTons 227.93
+    setNumericInput(getByTestId('crosswind-cg-input'), '50'); // > maxPercent 39.5
+    expect(getByTestId('crosswind-weight-error')).toBeTruthy();
+    expect(getByTestId('crosswind-cg-error')).toBeTruthy();
   });
 
   it('reset button clears both fields and returns to empty state', () => {

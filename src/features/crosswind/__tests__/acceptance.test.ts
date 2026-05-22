@@ -6,7 +6,7 @@
 import { calculateCrosswindLimit } from '../domain/calculator';
 import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import { createCrosswindRepository } from '../data/crosswindRepository';
-import { validateOperationalEnvelope } from '../domain/validators';
+import { validateCGEnvelope, validateWeightEnvelope } from '../domain/validators';
 
 describe('Crosswind module · acceptance', () => {
   const repo = createCrosswindRepository();
@@ -53,11 +53,13 @@ describe('Crosswind module · acceptance', () => {
     if (!w.ok || !cg.ok) {
       throw new Error('expected VOs');
     }
-    const envCheck = validateOperationalEnvelope(
-      { weightTons: w.value, cgPercent: cg.value },
-      data.operationalEnvelope,
+    const weightCheck = validateWeightEnvelope(
+      { weightTons: w.value },
+      data.operationalEnvelope.weight,
     );
-    expect(envCheck.ok).toBe(true);
+    const cgCheck = validateCGEnvelope({ cgPercent: cg.value }, data.operationalEnvelope.cg);
+    expect(weightCheck.ok).toBe(true);
+    expect(cgCheck.ok).toBe(true);
     const calc = calculateCrosswindLimit(
       {
         weightTons: w.value,
@@ -82,11 +84,13 @@ describe('Crosswind module · acceptance', () => {
     if (!w.ok || !cg.ok) {
       throw new Error('expected VOs');
     }
-    const envCheck = validateOperationalEnvelope(
-      { weightTons: w.value, cgPercent: cg.value },
-      data.operationalEnvelope,
+    const weightCheck = validateWeightEnvelope(
+      { weightTons: w.value },
+      data.operationalEnvelope.weight,
     );
-    expect(envCheck.ok).toBe(false);
+    const cgCheck = validateCGEnvelope({ cgPercent: cg.value }, data.operationalEnvelope.cg);
+    expect(weightCheck.ok).toBe(false);
+    expect(cgCheck.ok).toBe(true);
     const calc = calculateCrosswindLimit(
       {
         weightTons: w.value,

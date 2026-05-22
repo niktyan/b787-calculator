@@ -5,8 +5,9 @@
  * Each factory returns Result<VO, Error>; never throws.
  *
  * Operational-envelope checks live in `validators.ts`
- * (`validateOperationalEnvelope`) — Value Objects only verify "is this a
- * sensible number at all" (Sprint-5 prep change, see commit history).
+ * (`validateWeightEnvelope` / `validateCGEnvelope`) — Value Objects only
+ * verify "is this a sensible number at all" (Sprint-5 prep change, see
+ * commit history).
  */
 
 import { err, ok } from '../../../core/result';

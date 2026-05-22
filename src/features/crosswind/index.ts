@@ -32,8 +32,10 @@ export type {
 } from './domain';
 export { STRATEGY_TYPES, createBracketedLinearStrategy, resolveStrategy } from './domain';
 
-// Use-case validator
-export { validateOperationalEnvelope } from './domain';
+// Use-case validators — independent flow for weight and CG so the UI can
+// surface both errors simultaneously. See 04-domain-model.md §
+// "Independent weight + cg validation".
+export { validateCGEnvelope, validateWeightEnvelope } from './domain';
 
 // Repository factory
 export { createCrosswindRepository } from './data';

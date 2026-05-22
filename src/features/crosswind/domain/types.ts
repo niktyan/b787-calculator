@@ -127,11 +127,22 @@ export type CrosswindCalculationError =
 
 // --- Operational-envelope validator ---
 
-export type EnvelopeViolation =
+export type WeightViolation =
   | { readonly kind: 'weight.below'; readonly given: number; readonly minTons: number }
-  | { readonly kind: 'weight.above'; readonly given: number; readonly maxTons: number }
+  | { readonly kind: 'weight.above'; readonly given: number; readonly maxTons: number };
+
+export type CGViolation =
   | { readonly kind: 'cg.below'; readonly given: number; readonly minPercent: number }
   | { readonly kind: 'cg.above'; readonly given: number; readonly maxPercent: number };
+
+/**
+ * Union of weight and CG envelope violations. Kept as an alias for places
+ * that need a generic "any envelope violation" type (e.g., the result-panel
+ * warning chip). Independent validation flow: see `validateWeightEnvelope`
+ * and `validateCGEnvelope` in `validators.ts` — UI surfaces both axes
+ * independently when both inputs are out of envelope.
+ */
+export type EnvelopeViolation = WeightViolation | CGViolation;
 
 export interface OperationalEnvelope {
   readonly weight: { readonly minTons: number; readonly maxTons: number };

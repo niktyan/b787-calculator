@@ -14,6 +14,7 @@ export type {
   CrosswindKnots,
   CrosswindTakeoffInput,
   DataUnavailableReason,
+  CGViolation,
   EnvelopeViolation,
   FlightPhase,
   OperationalEnvelope,
@@ -21,12 +22,13 @@ export type {
   RunwayConditionCode,
   WeightError,
   WeightInTons,
+  WeightViolation,
 } from './types';
 export { AIRCRAFT_VARIANTS, FLIGHT_PHASES, RUNWAY_CONDITIONS, RWYCC } from './types';
 
 export { makeCGPercentMAC, makeCrosswindKnots, makeWeightInTons } from './valueObjects';
 
-export { validateAlgorithmInput, validateOperationalEnvelope } from './validators';
+export { validateAlgorithmInput, validateCGEnvelope, validateWeightEnvelope } from './validators';
 
 export { calculateCrosswindLimit, calculateMaxCrosswindTakeoff } from './calculator';
 
