@@ -34,7 +34,6 @@ import type {
   CGPercentMAC,
   CGViolation,
   CrosswindCalculationOutput,
-  EnvelopeViolation,
   OperationalEnvelope,
   RunwayCondition,
   WeightInTons,
@@ -46,11 +45,7 @@ import type { CrosswindDataFile } from '../data/schema';
 
 export type CrosswindUIState =
   | { readonly kind: 'empty' }
-  | {
-      readonly kind: 'idle';
-      readonly output: CrosswindCalculationOutput;
-      readonly warning: EnvelopeViolation | null;
-    }
+  | { readonly kind: 'idle'; readonly output: CrosswindCalculationOutput }
   | { readonly kind: 'out-of-envelope'; readonly reason: string }
   | { readonly kind: 'data-not-available'; readonly description: string }
   | { readonly kind: 'error'; readonly headline: string; readonly description?: string };
@@ -248,7 +243,7 @@ function computeResultPanel(args: ComputeArgs): UseCrosswindCalculatorResult {
 
   if (calc.ok) {
     return {
-      state: { kind: 'idle', output: calc.value, warning: null },
+      state: { kind: 'idle', output: calc.value },
       weightFieldError,
       cgFieldError,
     };

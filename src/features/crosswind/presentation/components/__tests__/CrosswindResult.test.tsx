@@ -4,11 +4,7 @@
  */
 
 import { renderWithTheme } from '../../../../../design-system/_testing/renderWithTheme';
-import type {
-  CrosswindKnots,
-  CrosswindCalculationOutput,
-  EnvelopeViolation,
-} from '../../../domain/types';
+import type { CrosswindKnots, CrosswindCalculationOutput } from '../../../domain/types';
 import type { CrosswindUIState } from '../../useCrosswindCalculator';
 import { CrosswindResult } from '../CrosswindResult';
 
@@ -56,12 +52,13 @@ describe('CrosswindResult', () => {
     const state: CrosswindUIState = {
       kind: 'idle',
       output: idleOutput(33),
-      warning: null,
     };
     const tree = renderWithTheme(<CrosswindResult state={state} testID="result" />);
     expect(tree.getByTestId('crosswind-result-panel')).toBeTruthy();
     expect(tree.getByText('33')).toBeTruthy();
     expect(tree.getByText('KT')).toBeTruthy();
+    // No warning chip is ever rendered in idle state (ADR-0012).
+    expect(tree.queryByTestId('crosswind-warning-chip')).toBeNull();
     expect(tree.toJSON()).toMatchSnapshot();
   });
 
@@ -69,7 +66,6 @@ describe('CrosswindResult', () => {
     const state: CrosswindUIState = {
       kind: 'idle',
       output: idleOutput(33),
-      warning: null,
     };
     const tree = renderWithTheme(<CrosswindResult state={state} isRegular testID="result" />);
     const json = JSON.stringify(tree.toJSON());
@@ -87,16 +83,18 @@ describe('CrosswindResult', () => {
     expect(tree.toJSON()).toMatchSnapshot();
   });
 
-  it('shows the operational-envelope warning chip alongside the value', () => {
-    const violation: EnvelopeViolation = { kind: 'cg.above', given: 40, maxPercent: 35 };
+  it('renders out-of-envelope caption (no number) for operational envelope violation per ADR-0012', () => {
+    // The view-model collapses any operational-envelope violation to this
+    // state with a localized reason. Verified here at the component level
+    // — the caption renders and no number is shown.
     const state: CrosswindUIState = {
-      kind: 'idle',
-      output: idleOutput(23),
-      warning: violation,
+      kind: 'out-of-envelope',
+      reason: 'Out of operational envelope — adjust inputs',
     };
     const tree = renderWithTheme(<CrosswindResult state={state} />);
-    expect(tree.getByText('23')).toBeTruthy();
-    expect(tree.getByTestId('crosswind-warning-chip')).toBeTruthy();
+    expect(tree.getByTestId('crosswind-result-panel-out-of-envelope')).toBeTruthy();
+    expect(tree.getByText('Out of operational envelope — adjust inputs')).toBeTruthy();
+    expect(tree.queryByTestId('crosswind-warning-chip')).toBeNull();
   });
 
   it('renders the data-not-available caption for unimplemented aircraft / condition', () => {
@@ -135,13 +133,10 @@ describe('CrosswindResult', () => {
     const initial: CrosswindUIState = {
       kind: 'idle',
       output: idleOutput(33),
-      warning: null,
     };
     const tree = renderWithTheme(<CrosswindResult state={initial} />);
     expect(tree.getByText('33')).toBeTruthy();
-    tree.rerender(
-      <CrosswindResult state={{ kind: 'idle', output: idleOutput(28), warning: null }} />,
-    );
+    tree.rerender(<CrosswindResult state={{ kind: 'idle', output: idleOutput(28) }} />);
     expect(tree.getByText('28')).toBeTruthy();
   });
 });
