@@ -565,42 +565,60 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
 
 ### Keyboard behavior
 
-Для всех `NumericInput` системная iOS-клавиатура полностью отключена
-через `showSoftInputOnFocus={false}` (см. ADR-0011 · Custom in-app
-numeric keypad). Ввод происходит через **custom in-app numeric keypad**
-— bottom-sheet с 12 клавишами (digits 0-9, decimal separator,
-backspace) и Done button во всю ширину. Появляется автоматически когда
-пилот тапает на любое поле ввода и переключается между полями без
-re-mount.
+Для всех `NumericInput` системная iOS-клавиатура полностью отключена двумя
+независимыми механизмами (см. ADR-0011 Iteration 1):
+
+1. `editable={false}` + `caretHidden={true}` — load-bearing guarantee. iOS
+   никогда не показывает software keyboard для non-editable TextInput.
+2. `showSoftInputOnFocus={false}` — belt-and-braces signal, оставлен на случай
+   платформенной регрессии.
+
+Ввод происходит через **custom in-app numeric keypad** — floating Modal
+**popover**, 280×320 pt, со скруглением и тенью, **anchored к фокусированному
+полю** (НЕ bottom-sheet). 12 клавиш (digits 0-9, decimal separator, backspace)
++ Done button. Появляется автоматически при тапе на поле и переключается
+между полями без re-mount.
 
 - **Открытие.** `Pressable`-обёртка вокруг визуальной области поля
   регистрирует поле в `NumericKeypadProvider` через хук
-  `useNumericKeypad`. Provider обновляет `activeFieldId` →
-  `NumericKeypadHost` (BottomSheet, смонтированный в `src/app/_layout.tsx`
-  как сиблинг `<Stack>`) становится visible.
+  `useNumericKeypad`. Хук экспозит `fieldRef`, который консьюмер
+  привязывает к outer `<View>` поля — Provider использует
+  `View.measureInWindow` через `RegisteredField.getAnchor()` для
+  получения window-relative координат. После register Provider
+  обновляет `activeFieldId` + `activeAnchor`, и `NumericKeypadHost`
+  (смонтированный в `src/app/_layout.tsx` как сиблинг `<Stack>`)
+  становится visible.
+- **Позиционирование popover.** Pure-функция `computeKeypadPosition`:
+  prefer right-of-field если есть >=296pt свободного места (280 keypad
+  + 8 offset + 16 margin); иначе left-of-field под тем же threshold;
+  иначе горизонтально центрируется. Вертикально align с top-ом поля,
+  clamped в `[16, screen.height - 320 - 16]`. Field остаётся visible
+  рядом с keypad'ом, не перекрывается.
 - **Переключение между полями.** Тап на другое поле перерегистрирует
-  поле через тот же Provider — `activeFieldId` меняется, BottomSheet
-  остаётся visible (no re-mount, no animation), keypad мгновенно
-  retargets. Это убирает 200-400 ms лаг от системной keyboard transition
-  при переходе TOW ↔ CG.
+  поле через тот же Provider — `activeFieldId` и `activeAnchor`
+  обновляются, Modal остаётся visible (no re-mount, no animation),
+  popover мгновенно retargets к новому полю. Это убирает 200-400 ms
+  лаг от системной keyboard transition при переходе TOW ↔ CG.
 - **Ввод digit / dot / backspace.** Provider оперирует значением
   активного поля через `getValue()` closure ref (нет stale closures на
   re-renders консьюмера). На каждый key press: `sanitizeDecimalInput(value
-  + key)` для digit/dot, `value.slice(0, -1)` для backspace. Sanitizer
-  (PR #81 ADR-стиль defence-in-depth) дополнительно фильтрует ввод с
-  Bluetooth-клавиатур.
+  + key)` для digit/dot, `value.slice(0, -1)` для backspace.
 - **Re-press of the already-active field — no-op.** Provider узнаёт по
-  `fieldId === fieldRef.current.id` и не обновляет state. Это убирает
-  «double-focus» класс багов.
+  `fieldId === fieldRef.current.id` и не обновляет state (anchor
+  re-measure всё-таки делается на случай orientation change). Это
+  убирает «double-focus» класс багов.
 - **Закрытие.** Done button или тап по backdrop вызывает
-  `clearActiveField` — BottomSheet hide. Если поле размонтируется пока
-  оно active, хук `useNumericKeypad` cleanup автоматически вызывает
-  `clearActiveField` на unmount.
-- **Bluetooth keyboard.** TextInput остаётся `editable={true}`, поэтому
-  пилот с подключённой Bluetooth-клавиатурой может печатать через
-  hardware keys. `onChangeText` всё равно проходит через sanitizer —
-  буквы и `,` фильтруются. Визуального echo от keypad на экране нет в
-  этом сценарии (тёплая регрессия — см. ADR-0011 § Consequences).
+  `clearActiveField` — Modal hide, `activeAnchor` сбрасывается в null.
+  Если поле размонтируется пока оно active, хук `useNumericKeypad`
+  cleanup автоматически вызывает `clearActiveField` на unmount.
+- **Bluetooth keyboard — больше не работает.** Из-за `editable={false}`
+  iPad с подключённой Bluetooth-клавиатурой не получает hardware key
+  events для NumericInput. Trade-off accepted per ADR-0011 Iteration 1
+  для cockpit use case — Bluetooth-клавиатуры крайне редки в EFB-сценарии,
+  а нулевая exposure системной keyboard перед App Review Guideline 4.2
+  важнее edge-case ввода. `sanitizeDecimalInput` сохранён как
+  defence-in-depth в `onChangeText` (dead path при editable=false, но
+  готов к platform-regressions).
 - **Focus ring.** Visible border + accent ring выставляются по флагу
   `isActive` из хука (поле сейчас активно в Provider), а не по локальному
   `useState(focused)`. Это даёт единый source of truth: ring
@@ -609,7 +627,7 @@ re-mount.
 `KeyboardDismissView` остаётся обёрнутой вокруг Crosswind Calculator
 как safety-net (`Keyboard.dismiss()` no-op'ит когда системной клавиатуры
 нет), но **основной дисмисс** keypad-а идёт через backdrop
-`BottomSheet`-а (см. § Overlays · NumericKeypad в
+Modal-popover-а (см. § Overlays · NumericKeypad в
 `module-contracts/design-system.md`). Скролл-жесты не перехватываются —
 `KeyboardDismissView` это `Pressable` с `flex: 1` без capturing overlay.
 VoiceOver не объявляет обёртку как тапаемую (`accessible: false`),

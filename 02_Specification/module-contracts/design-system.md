@@ -238,34 +238,46 @@ behavior» для UX-описания.
 
 - `NumericKeypad` — presentational компонент: grid 4×3 клавиш (digits
   0-9, decimal separator, backspace) + полноширинный `<Button
-  variant="primary">` Done. Compact (52 pt keys) для iPhone / iPad
-  portrait; regular (72 pt keys) для iPad landscape. Props:
-  `onKeyPress(NumericKeypadKey)`, `onDone()`, `isRegular?: boolean`
-  (default `false`), `testID?: string`. Каждая клавиша имеет
-  `accessibilityRole="button"` и accessibilityLabel из i18n
+  variant="primary">` Done. Compact (48 pt keys) для iPhone / iPad
+  portrait; regular (56 pt keys) для iPad landscape. Каждый key-label
+  имеет explicit `lineHeight` (28 pt compact / 36 pt regular) +
+  `fontWeight: 600` чтобы digit-glyphs не клипались (см. ADR-0011
+  Iteration 1 §3). Props: `onKeyPress(NumericKeypadKey)`, `onDone()`,
+  `isRegular?: boolean` (default `false`), `testID?: string`. Каждая
+  клавиша имеет `accessibilityRole="button"` и accessibilityLabel из i18n
   (`keypad.backspace`, `keypad.decimalSeparator`) или сам digit для 0-9.
   Это первый DS-примитив, который потребляет `useTranslation()`
   напрямую — оправдано тем, что labels — keypad-content, не
   caller-content (см. ADR-0011 § Consequences).
 - `NumericKeypadProvider` — React Context + state machine, оборачивается
-  вокруг root в `src/app/_layout.tsx`. Хранит `activeFieldId` (single
-  reactive bit, drives BottomSheet visibility) + ref на регистрационные
-  данные активного поля (`getValue`/`setValue`/`isRegular`). Ref-pattern
-  избегает stale closures на re-renders. Re-register того же `id` —
-  no-op для state (избегает re-render storm). `pressKey` собирает `value
-  + key` через активный getValue, прогоняет через
+  вокруг root в `src/app/_layout.tsx`. Хранит `activeFieldId` +
+  `activeIsRegular` + `activeAnchor` (window-relative geometry активного
+  поля для positioning popover) — single reactive triplet — и ref на
+  регистрационные данные активного поля (`getValue`/`setValue`/`isRegular`/
+  `getAnchor`). Ref-pattern избегает stale closures на re-renders.
+  Re-register того же `id` — no-op для `activeFieldId`, но anchor
+  re-measure всё равно делается (orientation changes). `pressKey`
+  собирает `value + key` через активный getValue, прогоняет через
   `sanitizeDecimalInput` и пишет обратно через setValue (backspace —
   через `slice(0, -1)` без sanitizer'а, т.к. slice от валидной строки
   остаётся валидным).
-- `NumericKeypadHost` — `BottomSheet`-обёртка, рендерится в app shell
-  снаружи `<Stack>`. Visible когда `activeFieldId !== null`. Backdrop
-  тап / Done button → `clearActiveField` → BottomSheet hide. Когда
-  активного поля нет — Modal `visible={false}`, оверлей не рендерится.
+- `NumericKeypadHost` — `<Modal transparent animationType="fade">` с
+  absolutely-positioned popover внутри, рендерится в app shell снаружи
+  `<Stack>`. Фиксированный размер 280×320 pt; позиция вычисляется через
+  pure-функцию `computeKeypadPosition(anchor, screen, keypadSize)`
+  (экспортируется для unit-тестов): prefer right-of-field → fallback
+  left-of-field → fallback centered. Vertical clamped в screen bounds.
+  Visible когда `activeFieldId !== null && activeAnchor !== null`. Backdrop
+  тап / Done button → `clearActiveField` → Modal hide. Когда активного
+  поля нет — Modal `visible={false}`, оверлей не рендерится.
 - `useNumericKeypad({value, onChange, isRegular, disabled})` — хук для
-  `NumericInput`. Возвращает `{isActive, handleFieldPress}`. Регистрирует
-  поле при первом тапе через `useId()`-сгенерированный stable id;
-  re-press того же поля — no-op (Provider детектит). На unmount пока
-  field active — автоматически вызывает `clearActiveField`.
+  `NumericInput`. Возвращает `{isActive, handleFieldPress, fieldRef}`.
+  Консьюмер должен привязать `fieldRef` к outer `<View>` поля — Provider
+  использует ref для `measureInWindow` при register / re-register
+  (см. ADR-0011 Iteration 1 §2). Регистрирует поле при первом тапе через
+  `useId()`-сгенерированный stable id; re-press того же поля — no-op
+  для state, но anchor re-measure. На unmount пока field active —
+  автоматически вызывает `clearActiveField`.
 - `useNumericKeypadContext()` — низкоуровневый accessor для Provider;
   бросает explicit error если provider не смонтирован. Не экспортируется
   на уровне design-system barrel — внешние модули используют

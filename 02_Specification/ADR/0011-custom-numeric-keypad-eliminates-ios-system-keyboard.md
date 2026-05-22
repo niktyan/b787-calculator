@@ -158,3 +158,95 @@ on a tap into the TextInput, but the ring would now have two competing
 sources of truth (focused vs. active). Collapsing both into `isActive` from
 the keypad context gives a single source of truth: the ring shows precisely
 when the keypad is open and targeting this field. Rejected the alternative.
+
+## Iteration 1 (2026-05-22) — fix-pass after iPad user testing
+
+After the first revision of `feat/custom-numeric-keypad` was tested on iPad,
+the user surfaced three issues. Fix-pass landed as additional commits on the
+same branch (PR not re-opened, no new ADR — this section extends ADR-0011).
+
+### 1 · System keypad still appeared on repeat focus events
+
+`showSoftInputOnFocus={false}` is **not a 100 % guarantee** on iPad when the
+TextInput remains `editable={true}`. iOS sometimes surfaces the ASCII-capable
+number-pad style (with ABC/DEF/GHI/JKL labels under digits) on re-focus
+events — including the case where a pilot taps an already-focused field. The
+only platform-level guarantee is `editable={false}`: iOS never renders a
+software keyboard for non-editable TextInputs.
+
+**Fix.** `NumericInput` now sets `editable={false}` + `caretHidden={true}`.
+`showSoftInputOnFocus={false}` stays as a belt-and-braces signal.
+
+**Trade-off.** Bluetooth-hardware-keyboard typing into the field is no longer
+possible — iOS dispatches hardware key events only to editable TextInputs.
+Accepted: cockpit users are extremely unlikely to pair a Bluetooth keyboard
+with their iPad EFB, and the value of "zero system-keyboard exposure" against
+App Review Guideline 4.2 outweighs the lost edge-case.
+
+**Dead code preserved.** `onChangeText` in `NumericInput` is now a dead path
+(non-editable TextInputs never emit text events), but the sanitizer callback
+stays attached as defence-in-depth. If a future change re-enables editing for
+a specific keyboard (e.g., an iPadOS update fixing the soft-keyboard leak), no
+additional code is needed to keep sanitization in the loop.
+
+### 2 · Bottom-sheet keypad covered the focused field
+
+The first revision used `BottomSheet`, which occupied roughly half the screen
+height. TOW (in the upper half of the form) stayed visible; CG (lower) was
+fully hidden by the keypad. Pilots couldn't see what they were typing into
+the field they were typing into.
+
+**Fix.** `NumericKeypadHost` no longer wraps the keypad in `BottomSheet`.
+Instead, it renders a `<Modal transparent animationType="fade">` with a
+fixed-size (280 × 320 pt) `<Pressable>` popover absolutely positioned via the
+new `computeKeypadPosition` algorithm:
+
+- **Horizontal:** prefer the right side of the field (`anchor.x + width + 8`)
+  if `screen.width - (anchor.x + width) >= 280 + 8 + 16` pt; fall back to the
+  left side under the same threshold; finally horizontally center the popover
+  on screen.
+- **Vertical:** align the top of the popover with the top of the field, then
+  clamp into `[16, screen.height − 320 − 16]` so the popover never spills
+  off-screen.
+
+The pure positioning function is exported (`computeKeypadPosition`) and unit
+tested with six cases covering all branches (right / left / centered fallback,
+top alignment, bottom clamp, top clamp).
+
+**Anchor measurement.** `RegisteredField` gained a `getAnchor: () =>
+Promise<FieldAnchor>` returning the window-relative geometry via React Native's
+`View.measureInWindow`. The hook attaches the measured ref to the outer
+`<View>` of the NumericInput and exposes the ref to the consumer
+(`fieldRef`). The Provider calls `field.getAnchor()` on every register/
+re-register and stores the resolved anchor in state (`activeAnchor`).
+Same-id re-registration also re-measures, which gracefully handles
+orientation changes.
+
+**Why a fixed popover size.** Dynamic sizing would require an extra layout
+pass before placement; measuring the popover after mount would create a
+visible flicker. With a fixed 280 × 320 pt rectangle the placement is
+deterministic and the keypad's own internal layout (4×3 grid + Done) is
+already independent of container size.
+
+### 3 · Keypad digit glyphs were vertically clipped
+
+`<Text variant="mono">` set `lineHeight: 22 pt`. The keypad label override
+bumped `fontSize` to 22–28 pt without bumping `lineHeight`. With
+`lineHeight === fontSize` (or smaller), iOS clips the top and bottom of
+mono-spaced digit glyphs — "7" reads as "/" (upper horizontal gone), "1"
+loses its upper flag, "5" loses the top crossbar, etc.
+
+**Fix.** `keyLabel` now sets an explicit `lineHeight` (28 pt compact, 36 pt
+regular — roughly `fontSize × 1.28`, comfortable headroom for ascenders and
+descenders). Also added `fontWeight: '600'` (overriding the variant's 500) for
+a heavier glyph that reads better at large sizes, and `textAlign: 'center'`
+for safety.
+
+### Other changes bundled with the fix-pass
+
+- Key heights shrank from 52 / 72 pt to 48 / 56 pt so the keypad fits
+  comfortably inside the 280 × 320 pt floating popover while still presenting
+  generous touch targets (≥ 48 pt — minimum touchable, ≥ 56 pt regular).
+- The `sanitizeDecimalInput` defence-in-depth function is now unit-tested
+  directly (`sanitizeDecimalInput.test.ts`) instead of through the NumericInput
+  `onChangeText` path, which is now non-reachable in production.
