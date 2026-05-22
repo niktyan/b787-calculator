@@ -2,6 +2,11 @@
 
 exports[`NumericKeypad renders compact layout snapshot (dark theme) 1`] = `
 <View
+  style={
+    {
+      "width": "100%",
+    }
+  }
   testID="kp"
 >
   <View
@@ -1016,6 +1021,11 @@ exports[`NumericKeypad renders compact layout snapshot (dark theme) 1`] = `
 
 exports[`NumericKeypad renders regular layout snapshot (light theme) 1`] = `
 <View
+  style={
+    {
+      "width": "100%",
+    }
+  }
   testID="kp"
 >
   <View

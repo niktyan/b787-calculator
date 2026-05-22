@@ -75,6 +75,7 @@ function resolveSizing(isRegular: boolean): Sizing {
 }
 
 interface Styles {
+  readonly root: ViewStyle;
   readonly grid: ViewStyle;
   readonly row: ViewStyle;
   readonly key: ViewStyle;
@@ -117,6 +118,13 @@ function buildStyles(args: { readonly palette: ColorPalette; readonly sizing: Si
     },
     keyPressed: {
       opacity: KEY_PRESSED_OPACITY,
+    },
+    // The outer container must stretch to the popover's full content
+    // width — without it, `flex: 1` on the keys collapses to intrinsic
+    // sizes and the Done button overflows the small parent. See ADR-0011
+    // Iteration 3 §1.
+    root: {
+      width: '100%',
     },
     row: {
       flexDirection: 'row',
@@ -192,7 +200,7 @@ export function NumericKeypad({
   const styles = useMemo(() => buildStyles({ palette, sizing }), [palette, sizing]);
 
   return (
-    <View testID={testID}>
+    <View style={styles.root} testID={testID}>
       <View style={styles.grid}>
         {KEYPAD_LAYOUT.map((row, rowIdx) => (
           <View key={rowIdx} style={styles.row}>
