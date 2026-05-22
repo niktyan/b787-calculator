@@ -43,7 +43,7 @@ const REGULAR_SECTION_LABEL_STYLE: TextStyle = {
 
 const AIRCRAFT_OPTIONS: readonly SegmentedControlOption<AircraftVariant>[] = [
   { value: 'b787_8', label: 'B787-8' },
-  { value: 'b787_9', label: 'B787-9', disabled: true },
+  { value: 'b787_9', label: 'B787-9' },
 ];
 
 const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
