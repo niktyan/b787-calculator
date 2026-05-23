@@ -13,31 +13,26 @@
  */
 
 import { useRouter } from 'expo-router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
-import type { AircraftVariant, RunwayCondition } from '../../../core/aviation';
 import { useTheme, useTranslation } from '../../../core';
 import { ErrorState, Row, Screen, Stack, Text, tokens } from '../../../design-system';
 import { createCrosswindLandingRepository } from '../data';
 import type { CrosswindLandingDataFile } from '../data/schema';
-import type { LandingMode, YesNo } from '../domain/types';
 
 import { CrosswindLandingInputForm } from './components/CrosswindLandingInputForm';
 import { CrosswindLandingResult } from './components/CrosswindLandingResult';
 import { useCrosswindLandingCalculator } from './useCrosswindLandingCalculator';
+import { useLandingScreenState } from './useLandingScreenState';
 
 const COLUMN_BASIS = '48%';
 const TWO_COLUMN_BREAKPOINT = tokens.breakpoints.regular;
 const REGULAR_BREAKPOINT = tokens.breakpoints.regularHeader;
 const HEADER_DIVIDER_HEIGHT = 1;
 const PILL_PRESSED_OPACITY = 0.6;
-const DEFAULT_AIRCRAFT: AircraftVariant = 'b787_8';
-const DEFAULT_RUNWAY: RunwayCondition = 'dry';
-const DEFAULT_LANDING_MODE: LandingMode = 'manual';
-const DEFAULT_YES_NO: YesNo = 'no';
 
 const repository = createCrosswindLandingRepository();
 
@@ -59,46 +54,37 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const { width } = useWindowDimensions();
   const isRegular = width >= REGULAR_BREAKPOINT;
   const isTwoColumn = width >= TWO_COLUMN_BREAKPOINT;
-
-  const [aircraft, setAircraft] = useState<AircraftVariant>(DEFAULT_AIRCRAFT);
-  const [runwayCondition, setRunwayCondition] = useState<RunwayCondition>(DEFAULT_RUNWAY);
-  const [landingMode, setLandingMode] = useState<LandingMode>(DEFAULT_LANDING_MODE);
-  const [asymReverse, setAsymReverse] = useState<YesNo>(DEFAULT_YES_NO);
-  const [catIIIII, setCatIIIII] = useState<YesNo>(DEFAULT_YES_NO);
-  const [engineInop, setEngineInop] = useState<YesNo>(DEFAULT_YES_NO);
-
+  const s = useLandingScreenState();
   const inputs = useMemo(
-    () => ({ aircraft, runwayCondition, landingMode, asymReverse, catIIIII, engineInop }),
-    [aircraft, runwayCondition, landingMode, asymReverse, catIIIII, engineInop],
+    () => ({
+      aircraft: s.aircraft,
+      runwayCondition: s.runwayCondition,
+      landingMode: s.landingMode,
+      asymReverse: s.asymReverse,
+      catIIIII: s.catIIIII,
+      engineInop: s.engineInop,
+    }),
+    [s.aircraft, s.runwayCondition, s.landingMode, s.asymReverse, s.catIIIII, s.engineInop],
   );
   const { state } = useCrosswindLandingCalculator({ inputs, data });
-
   const handleBack = useCallback((): void => {
     router.back();
   }, [router]);
-  const handleReset = useCallback((): void => {
-    setAircraft(DEFAULT_AIRCRAFT);
-    setRunwayCondition(DEFAULT_RUNWAY);
-    setLandingMode(DEFAULT_LANDING_MODE);
-    setAsymReverse(DEFAULT_YES_NO);
-    setCatIIIII(DEFAULT_YES_NO);
-    setEngineInop(DEFAULT_YES_NO);
-  }, []);
 
   const inputForm = (
     <CrosswindLandingInputForm
-      aircraft={aircraft}
-      runwayCondition={runwayCondition}
-      landingMode={landingMode}
-      asymReverse={asymReverse}
-      catIIIII={catIIIII}
-      engineInop={engineInop}
-      onAircraftChange={setAircraft}
-      onRunwayConditionChange={setRunwayCondition}
-      onLandingModeChange={setLandingMode}
-      onAsymReverseChange={setAsymReverse}
-      onCatIIIIIChange={setCatIIIII}
-      onEngineInopChange={setEngineInop}
+      aircraft={s.aircraft}
+      runwayCondition={s.runwayCondition}
+      landingMode={s.landingMode}
+      asymReverse={s.asymReverse}
+      catIIIII={s.catIIIII}
+      engineInop={s.engineInop}
+      onAircraftChange={s.setAircraft}
+      onRunwayConditionChange={s.setRunwayCondition}
+      onLandingModeChange={s.setLandingMode}
+      onAsymReverseChange={s.setAsymReverse}
+      onCatIIIIIChange={s.setCatIIIII}
+      onEngineInopChange={s.setEngineInop}
       isRegular={isRegular}
       testID="crosswind-landing-input-form"
     />
@@ -114,28 +100,60 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
 
   return (
     <Screen testID="crosswind-landing-screen">
-      <Stack gap="lg" style={styles.fillHeight}>
-        <LandingHeader
-          title={t('crosswind-landing.title')}
-          backLabel={`← ${t('common.back')}`}
-          resetLabel={t('crosswind-landing.resetLabel')}
-          onBack={handleBack}
-          onReset={handleReset}
-          isRegular={isRegular}
-        />
-        {isTwoColumn ? (
-          <Row align="stretch" gap="lg" style={styles.fillHeight}>
-            <View style={styles.column}>{inputForm}</View>
-            <View style={styles.column}>{resultPanel}</View>
-          </Row>
-        ) : (
-          <Stack gap="lg" style={isRegular ? styles.fillHeight : undefined}>
-            {inputForm}
-            {resultPanel}
-          </Stack>
-        )}
-      </Stack>
+      <ScrollView
+        style={styles.fillHeight}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        testID="crosswind-landing-scroll"
+      >
+        <Stack gap="lg" style={styles.fillHeight}>
+          <LandingHeader
+            title={t('crosswind-landing.title')}
+            backLabel={`← ${t('common.back')}`}
+            resetLabel={t('crosswind-landing.resetLabel')}
+            onBack={handleBack}
+            onReset={s.reset}
+            isRegular={isRegular}
+          />
+          <LandingBody
+            isTwoColumn={isTwoColumn}
+            isRegular={isRegular}
+            inputForm={inputForm}
+            resultPanel={resultPanel}
+          />
+        </Stack>
+      </ScrollView>
     </Screen>
+  );
+}
+
+interface LandingBodyProps {
+  readonly isTwoColumn: boolean;
+  readonly isRegular: boolean;
+  readonly inputForm: ReactNode;
+  readonly resultPanel: ReactNode;
+}
+
+function LandingBody({
+  isTwoColumn,
+  isRegular,
+  inputForm,
+  resultPanel,
+}: LandingBodyProps): ReactNode {
+  if (isTwoColumn) {
+    return (
+      <Row align="stretch" gap="lg" style={styles.fillHeight}>
+        <View style={styles.column}>{inputForm}</View>
+        <View style={styles.column}>{resultPanel}</View>
+      </Row>
+    );
+  }
+  return (
+    <Stack gap="lg" style={isRegular ? styles.fillHeight : undefined}>
+      {inputForm}
+      {resultPanel}
+    </Stack>
   );
 }
 
@@ -269,5 +287,15 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: PILL_PRESSED_OPACITY,
+  },
+  // `flexGrow: 1` lets the inner Stack with `flex: 1` still fill the
+  // viewport on iPad landscape so the result Card occupies the full
+  // right-column height. Without it ScrollView's content sizes to its
+  // intrinsic height and the landscape `fillHeight` chain breaks.
+  // `paddingBottom` gives breathing space at the scroll end on portrait /
+  // iPhone where content does overflow.
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: tokens.spacing.lg,
   },
 });
