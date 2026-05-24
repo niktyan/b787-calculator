@@ -149,7 +149,7 @@ exports[`Splash route (mounted at /) renders correctly in light theme 1`] = `
           testID="splash-version"
         >
           v
-          0.1.0
+          1.1.0
         </Text>
       </View>
     </View>
@@ -306,7 +306,7 @@ exports[`Splash route (mounted at /) renders the brand placeholder, app name, ve
           testID="splash-version"
         >
           v
-          0.1.0
+          1.1.0
         </Text>
       </View>
     </View>

@@ -17,7 +17,7 @@ jest.mock('expo-router', () => ({
 }));
 
 jest.mock('expo-application', () => ({
-  nativeApplicationVersion: '0.1.0',
+  nativeApplicationVersion: '1.1.0',
 }));
 
 jest.mock('react-i18next', () => {

@@ -292,7 +292,7 @@ exports[`Error route renders correctly in light theme 1`] = `
         testID="error-version"
       >
         v
-        0.1.0
+        1.1.0
       </Text>
     </View>
   </View>
@@ -591,7 +591,7 @@ exports[`Error route renders title, description, retry, contact and version (dar
         testID="error-version"
       >
         v
-        0.1.0
+        1.1.0
       </Text>
     </View>
   </View>

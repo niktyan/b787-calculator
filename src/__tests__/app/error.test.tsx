@@ -16,7 +16,7 @@ jest.mock('expo-router', () => ({
 }));
 
 jest.mock('expo-application', () => ({
-  nativeApplicationVersion: '0.1.0',
+  nativeApplicationVersion: '1.1.0',
 }));
 
 jest.mock('react-i18next', () => ({
@@ -35,7 +35,7 @@ describe('Error route', () => {
     expect(tree.getByText('error.referenceDataDescription')).toBeTruthy();
     expect(tree.getByTestId('error-retry')).toBeTruthy();
     expect(tree.getByTestId('error-contact')).toBeTruthy();
-    expect(tree.getByTestId('error-version').props.children).toEqual(['v', '0.1.0']);
+    expect(tree.getByTestId('error-version').props.children).toEqual(['v', '1.1.0']);
     expect(tree.toJSON()).toMatchSnapshot();
   });
 

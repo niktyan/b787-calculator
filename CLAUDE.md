@@ -52,9 +52,9 @@ npm run format        # prettier --write
 npm start             # expo start
 npm run ios           # expo start --ios
 
-./scripts/release.sh patch   # bump 0.1.0 → 0.1.1, push tag
-./scripts/release.sh minor   # bump 0.1.0 → 0.2.0
-./scripts/release.sh major   # bump 0.1.0 → 1.0.0
+./scripts/release.sh patch   # bump 1.1.0 → 1.1.1, push tag
+./scripts/release.sh minor   # bump 1.1.0 → 1.2.0
+./scripts/release.sh major   # bump 1.1.0 → 2.0.0
 ```
 
 ---
