@@ -13,7 +13,7 @@
  */
 
 import { useRouter } from 'expo-router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
@@ -25,6 +25,7 @@ import type { CrosswindLandingDataFile } from '../data/schema';
 
 import { CrosswindLandingInputForm } from './components/CrosswindLandingInputForm';
 import { CrosswindLandingResult } from './components/CrosswindLandingResult';
+import { useAutoScrollOnAutoland } from './useAutoScrollOnAutoland';
 import { useCrosswindLandingCalculator } from './useCrosswindLandingCalculator';
 import { useLandingScreenState } from './useLandingScreenState';
 
@@ -67,6 +68,8 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     [s.aircraft, s.runwayCondition, s.landingMode, s.asymReverse, s.catIIIII, s.engineInop],
   );
   const { state } = useCrosswindLandingCalculator({ inputs, data });
+  const scrollViewRef = useRef<ScrollView>(null);
+  useAutoScrollOnAutoland(scrollViewRef, s.landingMode, !isTwoColumn);
   const handleBack = useCallback((): void => {
     router.back();
   }, [router]);
@@ -101,6 +104,7 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   return (
     <Screen testID="crosswind-landing-screen">
       <ScrollView
+        ref={scrollViewRef}
         style={styles.fillHeight}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
