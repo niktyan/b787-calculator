@@ -49,6 +49,7 @@
 | `expo-application` | соответствующая SDK | Доступ к версии приложения и build-номеру |
 | `expo-updates` | соответствующая SDK | OTA-обновления через EAS Update (Phase 2+) |
 | `expo-build-properties` | соответствующая SDK | Установка iOS deployment target и других native build-properties через Expo plugin (вместо невалидного `ios.deploymentTarget` поля в `app.json`). Auto-installable via `npx expo install`. |
+| `expo-haptics` | соответствующая SDK | iOS Taptic Engine API через Expo SDK. Используется для tactile feedback на keypad/segment/Reset interactions и envelope-state transitions в Takeoff. На устройствах без Taptic Engine — silent no-op. См. ADR-0015. Auto-installable via `npx expo install`. |
 | `expo-linear-gradient` | соответствующая SDK | Standard Expo SDK module for native gradient rendering; required by `06-ui-spec.md` § Экран 3 active-card visual treatment. Auto-installable via `npx expo install`. |
 | `expo-web-browser` | соответствующая SDK | Standard Expo SDK module for in-app web links via `WebBrowser.openBrowserAsync`. Required by `06-ui-spec.md` § Экран 6 Privacy Policy / Terms of Use rows (consistent in-app UX, не уводит пользователя из приложения — закрыто как Open question #2 в той же спеке). Auto-installable via `npx expo install`. |
 | `react-native-svg` | соответствующая Expo SDK (allowlisted via ADR-0007) | SVG primitives. Изначально предполагался для CG / Crosswind chart, но в `feat/crosswind-takeoff-rebrand` MVP-визуализация снята (single-card centred number). На момент MVP пакет **не установлен и не consumed** — ADR-0007 остаётся активным как зафиксированное решение «используем именно эту библиотеку, если потребуется визуализация в Phase 2+». Auto-installable via `npx expo install react-native-svg`. |
@@ -69,7 +70,9 @@
 Дефолтный `create-expo-app` шаблон (`--template default`) тянет несколько пакетов, которые были **удалены при инициализации Phase B** как не входящие в наш scope:
 
 - `react-dom`, `react-native-web` — нет web-таргета.
-- `expo-haptics`, `expo-image`, `expo-symbols` — не нужны для MVP функциональности.
+- `expo-image`, `expo-symbols` — не нужны для MVP функциональности.
+  (~~`expo-haptics`~~ — изначально удалили, восстановили в Sprint D / PR D1
+  `feat/haptic-feedback` для tactile feedback в Crosswind UI; см. ADR-0015.)
   (~~`expo-web-browser`~~ — изначально удалили, восстановили в Sprint 6 / PR
   `feat/settings-about` для Privacy Policy / Terms of Use rows в About-экране.)
 - `@react-navigation/bottom-tabs`, `@react-navigation/elements` — мы используем минимальный expo-router stack без tabs UI; `@react-navigation/native` остаётся как peer-dep expo-router.

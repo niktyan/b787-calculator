@@ -1188,6 +1188,56 @@ press-handler-ы становятся no-op-ами (никаких `withTiming`-
 
 ---
 
+## Tactile feedback (haptics)
+
+Per ADR-0015 приложение использует общий хук `useHapticFeedback()` из
+`core/haptics` для consistent tactile UX. Все haptic-вызовы проходят
+через этот хук — никаких прямых импортов `expo-haptics` в feature-
+коде. Это даёт single source of truth для intensity mapping и для
+kill-switch.
+
+| Event | Метод | iOS Taptic Engine |
+|-------|-------|-------------------|
+| `NumericKeypad` digit / dot / backspace press | `lightImpact()` | `ImpactFeedbackStyle.Light` |
+| `NumericKeypad` Done press | `mediumImpact()` | `ImpactFeedbackStyle.Medium` |
+| `SegmentedControl` segment select (non-disabled) | `lightImpact()` | `ImpactFeedbackStyle.Light` |
+| Reset header pill (Crosswind Takeoff / Landing) | `mediumImpact()` | `ImpactFeedbackStyle.Medium` |
+| Takeoff: `idle → out-of-envelope` transition | `warningNotification()` | `NotificationFeedbackType.Warning` |
+| Takeoff: `out-of-envelope → idle` transition | `successNotification()` | `NotificationFeedbackType.Success` |
+
+**Где haptic НЕ срабатывает:**
+
+- Disabled segments и disabled buttons — никаких событий не
+  обрабатывается, соответственно никаких haptic.
+- Initial mount экрана — `useCrosswindCalculator` отслеживает
+  предыдущий `state.kind` через ref, инициализированный `null`, и
+  пропускает первый render. Пилот никогда не получает haptic «из
+  ниоткуда» при открытии калькулятора.
+- Render-ы внутри одного `state.kind` — переход считается только при
+  смене kind, не при каждом пересчёте.
+- Crosswind Landing envelope-state transitions — Landing работает по
+  categorical lookup без operational-envelope violation state, поэтому
+  warning/success haptics здесь не эмитятся (только light на
+  SegmentedControl и medium на Reset).
+- Result-panel update при изменении input в idle-состоянии — слишком
+  шумно для непрерывного перерасчёта на каждый keystroke. Haptic
+  привязан к смене состояния, не к смене значения.
+
+**Kill-switch.** Feature flag `enableHapticFeedback` (default `true`,
+`core/feature-flags/defaults.json`) — operator-level выключатель. Когда
+`false`, `useHapticFeedback()` возвращает no-op методы и
+`expo-haptics` не вызывается. Используется для быстрого отключения
+без deploy при iOS-specific регрессии. User-facing toggle в Settings
+не входит в MVP — кандидат на Phase 2 если TestFlight feedback
+покажет необходимость.
+
+**Поддерживаемое оборудование.** iPhone 7+ и все актуальные iPad
+имеют Taptic Engine. На устройствах без него `expo-haptics`
+автоматически no-op-ит на уровне OS, без throw — приложение
+поведенчески идентично, просто без вибрации.
+
+---
+
 ## Edge cases в UI
 
 **Offline-режим:** приложение полностью работает офлайн (нет сетевых запросов). Никаких сетевых индикаторов, никаких сообщений «Check your connection» — они здесь неуместны.

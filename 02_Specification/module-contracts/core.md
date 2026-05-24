@@ -27,6 +27,7 @@ Core — это базовый модуль приложения, предост
 | `core/disclaimer/useDisclaimerStatus` | 🔵 **React** | React-хук. |
 | `core/feature-flags/flags` | 🟢 **Pure TS** | In-memory store без React. |
 | `core/feature-flags/useFeatureFlag` | 🔵 **React** | React-хук поверх flags. |
+| `core/haptics/useHapticFeedback` | 🔵 **React** | React-хук поверх `expo-haptics`, gated через `useFeatureFlag('enableHapticFeedback')`. |
 | `core/modules/types` | 🟢 **Pure TS** | Типы (discriminated union active/inactive). |
 | `core/modules/data.json` | 🟢 **Data** | Bundled JSON (active + coming-soon entries). |
 | `core/modules/loader` | 🟢 **Pure TS** | zod-validated JSON loader (cached). |
@@ -123,8 +124,27 @@ The following keys are defined in `src/core/feature-flags/defaults.json` and exp
 |-----|---------|---------|
 | `enableDataVersionBanner` | `false` | Show a banner on launch when bundled JSON `dataVersion` is newer than the version last seen by the user. Will be activated in Phase 2 when OTA-update strategy is finalized. |
 | `showCalcTimeOnResult` | `false` | Show calculation duration in the result panel metadata for debugging. Useful in development; stays `false` in production. |
+| `enableHapticFeedback` | `true` | Master kill-switch for `useHapticFeedback()` (см. ADR-0015). When `false`, the hook returns no-op methods and `expo-haptics` is never invoked. Default is `true` so the feature ships active for pilots. |
 
 **Adding new feature flags:** append to `defaults.json` with sensible defaults (almost always `false`), update the `FeatureFlagKey` union, document here in this contract.
+
+### `core/haptics/`
+
+iOS Taptic Engine integration через `expo-haptics`, см. ADR-0015.
+
+**Ответственность:**
+- Единая точка стратегии — какой haptic событие соответствует какому
+  iOS Taptic Engine типу (`Light` / `Medium` / `Warning` / `Success`).
+- Чтение feature flag `enableHapticFeedback` и переключение между
+  active-методами и no-op-ами.
+- Изоляция feature-кода от прямых импортов `expo-haptics` —
+  consumer-ам не нужно знать про конкретные `ImpactFeedbackStyle` /
+  `NotificationFeedbackType` константы.
+
+**Файлы:**
+- `haptics/useHapticFeedback.ts` — хук, возвращающий
+  `{ lightImpact, mediumImpact, warningNotification, successNotification }`.
+- `haptics/index.ts` — barrel.
 
 ### `core/logger/`
 
@@ -205,6 +225,10 @@ export { useDisclaimerStatus, acceptDisclaimer } from './disclaimer';
 export { useFeatureFlag } from './feature-flags';
 export type { FeatureFlagKey } from './feature-flags';
 
+// haptics
+export { useHapticFeedback } from './haptics';
+export type { HapticFeedback } from './haptics';
+
 // logger
 export { logger } from './logger';
 
@@ -233,6 +257,7 @@ export type {
 **От библиотек:**
 - `i18next`, `react-i18next` (для i18n).
 - `expo-localization` (для определения языка устройства).
+- `expo-haptics` (для `core/haptics`, см. ADR-0015).
 - `@react-native-async-storage/async-storage` (для storage).
 - `zod` (для валидации schemas в storage).
 - `react`, `react-native` (для контекстов и хуков).
