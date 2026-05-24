@@ -6,6 +6,7 @@ on:
     paths:
       - 'PRIVACY_POLICY.md'
       - 'TERMS_OF_USE.md'
+      - 'SUPPORT.md'
       - '.github/workflows/deploy-pages.yml'
 
 permissions:
@@ -34,6 +35,9 @@ jobs:
           fi
           if [ -f TERMS_OF_USE.md ]; then
             npx --yes markdown-to-html-cli --source TERMS_OF_USE.md --output _site/terms-of-use.html --title "Terms of Use"
+          fi
+          if [ -f SUPPORT.md ]; then
+            npx --yes markdown-to-html-cli --source SUPPORT.md --output _site/support.html --title "Support"
           fi
           cp -r assets/static-pages/* _site/ 2>/dev/null || true
 
