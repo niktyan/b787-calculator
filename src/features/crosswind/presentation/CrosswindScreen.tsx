@@ -21,6 +21,7 @@ import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme, useTranslation } from '../../../core';
+import { useHapticFeedback } from '../../../core/haptics';
 import {
   ErrorState,
   KeyboardDismissView,
@@ -62,6 +63,7 @@ interface ScreenLoadedProps {
 function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const router = useRouter();
   const { t } = useTranslation();
+  const haptics = useHapticFeedback();
   const { width } = useWindowDimensions();
   // Two independent breakpoints:
   //   - isRegular (>= 768pt): drives bumped typography / input sizing.
@@ -87,11 +89,12 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     router.back();
   }, [router]);
   const handleReset = useCallback((): void => {
+    haptics.mediumImpact();
     setWeightText('');
     setCgText('');
     setAircraft(DEFAULT_AIRCRAFT);
     setRunwayCondition('dry');
-  }, []);
+  }, [haptics]);
 
   const inputForm = (
     <CrosswindInputForm

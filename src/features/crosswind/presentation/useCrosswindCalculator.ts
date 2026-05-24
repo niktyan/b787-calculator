@@ -23,10 +23,11 @@
  *    "Composition rule for UI".
  */
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { TFunction } from 'i18next';
 
 import { useTranslation } from '../../../core';
+import { useHapticFeedback } from '../../../core/haptics';
 import { isOk } from '../../../core/result';
 import { calculateCrosswindLimit } from '../domain/calculator';
 import type {
@@ -282,7 +283,13 @@ export function useCrosswindCalculator(
 ): UseCrosswindCalculatorResult {
   const { inputs, data } = args;
   const { t } = useTranslation();
-  return useMemo(() => {
+  const haptics = useHapticFeedback();
+  // Ref-based prev tracking: avoids firing a haptic on mount (the very
+  // first render has no "previous" state) and guarantees exactly one
+  // haptic per transition, regardless of how many times the surrounding
+  // memo recomputes for the same kind.
+  const prevStateKind = useRef<CrosswindUIState['kind'] | null>(null);
+  const result = useMemo(() => {
     // Schema 2.3.0 (ADR-0013): envelope lives per-aircraft. Each
     // selected variant has its own FCOM-certified bounds, so the
     // validator pair runs against the envelope of the active aircraft,
@@ -335,4 +342,24 @@ export function useCrosswindCalculator(
       t,
     });
   }, [inputs, data, t]);
+
+  // Fire haptics on envelope state transitions, per ADR-0015.
+  // Warning on entry to out-of-envelope; success on recovery back to idle.
+  // Other transitions (empty → *, * → empty, error/data-not-available) stay
+  // silent — they are not safety-relevant events for the pilot.
+  useEffect(() => {
+    const prev = prevStateKind.current;
+    const curr = result.state.kind;
+    prevStateKind.current = curr;
+    if (prev === null) {
+      return;
+    }
+    if (prev === 'idle' && curr === 'out-of-envelope') {
+      haptics.warningNotification();
+    } else if (prev === 'out-of-envelope' && curr === 'idle') {
+      haptics.successNotification();
+    }
+  }, [result.state.kind, haptics]);
+
+  return result;
 }
