@@ -168,25 +168,14 @@ function YesNoRow({
 interface TopSectionsProps {
   readonly aircraft: AircraftVariant;
   readonly runwayCondition: RunwayCondition;
-  readonly landingMode: LandingMode;
   readonly onAircraftChange: (next: AircraftVariant) => void;
   readonly onRunwayConditionChange: (next: RunwayCondition) => void;
-  readonly onLandingModeChange: (next: LandingMode) => void;
   readonly sizing: FormSizing;
   readonly t: (key: string) => string;
 }
 
 function TopSections(props: TopSectionsProps): ReactNode {
-  const {
-    aircraft,
-    runwayCondition,
-    landingMode,
-    onAircraftChange,
-    onRunwayConditionChange,
-    onLandingModeChange,
-    sizing,
-    t,
-  } = props;
+  const { aircraft, runwayCondition, onAircraftChange, onRunwayConditionChange, sizing, t } = props;
   return (
     <>
       <Stack gap={sizing.sectionLabelGap}>
@@ -212,18 +201,31 @@ function TopSections(props: TopSectionsProps): ReactNode {
           testID="landing-runway"
         />
       </Stack>
-      <Stack gap={sizing.sectionLabelGap}>
-        <SectionLabel text={t('crosswind-landing.landingModeLabel')} sizing={sizing} />
-        <SegmentedControl<LandingMode>
-          value={landingMode}
-          options={LANDING_MODE_OPTIONS}
-          onChange={onLandingModeChange}
-          size={sizing.segmentedSize}
-          accessibilityLabel={t('crosswind-landing.landingModeLabel')}
-          testID="landing-mode"
-        />
-      </Stack>
     </>
+  );
+}
+
+interface LandingModeSectionProps {
+  readonly landingMode: LandingMode;
+  readonly onLandingModeChange: (next: LandingMode) => void;
+  readonly sizing: FormSizing;
+  readonly t: (key: string) => string;
+}
+
+function LandingModeSection(props: LandingModeSectionProps): ReactNode {
+  const { landingMode, onLandingModeChange, sizing, t } = props;
+  return (
+    <Stack gap={sizing.sectionLabelGap}>
+      <SectionLabel text={t('crosswind-landing.landingModeLabel')} sizing={sizing} />
+      <SegmentedControl<LandingMode>
+        value={landingMode}
+        options={LANDING_MODE_OPTIONS}
+        onChange={onLandingModeChange}
+        size={sizing.segmentedSize}
+        accessibilityLabel={t('crosswind-landing.landingModeLabel')}
+        testID="landing-mode"
+      />
+    </Stack>
   );
 }
 
@@ -297,10 +299,8 @@ export function CrosswindLandingInputForm(props: CrosswindLandingInputFormProps)
       <TopSections
         aircraft={aircraft}
         runwayCondition={runwayCondition}
-        landingMode={landingMode}
         onAircraftChange={onAircraftChange}
         onRunwayConditionChange={onRunwayConditionChange}
-        onLandingModeChange={onLandingModeChange}
         sizing={sizing}
         t={t}
       />
@@ -312,6 +312,12 @@ export function CrosswindLandingInputForm(props: CrosswindLandingInputFormProps)
         testID="landing-asym-reverse"
         yesLabel={yesLabel}
         noLabel={noLabel}
+      />
+      <LandingModeSection
+        landingMode={landingMode}
+        onLandingModeChange={onLandingModeChange}
+        sizing={sizing}
+        t={t}
       />
       {showAutoRows ? (
         <AutoRows
