@@ -16,7 +16,7 @@ jest.mock('expo-router', () => ({
 }));
 
 jest.mock('expo-application', () => ({
-  nativeApplicationVersion: '0.1.0',
+  nativeApplicationVersion: '1.1.0',
 }));
 
 jest.mock('react-i18next', () => ({
@@ -52,7 +52,7 @@ describe('Splash route (mounted at /)', () => {
     expect(tree.getByText('B7')).toBeTruthy();
     expect(tree.getByText('B787 Calculator')).toBeTruthy();
     expect(tree.getByText('splash.tagline')).toBeTruthy();
-    expect(tree.getByTestId('splash-version').props.children).toEqual(['v', '0.1.0']);
+    expect(tree.getByTestId('splash-version').props.children).toEqual(['v', '1.1.0']);
     expect(tree.toJSON()).toMatchSnapshot();
   });
 

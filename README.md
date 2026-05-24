@@ -93,9 +93,9 @@ npm run format        # prettier --write .
 ## Релиз
 
 ```bash
-./scripts/release.sh patch    # 0.1.0 → 0.1.1
-./scripts/release.sh minor    # 0.1.0 → 0.2.0
-./scripts/release.sh major    # 0.1.0 → 1.0.0
+./scripts/release.sh patch    # 1.1.0 → 1.1.1
+./scripts/release.sh minor    # 1.1.0 → 1.2.0
+./scripts/release.sh major    # 1.1.0 → 2.0.0
 ```
 
 Скрипт делает `npm version` + push коммита и тега. Дальше всё автоматически: GitHub Actions запускает release.yml → EAS Build production → EAS Submit → TestFlight → готово к Submit for Review (один клик в App Store Connect).
