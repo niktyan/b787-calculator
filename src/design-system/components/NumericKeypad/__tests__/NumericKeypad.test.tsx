@@ -1,5 +1,7 @@
 import { fireEvent } from '@testing-library/react-native';
+import * as Haptics from 'expo-haptics';
 
+import { resetFlags, setFlag } from '../../../../core/feature-flags';
 import { renderWithTheme } from '../../../_testing/renderWithTheme';
 import { NumericKeypad } from '../NumericKeypad';
 import type { NumericKeypadKey } from '../keys';
@@ -7,6 +9,15 @@ import type { NumericKeypadKey } from '../keys';
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
+
+jest.mock('expo-haptics', () => ({
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
+  NotificationFeedbackType: { Warning: 'warning', Success: 'success' },
+  impactAsync: jest.fn().mockResolvedValue(undefined),
+  notificationAsync: jest.fn().mockResolvedValue(undefined),
+}));
+
+const impactAsyncMock = Haptics.impactAsync as jest.MockedFunction<typeof Haptics.impactAsync>;
 
 const ALL_KEYS: readonly NumericKeypadKey[] = [
   '0',
@@ -24,6 +35,11 @@ const ALL_KEYS: readonly NumericKeypadKey[] = [
 ];
 
 describe('NumericKeypad', () => {
+  beforeEach(() => {
+    resetFlags();
+    impactAsyncMock.mockClear();
+  });
+
   it('renders compact layout snapshot (dark theme)', () => {
     const tree = renderWithTheme(
       <NumericKeypad onKeyPress={jest.fn()} onDone={jest.fn()} testID="kp" />,
@@ -59,6 +75,34 @@ describe('NumericKeypad', () => {
       );
       fireEvent.press(getByTestId('kp-done'));
       expect(onDone).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('haptic feedback', () => {
+    it('fires light impact on digit key press', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericKeypad onKeyPress={jest.fn()} onDone={jest.fn()} testID="kp" />,
+      );
+      fireEvent.press(getByTestId('kp-key-7'));
+      expect(impactAsyncMock).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+    });
+
+    it('fires medium impact on Done press', () => {
+      const { getByTestId } = renderWithTheme(
+        <NumericKeypad onKeyPress={jest.fn()} onDone={jest.fn()} testID="kp" />,
+      );
+      fireEvent.press(getByTestId('kp-done'));
+      expect(impactAsyncMock).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+    });
+
+    it('does not fire haptics when enableHapticFeedback is off', () => {
+      setFlag('enableHapticFeedback', false);
+      const { getByTestId } = renderWithTheme(
+        <NumericKeypad onKeyPress={jest.fn()} onDone={jest.fn()} testID="kp" />,
+      );
+      fireEvent.press(getByTestId('kp-key-3'));
+      fireEvent.press(getByTestId('kp-done'));
+      expect(impactAsyncMock).not.toHaveBeenCalled();
     });
   });
 
