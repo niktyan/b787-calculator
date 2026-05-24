@@ -1,0 +1,383 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecentCalculationsScreen renders an empty-state snapshot (dark) 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "additive",
+      "left": "additive",
+      "right": "additive",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#0A0E14",
+      "flex": 1,
+    }
+  }
+  testID="recent-screen"
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 12,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 16,
+            "justifyContent": "flex-start",
+          },
+          {
+            "flex": 1,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 12,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexWrap": "nowrap",
+                "gap": 8,
+                "justifyContent": "space-between",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="B787 logo"
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#003C36",
+                  "borderRadius": 6,
+                  "height": 28,
+                  "justifyContent": "center",
+                  "width": 28,
+                }
+              }
+              testID="recent-logo"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#00C2A8",
+                      "fontFamily": "Menlo",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                B7
+              </Text>
+            </View>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              recent.title
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "flexWrap": "nowrap",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="← common.back"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": false,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              hitSlop={8}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 10,
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "paddingHorizontal": 10,
+                    "paddingVertical": 5,
+                  },
+                  null,
+                  null,
+                ]
+              }
+              testID="recent-back"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                    },
+                  ]
+                }
+              >
+                ← common.back
+              </Text>
+            </View>
+            <View
+              accessibilityLabel="recent.clearAll"
+              accessibilityRole="button"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": true,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              hitSlop={8}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 10,
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "paddingHorizontal": 10,
+                    "paddingVertical": 5,
+                  },
+                  null,
+                  {
+                    "opacity": 0.4,
+                  },
+                ]
+              }
+              testID="recent-clear-all"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                    },
+                  ]
+                }
+              >
+                recent.clearAll
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "backgroundColor": "rgba(255, 255, 255, 0.08)",
+              "height": 1,
+            }
+          }
+        />
+      </View>
+      <View
+        accessibilityLabel="recent.empty.title"
+        accessibilityRole="text"
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+            "padding": 24,
+          }
+        }
+        testID="recent-empty"
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "letterSpacing": 0,
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            recent.empty.title
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            recent.empty.subtext
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaView>
+`;
