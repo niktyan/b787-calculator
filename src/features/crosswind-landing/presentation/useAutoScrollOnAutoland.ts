@@ -5,45 +5,59 @@
  * column layout (iPhone, iPad portrait), two new toggle rows mount
  * below the fold — CAT II-III and ONE ENG INOP. Without intervention
  * the pilot has no visual cue that anything appeared further down.
- * After the new rows mount we animate the ScrollView to the end so
- * the newly-revealed rows + the result panel slide into view.
  *
- * The effect is a no-op in 2-column landscape: nothing overflows the
- * viewport there, so a scroll animation would be visually noisy without
- * communicating anything. It is also a no-op on every transition other
- * than Manual → Autoland (so going back to Manual does not jump the
- * scroll position).
+ * **Why the onContentSizeChange dance.** The first implementation
+ * called `scrollToEnd` after a 50 ms `setTimeout`, but on real devices
+ * the new rows hadn't always landed in the layout tree yet — the
+ * ScrollView still thought its content height was the four-row
+ * Manual size, scrolled to that (i.e. nowhere new), and the rows
+ * stayed below the fold. Using the ScrollView's own
+ * `onContentSizeChange` callback guarantees we run AFTER RN recorded
+ * the new content height. We arm a one-shot flag in useEffect on the
+ * Manual → Autoland transition, then consume it inside the size-change
+ * callback.
  *
- * The 50 ms timeout defers the call by one frame so React commits the
- * new rows before we measure / animate.
+ * The effect / callback is guarded so it only fires on that specific
+ * transition:
+ *  - Mount in Autoland (e.g., user returns to the screen after state
+ *    was already auto): no scroll.
+ *  - Reverse transition Autoland → Manual: no scroll.
+ *  - Two-column landscape (>= 1024 pt): no scroll. Nothing overflows
+ *    the viewport, so a snap animation would be visually noisy
+ *    without communicating anything.
  */
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import type { ScrollView } from 'react-native';
 
 import type { LandingMode } from '../domain/types';
 
-const AUTO_SCROLL_DELAY_MS = 50;
-
+/**
+ * Returns a callback to wire to `<ScrollView onContentSizeChange={...} />`.
+ * The callback only does work on the Manual → Autoland transition; on
+ * every other content-size change it is a cheap no-op.
+ */
 export function useAutoScrollOnAutoland(
   scrollViewRef: RefObject<ScrollView | null>,
   landingMode: LandingMode,
   isSingleColumn: boolean,
-): void {
+): () => void {
   const prevLandingModeRef = useRef<LandingMode>(landingMode);
+  const pendingScrollRef = useRef<boolean>(false);
+
   useEffect(() => {
     const wasManual = prevLandingModeRef.current === 'manual';
     const isNowAuto = landingMode === 'auto';
     prevLandingModeRef.current = landingMode;
     if (wasManual && isNowAuto && isSingleColumn) {
-      const timeoutId = setTimeout(() => {
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-      }, AUTO_SCROLL_DELAY_MS);
-      return (): void => {
-        clearTimeout(timeoutId);
-      };
+      pendingScrollRef.current = true;
     }
-    return undefined;
-  }, [landingMode, isSingleColumn, scrollViewRef]);
+  }, [landingMode, isSingleColumn]);
+
+  return useCallback((): void => {
+    if (!pendingScrollRef.current) return;
+    pendingScrollRef.current = false;
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  }, [scrollViewRef]);
 }

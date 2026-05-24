@@ -69,10 +69,8 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   );
   const { state } = useCrosswindLandingCalculator({ inputs, data });
   const scrollViewRef = useRef<ScrollView>(null);
-  useAutoScrollOnAutoland(scrollViewRef, s.landingMode, !isTwoColumn);
-  const handleBack = useCallback((): void => {
-    router.back();
-  }, [router]);
+  const onContentSizeChange = useAutoScrollOnAutoland(scrollViewRef, s.landingMode, !isTwoColumn);
+  const handleBack = useCallback((): void => router.back(), [router]);
 
   const inputForm = (
     <CrosswindLandingInputForm
@@ -108,6 +106,7 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
         style={styles.fillHeight}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
+        onContentSizeChange={onContentSizeChange}
         showsVerticalScrollIndicator={false}
         testID="crosswind-landing-scroll"
       >
