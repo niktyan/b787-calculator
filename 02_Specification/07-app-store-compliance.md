@@ -136,7 +136,7 @@ App Store Connect требует декларации export compliance для �
 
 ## Overview
 
-B787 Calculator ("the App") is an offline advisory tool for Boeing 787 pilots. We are committed to protecting your privacy. This Privacy Policy explains our complete approach: we do not collect, store, transmit, or share any personal data.
+B787 Tools ("the App") is an offline advisory tool for Boeing 787 pilots. We are committed to protecting your privacy. This Privacy Policy explains our complete approach: we do not collect, store, transmit, or share any personal data.
 
 ## What data the App accesses or stores
 
@@ -203,7 +203,7 @@ This Privacy Policy is governed by the laws of the Republic of Uzbekistan.
 
 ## 1. Acceptance
 
-By installing and using B787 Calculator ("the App"), you agree to these Terms of Use. If you do not agree, do not use the App.
+By installing and using B787 Tools ("the App"), you agree to these Terms of Use. If you do not agree, do not use the App.
 
 ## 2. Advisory nature of calculations
 
@@ -257,7 +257,7 @@ For questions, contact: [support email]
 ### App Name (30 chars max)
 
 ```
-B787 Calculator
+B787 Tools
 ```
 
 ### Subtitle (30 chars max)
@@ -275,7 +275,7 @@ Quick advisory crosswind reference for Boeing 787 pilots. Calculates conservativ
 ### Description (4000 chars max)
 
 ```
-B787 Calculator is a fast, offline advisory tool for Boeing 787 pilots.
+B787 Tools is a fast, offline advisory tool for Boeing 787 pilots.
 It calculates the maximum allowed crosswind component for takeoff based on four inputs: aircraft variant, TOW (takeoff weight), center of gravity, and runway condition.
 
 CONSERVATIVE ADVISORY LIMITS
