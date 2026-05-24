@@ -12,5 +12,12 @@
     "icon": "LD",
     "active": true,
     "route": "/crosswind-landing"
+  },
+  {
+    "id": "recent",
+    "name": "Recent Calculations",
+    "icon": "RC",
+    "active": true,
+    "route": "/recent"
   }
 ]

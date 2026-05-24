@@ -41,6 +41,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 
 jest.mock('expo-router', () => ({
   useRouter: () => ({ push: jest.fn(), replace: jest.fn(), back: mockBack }),
+  useLocalSearchParams: () => ({}),
   Stack: { Screen: (): null => null },
 }));
 
