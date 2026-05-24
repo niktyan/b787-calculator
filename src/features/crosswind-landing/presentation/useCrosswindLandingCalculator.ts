@@ -21,6 +21,8 @@ import { calculateLandingCrosswind } from '../domain/calculator';
 import type { CrosswindLandingInput, CrosswindLandingOutput } from '../domain/types';
 import type { CrosswindLandingDataFile } from '../data/schema';
 
+import { useRecentAutoSave } from './useRecentAutoSave';
+
 export type CrosswindLandingUIState =
   | { readonly kind: 'idle'; readonly output: CrosswindLandingOutput }
   | { readonly kind: 'data-not-available'; readonly description: string }
@@ -54,7 +56,7 @@ export function useCrosswindLandingCalculator(
 ): UseCrosswindLandingCalculatorResult {
   const { inputs, data } = args;
   const { t } = useTranslation();
-  return useMemo(() => {
+  const result = useMemo<UseCrosswindLandingCalculatorResult>(() => {
     const calc = calculateLandingCrosswind(inputs, data);
     if (calc.ok) {
       return { state: { kind: 'idle', output: calc.value } };
@@ -75,4 +77,10 @@ export function useCrosswindLandingCalculator(
       },
     };
   }, [inputs, data, t]);
+
+  // Auto-save valid results to recent-storage (ADR-0016). Fires only
+  // on idle state, debounced 500 ms by the underlying hook.
+  useRecentAutoSave(result.state, inputs);
+
+  return result;
 }
