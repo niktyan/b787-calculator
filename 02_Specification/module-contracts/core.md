@@ -28,6 +28,8 @@ Core — это базовый модуль приложения, предост
 | `core/feature-flags/flags` | 🟢 **Pure TS** | In-memory store без React. |
 | `core/feature-flags/useFeatureFlag` | 🔵 **React** | React-хук поверх flags. |
 | `core/haptics/useHapticFeedback` | 🔵 **React** | React-хук поверх `expo-haptics`, gated через `useFeatureFlag('enableHapticFeedback')`. |
+| `core/recent-storage/types` | 🟢 **Pure TS** | Discriminated union `RecentEntry`, zod schema, fingerprint helper. |
+| `core/recent-storage/recentStorage` | 🔴 **Platform** | AsyncStorage-backed list operations (load/save/remove/clear/findById). |
 | `core/modules/types` | 🟢 **Pure TS** | Типы (discriminated union active/inactive). |
 | `core/modules/data.json` | 🟢 **Data** | Bundled JSON (active + coming-soon entries). |
 | `core/modules/loader` | 🟢 **Pure TS** | zod-validated JSON loader (cached). |
@@ -146,6 +148,39 @@ iOS Taptic Engine integration через `expo-haptics`, см. ADR-0015.
   `{ lightImpact, mediumImpact, warningNotification, successNotification }`.
 - `haptics/index.ts` — barrel.
 
+### `core/recent-storage/`
+
+List-shaped persistence layer для Recent Calculations (Sprint D / ADR-0016).
+Sibling-модуль к typed-map `core/storage` — отдельный, потому что
+list-операции (append-with-dedupe, FIFO cap, remove-by-id, clear) не
+вписываются в single-value debounced map.
+
+**Ответственность:**
+- Хранение `RecentStorageFile` ({ schemaVersion, entries: RecentEntry[] })
+  под единственным AsyncStorage ключом `b787.recentCalculations`.
+- Discriminated union `RecentEntry` — `takeoff | landing`.
+- Дедупликация по `fingerprint` (canonical JSON of {module, inputs}).
+- FIFO cap 20 entries.
+- Fail-safe чтение: corrupted JSON / schema mismatch / AsyncStorage
+  exception → пустой список + warn-log через `core/logger`.
+
+**Public API:**
+- `loadRecent(): Promise<readonly RecentEntry[]>`.
+- `saveRecent(prepared: PreparedRecentEntry): Promise<RecentEntry>` —
+  принимает inputs+result, возвращает materialised entry с id,
+  timestamp, fingerprint.
+- `findRecentById(id: string): Promise<RecentEntry | null>` —
+  использует ID из route param для restoration.
+- `removeRecent(id: string): Promise<void>`.
+- `clearRecent(): Promise<void>`.
+- `computeFingerprint(module, inputs): string` — exposed для
+  тестов и debugging.
+
+**Файлы:**
+- `recent-storage/types.ts` — zod-схемы, types, fingerprint helper.
+- `recent-storage/recentStorage.ts` — AsyncStorage обёртка.
+- `recent-storage/index.ts` — barrel.
+
 ### `core/logger/`
 
 Логирование с уровнями.
@@ -228,6 +263,30 @@ export type { FeatureFlagKey } from './feature-flags';
 // haptics
 export { useHapticFeedback } from './haptics';
 export type { HapticFeedback } from './haptics';
+
+// recent-storage (Sprint D / ADR-0016)
+export {
+  RECENT_MAX_ENTRIES,
+  RECENT_SCHEMA_VERSION,
+  RECENT_STORAGE_KEY,
+  clearRecent,
+  computeFingerprint,
+  findRecentById,
+  loadRecent,
+  removeRecent,
+  saveRecent,
+} from './recent-storage';
+export type {
+  PreparedLandingEntry,
+  PreparedRecentEntry,
+  PreparedTakeoffEntry,
+  RecentEntry,
+  RecentLandingEntry,
+  RecentLandingInputs,
+  RecentStorageFile,
+  RecentTakeoffEntry,
+  RecentTakeoffInputs,
+} from './recent-storage';
 
 // logger
 export { logger } from './logger';

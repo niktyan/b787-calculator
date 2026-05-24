@@ -124,12 +124,15 @@ b787-calculator/
 │   │   │   ├── data/              — repository, JSON loading, schemas
 │   │   │   ├── __tests__/         — unit и acceptance тесты
 │   │   │   └── index.ts           — публичный API модуля
-│   │   └── crosswind-landing/     — Crosswind Landing (categorical lookup, ADR-0014)
-│   │       ├── presentation/
-│   │       ├── domain/
-│   │       ├── data/              — b787-landing.json + zod schema
-│   │       ├── __tests__/
-│   │       └── index.ts
+│   │   ├── crosswind-landing/     — Crosswind Landing (categorical lookup, ADR-0014)
+│   │   │   ├── presentation/
+│   │   │   ├── domain/
+│   │   │   ├── data/              — b787-landing.json + zod schema
+│   │   │   ├── __tests__/
+│   │   │   └── index.ts
+│   │   └── recent/                — Recent Calculations (Sprint D / ADR-0016)
+│   │       ├── presentation/      — screen + list-item + view-model
+│   │       └── index.ts           — re-export of RecentCalculationsScreen
 │   └── data/
 │       └── crosswind/         — bundled JSON-файлы с опорными значениями
 │           └── b787-8-dry.json
@@ -208,6 +211,7 @@ features/crosswind/
 - `design-system.md`
 - `crosswind.md` (Takeoff)
 - `crosswind-landing.md` (добавлен в Sprint C / ADR-0014)
+- `recent.md` (добавлен в Sprint D / ADR-0016)
 
 Для каждого нового feature-модуля в будущем аналогичный контракт-документ создаётся **до** написания кода.
 

@@ -491,6 +491,65 @@ Business-rules: `engineInopAutolandLimit > 0`, `catIIIIICap > 0`,
 
 ---
 
+## Recent calculation entries (Sprint D / ADR-0016)
+
+Recent Calculations хранит локальную историю последних 20 расчётов в
+едином AsyncStorage-ключе. Типы живут в `src/core/recent-storage/types.ts`
+и публичны через `core` barrel — оба crosswind-модуля пишут через
+`saveRecent`, Recent screen читает через `loadRecent` / `findRecentById`.
+
+**Discriminated union** `RecentEntry` по `module: 'takeoff' | 'landing'`:
+
+```typescript
+interface RecentEntryBase {
+  readonly id: string;          // `${Date.now()}-${base36(random)}`
+  readonly timestamp: string;   // ISO UTC
+  readonly result: number;      // maxCrosswindKnots (integer ≥ 0)
+  readonly fingerprint: string; // canonical JSON of {module, inputs}
+}
+
+interface RecentTakeoffEntry extends RecentEntryBase {
+  readonly module: 'takeoff';
+  readonly inputs: {
+    readonly aircraft: AircraftVariant;
+    readonly weightTons: number;
+    readonly cgPercent: number;
+    readonly runwayCondition: RunwayCondition;
+  };
+}
+
+interface RecentLandingEntry extends RecentEntryBase {
+  readonly module: 'landing';
+  readonly inputs: {
+    readonly aircraft: AircraftVariant;
+    readonly runwayCondition: RunwayCondition;
+    readonly landingMode: LandingMode;
+    readonly asymReverse: YesNo;
+    readonly catIIIII: YesNo;
+    readonly engineInop: YesNo;
+  };
+}
+```
+
+Storage payload — `{ schemaVersion: 1, entries: RecentEntry[] }`,
+валидируется zod-схемой при каждом чтении. Schema mismatch / corrupted
+JSON / AsyncStorage exception → пустой список + лог через `core/logger`
+(fail-safe). `fingerprint` — canonical JSON со словарным порядком ключей
+inputs (исключает зависимость от порядка вставки в call site).
+
+**Дедупликация.** При `saveRecent`, существующий entry с тем же
+fingerprint удаляется, новый вставляется в head с свежим timestamp.
+**FIFO cap 20** — `slice(0, RECENT_MAX_ENTRIES)` после insert.
+
+**Restoration.** Тап entry в Recent screen → `router.push({ pathname,
+params: { recentEntryId } })`. Калькулятор экран читает `recentEntryId`
+через `useLocalSearchParams`, вызывает `findRecentById(id)`. Если
+entry существует и его `module` совпадает с целевым экраном — setters
+вызываются для prefill state. Cross-module id или несуществующий id —
+no-op (screen остаётся в default state).
+
+---
+
 ## Strategy variants (`StrategyType`)
 
 Алгоритм crosswind — strategy-dispatched: каждый dataset в bundled JSON
