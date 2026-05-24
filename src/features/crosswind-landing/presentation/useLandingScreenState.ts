@@ -16,6 +16,8 @@ import type { AircraftVariant, RunwayCondition } from '../../../core/aviation';
 import { useHapticFeedback } from '../../../core/haptics';
 import type { LandingMode, YesNo } from '../domain/types';
 
+import { useRestoreFromRecent } from './useRestoreFromRecent';
+
 const DEFAULT_AIRCRAFT: AircraftVariant = 'b787_8';
 const DEFAULT_RUNWAY: RunwayCondition = 'dry';
 const DEFAULT_LANDING_MODE: LandingMode = 'manual';
@@ -44,6 +46,14 @@ export function useLandingScreenState(): LandingScreenState {
   const [asymReverse, setAsymReverse] = useState<YesNo>(DEFAULT_YES_NO);
   const [catIIIII, setCatIIIII] = useState<YesNo>(DEFAULT_YES_NO);
   const [engineInop, setEngineInop] = useState<YesNo>(DEFAULT_YES_NO);
+  useRestoreFromRecent({
+    setAircraft,
+    setRunwayCondition,
+    setLandingMode,
+    setAsymReverse,
+    setCatIIIII,
+    setEngineInop,
+  });
   const haptics = useHapticFeedback();
   const reset = useCallback((): void => {
     haptics.mediumImpact();
