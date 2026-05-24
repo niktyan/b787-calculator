@@ -1,4 +1,5 @@
 {
   "showCalcTimeOnResult": false,
-  "enableDataVersionBanner": true
+  "enableDataVersionBanner": true,
+  "enableHapticFeedback": true
 }

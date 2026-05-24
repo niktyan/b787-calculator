@@ -19,6 +19,10 @@ export { useDisclaimerStatus, acceptDisclaimer } from './disclaimer';
 export { useFeatureFlag } from './feature-flags';
 export type { FeatureFlagKey } from './feature-flags';
 
+// haptics
+export { useHapticFeedback } from './haptics';
+export type { HapticFeedback } from './haptics';
+
 // logger
 export { logger } from './logger';
 

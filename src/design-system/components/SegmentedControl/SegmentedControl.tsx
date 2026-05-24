@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
 
+import { useHapticFeedback } from '../../../core/haptics';
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
@@ -171,6 +172,7 @@ export function SegmentedControl<TValue extends string>({
 }: SegmentedControlProps<TValue>): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
+  const haptics = useHapticFeedback();
   const styles = useMemo(() => buildStyles(palette, size), [palette, size]);
   const labelVariant: TextVariant = size === 'regular' ? 'body' : 'segmentLabel';
   const labelStyle = size === 'regular' ? REGULAR_SEGMENT_LABEL_STYLE : undefined;
@@ -195,6 +197,7 @@ export function SegmentedControl<TValue extends string>({
               labelStyle={labelStyle}
               onPress={(): void => {
                 if (option.disabled !== true) {
+                  haptics.lightImpact();
                   onChange(option.value);
                 }
               }}

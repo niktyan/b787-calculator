@@ -1,11 +1,22 @@
 import { fireEvent } from '@testing-library/react-native';
+import * as Haptics from 'expo-haptics';
 
+import { resetFlags, setFlag } from '../../../../core/feature-flags';
 import { renderWithTheme } from '../../../_testing/renderWithTheme';
 import { SegmentedControl } from '../SegmentedControl';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
+
+jest.mock('expo-haptics', () => ({
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
+  NotificationFeedbackType: { Warning: 'warning', Success: 'success' },
+  impactAsync: jest.fn().mockResolvedValue(undefined),
+  notificationAsync: jest.fn().mockResolvedValue(undefined),
+}));
+
+const impactAsyncMock = Haptics.impactAsync as jest.MockedFunction<typeof Haptics.impactAsync>;
 
 type Surface = 'dry' | 'wet' | 'contaminated';
 
@@ -16,6 +27,11 @@ const surfaceOptions = [
 ];
 
 describe('SegmentedControl', () => {
+  beforeEach(() => {
+    resetFlags();
+    impactAsyncMock.mockClear();
+  });
+
   it('renders three options with one active in dark theme', () => {
     const tree = renderWithTheme(
       <SegmentedControl<Surface>
@@ -128,5 +144,53 @@ describe('SegmentedControl', () => {
       />,
     ).toJSON();
     expect(tree).toMatchSnapshot();
+  });
+
+  describe('haptic feedback', () => {
+    it('fires light impact when selecting a non-disabled segment', () => {
+      const { getByTestId } = renderWithTheme(
+        <SegmentedControl<Surface>
+          value="dry"
+          options={[
+            { value: 'dry', label: 'Dry' },
+            { value: 'wet', label: 'Wet' },
+          ]}
+          onChange={jest.fn()}
+          testID="rwy"
+        />,
+      );
+      fireEvent.press(getByTestId('rwy-wet'));
+      expect(impactAsyncMock).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+    });
+
+    it('does not fire haptics when pressing a disabled segment', () => {
+      const { getByTestId } = renderWithTheme(
+        <SegmentedControl<Surface>
+          value="dry"
+          options={surfaceOptions}
+          onChange={jest.fn()}
+          testID="rwy"
+        />,
+      );
+      fireEvent.press(getByTestId('rwy-wet'));
+      expect(impactAsyncMock).not.toHaveBeenCalled();
+    });
+
+    it('does not fire haptics when enableHapticFeedback is off', () => {
+      setFlag('enableHapticFeedback', false);
+      const { getByTestId } = renderWithTheme(
+        <SegmentedControl<Surface>
+          value="dry"
+          options={[
+            { value: 'dry', label: 'Dry' },
+            { value: 'wet', label: 'Wet' },
+          ]}
+          onChange={jest.fn()}
+          testID="rwy"
+        />,
+      );
+      fireEvent.press(getByTestId('rwy-wet'));
+      expect(impactAsyncMock).not.toHaveBeenCalled();
+    });
   });
 });

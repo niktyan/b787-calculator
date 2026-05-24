@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import type { TextStyle, ViewStyle } from 'react-native';
 
 import { useTranslation } from '../../../core';
+import { useHapticFeedback } from '../../../core/haptics';
 import { useTheme } from '../../../core/theming';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
@@ -196,8 +197,18 @@ export function NumericKeypad({
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
   const { t } = useTranslation();
+  const haptics = useHapticFeedback();
   const sizing = resolveSizing(isRegular);
   const styles = useMemo(() => buildStyles({ palette, sizing }), [palette, sizing]);
+
+  const handleKeyPress = (key: NumericKeypadKey): void => {
+    haptics.lightImpact();
+    onKeyPress(key);
+  };
+  const handleDone = (): void => {
+    haptics.mediumImpact();
+    onDone();
+  };
 
   return (
     <View style={styles.root} testID={testID}>
@@ -208,7 +219,7 @@ export function NumericKeypad({
               <KeyButton
                 key={key}
                 value={key}
-                onKeyPress={onKeyPress}
+                onKeyPress={handleKeyPress}
                 styles={styles}
                 iconSize={sizing.keyIconSize}
                 iconColor={palette.textPrimary}
@@ -221,7 +232,7 @@ export function NumericKeypad({
       </View>
       <Button
         label={t('keypad.done')}
-        onPress={onDone}
+        onPress={handleDone}
         variant="primary"
         style={styles.done}
         testID={testID === undefined ? undefined : `${testID}-done`}
