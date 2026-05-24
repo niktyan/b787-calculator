@@ -39,7 +39,7 @@ type TabId = 'modules' | 'settings' | 'about';
 // `string` in the bundled JSON) into a typed-routes-compatible literal,
 // avoiding a fragile `as Href` cast that disagrees between local TS and
 // CI typegen.
-const ACTIVE_MODULE_ROUTES = ['/crosswind', '/crosswind-landing'] as const;
+const ACTIVE_MODULE_ROUTES = ['/crosswind', '/crosswind-landing', '/recent'] as const;
 type ActiveModuleRoute = (typeof ACTIVE_MODULE_ROUTES)[number];
 
 function isActiveModuleRoute(route: string): route is ActiveModuleRoute {

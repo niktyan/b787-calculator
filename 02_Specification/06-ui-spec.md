@@ -1109,6 +1109,72 @@ splash-карточку, а напоминает читателю в окне «
 
 ---
 
+## Экран 6.5 · Recent Calculations (Sprint D / ADR-0016)
+
+**Назначение:** локальная история последних 20 расчётов из обоих
+calculator-модулей. Любая успешная калькуляция (Takeoff либо Landing)
+auto-save-ится с 500 ms debounce; тап по entry возвращает пилота в
+исходный калькулятор с восстановленными inputs.
+
+**Доступ:** карточка «Recent Calculations» на Main Menu (третий слот,
+после Takeoff и Landing). Иконка `RC` на `accentSoft` поверхности.
+
+**Header:** идентичен другим screen header-ам — B7 logo + title слева,
+Back + Clear All pills справа. Title локализован
+(`recent.title` = "Recent Calculations" / "Недавние расчёты").
+Clear All disabled (opacity 0.4) когда entries empty.
+
+**Empty state:** при пустом списке — design-system `<EmptyState>` с
+title `recent.empty.title` и description `recent.empty.subtext`
+(«Calculations you run will appear here automatically»).
+
+**List rendering** (entries > 0):
+- ScrollView с `<Stack gap="sm">` детей.
+- Каждый entry — `RecentListItem` (border + radius `md`, bg `bgCard`,
+  min height 44pt, padding `md`).
+- Row layout: левая колонка `flex: 1` (badge с module-label и
+  relative-time над inputs-line); правая колонка — большой
+  monospace-результат (32pt) над unit-label `KT` (caption tertiary).
+
+**Module badge:** outline-стиль с `borderColor: palette.accent`,
+content — `recent.moduleIndicator.takeoff` / `.landing` (aviation term,
+не локализуется). Цвет text — `accentText` (theme-aware contrast).
+
+**Relative time** через `date-fns#formatDistanceToNow` с
+`addSuffix: true`. Локализация (русский) — Phase 2 follow-up
+(см. `module-contracts/recent.md` § Open questions).
+
+**Inputs-line summary:**
+- Takeoff: `B787-X · {weight} t · {cg} %MAC · {Runway}`.
+  Числа форматируются: integer → no decimals, иначе одна цифра после
+  точки.
+- Landing manual mode: `B787-X · {Runway} · Manual · Asym {Yes/No}`.
+- Landing auto mode: `B787-X · {Runway} · Autoland · Asym {…} ·
+  CAT II-III {…} · ENG INOP {…}`.
+
+В Landing inputs-line **CAT II-III и ENG INOP скрываются в manual
+mode** — они не влияют на результат, отображение запутывало бы
+пилота. См. `domain/calculator.ts` § landing branch.
+
+**Tap entry:** `router.push({ pathname: '/crosswind' | '/crosswind-landing',
+params: { recentEntryId: id } })`. Целевой screen читает param и
+prefill-ит inputs (см. ADR-0016 § Restoration).
+
+**Clear All:** native `Alert.alert(t('recent.clearConfirm'),
+undefined, [{Cancel}, {destructive Clear All}])`. Confirmation —
+single tap to confirm; tap-out cancels по умолчанию iOS-поведению.
+
+**Подсчёт и cap:** UI ничего не знает о cap 20 — это property storage
+layer-а. Если в Phase 2 капу увеличить или ввести виртуализацию,
+component не меняется.
+
+**Tactile feedback:** tap entry — light impact (через
+SegmentedControl-style row-pressed эффект пока не реализован, но
+useScaleOnPress можно добавить в Phase 2 если row press-feedback
+покажется тонким). MVP — opacity 0.6 при pressed.
+
+---
+
 ## Экран 7 · Fail-safe Error Screen
 
 **Назначение:** показывается при критических ошибках (corrupted JSON, провал инициализации). Альтернатива крашу.

@@ -57,6 +57,7 @@ MVP — это первая публичная версия в App Store. Осо
 7. **Полная поддержка тёмной и светлой темы.**
 8. **Privacy Manifest, Privacy Policy, Terms of Use** — все требования App Store закрыты.
 9. **Tactile feedback (haptics).** Light impact на keypad keys и SegmentedControl selection, medium impact на Done/Reset, warning haptic на envelope-violation transition в Takeoff и success haptic на recovery. Через `expo-haptics` (iOS Taptic Engine). Kill-switch через feature flag `enableHapticFeedback`. См. ADR-0015.
+10. **Recent Calculations.** Local-only история последних 20 расчётов (Takeoff + Landing). Auto-save 500 ms после ввода, dedupe по содержимому, FIFO eviction. Тап по entry восстанавливает inputs в исходном калькуляторе через route query param `recentEntryId`. См. ADR-0016.
 
 **Важное архитектурное замечание про неактивные карточки.** Они являются **визуальными элементами Main Menu**, не отдельными модулями. Они не имеют собственного домена, данных или экранов в MVP — только содержимое в JSON-конфиге `src/core/modules/data.json` (rename из `coming-soon-modules` в Sprint 6 follow-up Block 4 — теперь реестр включает и активные модули с их `route`, и тизеры с `phase`). Это позволяет: (а) безопасно показывать roadmap без риска навигации в нереализованный модуль, (б) обновлять roadmap без перевыпуска приложения через EAS Update в будущем, (в) превращать карточку из «coming soon» в активную одной правкой конфига (`active: false` → `active: true` + добавить `route`) при выкладке Phase 2.
 

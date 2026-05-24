@@ -38,6 +38,7 @@ import type { AircraftVariant, RunwayCondition } from '../domain/types';
 import { CrosswindInputForm } from './components/CrosswindInputForm';
 import { CrosswindResult } from './components/CrosswindResult';
 import { useCrosswindCalculator } from './useCrosswindCalculator';
+import { useRestoreFromRecent } from './useRestoreFromRecent';
 
 const COLUMN_BASIS = '48%';
 const TWO_COLUMN_BREAKPOINT = tokens.breakpoints.regular;
@@ -78,6 +79,9 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
   const [cgText, setCgText] = useState('');
   const [aircraft, setAircraft] = useState<AircraftVariant>(DEFAULT_AIRCRAFT);
   const [runwayCondition, setRunwayCondition] = useState<RunwayCondition>('dry');
+
+  // Prefill from `?recentEntryId=…` route param on mount (ADR-0016).
+  useRestoreFromRecent({ setWeightText, setCgText, setAircraft, setRunwayCondition });
 
   const inputs = useMemo(
     () => ({ weightText, cgText, aircraft, runwayCondition }),

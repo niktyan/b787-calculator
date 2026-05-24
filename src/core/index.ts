@@ -23,6 +23,30 @@ export type { FeatureFlagKey } from './feature-flags';
 export { useHapticFeedback } from './haptics';
 export type { HapticFeedback } from './haptics';
 
+// recent-storage
+export {
+  RECENT_MAX_ENTRIES,
+  RECENT_SCHEMA_VERSION,
+  RECENT_STORAGE_KEY,
+  clearRecent,
+  computeFingerprint,
+  findRecentById,
+  loadRecent,
+  removeRecent,
+  saveRecent,
+} from './recent-storage';
+export type {
+  PreparedLandingEntry,
+  PreparedRecentEntry,
+  PreparedTakeoffEntry,
+  RecentEntry,
+  RecentLandingEntry,
+  RecentLandingInputs,
+  RecentStorageFile,
+  RecentTakeoffEntry,
+  RecentTakeoffInputs,
+} from './recent-storage';
+
 // logger
 export { logger } from './logger';
 

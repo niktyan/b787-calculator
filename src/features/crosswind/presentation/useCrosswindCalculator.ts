@@ -45,6 +45,8 @@ import { makeCGPercentMAC, makeWeightInTons } from '../domain/valueObjects';
 import { resolveOperationalEnvelope } from '../data/crosswindRepository';
 import type { CrosswindDataFile } from '../data/schema';
 
+import { useRecentAutoSave } from './useRecentAutoSave';
+
 export type CrosswindUIState =
   | { readonly kind: 'empty' }
   | { readonly kind: 'idle'; readonly output: CrosswindCalculationOutput }
@@ -360,6 +362,11 @@ export function useCrosswindCalculator(
       haptics.successNotification();
     }
   }, [result.state.kind, haptics]);
+
+  // Auto-save valid results to recent-storage with a 500 ms debounce
+  // (ADR-0016). Lives in its own hook to keep this file under the
+  // 300-line max-lines cap.
+  useRecentAutoSave(result.state, inputs);
 
   return result;
 }

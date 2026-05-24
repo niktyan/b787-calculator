@@ -21,7 +21,8 @@
     "comingSoonBadge": "Coming soon",
     "descriptions": {
       "crosswind-takeoff": "Max crosswind for takeoff based on weight, CG, RWYCC, aircraft variant.",
-      "crosswind-landing": "Max crosswind for landing across runway conditions, autoland mode, asymmetric reverse and engine-inop adjustments."
+      "crosswind-landing": "Max crosswind for landing across runway conditions, autoland mode, asymmetric reverse and engine-inop adjustments.",
+      "recent": "Your last 20 saved calculations"
     },
     "allHidden": "All modules hidden. Open Settings to re-enable.",
     "openSettings": "Open Settings"
@@ -123,5 +124,21 @@
     "closeAccessibilityLabel": "Close numeric keypad",
     "decimalSeparator": "Decimal separator",
     "backspace": "Backspace"
+  },
+  "recent": {
+    "title": "Recent Calculations",
+    "clearAll": "Clear All",
+    "clearConfirm": "Clear all recent calculations?",
+    "yes": "Yes",
+    "no": "No",
+    "empty": {
+      "title": "No recent calculations",
+      "subtext": "Calculations you run will appear here automatically"
+    },
+    "moduleIndicator": {
+      "takeoff": "Takeoff",
+      "landing": "Landing"
+    },
+    "cardName": "Recent Calculations"
   }
 }

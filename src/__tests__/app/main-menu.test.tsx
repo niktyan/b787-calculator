@@ -30,16 +30,18 @@ describe('Main Menu route', () => {
     await AsyncStorage.clear();
   });
 
-  it('renders the header, NavPills, and both active crosswind cards (dark)', () => {
+  it('renders the header, NavPills, and the three active cards (dark)', () => {
     const tree = renderWithTheme(<MainMenu />, { mode: 'dark' });
     expect(tree.getByTestId('main-menu-screen')).toBeTruthy();
     expect(tree.getByTestId('main-menu-logo')).toBeTruthy();
     expect(tree.getByText('B787 Calculator')).toBeTruthy();
     expect(tree.getByTestId('main-menu-tabs')).toBeTruthy();
     expect(tree.getByTestId('main-menu-grid')).toBeTruthy();
-    // Sprint C / ADR-0014: both crosswind cards are now active.
-    expect(tree.getByTestId('module-card-crosswind-landing')).toBeTruthy();
+    // Sprint C / ADR-0014: both crosswind cards are active.
+    // Sprint D / ADR-0016: Recent Calculations is the third active card.
     expect(tree.getByTestId('module-card-crosswind-takeoff')).toBeTruthy();
+    expect(tree.getByTestId('module-card-crosswind-landing')).toBeTruthy();
+    expect(tree.getByTestId('module-card-recent')).toBeTruthy();
     expect(tree.queryByTestId('module-card-weight-balance')).toBeNull();
     expect(tree.queryByTestId('module-card-performance')).toBeNull();
     expect(tree.toJSON()).toMatchSnapshot();
@@ -50,11 +52,22 @@ describe('Main Menu route', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('renders Crosswind · Takeoff before Crosswind · Landing in the grid', () => {
+  it('renders Takeoff, Landing, Recent in canonical order', () => {
     const { getAllByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     const cards = getAllByTestId(/^module-card-/);
     const ids = cards.map((c) => (c.props as { testID: string }).testID);
-    expect(ids).toEqual(['module-card-crosswind-takeoff', 'module-card-crosswind-landing']);
+    expect(ids).toEqual([
+      'module-card-crosswind-takeoff',
+      'module-card-crosswind-landing',
+      'module-card-recent',
+    ]);
+  });
+
+  it('navigates to /recent via push when the Recent card is tapped (drilldown)', () => {
+    const { getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
+    fireEvent.press(getByTestId('module-card-recent'));
+    expect(mockPush).toHaveBeenCalledWith('/recent');
+    expect(mockReplace).not.toHaveBeenCalled();
   });
 
   it('navigates to /crosswind via push when the takeoff card is tapped (drilldown)', () => {
@@ -98,7 +111,11 @@ describe('Main Menu route', () => {
   it('shows the empty state with an Open Settings link when all modules are hidden', async () => {
     await AsyncStorage.setItem(
       STORAGE_KEYS.moduleVisibility,
-      JSON.stringify({ 'crosswind-landing': false, 'crosswind-takeoff': false }),
+      JSON.stringify({
+        'crosswind-landing': false,
+        'crosswind-takeoff': false,
+        recent: false,
+      }),
     );
     const { queryByTestId, getByTestId } = renderWithTheme(<MainMenu />, { mode: 'dark' });
     await waitFor(

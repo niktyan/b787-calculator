@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecentListItem renders a takeoff row with aircraft, weight, CG, runway and result (dark) 1`] = `
+<View
+  accessibilityLabel="recent.moduleIndicator.takeoff · B787-8 · 170 t · 32 %MAC · Dry · 34 KT"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "minHeight": 44,
+        "padding": 12,
+      },
+    ]
+  }
+  testID="row"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": 12,
+          "justifyContent": "space-between",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 4,
+            "justifyContent": "flex-start",
+          },
+          {
+            "flex": 1,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "flexWrap": "nowrap",
+              "gap": 8,
+              "justifyContent": "flex-start",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "borderColor": "#00C2A8",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+            }
+          }
+          testID="row-badge"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#00C2A8",
+                  "fontFamily": "System",
+                  "fontSize": 12,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 16,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            recent.moduleIndicator.takeoff
+          </Text>
+        </View>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6E7681",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          1 day ago
+        </Text>
+      </View>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#E6EDF3",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        B787-8 · 170 t · 32 %MAC · Dry
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "flex-end",
+            "flexDirection": "column",
+            "gap": 4,
+            "justifyContent": "flex-start",
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "Menlo",
+              "fontSize": 16,
+              "fontWeight": "500",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            {
+              "fontSize": 32,
+              "fontWeight": "600",
+              "lineHeight": 36,
+            },
+          ]
+        }
+      >
+        34
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6E7681",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        KT
+      </Text>
+    </View>
+  </View>
+</View>
+`;

@@ -21,7 +21,8 @@
     "comingSoonBadge": "Скоро",
     "descriptions": {
       "crosswind-takeoff": "Макс. боковой ветер на взлёте: вес, центровка, RWYCC, вариант ВС.",
-      "crosswind-landing": "Макс. боковой ветер на посадке: состояние ВПП, Autoland, асимметричный реверс, ENG INOP."
+      "crosswind-landing": "Макс. боковой ветер на посадке: состояние ВПП, Autoland, асимметричный реверс, ENG INOP.",
+      "recent": "Ваши последние 20 сохранённых расчётов"
     },
     "allHidden": "Все модули скрыты. Откройте настройки, чтобы включить.",
     "openSettings": "Открыть настройки"
@@ -123,5 +124,21 @@
     "closeAccessibilityLabel": "Закрыть цифровую клавиатуру",
     "decimalSeparator": "Десятичный разделитель",
     "backspace": "Удалить символ"
+  },
+  "recent": {
+    "title": "Недавние расчёты",
+    "clearAll": "Очистить",
+    "clearConfirm": "Очистить все недавние расчёты?",
+    "yes": "Да",
+    "no": "Нет",
+    "empty": {
+      "title": "Нет недавних расчётов",
+      "subtext": "Здесь автоматически появятся расчёты, которые вы выполните"
+    },
+    "moduleIndicator": {
+      "takeoff": "Takeoff",
+      "landing": "Landing"
+    },
+    "cardName": "Недавние расчёты"
   }
 }
