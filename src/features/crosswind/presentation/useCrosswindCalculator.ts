@@ -289,7 +289,7 @@ export function useCrosswindCalculator(
   // haptic per transition, regardless of how many times the surrounding
   // memo recomputes for the same kind.
   const prevStateKind = useRef<CrosswindUIState['kind'] | null>(null);
-  const result = useMemo(() => {
+  const result = useMemo<UseCrosswindCalculatorResult>(() => {
     // Schema 2.3.0 (ADR-0013): envelope lives per-aircraft. Each
     // selected variant has its own FCOM-certified bounds, so the
     // validator pair runs against the envelope of the active aircraft,
