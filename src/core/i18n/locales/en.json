@@ -19,7 +19,10 @@
     "tabSettings": "Settings",
     "tabAbout": "About",
     "comingSoonBadge": "Coming soon",
-    "activeModuleDescription": "Max crosswind for takeoff based on weight, CG, RWYCC, aircraft variant.",
+    "descriptions": {
+      "crosswind-takeoff": "Max crosswind for takeoff based on weight, CG, RWYCC, aircraft variant.",
+      "crosswind-landing": "Max crosswind for landing across runway conditions, autoland mode, asymmetric reverse and engine-inop adjustments."
+    },
     "allHidden": "All modules hidden. Open Settings to re-enable.",
     "openSettings": "Open Settings"
   },
@@ -64,6 +67,22 @@
       "mediumToPoor": "Medium to Poor",
       "poor": "Poor"
     }
+  },
+  "crosswind-landing": {
+    "title": "Crosswind · Landing",
+    "aircraftLabel": "Aircraft",
+    "runwayConditionLabel": "Runway condition",
+    "landingModeLabel": "Landing",
+    "toggleNo": "No",
+    "toggleYes": "Yes",
+    "resetLabel": "Reset",
+    "emptyIconLabel": "Information",
+    "resultStatusLabel": "Max crosswind · Landing",
+    "errorHeadline": "Calculation unavailable",
+    "errorVerifyInputs": "Verify inputs and try again.",
+    "errorDataAircraft": "No data available for the selected aircraft.",
+    "errorDataCondition": "No data available for the selected runway condition.",
+    "errorDataMode": "No data available for the selected landing mode."
   },
   "settings": {
     "title": "Settings",

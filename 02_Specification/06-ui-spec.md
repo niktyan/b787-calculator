@@ -842,6 +842,82 @@ disabled-state pattern.
 
 ---
 
+## Экран 4b · Crosswind Landing Calculator
+
+**Назначение:** второй активный модуль MVP (Sprint C / ADR-0014). Расчёт
+максимально допустимого бокового ветра для посадки B787 — categorical
+lookup по FCOM Tab 2.29.3 + page 2-105 + FCOM CAUTION adjustments.
+
+**Layout.** Тот же двухколоночный паттерн, что у Takeoff Calculator:
+
+- iPad landscape (≥ 1024 pt): 2 columns — input form слева, result panel
+  справа; result Card получает `flex: 1` чтобы заполнять всю высоту
+  колонки.
+- iPad portrait / iPhone: stacked vertically (input → result).
+
+Header — Logo + Title + Back/Reset pills, идентичный takeoff'у;
+`isRegular` breakpoint = 768 pt управляет typography sizing.
+
+**Input form (6 segmented controls).** Render order сверху вниз:
+
+1. **AIRCRAFT** — `SegmentedControl<AircraftVariant>` с двумя сегментами
+   (B787-8 / B787-9). Аналогично Takeoff Aircraft selector.
+2. **RUNWAY CONDITION** — `SegmentedControl<RunwayCondition>` с шестью
+   сегментами (Dry / Good / Medium to Good / Medium / Medium to Poor /
+   Poor). На iPad-regular — одна строка; на iPhone / iPad-compact —
+   `wrap: true` → 2 ряда по 3.
+3. **LANDING** — `SegmentedControl<LandingMode>` с двумя сегментами
+   (Manual / Autoland). Aviation-термины, не локализуются.
+4. **ASYMMETRIC REVERSE THRUST** — `SegmentedControl<YesNo>` с двумя
+   сегментами (No / Yes). Yes/No локализуются.
+
+**Conditional rows (Auto-only).** При `landingMode === 'auto'`
+дополнительно рендерятся ниже:
+
+5. **CAT II-III (RVR less 350 m)** — `SegmentedControl<YesNo>`.
+6. **ONE ENG INOP** — `SegmentedControl<YesNo>`.
+
+При `landingMode === 'manual'` обе CAT/INOP-секции **полностью
+unmount-ятся** (не disabled — исчезают). Причина: в Manual эти значения
+не влияют на результат. При переключении обратно в Autoland секции
+появляются с текущими значениями `useState` (по умолчанию `no` / `no`).
+
+Aviation-метки rows 4-6 в обеих локалях остаются на английском:
+"Asymmetric Reverse Thrust", "CAT II-III (RVR less 350 m)", "ONE ENG
+INOP", "Manual", "Autoland". Локализуются только Тип ВС / Состояние
+ВПП / Посадка / No-Yes labels.
+
+**Result panel.** Single-card panel со status label "MAX CROSSWIND ·
+LANDING" (uppercase, accent), большое число (`displayLarge` / `monoXL`
+на iPad-regular, `display` / `monoMedium` иначе) и KT-суффикс.
+Визуальный treatment идентичен Takeoff result panel; компонент
+**дублируется**, не импортируется (cross-feature запрет).
+
+**States:**
+
+- **idle** — статус + число + KT. Дефолт после загрузки экрана
+  (Manual + Dry + No → 37 KT для B787-8). Из-за categorical природы
+  входов никогда не falls в "empty" или "out-of-envelope".
+- **data-not-available** — info-caption (если в bundled JSON отсутствует
+  выбранный aircraft / condition). В MVP не достижимо — JSON ship-ит
+  полную 2×6 матрицу.
+- **error** — defence-in-depth, не достижимо из текущих данных.
+
+**Per-field validation timing.** В Landing нет числовых input'ов и нет
+operational envelope. Result panel пересчитывается на каждое
+изменение любого из 6 toggle's мгновенно (memoized через
+`useMemo`).
+
+**Reset.** Restore-default kнопка возвращает 6 toggle's в
+Aircraft=B787-8, Runway=Dry, Landing=Manual, все Yes/No → No.
+Confirmation dialog отсутствует (parity с Takeoff Reset).
+
+**Route.** `/crosswind-landing` (см. `src/app/(main)/crosswind-landing.tsx`).
+Из Main Menu — `router.push('/crosswind-landing')` (drilldown, iOS
+swipe-back pops обратно в меню).
+
+---
+
 ## Экран 5 · Settings
 
 **Назначение:** управление настройками приложения.

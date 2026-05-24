@@ -223,6 +223,14 @@ Aircraft — **полноправная dimension в lookup-таблице**: bu
 которого `byAircraft.<variant>` ещё не shipped — выбор такого варианта
 даст `DataNotAvailable.reason: 'aircraft-not-implemented'`.
 
+**Location (Sprint C / ADR-0014).** `AircraftVariant`,
+`AIRCRAFT_VARIANTS`, `FlightPhase`, `FLIGHT_PHASES`, `RunwayCondition`,
+`RUNWAY_CONDITIONS`, `RunwayConditionCode` и `RWYCC` живут в
+`src/core/aviation/types.ts`. Оба feature-модуля (`crosswind` для
+takeoff и `crosswind-landing`) импортируют их через core. Модуль
+`features/crosswind/domain/types.ts` re-export'ит те же имена для
+обратной совместимости с существующими call sites.
+
 ### `RunwayCondition` — RWYCC scale (6 значений)
 
 ```typescript
@@ -277,10 +285,12 @@ const FLIGHT_PHASES = ['takeoff', 'landing'] as const;
 type FlightPhase = typeof FLIGHT_PHASES[number];
 ```
 
-В MVP активен только `takeoff`. `landing` сохранён в типе для
-Phase 2 — данные landing-таблицы попадут в отдельный per-phase JSON
-(`b787-landing.json`), а Main Menu станет рендерить вторую
-активную карточку.
+После Sprint C / ADR-0014 активны **оба** значения. Каждое значение
+шипается со своим bundled JSON: `features/crosswind/data/b787-takeoff.json`
+(Takeoff, schemaVersion 2.3.x) и
+`features/crosswind-landing/data/b787-landing.json` (Landing,
+schemaVersion 1.0.x). Main Menu рендерит две активные карточки —
+Takeoff (`/crosswind`) и Landing (`/crosswind-landing`).
 
 ---
 
@@ -361,6 +371,123 @@ Operational-envelope нарушения возвращаются двумя не
 функциями `validateWeightEnvelope` / `validateCGEnvelope` (см.
 `module-contracts/crosswind.md` Public API и § "Independent weight + cg
 validation" выше).
+
+---
+
+## Landing types (Sprint C / ADR-0014)
+
+Crosswind Landing использует **categorical** модель — никаких Value
+Objects (нет weight/CG), никаких branded типов. Все шесть входов —
+строковые literal-unions из небольшого алфавита.
+
+```typescript
+const LANDING_MODES = ['manual', 'auto'] as const;
+type LandingMode = typeof LANDING_MODES[number];
+
+const YES_NO_VALUES = ['no', 'yes'] as const;
+type YesNo = typeof YES_NO_VALUES[number];
+
+interface CrosswindLandingInput {
+  readonly aircraft: AircraftVariant;          // из core/aviation
+  readonly runwayCondition: RunwayCondition;   // из core/aviation
+  readonly landingMode: LandingMode;
+  readonly asymReverse: YesNo;
+  readonly catIIIII: YesNo;        // CAT II-III approach
+  readonly engineInop: YesNo;      // ONE ENG INOP
+}
+
+interface CrosswindLandingAppliedAdjustments {
+  readonly catCap: boolean;
+  readonly asymPenalty: boolean;
+  readonly inopCap: boolean;
+}
+
+interface CrosswindLandingMetadata {
+  readonly dataVersion: string;
+  readonly referenceDocument: string;
+  readonly aircraft: AircraftVariant;
+  readonly landingMode: LandingMode;
+  readonly appliedAdjustments: CrosswindLandingAppliedAdjustments;
+}
+
+interface CrosswindLandingOutput {
+  readonly maxCrosswindKnots: number;  // always integer per FCOM
+  readonly metadata: CrosswindLandingMetadata;
+}
+
+type CrosswindLandingDataUnavailableReason =
+  | 'aircraft-not-implemented'
+  | 'condition-not-implemented'
+  | 'mode-not-implemented';
+
+type CrosswindLandingError =
+  | {
+      kind: 'DataNotAvailable';
+      aircraft: AircraftVariant;
+      runwayCondition: RunwayCondition;
+      reason: CrosswindLandingDataUnavailableReason;
+    }
+  | { kind: 'CorruptedDataBundle'; details: string };
+```
+
+Pure-function entry-point:
+
+```typescript
+function calculateLandingCrosswind(
+  input: CrosswindLandingInput,
+  data: CrosswindLandingDataFile,
+): Result<CrosswindLandingOutput, CrosswindLandingError>;
+```
+
+`maxCrosswindKnots` остаётся обычным `number`, **не** branded — landing
+не делит Value Object с takeoff'ом. Demonstrated-bound check (40 KT)
+не применяется на landing: верхняя граница base table — 37 KT (B787-8
+Dry Manual), что ниже demonstrated bound для landing-фазы.
+
+### Landing JSON schema (schemaVersion 1.0.x)
+
+```jsonc
+{
+  "schemaVersion": "1.0.0",
+  "dataVersion":   "2026-05-23.001",
+  "phase":         "landing",
+  "adjustments": {
+    "catIIIIICap":         25,   // hard cap for Autoland in CAT II-III, KT
+    "asymReversePenalty":  5     // KT subtracted when asym reverse on non-dry RWY
+  },
+  "byAircraft": {
+    "b787_8": {
+      "engineInopAutolandLimit": 28,
+      "baseTable": {
+        "dry":          { "manual": 37, "auto": 33 },
+        "good":         { "manual": 35, "auto": 33 },
+        "mediumToGood": { "manual": 35, "auto": 33 },
+        "medium":       { "manual": 35, "auto": 33 },
+        "mediumToPoor": { "manual": 20, "auto": 20 },
+        "poor":         { "manual": 17, "auto": 17 }
+      },
+      "metadata": { /* createdAt, validatedBy, referenceDocument, notes */ }
+    },
+    "b787_9": { /* same shape; differs in engineInopAutolandLimit = 37 and baseTable values */ }
+  }
+}
+```
+
+Структурные отличия от takeoff JSON (schema 2.3.x):
+
+- Один phase per file (`phase: 'landing'`).
+- Нет `weightConversion` (categorical algorithm не работает с фунтами).
+- Нет `operationalEnvelope` per aircraft (нет weight/CG входов
+  для валидации).
+- Нет strategy-discriminated dataset — только integer lookup matrix +
+  per-aircraft `engineInopAutolandLimit` + file-level
+  `adjustments.catIIIIICap` / `adjustments.asymReversePenalty`.
+- `baseTable` keys строгий, оба aircraft entries обязательны (zod
+  `.strict()`).
+
+zod-схема и business-rule walker — `src/features/crosswind-landing/data/schema.ts`.
+Business-rules: `engineInopAutolandLimit > 0`, `catIIIIICap > 0`,
+`asymReversePenalty > 0`, phase matches `expectedPhase` контекста.
 
 ---
 

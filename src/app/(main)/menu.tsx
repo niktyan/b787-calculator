@@ -19,13 +19,14 @@ import { ActiveModuleCard, ComingSoonCard } from './_components/ModuleCards';
  * back to an EmptyState with a deep-link to Settings.
  *
  * Render order mirrors the canonical operational flight phase sequence
- * encoded in `data.json`: Crosswind · Takeoff (active) precedes
- * Crosswind · Landing (Phase 2 teaser). Takeoff is the operationally
- * earlier phase, and is also the active MVP module — both motivations
- * point at the same ordering.
+ * encoded in `data.json`: Crosswind · Takeoff first, then Crosswind ·
+ * Landing — takeoff is the operationally earlier phase. Both are active
+ * MVP modules since Sprint C / ADR-0014.
  *
- * Tapping the active card → its route from JSON. Tapping a coming-soon
- * card → ComingSoonModal (no navigation away).
+ * Tapping an active card pushes its route from JSON. Tapping a coming-
+ * soon card opens ComingSoonModal (no navigation away). MVP ships zero
+ * coming-soon teasers, so the ComingSoonCard path is currently dead code
+ * — kept for the next module activation (post-MVP Phase 3+).
  */
 
 const GRID_BREAKPOINT = tokens.breakpoints.compact;
@@ -38,7 +39,7 @@ type TabId = 'modules' | 'settings' | 'about';
 // `string` in the bundled JSON) into a typed-routes-compatible literal,
 // avoiding a fragile `as Href` cast that disagrees between local TS and
 // CI typegen.
-const ACTIVE_MODULE_ROUTES = ['/crosswind'] as const;
+const ACTIVE_MODULE_ROUTES = ['/crosswind', '/crosswind-landing'] as const;
 type ActiveModuleRoute = (typeof ACTIVE_MODULE_ROUTES)[number];
 
 function isActiveModuleRoute(route: string): route is ActiveModuleRoute {

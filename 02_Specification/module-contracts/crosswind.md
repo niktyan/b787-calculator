@@ -375,6 +375,31 @@ UI: `CrosswindInputForm.AIRCRAFT_OPTIONS` no longer marks B787-9 as
 `disabled: true`. Both segments are equally active; tapping switches
 the resolved envelope and dataset.
 
+### Shared aviation primitives extracted to `core/aviation` (Sprint C / ADR-0014, 2026-05-23)
+
+`AircraftVariant`, `Aircraft`, `FlightPhase`, `RunwayCondition`,
+`RunwayConditionCode`, the const arrays `AIRCRAFT_VARIANTS` /
+`FLIGHT_PHASES` / `RUNWAY_CONDITIONS`, and the `RWYCC` numeric mapping
+moved from `src/features/crosswind/domain/types.ts` to
+`src/core/aviation/types.ts`. The new `features/crosswind-landing/`
+feature consumes them from `core/aviation` — features cannot
+cross-import each other.
+
+`features/crosswind/domain/types.ts` re-exports the same identifiers
+from `core/aviation`, so:
+
+- Every internal import path inside the takeoff feature (e.g.,
+  `import type { AircraftVariant } from '../domain/types'`) remains
+  valid.
+- The takeoff feature's public API (`@features/crosswind` barrel)
+  exports `Aircraft` as before — no consumer change required.
+- Architectural lint rules (`no-restricted-paths`) are unaffected;
+  the takeoff feature still imports only from `core` and itself.
+
+No data shape change, no `schemaVersion` / `dataVersion` bump, no
+behaviour change. Verified by the existing crosswind test suite —
+18 suites, 412 tests, all green without modification.
+
 ### Hide result on operational envelope violation (PR A3 / ADR-0012, 2026-05-23)
 
 Safety-first follow-up to PR A2. When either field is outside the

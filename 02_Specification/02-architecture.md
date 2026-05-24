@@ -118,12 +118,18 @@ b787-calculator/
 │   │   ├── tokens.ts          — цвета, типографика, размеры
 │   │   └── index.ts
 │   ├── features/
-│   │   └── crosswind/
-│   │       ├── presentation/  — screens, view-models
-│   │       ├── domain/        — entities, calculation logic, validators
-│   │       ├── data/          — repository, JSON loading, schemas
-│   │       ├── __tests__/     — unit и acceptance тесты
-│   │       └── index.ts       — публичный API модуля
+│   │   ├── crosswind/             — Crosswind Takeoff (piecewise-linear lookup)
+│   │   │   ├── presentation/      — screens, view-models
+│   │   │   ├── domain/            — entities, calculation logic, validators
+│   │   │   ├── data/              — repository, JSON loading, schemas
+│   │   │   ├── __tests__/         — unit и acceptance тесты
+│   │   │   └── index.ts           — публичный API модуля
+│   │   └── crosswind-landing/     — Crosswind Landing (categorical lookup, ADR-0014)
+│   │       ├── presentation/
+│   │       ├── domain/
+│   │       ├── data/              — b787-landing.json + zod schema
+│   │       ├── __tests__/
+│   │       └── index.ts
 │   └── data/
 │       └── crosswind/         — bundled JSON-файлы с опорными значениями
 │           └── b787-8-dry.json
@@ -196,12 +202,21 @@ features/crosswind/
 - Какие side-effects возможны (storage, navigation и т.д.).
 - Как тестировать (примеры).
 
-Модули, для которых пишется контракт в Phase A:
+Модули, для которых написан контракт:
+
 - `core.md`
 - `design-system.md`
-- `crosswind.md`
+- `crosswind.md` (Takeoff)
+- `crosswind-landing.md` (добавлен в Sprint C / ADR-0014)
 
-Для каждого нового feature-модуля в будущем (Phase 2+) аналогичный контракт-документ создаётся **до** написания кода.
+Для каждого нового feature-модуля в будущем аналогичный контракт-документ создаётся **до** написания кода.
+
+**Shared aviation primitives.** Типы `AircraftVariant`, `RunwayCondition`,
+`FlightPhase`, `RunwayConditionCode` и константа `RWYCC` живут в
+`src/core/aviation/` — общий код для всех feature-модулей crosswind-семьи.
+Это применение § "Module Communication Patterns" trigger 5: одна и та же
+структура нужна и в `features/crosswind/`, и в `features/crosswind-landing/`,
+поэтому она вынесена в `core`. Cross-feature импорты остаются запрещены.
 
 ---
 

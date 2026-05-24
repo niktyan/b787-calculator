@@ -185,7 +185,7 @@ export function ActiveModuleCard({ module, onPress, isRegular }: ActiveModuleCar
           {module.name}
         </Text>
         <Text variant="bodySmall" color="textSecondary" style={cardStyles.description}>
-          {t('mainMenu.activeModuleDescription')}
+          {t(`mainMenu.descriptions.${module.id}`)}
         </Text>
       </Animated.View>
     </Pressable>

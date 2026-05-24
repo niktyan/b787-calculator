@@ -605,7 +605,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   ]
                 }
               >
-                mainMenu.activeModuleDescription
+                mainMenu.descriptions.crosswind-takeoff
               </Text>
             </View>
           </View>
@@ -655,10 +655,10 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
               style={
                 [
                   {
-                    "backgroundColor": "#FFFFFF",
-                    "borderColor": "rgba(0, 0, 0, 0.08)",
+                    "borderColor": "#00C2A8",
                     "borderRadius": 10,
                     "borderWidth": 1,
+                    "overflow": "hidden",
                     "padding": 12,
                   },
                   {
@@ -672,42 +672,45 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                 ]
               }
             >
-              <View
-                style={
-                  {
-                    "position": "absolute",
-                    "right": 8,
-                    "top": 8,
-                  }
+              <ViewManagerAdapter_ExpoLinearGradient
+                colors={
+                  [
+                    4294967295,
+                    4292802547,
+                  ]
                 }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#6B7280",
-                        "fontFamily": "System",
-                        "fontSize": 11,
-                        "fontWeight": "600",
-                        "letterSpacing": 0.44,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 8,
-                      },
-                    ]
-                  }
-                >
-                  Phase 2
-                </Text>
-              </View>
+                endPoint={
+                  [
+                    1,
+                    1,
+                  ]
+                }
+                startPoint={
+                  [
+                    0,
+                    0,
+                  ]
+                }
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    },
+                    {
+                      "borderRadius": 10,
+                    },
+                  ]
+                }
+              />
               <View
                 style={
                   {
                     "alignItems": "center",
-                    "backgroundColor": "rgba(0, 0, 0, 0.16)",
+                    "backgroundColor": "#DEF7F3",
                     "borderRadius": 6,
                     "height": 28,
                     "justifyContent": "center",
@@ -721,7 +724,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   style={
                     [
                       {
-                        "color": "#6B7280",
+                        "color": "#00C2A8",
                         "fontFamily": "Menlo",
                         "fontSize": 16,
                         "fontWeight": "500",
@@ -780,7 +783,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                   ]
                 }
               >
-                Same crosswind logic applied to the landing phase.
+                mainMenu.descriptions.crosswind-landing
               </Text>
             </View>
           </View>
@@ -791,7 +794,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
 </RNCSafeAreaView>
 `;
 
-exports[`Main Menu route renders the header, NavPills, the active takeoff card, and the landing teaser (dark) 1`] = `
+exports[`Main Menu route renders the header, NavPills, and both active crosswind cards (dark) 1`] = `
 <RNCSafeAreaView
   edges={
     {
@@ -1396,7 +1399,7 @@ exports[`Main Menu route renders the header, NavPills, the active takeoff card, 
                   ]
                 }
               >
-                mainMenu.activeModuleDescription
+                mainMenu.descriptions.crosswind-takeoff
               </Text>
             </View>
           </View>
@@ -1446,10 +1449,10 @@ exports[`Main Menu route renders the header, NavPills, the active takeoff card, 
               style={
                 [
                   {
-                    "backgroundColor": "#11161F",
-                    "borderColor": "rgba(255, 255, 255, 0.08)",
+                    "borderColor": "#00C2A8",
                     "borderRadius": 10,
                     "borderWidth": 1,
+                    "overflow": "hidden",
                     "padding": 12,
                   },
                   {
@@ -1463,42 +1466,45 @@ exports[`Main Menu route renders the header, NavPills, the active takeoff card, 
                 ]
               }
             >
-              <View
-                style={
-                  {
-                    "position": "absolute",
-                    "right": 8,
-                    "top": 8,
-                  }
+              <ViewManagerAdapter_ExpoLinearGradient
+                colors={
+                  [
+                    4279309855,
+                    4278205494,
+                  ]
                 }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#6E7681",
-                        "fontFamily": "System",
-                        "fontSize": 11,
-                        "fontWeight": "600",
-                        "letterSpacing": 0.44,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 8,
-                      },
-                    ]
-                  }
-                >
-                  Phase 2
-                </Text>
-              </View>
+                endPoint={
+                  [
+                    1,
+                    1,
+                  ]
+                }
+                startPoint={
+                  [
+                    0,
+                    0,
+                  ]
+                }
+                style={
+                  [
+                    {
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    },
+                    {
+                      "borderRadius": 10,
+                    },
+                  ]
+                }
+              />
               <View
                 style={
                   {
                     "alignItems": "center",
-                    "backgroundColor": "rgba(255, 255, 255, 0.16)",
+                    "backgroundColor": "#003C36",
                     "borderRadius": 6,
                     "height": 28,
                     "justifyContent": "center",
@@ -1512,7 +1518,7 @@ exports[`Main Menu route renders the header, NavPills, the active takeoff card, 
                   style={
                     [
                       {
-                        "color": "#6E7681",
+                        "color": "#00C2A8",
                         "fontFamily": "Menlo",
                         "fontSize": 16,
                         "fontWeight": "500",
@@ -1571,7 +1577,7 @@ exports[`Main Menu route renders the header, NavPills, the active takeoff card, 
                   ]
                 }
               >
-                Same crosswind logic applied to the landing phase.
+                mainMenu.descriptions.crosswind-landing
               </Text>
             </View>
           </View>
