@@ -53,7 +53,7 @@
 | Термин | Расшифровка |
 |--------|-------------|
 | **Advisory** | Тип tool: предоставляет справочную информацию, не предписывающую. Окончательное решение всегда за пилотом. |
-| **B787 Calculator** | Полное имя проекта. |
+| **B787 Tools** | Display-имя проекта (App Store / in-app brand). Repository / slug technical name остаётся `b787-calculator` для непрерывности EAS / App Store Connect linking. |
 | **Beta-pilot** | Действующий пилот, участвующий в TestFlight-тестировании до публичного релиза. |
 | **Conservative advisory limits** | Операционные значения, намеренно более ограничительные, чем Boeing demonstrated values, для дополнительного запаса безопасности. |
 | **Coming Soon module** | Неактивная карточка в Main Menu, отображающая будущий модуль. Реализуется через JSON-конфиг, не как настоящий feature-модуль. |

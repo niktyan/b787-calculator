@@ -14,12 +14,18 @@ lookup по FCOM Tab 2.29.3 + page 2-105 с тремя FCOM CAUTION
 INOP cap).
 
 Модуль самодостаточен: содержит свой domain, свой источник данных
-(`b787-landing.json`, schemaVersion 1.0.0), свой UI-экран и тесты.
-Никакого кросс-импорта из `features/crosswind/` (правило архитектуры).
-Общие aviation-примитивы (`AircraftVariant`, `RunwayCondition`,
-`FlightPhase`) импортируются из `core/aviation/`.
+(`b787-landing.json`, schemaVersion 2.4.0 — см. ADR-0018), свой UI-экран
+и тесты. Никакого кросс-импорта из `features/crosswind/` (правило
+архитектуры). Общие aviation-примитивы (`AircraftVariant`,
+`LandingRunwayCondition`, `FlightPhase`) импортируются из
+`core/aviation/`. Landing-специфичный `LandingRunwayCondition` (7
+значений: dry / goodWetDamp / goodSlushSnow / goodToMedium / medium /
+mediumToPoor / poor) намеренно отделён от takeoff'овского
+`RunwayCondition` (6 значений), потому что AFM Rev. 20 разделяет
+«Good» на Wet/Damp и Slush/DSN/WSN только для landing.
 
-Архитектурное обоснование — см. `02_Specification/ADR/0014-landing-module-architecture.md`.
+Архитектурное обоснование — см. `02_Specification/ADR/0014-landing-module-architecture.md`
+и `02_Specification/ADR/0018-landing-runway-condition-taxonomy-v2.md`.
 
 ## Внутренняя структура
 
@@ -148,9 +154,10 @@ CAT II-III и ONE ENG INOP **не disabled, а unmount-ятся** при Manual.
 
 **От других модулей:**
 
-- `core/aviation` — `AircraftVariant`, `RunwayCondition`,
+- `core/aviation` — `AircraftVariant`, `LandingRunwayCondition`,
   `RunwayConditionCode`, `RWYCC` (импортируются и takeoff модулем —
-  shared via core).
+  shared via core; landing uses `LandingRunwayCondition` instead of the
+  6-value `RunwayCondition` per ADR-0018).
 - `core` — `useTranslation`, `useTheme`, `useReduceMotion`, `ok`, `err`,
   `Result`.
 - `design-system` — `Screen`, `Stack`, `Row`, `Text`, `SegmentedControl`,

@@ -4,6 +4,16 @@
 export { useScaleOnPress, useReduceMotion } from './hooks';
 export type { UseScaleOnPressResult } from './hooks';
 
+// Anchored popover primitive (shared math between NumericKeypadHost
+// and RunwayConditionPicker — see ADR-0018 § UI Layout).
+export { AnchoredPopoverHost, computeAnchoredPosition } from './anchored-popover';
+export type {
+  AnchoredPopoverHostProps,
+  AnchorRect,
+  PopoverPosition,
+  PopoverSize,
+} from './anchored-popover';
+
 // Tokens
 export { tokens } from './tokens';
 export type {

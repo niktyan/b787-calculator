@@ -5,7 +5,7 @@
 
 ## 1. Acceptance
 
-By installing and using B787 Calculator ("the App"), you agree to these Terms of Use. If you do not agree, do not use the App.
+By installing and using B787 Tools ("the App"), you agree to these Terms of Use. If you do not agree, do not use the App.
 
 ## 2. Advisory nature of calculations
 

@@ -50,7 +50,7 @@ describe('Splash route (mounted at /)', () => {
     expect(tree.getByTestId('splash-screen')).toBeTruthy();
     expect(tree.getByTestId('splash-logo')).toBeTruthy();
     expect(tree.getByText('B7')).toBeTruthy();
-    expect(tree.getByText('B787 Calculator')).toBeTruthy();
+    expect(tree.getByText('B787 Tools')).toBeTruthy();
     expect(tree.getByText('splash.tagline')).toBeTruthy();
     expect(tree.getByTestId('splash-version').props.children).toEqual(['v', '1.1.0']);
     expect(tree.toJSON()).toMatchSnapshot();

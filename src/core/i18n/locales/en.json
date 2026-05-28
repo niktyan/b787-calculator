@@ -73,6 +73,8 @@
     "title": "Crosswind · Landing",
     "aircraftLabel": "Aircraft",
     "runwayConditionLabel": "Runway condition",
+    "runwayConditionSheetTitle": "RUNWAY CONDITION",
+    "runwayConditionSheetCancel": "Cancel",
     "landingModeLabel": "Landing",
     "toggleNo": "No",
     "toggleYes": "Yes",

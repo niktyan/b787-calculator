@@ -1,18 +1,74 @@
 /**
  * Acceptance tests for the Crosswind Landing module.
  *
- * 18 anchors covering manual mode, single-adjustment auto mode, stacked-
- * adjustment auto mode, both aircraft variants, and edge cases. The
- * matrix below is the canonical spec — any future change to the FCOM
- * table or the adjustment formulas must update these numbers AND the
- * bundled JSON together.
+ * Two test families:
+ *
+ *   1. **28 anchor base lookups** — 7 conditions × 2 aircraft × 2 modes.
+ *      These are the canonical AFM Rev. 20 / Landing (2).xlsx values
+ *      transcribed in ADR-0018. Every cell of the bundled `baseTable`
+ *      is verified directly with a no-adjustment input (manual + no
+ *      asym for the manual cells; auto + no cat / asym / inop for the
+ *      auto cells).
+ *
+ *   2. **Adjustment matrix** — a smaller set of FCOM CAUTION
+ *      combinations (CAT cap, asymmetric reverse penalty, ONE ENG INOP
+ *      cap, and their stacks) that exercise the algorithm rather than
+ *      the table.
  */
 
 import { calculateLandingCrosswind } from '../domain/calculator';
 import { createCrosswindLandingRepository } from '../data/landingRepository';
 import type { CrosswindLandingInput } from '../domain/types';
 
-interface Anchor {
+interface BaseAnchor {
+  readonly aircraft: CrosswindLandingInput['aircraft'];
+  readonly runwayCondition: CrosswindLandingInput['runwayCondition'];
+  readonly landingMode: CrosswindLandingInput['landingMode'];
+  readonly expected: number;
+}
+
+/**
+ * 28 base-lookup anchors per ADR-0018 § "Per-aircraft × per-mode
+ * crosswind values". `asymReverse`, `catIIIII` and `engineInop` are all
+ * `no`, so the calculator returns the raw `baseTable[condition][mode]`
+ * value with no adjustment.
+ */
+const BASE_ANCHORS: readonly BaseAnchor[] = [
+  // B787-8 MANUAL
+  { aircraft: 'b787_8', runwayCondition: 'dry', landingMode: 'manual', expected: 37 },
+  { aircraft: 'b787_8', runwayCondition: 'goodWetDamp', landingMode: 'manual', expected: 37 },
+  { aircraft: 'b787_8', runwayCondition: 'goodSlushSnow', landingMode: 'manual', expected: 35 },
+  { aircraft: 'b787_8', runwayCondition: 'goodToMedium', landingMode: 'manual', expected: 35 },
+  { aircraft: 'b787_8', runwayCondition: 'medium', landingMode: 'manual', expected: 35 },
+  { aircraft: 'b787_8', runwayCondition: 'mediumToPoor', landingMode: 'manual', expected: 20 },
+  { aircraft: 'b787_8', runwayCondition: 'poor', landingMode: 'manual', expected: 17 },
+  // B787-8 AUTO
+  { aircraft: 'b787_8', runwayCondition: 'dry', landingMode: 'auto', expected: 33 },
+  { aircraft: 'b787_8', runwayCondition: 'goodWetDamp', landingMode: 'auto', expected: 33 },
+  { aircraft: 'b787_8', runwayCondition: 'goodSlushSnow', landingMode: 'auto', expected: 33 },
+  { aircraft: 'b787_8', runwayCondition: 'goodToMedium', landingMode: 'auto', expected: 33 },
+  { aircraft: 'b787_8', runwayCondition: 'medium', landingMode: 'auto', expected: 33 },
+  { aircraft: 'b787_8', runwayCondition: 'mediumToPoor', landingMode: 'auto', expected: 20 },
+  { aircraft: 'b787_8', runwayCondition: 'poor', landingMode: 'auto', expected: 17 },
+  // B787-9 MANUAL
+  { aircraft: 'b787_9', runwayCondition: 'dry', landingMode: 'manual', expected: 37 },
+  { aircraft: 'b787_9', runwayCondition: 'goodWetDamp', landingMode: 'manual', expected: 37 },
+  { aircraft: 'b787_9', runwayCondition: 'goodSlushSnow', landingMode: 'manual', expected: 35 },
+  { aircraft: 'b787_9', runwayCondition: 'goodToMedium', landingMode: 'manual', expected: 35 },
+  { aircraft: 'b787_9', runwayCondition: 'medium', landingMode: 'manual', expected: 25 },
+  { aircraft: 'b787_9', runwayCondition: 'mediumToPoor', landingMode: 'manual', expected: 17 },
+  { aircraft: 'b787_9', runwayCondition: 'poor', landingMode: 'manual', expected: 15 },
+  // B787-9 AUTO
+  { aircraft: 'b787_9', runwayCondition: 'dry', landingMode: 'auto', expected: 28 },
+  { aircraft: 'b787_9', runwayCondition: 'goodWetDamp', landingMode: 'auto', expected: 28 },
+  { aircraft: 'b787_9', runwayCondition: 'goodSlushSnow', landingMode: 'auto', expected: 28 },
+  { aircraft: 'b787_9', runwayCondition: 'goodToMedium', landingMode: 'auto', expected: 28 },
+  { aircraft: 'b787_9', runwayCondition: 'medium', landingMode: 'auto', expected: 25 },
+  { aircraft: 'b787_9', runwayCondition: 'mediumToPoor', landingMode: 'auto', expected: 17 },
+  { aircraft: 'b787_9', runwayCondition: 'poor', landingMode: 'auto', expected: 15 },
+];
+
+interface AdjustmentAnchor {
   readonly aircraft: CrosswindLandingInput['aircraft'];
   readonly runwayCondition: CrosswindLandingInput['runwayCondition'];
   readonly landingMode: CrosswindLandingInput['landingMode'];
@@ -23,18 +79,8 @@ interface Anchor {
   readonly comment: string;
 }
 
-const LANDING_ANCHORS: readonly Anchor[] = [
+const ADJUSTMENT_ANCHORS: readonly AdjustmentAnchor[] = [
   // Manual mode — CAT and INOP are irrelevant.
-  {
-    aircraft: 'b787_8',
-    runwayCondition: 'dry',
-    landingMode: 'manual',
-    asymReverse: 'no',
-    catIIIII: 'no',
-    engineInop: 'no',
-    expected: 37,
-    comment: 'Manual base lookup',
-  },
   {
     aircraft: 'b787_8',
     runwayCondition: 'dry',
@@ -47,13 +93,13 @@ const LANDING_ANCHORS: readonly Anchor[] = [
   },
   {
     aircraft: 'b787_8',
-    runwayCondition: 'good',
+    runwayCondition: 'goodSlushSnow',
     landingMode: 'manual',
     asymReverse: 'yes',
     catIIIII: 'no',
     engineInop: 'no',
     expected: 30,
-    comment: 'Manual + asym non-dry: -5',
+    comment: 'Manual + asym non-dry: 35 - 5',
   },
   {
     aircraft: 'b787_8',
@@ -63,17 +109,7 @@ const LANDING_ANCHORS: readonly Anchor[] = [
     catIIIII: 'no',
     engineInop: 'no',
     expected: 12,
-    comment: 'Manual poor + asym: 17-5',
-  },
-  {
-    aircraft: 'b787_9',
-    runwayCondition: 'mediumToPoor',
-    landingMode: 'manual',
-    asymReverse: 'no',
-    catIIIII: 'no',
-    engineInop: 'no',
-    expected: 17,
-    comment: 'B787-9 manual base',
+    comment: 'Manual poor + asym: 17 - 5',
   },
   // Auto mode — single adjustments.
   {
@@ -81,30 +117,20 @@ const LANDING_ANCHORS: readonly Anchor[] = [
     runwayCondition: 'dry',
     landingMode: 'auto',
     asymReverse: 'no',
-    catIIIII: 'no',
-    engineInop: 'no',
-    expected: 33,
-    comment: 'Auto base only',
-  },
-  {
-    aircraft: 'b787_8',
-    runwayCondition: 'dry',
-    landingMode: 'auto',
-    asymReverse: 'no',
     catIIIII: 'yes',
     engineInop: 'no',
     expected: 25,
-    comment: 'CAT cap 33->25',
+    comment: 'CAT cap 33 -> 25',
   },
   {
     aircraft: 'b787_8',
-    runwayCondition: 'good',
+    runwayCondition: 'goodWetDamp',
     landingMode: 'auto',
     asymReverse: 'yes',
     catIIIII: 'no',
     engineInop: 'no',
     expected: 28,
-    comment: 'Asym non-dry: 33-5',
+    comment: 'Wet/Damp asym non-dry: 33 - 5',
   },
   {
     aircraft: 'b787_8',
@@ -114,63 +140,43 @@ const LANDING_ANCHORS: readonly Anchor[] = [
     catIIIII: 'no',
     engineInop: 'yes',
     expected: 28,
-    comment: 'B787-8 INOP cap 33->28',
+    comment: 'B787-8 INOP cap 33 -> 28',
   },
   // Auto mode — stacked adjustments.
   {
     aircraft: 'b787_8',
-    runwayCondition: 'good',
+    runwayCondition: 'goodSlushSnow',
     landingMode: 'auto',
     asymReverse: 'yes',
     catIIIII: 'yes',
     engineInop: 'no',
     expected: 20,
-    comment: 'CAT 33->25, asym 25->20',
+    comment: 'Slush CAT 33 -> 25, asym 25 -> 20',
   },
   {
     aircraft: 'b787_8',
-    runwayCondition: 'good',
+    runwayCondition: 'goodToMedium',
     landingMode: 'auto',
     asymReverse: 'yes',
     catIIIII: 'yes',
     engineInop: 'yes',
     expected: 20,
-    comment: 'CAT->25, asym->20, INOP 28>20 inactive',
+    comment: 'GtM CAT->25, asym->20, INOP 28>20 inactive',
   },
   // B787-9 cases.
   {
     aircraft: 'b787_9',
     runwayCondition: 'medium',
     landingMode: 'auto',
-    asymReverse: 'no',
-    catIIIII: 'no',
-    engineInop: 'no',
-    expected: 25,
-    comment: 'B787-9 medium auto',
-  },
-  {
-    aircraft: 'b787_9',
-    runwayCondition: 'medium',
-    landingMode: 'auto',
     asymReverse: 'yes',
     catIIIII: 'no',
     engineInop: 'no',
     expected: 20,
-    comment: 'B787-9 medium asym 25->20',
+    comment: 'B787-9 medium asym 25 -> 20',
   },
   {
     aircraft: 'b787_9',
-    runwayCondition: 'dry',
-    landingMode: 'auto',
-    asymReverse: 'no',
-    catIIIII: 'no',
-    engineInop: 'yes',
-    expected: 28,
-    comment: 'B787-9 INOP cap 37>28 inactive, base stays',
-  },
-  {
-    aircraft: 'b787_9',
-    runwayCondition: 'good',
+    runwayCondition: 'goodWetDamp',
     landingMode: 'auto',
     asymReverse: 'yes',
     catIIIII: 'yes',
@@ -190,28 +196,17 @@ const LANDING_ANCHORS: readonly Anchor[] = [
   },
   {
     aircraft: 'b787_9',
-    runwayCondition: 'medium',
-    landingMode: 'auto',
-    asymReverse: 'yes',
-    catIIIII: 'yes',
-    engineInop: 'yes',
-    expected: 20,
-    comment: 'B787-9 medium 25 -> CAT inactive -> asym 20 -> INOP inactive',
-  },
-  // Edge: poor + manual.
-  {
-    aircraft: 'b787_9',
     runwayCondition: 'poor',
     landingMode: 'manual',
     asymReverse: 'yes',
     catIIIII: 'no',
     engineInop: 'no',
     expected: 10,
-    comment: 'B787-9 poor manual + asym: 15-5',
+    comment: 'B787-9 poor manual + asym: 15 - 5',
   },
 ];
 
-describe('Crosswind Landing · acceptance anchors (18 cases)', () => {
+describe('Crosswind Landing · base anchors (7 conditions × 2 aircraft × 2 modes = 28)', () => {
   const repo = createCrosswindLandingRepository();
   const loaded = repo.load();
   if (!loaded.ok) {
@@ -219,7 +214,35 @@ describe('Crosswind Landing · acceptance anchors (18 cases)', () => {
   }
   const data = loaded.value;
 
-  it.each(LANDING_ANCHORS)(
+  it.each(BASE_ANCHORS)('$aircraft / $runwayCondition / $landingMode → $expected KT', (anchor) => {
+    const input: CrosswindLandingInput = {
+      aircraft: anchor.aircraft,
+      runwayCondition: anchor.runwayCondition,
+      landingMode: anchor.landingMode,
+      asymReverse: 'no',
+      catIIIII: 'no',
+      engineInop: 'no',
+    };
+    const result = calculateLandingCrosswind(input, data);
+    if (!result.ok) {
+      throw new Error(`unexpected error: ${JSON.stringify(result.error)}`);
+    }
+    expect(result.value.maxCrosswindKnots).toBe(anchor.expected);
+    expect(result.value.metadata.aircraft).toBe(anchor.aircraft);
+    expect(result.value.metadata.landingMode).toBe(anchor.landingMode);
+    expect(result.value.metadata.dataVersion).toBe(data.dataVersion);
+  });
+});
+
+describe('Crosswind Landing · adjustment anchors (CAT cap, asym penalty, INOP cap)', () => {
+  const repo = createCrosswindLandingRepository();
+  const loaded = repo.load();
+  if (!loaded.ok) {
+    throw new Error(`bundled landing JSON failed to load: ${loaded.error.details}`);
+  }
+  const data = loaded.value;
+
+  it.each(ADJUSTMENT_ANCHORS)(
     '$aircraft / $runwayCondition / $landingMode (asym=$asymReverse cat=$catIIIII inop=$engineInop) → $expected KT — $comment',
     (anchor) => {
       const input: CrosswindLandingInput = {
@@ -235,9 +258,6 @@ describe('Crosswind Landing · acceptance anchors (18 cases)', () => {
         throw new Error(`unexpected error: ${JSON.stringify(result.error)}`);
       }
       expect(result.value.maxCrosswindKnots).toBe(anchor.expected);
-      expect(result.value.metadata.aircraft).toBe(anchor.aircraft);
-      expect(result.value.metadata.landingMode).toBe(anchor.landingMode);
-      expect(result.value.metadata.dataVersion).toBe(data.dataVersion);
     },
   );
 });

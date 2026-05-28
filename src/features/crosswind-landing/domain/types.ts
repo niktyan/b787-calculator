@@ -3,10 +3,13 @@
  *
  * Pure TypeScript — no React Native, Expo, or other runtime dependencies.
  *
- * Shared aviation primitives (`AircraftVariant`, `RunwayCondition`,
+ * Shared aviation primitives (`AircraftVariant`, `LandingRunwayCondition`,
  * `FlightPhase`) come from `core/aviation` — the same source that the
- * takeoff feature consumes. Landing-specific dimensions (`LandingMode`,
- * `YesNo`) live in this module.
+ * takeoff feature consumes for its own `RunwayCondition`. The two
+ * runway-condition unions deliberately diverge (ADR-0018): takeoff uses
+ * 6 categories, landing uses 7 because AFM Rev. 20 splits Good.
+ * Landing-specific dimensions (`LandingMode`, `YesNo`) live in this
+ * module.
  *
  * Unlike Takeoff, Landing does not depend on weight or CG: the algorithm
  * is a categorical lookup with conditional adjustments
@@ -16,7 +19,7 @@
  * interpolation.
  */
 
-import type { AircraftVariant, RunwayCondition } from '../../../core/aviation';
+import type { AircraftVariant, LandingRunwayCondition } from '../../../core/aviation';
 
 export const LANDING_MODES = ['manual', 'auto'] as const;
 export type LandingMode = (typeof LANDING_MODES)[number];
@@ -30,10 +33,14 @@ export type YesNo = (typeof YES_NO_VALUES)[number];
  * entry for the requested aircraft or runway condition. CAT II-III and
  * ONE ENG INOP are evaluated only in `auto` mode; in `manual` they are
  * ignored (the UI hides those toggles entirely).
+ *
+ * `runwayCondition` uses the 7-value landing taxonomy from ADR-0018,
+ * not the 6-value takeoff `RunwayCondition`. The two unions diverge
+ * because the underlying AFM tables diverge.
  */
 export interface CrosswindLandingInput {
   readonly aircraft: AircraftVariant;
-  readonly runwayCondition: RunwayCondition;
+  readonly runwayCondition: LandingRunwayCondition;
   readonly landingMode: LandingMode;
   readonly asymReverse: YesNo;
   readonly catIIIII: YesNo;
@@ -73,7 +80,7 @@ export type CrosswindLandingError =
   | {
       readonly kind: 'DataNotAvailable';
       readonly aircraft: AircraftVariant;
-      readonly runwayCondition: RunwayCondition;
+      readonly runwayCondition: LandingRunwayCondition;
       readonly reason: CrosswindLandingDataUnavailableReason;
     }
   | { readonly kind: 'CorruptedDataBundle'; readonly details: string };

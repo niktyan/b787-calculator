@@ -5,11 +5,12 @@ import type { ViewStyle } from 'react-native';
 
 import { useTranslation } from '../../../core';
 import { useTheme } from '../../../core/theming';
+import { computeAnchoredPosition } from '../../anchored-popover/computeAnchoredPosition';
+import type { PopoverPosition } from '../../anchored-popover/computeAnchoredPosition';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
 import { NumericKeypad } from './NumericKeypad';
 import { useNumericKeypadContext } from './NumericKeypadContext';
-import type { FieldAnchor } from './NumericKeypadContext';
 
 const HOST_TEST_ID = 'numeric-keypad-host';
 const KEYPAD_TEST_ID = 'numeric-keypad';
@@ -27,123 +28,19 @@ const KEYPAD_TEST_ID = 'numeric-keypad';
 const KEYPAD_WIDTH = 280;
 const KEYPAD_HEIGHT_COMPACT = 304;
 const KEYPAD_HEIGHT_REGULAR = 352;
-const SCREEN_MARGIN = 16;
-const ANCHOR_OFFSET = 8;
-// Match `tokens.breakpoints.regularHeader` — anything from iPad-mini portrait
-// upwards picks the "beside the field" cascade; iPhone-width screens use the
-// "above/below the field" cascade. See ADR-0011 Iteration 2 §3.
-const COMPACT_WIDTH_BREAKPOINT = 768;
 const KEYPAD_BORDER_WIDTH = 1;
 const KEYPAD_SHADOW_OFFSET_Y = 4;
 const KEYPAD_SHADOW_OPACITY = 0.25;
 const KEYPAD_SHADOW_RADIUS = 12;
 const KEYPAD_ELEVATION = 8;
-const HALF = 2;
 
-interface Position {
-  readonly top: number;
-  readonly left: number;
-}
+// Re-export under the keypad's original name so existing unit tests keep
+// importing `computeKeypadPosition` without an at-shore rewrite. F2 visual
+// fix v4 (ADR-0018 § UI Layout) generalised the math into
+// `computeAnchoredPosition` so the runway-condition picker can re-use it.
+export { computeAnchoredPosition as computeKeypadPosition } from '../../anchored-popover/computeAnchoredPosition';
 
-interface ScreenSize {
-  readonly width: number;
-  readonly height: number;
-}
-
-interface KeypadSize {
-  readonly width: number;
-  readonly height: number;
-}
-
-function clampVertical(preferredTop: number, keypadHeight: number, screenHeight: number): number {
-  const maxTop = screenHeight - keypadHeight - SCREEN_MARGIN;
-  if (preferredTop > maxTop) {
-    return Math.max(SCREEN_MARGIN, maxTop);
-  }
-  if (preferredTop < SCREEN_MARGIN) {
-    return SCREEN_MARGIN;
-  }
-  return preferredTop;
-}
-
-function horizontalCenterOnField(
-  anchor: FieldAnchor,
-  screen: ScreenSize,
-  keypadSize: KeypadSize,
-): number {
-  const fieldCenterX = anchor.x + anchor.width / HALF;
-  const preferredLeft = fieldCenterX - keypadSize.width / HALF;
-  const maxLeft = screen.width - keypadSize.width - SCREEN_MARGIN;
-  if (preferredLeft < SCREEN_MARGIN) {
-    return SCREEN_MARGIN;
-  }
-  if (preferredLeft > maxLeft) {
-    return Math.max(SCREEN_MARGIN, maxLeft);
-  }
-  return preferredLeft;
-}
-
-function positionAboveOrBelow(
-  anchor: FieldAnchor,
-  screen: ScreenSize,
-  keypadSize: KeypadSize,
-): Position {
-  const topSpace = anchor.y;
-  const bottomSpace = screen.height - (anchor.y + anchor.height);
-  const requiredVertical = keypadSize.height + ANCHOR_OFFSET + SCREEN_MARGIN;
-
-  let top: number;
-  if (topSpace >= requiredVertical) {
-    top = anchor.y - keypadSize.height - ANCHOR_OFFSET;
-  } else if (bottomSpace >= requiredVertical) {
-    top = anchor.y + anchor.height + ANCHOR_OFFSET;
-  } else {
-    // Neither side fits — pick the side with more room and clamp.
-    top =
-      topSpace > bottomSpace ? SCREEN_MARGIN : screen.height - keypadSize.height - SCREEN_MARGIN;
-  }
-
-  return { top, left: horizontalCenterOnField(anchor, screen, keypadSize) };
-}
-
-function positionBesideOrAbove(
-  anchor: FieldAnchor,
-  screen: ScreenSize,
-  keypadSize: KeypadSize,
-): Position {
-  const rightSpace = screen.width - (anchor.x + anchor.width);
-  const leftSpace = anchor.x;
-  const requiredHorizontal = keypadSize.width + ANCHOR_OFFSET + SCREEN_MARGIN;
-
-  if (rightSpace >= requiredHorizontal) {
-    return {
-      left: anchor.x + anchor.width + ANCHOR_OFFSET,
-      top: clampVertical(anchor.y, keypadSize.height, screen.height),
-    };
-  }
-  if (leftSpace >= requiredHorizontal) {
-    return {
-      left: anchor.x - keypadSize.width - ANCHOR_OFFSET,
-      top: clampVertical(anchor.y, keypadSize.height, screen.height),
-    };
-  }
-  // Wide screen, no side room (rare — e.g. extra-wide field on iPad mini
-  // portrait) — fall back to the compact-screen above/below behaviour.
-  return positionAboveOrBelow(anchor, screen, keypadSize);
-}
-
-// Exported for unit-testing the pure positioning logic without mounting the
-// Modal tree. See `__tests__/NumericKeypadHost.test.tsx`.
-export function computeKeypadPosition(
-  anchor: FieldAnchor,
-  screen: ScreenSize,
-  keypadSize: KeypadSize = { width: KEYPAD_WIDTH, height: KEYPAD_HEIGHT_COMPACT },
-): Position {
-  if (screen.width >= COMPACT_WIDTH_BREAKPOINT) {
-    return positionBesideOrAbove(anchor, screen, keypadSize);
-  }
-  return positionAboveOrBelow(anchor, screen, keypadSize);
-}
+type Position = PopoverPosition;
 
 interface Styles {
   readonly backdrop: ViewStyle;
@@ -194,7 +91,7 @@ export function NumericKeypadHost(): ReactNode {
     if (activeAnchor === null) {
       return null;
     }
-    return computeKeypadPosition(
+    return computeAnchoredPosition(
       activeAnchor,
       { width: screen.width, height: screen.height },
       { width: KEYPAD_WIDTH, height: keypadHeight },

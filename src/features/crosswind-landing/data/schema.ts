@@ -2,12 +2,13 @@
  * zod schema for the bundled `b787-landing.json` resource.
  *
  * Spec: 02_Specification/04-domain-model.md § "Landing types",
- *       02_Specification/ADR/0014-landing-module-architecture.md.
+ *       02_Specification/ADR/0014-landing-module-architecture.md,
+ *       02_Specification/ADR/0018-landing-runway-condition-taxonomy-v2.md.
  *
- * Shape (Sprint C / schema 1.0.0):
+ * Shape (schema 2.4.0 — ADR-0018):
  *
  *   {
- *     "schemaVersion": "1.0.0",
+ *     "schemaVersion": "2.4.0",
  *     "dataVersion":   "YYYY-MM-DD.NNN",
  *     "phase":         "landing",
  *     "adjustments":   { catIIIIICap, asymReversePenalty },
@@ -15,7 +16,7 @@
  *   }
  *
  * Each `AircraftEntry` holds the per-aircraft `engineInopAutolandLimit`,
- * the 6×2 categorical lookup `baseTable[condition][mode]`, and authoring
+ * the 7×2 categorical lookup `baseTable[condition][mode]`, and authoring
  * metadata. Both aircraft entries are required in MVP — absence becomes
  * `DataNotAvailable.aircraft-not-implemented` at calculation time.
  *
@@ -28,7 +29,7 @@
 
 import { z } from 'zod';
 
-const SCHEMA_VERSION_PATTERN = /^1\.0\.\d+$/;
+const SCHEMA_VERSION_PATTERN = /^2\.4\.\d+$/;
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_CROSSWIND_KT = 50;
 const MIN_CROSSWIND_KT = 0;
@@ -45,8 +46,9 @@ const modeValueSchema = z.object({
 const baseTableSchema = z
   .object({
     dry: modeValueSchema,
-    good: modeValueSchema,
-    mediumToGood: modeValueSchema,
+    goodWetDamp: modeValueSchema,
+    goodSlushSnow: modeValueSchema,
+    goodToMedium: modeValueSchema,
     medium: modeValueSchema,
     mediumToPoor: modeValueSchema,
     poor: modeValueSchema,

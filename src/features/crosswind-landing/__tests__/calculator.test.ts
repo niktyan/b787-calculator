@@ -22,8 +22,8 @@ const BASE_INPUT: CrosswindLandingInput = {
 
 function makeData(overrides: Partial<CrosswindLandingDataFile> = {}): CrosswindLandingDataFile {
   const base: CrosswindLandingDataFile = {
-    schemaVersion: '1.0.0',
-    dataVersion: '2026-05-23.001',
+    schemaVersion: '2.4.0',
+    dataVersion: '2026-05-28.001',
     phase: 'landing',
     adjustments: { catIIIIICap: 25, asymReversePenalty: 5 },
     byAircraft: {
@@ -31,14 +31,15 @@ function makeData(overrides: Partial<CrosswindLandingDataFile> = {}): CrosswindL
         engineInopAutolandLimit: 28,
         baseTable: {
           dry: { manual: 37, auto: 33 },
-          good: { manual: 35, auto: 33 },
-          mediumToGood: { manual: 35, auto: 33 },
+          goodWetDamp: { manual: 37, auto: 33 },
+          goodSlushSnow: { manual: 35, auto: 33 },
+          goodToMedium: { manual: 35, auto: 33 },
           medium: { manual: 35, auto: 33 },
           mediumToPoor: { manual: 20, auto: 20 },
           poor: { manual: 17, auto: 17 },
         },
         metadata: {
-          createdAt: '2026-05-23',
+          createdAt: '2026-05-28',
           validatedBy: 'active-line-pilots',
           referenceDocument: 'Boeing 787 FCOM',
           notes: 'unit-test fixture',
@@ -48,14 +49,15 @@ function makeData(overrides: Partial<CrosswindLandingDataFile> = {}): CrosswindL
         engineInopAutolandLimit: 37,
         baseTable: {
           dry: { manual: 37, auto: 28 },
-          good: { manual: 35, auto: 28 },
-          mediumToGood: { manual: 35, auto: 28 },
+          goodWetDamp: { manual: 37, auto: 28 },
+          goodSlushSnow: { manual: 35, auto: 28 },
+          goodToMedium: { manual: 35, auto: 28 },
           medium: { manual: 25, auto: 25 },
           mediumToPoor: { manual: 17, auto: 17 },
           poor: { manual: 15, auto: 15 },
         },
         metadata: {
-          createdAt: '2026-05-23',
+          createdAt: '2026-05-28',
           validatedBy: 'active-line-pilots',
           referenceDocument: 'Boeing 787 FCOM',
           notes: 'unit-test fixture',
@@ -125,7 +127,7 @@ describe('calculateLandingCrosswind', () => {
 
     it('manual + good + asym=yes records asymPenalty=true only', () => {
       const result = calculateLandingCrosswind(
-        { ...BASE_INPUT, runwayCondition: 'good', asymReverse: 'yes' },
+        { ...BASE_INPUT, runwayCondition: 'goodWetDamp', asymReverse: 'yes' },
         data,
       );
       if (!result.ok) throw new Error('expected ok');
@@ -154,7 +156,7 @@ describe('calculateLandingCrosswind', () => {
         {
           ...BASE_INPUT,
           landingMode: 'auto',
-          runwayCondition: 'good',
+          runwayCondition: 'goodWetDamp',
           catIIIII: 'yes',
           asymReverse: 'yes',
         },

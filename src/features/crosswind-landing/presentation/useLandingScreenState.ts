@@ -12,26 +12,32 @@
 
 import { useCallback, useState } from 'react';
 
-import type { AircraftVariant, RunwayCondition } from '../../../core/aviation';
+import type { AircraftVariant, LandingRunwayCondition } from '../../../core/aviation';
 import { useHapticFeedback } from '../../../core/haptics';
 import type { LandingMode, YesNo } from '../domain/types';
 
 import { useRestoreFromRecent } from './useRestoreFromRecent';
 
 const DEFAULT_AIRCRAFT: AircraftVariant = 'b787_8';
-const DEFAULT_RUNWAY: RunwayCondition = 'dry';
+// Cold-open default + Reset target: `dry`. Per F2 follow-up v2: Reset
+// must return the screen to the simplest, lowest-cognitive-load state.
+// "Dry" is the most common operational case for line pilots and serves
+// as a clean baseline rather than a safety-default. The earlier
+// follow-up that briefly defaulted to `goodWetDamp` (commit 302f521)
+// was overridden by user decision. See ADR-0018 §4.
+const DEFAULT_RUNWAY: LandingRunwayCondition = 'dry';
 const DEFAULT_LANDING_MODE: LandingMode = 'manual';
 const DEFAULT_YES_NO: YesNo = 'no';
 
 export interface LandingScreenState {
   readonly aircraft: AircraftVariant;
-  readonly runwayCondition: RunwayCondition;
+  readonly runwayCondition: LandingRunwayCondition;
   readonly landingMode: LandingMode;
   readonly asymReverse: YesNo;
   readonly catIIIII: YesNo;
   readonly engineInop: YesNo;
   readonly setAircraft: (next: AircraftVariant) => void;
-  readonly setRunwayCondition: (next: RunwayCondition) => void;
+  readonly setRunwayCondition: (next: LandingRunwayCondition) => void;
   readonly setLandingMode: (next: LandingMode) => void;
   readonly setAsymReverse: (next: YesNo) => void;
   readonly setCatIIIII: (next: YesNo) => void;
@@ -41,7 +47,7 @@ export interface LandingScreenState {
 
 export function useLandingScreenState(): LandingScreenState {
   const [aircraft, setAircraft] = useState<AircraftVariant>(DEFAULT_AIRCRAFT);
-  const [runwayCondition, setRunwayCondition] = useState<RunwayCondition>(DEFAULT_RUNWAY);
+  const [runwayCondition, setRunwayCondition] = useState<LandingRunwayCondition>(DEFAULT_RUNWAY);
   const [landingMode, setLandingMode] = useState<LandingMode>(DEFAULT_LANDING_MODE);
   const [asymReverse, setAsymReverse] = useState<YesNo>(DEFAULT_YES_NO);
   const [catIIIII, setCatIIIII] = useState<YesNo>(DEFAULT_YES_NO);
