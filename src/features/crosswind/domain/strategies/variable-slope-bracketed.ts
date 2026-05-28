@@ -21,13 +21,16 @@
  * Excel-equivalent behaviors preserved (matches BracketedLinear):
  *  • IFNA-fallback to `brackets[0].crosswindKnots` (25 KT for Medium)
  *    on both below-envelope and above-envelope CG.
- *  • ROUNDDOWN at `params.decimals` precision via `Math.floor`. Medium
- *    uses decimals=1 — the first 1-decimal-precision condition.
- *  • Optional `maxCap` clamps results above the cap. Medium ships
+ *  • Optional `maxCap` clamps raw results above the cap. Medium ships
  *    `maxCap: null` (no clamp).
  *
+ * The strategy returns the **raw** (un-rounded) advisory value.
+ * Output rounding (ROUNDDOWN to 0.1 KT) is applied uniformly at the
+ * calculator boundary per ADR-0017. The legacy `params.decimals`
+ * field is parsed by the schema but no longer consumed here.
+ *
  * Implementation note: helpers are duplicated from `bracketed-linear.ts`
- * (e.g. `nearlyEqual`, `findLowerBound`, `findUpperBound`, `roundDown`,
+ * (e.g. `nearlyEqual`, `findLowerBound`, `findUpperBound`,
  * `buildMetadata`-shaped logic). Sharing them would require modifying
  * BracketedLinearStrategy, which is out of scope for PR 5. Future PRs
  * may consolidate to a shared utilities module if the pattern matures.
@@ -48,7 +51,6 @@ import type {
 import { makeCrosswindKnots } from '../valueObjects';
 
 const E9_DIVISOR = 5;
-const ROUNDDOWN_DECIMAL_BASE = 10;
 const E9_FORMULA_THRESHOLD = 1;
 
 /**
@@ -122,11 +124,6 @@ interface FailedResult {
   readonly reason: string;
 }
 
-function roundDown(value: number, decimals: 0 | 1): number {
-  const factor = ROUNDDOWN_DECIMAL_BASE ** decimals;
-  return Math.floor(value * factor) / factor;
-}
-
 function interpolate(lower: Threshold, upper: Threshold, cg: number): number {
   // E9 = (E8 − E7) / 5. The Excel conditional preserves BracketedLinear-
   // style "·E9" behavior when brackets are tightly spaced (E9 < 1) and
@@ -145,12 +142,11 @@ function interpolate(lower: Threshold, upper: Threshold, cg: number): number {
 interface ResolveArgs {
   readonly thresholds: readonly Threshold[];
   readonly cg: number;
-  readonly decimals: 0 | 1;
   readonly fallbackCrosswindKnots: number;
 }
 
 function resolveResult(args: ResolveArgs): ComputedResult | FailedResult {
-  const { thresholds, cg, decimals, fallbackCrosswindKnots } = args;
+  const { thresholds, cg, fallbackCrosswindKnots } = args;
   const bottom = thresholds[0];
   const top = thresholds[thresholds.length - 1];
   if (bottom === undefined || top === undefined) {
@@ -185,7 +181,7 @@ function resolveResult(args: ResolveArgs): ComputedResult | FailedResult {
   const resultRaw = interpolate(lower, upper, cg);
   return {
     kind: 'ok',
-    value: roundDown(resultRaw, decimals),
+    value: resultRaw,
     strategy: 'within-bracket',
     cgLower: lower.threshold,
     cgUpper: upper.threshold,
@@ -238,7 +234,6 @@ function calculate(
   const computed = resolveResult({
     thresholds,
     cg: cgPercent,
-    decimals: params.decimals,
     fallbackCrosswindKnots,
   });
   if (computed.kind === 'fail') {

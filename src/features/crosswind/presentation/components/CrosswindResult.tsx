@@ -128,16 +128,21 @@ function ValueRow({ value, isRegular }: ValueRowProps): ReactNode {
   const unitVariant: TextVariant = isRegular ? 'monoXL' : 'monoMedium';
   const valueStyle = isRegular ? VALUE_STYLE_REGULAR : undefined;
   const unitStyle = isRegular ? [styles.ktSuffix, UNIT_STYLE_REGULAR] : styles.ktSuffix;
+  // ADR-0017: render exactly one decimal place — `10.0`, `12.5`, `34.7`.
+  // `toFixed(1)` is half-up-on-display only; the underlying value is
+  // already ROUNDDOWN-floored at the calculator boundary, so this call
+  // is safe (it never changes a value that is already on the 0.1 grid).
+  const displayValue = value.toFixed(1);
   return (
     <View style={styles.valueRow}>
       <Text
         variant={valueVariant}
         color="accent"
         allowFontScaling={false}
-        accessibilityLabel={`${value} ${KT_UNIT}`}
+        accessibilityLabel={`${displayValue} ${KT_UNIT}`}
         style={valueStyle}
       >
-        {String(value)}
+        {displayValue}
       </Text>
       <Text variant={unitVariant} color="textSecondary" style={unitStyle}>
         {KT_UNIT}

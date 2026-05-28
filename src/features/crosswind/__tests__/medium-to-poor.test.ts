@@ -220,14 +220,14 @@ describe('MediumToPoor · out-of-envelope CG (negative raw → CalculationFailed
 });
 
 describe('Cross-condition ordering · Dry ≥ Good ≥ MediumToGood ≥ Medium ≥ MediumToPoor', () => {
-  // Full 5-condition chain at W=170/CG=32. Computed values (not the
-  // approximations in the PR prompt) per user direction:
-  //   Dry          → 34   (case 1.12: raw 34.221 → floor 34; cap=37 not triggered)
-  //   Good         → 32   (case 6.1.11: raw 32.189 → floor 32)
-  //   MediumToGood → 21   (bracket [T3=28.54, T4=33.54]; raw 21.541 → floor 21)
-  //   Medium       → 17.1 (bracket [T2=26.29, T3=36.34]; raw 17.160 → ROUNDDOWN(1) 17.1)
-  //   MediumToPoor → 13.9 (CG>30; raw 13.947 → ROUNDDOWN(1) 13.9)
-  it('W=170/CG=32: 34 / 32 / 21 / 17.1 / 13.9 (full monotonic chain)', () => {
+  // Full 5-condition chain at W=170/CG=32. Post-ADR-0017 every condition
+  // floors to the 0.1 grid at the calculator boundary:
+  //   Dry          → 34.2 (case 1.12: raw 34.221 → ROUNDDOWN-tenth 34.2; cap=37 not triggered)
+  //   Good         → 32.1 (case 6.1.11: raw 32.189 → 32.1)
+  //   MediumToGood → 21.5 (bracket [T3=28.54, T4=33.54]; raw 21.541 → 21.5)
+  //   Medium       → 17.1 (bracket [T2=26.29, T3=36.34]; raw 17.160 → 17.1)
+  //   MediumToPoor → 13.9 (CG>30; raw 13.947 → 13.9)
+  it('W=170/CG=32: 34.2 / 32.1 / 21.5 / 17.1 / 13.9 (full monotonic chain)', () => {
     const { w, cg } = vo(170, 32);
     const baseInputs = {
       weightTons: w,
@@ -248,9 +248,9 @@ describe('Cross-condition ordering · Dry ≥ Good ≥ MediumToGood ≥ Medium �
     const mtgKt = mtg.value.maxCrosswindKnots as unknown as number;
     const medKt = med.value.maxCrosswindKnots as unknown as number;
     const mtpKt = mtp.value.maxCrosswindKnots as unknown as number;
-    expect(dryKt).toBe(34);
-    expect(goodKt).toBe(32);
-    expect(mtgKt).toBe(21);
+    expect(dryKt).toBe(34.2);
+    expect(goodKt).toBe(32.1);
+    expect(mtgKt).toBe(21.5);
     expect(medKt).toBe(17.1);
     expect(mtpKt).toBe(13.9);
     // Monotonic invariant — load-bearing assertion.

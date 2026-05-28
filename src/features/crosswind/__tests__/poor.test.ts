@@ -139,7 +139,8 @@ describe('Poor · explicit anchor assertion (constant, any input → 10 KT)', ()
       throw new Error(`anchor case unexpectedly errored: ${JSON.stringify(r.error)}`);
     }
     expect(r.value.maxCrosswindKnots).toBe(10);
-    expect(String(r.value.maxCrosswindKnots)).toBe('10');
+    // Numeric value is still integer 10; the display layer applies
+    // `.toFixed(1)` per ADR-0017 to render "10.0".
   });
 });
 
@@ -147,7 +148,7 @@ describe('Cross-condition ordering · Dry ≥ Good ≥ MTG ≥ Medium ≥ MTP �
   // Full chain at W=170/CG=30 — every active condition exercised.
   // Note: MediumToPoor at CG=30 is 15 (plateau boundary), NOT 13.9
   // (which is the W=182/CG=32 MediumToPoor anchor — different case).
-  it('W=170/CG=30: 37 / 33 / 23 / 18.1 / 15 / 10 (full monotonic chain across all 6 active RWYCC conditions)', () => {
+  it('W=170/CG=30 after ADR-0017: 37 / 33.7 / 23.5 / 18.1 / 15 / 10 (full monotonic chain)', () => {
     const { w, cg } = vo(170, 30);
     const baseInputs = {
       weightTons: w,
@@ -171,8 +172,8 @@ describe('Cross-condition ordering · Dry ≥ Good ≥ MTG ≥ Medium ≥ MTP �
     const mtpKt = mtp.value.maxCrosswindKnots;
     const poorKt = poor.value.maxCrosswindKnots;
     expect(dryKt).toBe(37);
-    expect(goodKt).toBe(33);
-    expect(mtgKt).toBe(23);
+    expect(goodKt).toBe(33.7);
+    expect(mtgKt).toBe(23.5);
     expect(medKt).toBe(18.1);
     expect(mtpKt).toBe(15);
     expect(poorKt).toBe(10);

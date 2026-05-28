@@ -36,11 +36,11 @@ const B787_9_ANCHORS: readonly AnchorCase[] = [
   // Good — variableSlopeBracketed, maxCap=37
   { condition: 'good', weightTons: 180, cgPercent: 18, expectedKT: 37 },
   { condition: 'good', weightTons: 180, cgPercent: 24, expectedKT: 37 },
-  { condition: 'good', weightTons: 230, cgPercent: 36, expectedKT: 33 },
+  { condition: 'good', weightTons: 230, cgPercent: 36, expectedKT: 33.4 },
   // MediumToGood — variableSlopeBracketed, maxCap=null
   { condition: 'mediumToGood', weightTons: 180, cgPercent: 14, expectedKT: 35 },
-  { condition: 'mediumToGood', weightTons: 180, cgPercent: 25, expectedKT: 29 },
-  { condition: 'mediumToGood', weightTons: 220, cgPercent: 35, expectedKT: 22 },
+  { condition: 'mediumToGood', weightTons: 180, cgPercent: 25, expectedKT: 29.4 },
+  { condition: 'mediumToGood', weightTons: 220, cgPercent: 35, expectedKT: 22.6 },
   // Medium — variableSlopeBracketed, maxCap=null, decimals=1
   { condition: 'medium', weightTons: 180, cgPercent: 14, expectedKT: 25 },
   { condition: 'medium', weightTons: 180, cgPercent: 26, expectedKT: 20.9 },
@@ -99,7 +99,7 @@ describe('B787-8 regression — post-migration anchors still hold', () => {
   }
   const data = loaded.value;
 
-  it('flagship Dry anchor W=170 / CG=32 → 34 KT (unchanged by schema 2.3.0)', () => {
+  it('flagship Dry anchor W=170 / CG=32 → 34.2 KT (ADR-0017: ROUNDDOWN at 0.1)', () => {
     const w = makeWeightInTons(170);
     const cg = makeCGPercentMAC(32);
     if (!w.ok || !cg.ok) {
@@ -118,7 +118,7 @@ describe('B787-8 regression — post-migration anchors still hold', () => {
     if (!result.ok) {
       throw new Error('expected ok');
     }
-    expect(result.value.maxCrosswindKnots).toBe(34);
+    expect(result.value.maxCrosswindKnots).toBe(34.2);
     expect(result.value.metadata.aircraft).toBe('b787_8');
   });
 

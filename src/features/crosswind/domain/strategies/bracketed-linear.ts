@@ -10,12 +10,14 @@
  *    above-envelope route through the same fallback per spec §
  *    "Особенность 1" — preserving the Excel quirk under the
  *    zero-behaviour-change constraint.
- *  • Math.floor() at `params.decimals` precision (ROUNDDOWN equivalent
- *    — always rounds down for positive values; safer for an advisory
- *    limit).
  *  • Discontinuity at bracket boundaries from `E9 = (E8 - E7) / 5`.
- *  • Optional `maxCap`: if set, results above the cap are clamped to it.
- *    PR 1 ships `maxCap: null` for Dry — no cap applied.
+ *  • Optional `maxCap`: if set, raw results above the cap are clamped
+ *    to it. PR 1 ships `maxCap: null` for Dry — no cap applied.
+ *
+ * The strategy returns the **raw** (un-rounded) advisory value.
+ * Output rounding (ROUNDDOWN to 0.1 KT) is applied uniformly at the
+ * calculator boundary per ADR-0017. The legacy `params.decimals`
+ * field is parsed by the schema but no longer consumed here.
  */
 
 import { err, ok } from '../../../../core/result';
@@ -38,7 +40,6 @@ import type {
 import { makeCrosswindKnots } from '../valueObjects';
 
 const E9_DIVISOR = 5;
-const ROUNDDOWN_DECIMAL_BASE = 10;
 
 /**
  * Tolerance for "CG is exactly on a threshold" detection. The spec test
@@ -116,38 +117,23 @@ interface FailedResult {
   readonly reason: string;
 }
 
-/**
- * ROUNDDOWN-equivalent to `decimals` precision. Always floors for
- * positive values; matches Excel ROUNDDOWN(value, decimals).
- */
-function roundDown(value: number, decimals: 0 | 1): number {
-  const factor = ROUNDDOWN_DECIMAL_BASE ** decimals;
-  return Math.floor(value * factor) / factor;
-}
-
-function applyFormula(
-  lower: Threshold,
-  upper: Threshold,
-  cg: number,
-  decimals: 0 | 1,
-): { readonly value: number } {
+function applyFormula(lower: Threshold, upper: Threshold, cg: number): { readonly value: number } {
   const e7 = lower.threshold;
   const e8 = upper.threshold;
   const f7 = lower.crosswindKnots;
   const e9 = (e8 - e7) / E9_DIVISOR;
   const resultRaw = f7 - (cg - e7) * e9;
-  return { value: roundDown(resultRaw, decimals) };
+  return { value: resultRaw };
 }
 
 interface ResolveArgs {
   readonly thresholds: readonly Threshold[];
   readonly cg: number;
-  readonly decimals: 0 | 1;
   readonly fallbackCrosswindKnots: number;
 }
 
 function resolveResult(args: ResolveArgs): ComputedResult | FailedResult {
-  const { thresholds, cg, decimals, fallbackCrosswindKnots } = args;
+  const { thresholds, cg, fallbackCrosswindKnots } = args;
   const bottom = thresholds[0];
   const top = thresholds[thresholds.length - 1];
   if (bottom === undefined || top === undefined) {
@@ -179,7 +165,7 @@ function resolveResult(args: ResolveArgs): ComputedResult | FailedResult {
     };
   }
 
-  const { value } = applyFormula(lower, upper, cg, decimals);
+  const { value } = applyFormula(lower, upper, cg);
   return {
     kind: 'ok',
     value,
@@ -235,7 +221,6 @@ function calculate(
   const computed = resolveResult({
     thresholds,
     cg: cgPercent,
-    decimals: params.decimals,
     fallbackCrosswindKnots,
   });
   if (computed.kind === 'fail') {

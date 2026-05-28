@@ -91,17 +91,17 @@ describe('Test Set #7.1 · MediumToGood at W=170 t (heavy)', () => {
     { id: '7.1.01', weight: 170, cg: 8.0, expected: 35, strategy: 'below-envelope' },
     { id: '7.1.02', weight: 170, cg: 15.0, expected: 35, strategy: 'below-envelope' },
     { id: '7.1.03', weight: 170, cg: 18.54064344, expected: 35, strategy: 'within-bracket' },
-    { id: '7.1.04', weight: 170, cg: 20.0, expected: 33, strategy: 'within-bracket' },
-    { id: '7.1.05', weight: 170, cg: 22.0, expected: 31, strategy: 'within-bracket' },
+    { id: '7.1.04', weight: 170, cg: 20.0, expected: 33.5, strategy: 'within-bracket' },
+    { id: '7.1.05', weight: 170, cg: 22.0, expected: 31.5, strategy: 'within-bracket' },
     { id: '7.1.06', weight: 170, cg: 23.54064344, expected: 30, strategy: 'within-bracket' },
-    { id: '7.1.07', weight: 170, cg: 25.0, expected: 28, strategy: 'within-bracket' },
-    { id: '7.1.08', weight: 170, cg: 28.0, expected: 25, strategy: 'within-bracket' },
+    { id: '7.1.07', weight: 170, cg: 25.0, expected: 28.5, strategy: 'within-bracket' },
+    { id: '7.1.08', weight: 170, cg: 28.0, expected: 25.5, strategy: 'within-bracket' },
     { id: '7.1.09', weight: 170, cg: 28.54064344, expected: 25, strategy: 'within-bracket' },
-    { id: '7.1.10', weight: 170, cg: 30.0, expected: 23, strategy: 'within-bracket' },
+    { id: '7.1.10', weight: 170, cg: 30.0, expected: 23.5, strategy: 'within-bracket' },
     { id: '7.1.11', weight: 170, cg: 33.54064344, expected: 20, strategy: 'within-bracket' },
-    { id: '7.1.12', weight: 170, cg: 35.0, expected: 18, strategy: 'within-bracket' },
+    { id: '7.1.12', weight: 170, cg: 35.0, expected: 18.5, strategy: 'within-bracket' },
     { id: '7.1.13', weight: 170, cg: 38.54064344, expected: 15, strategy: 'within-bracket' },
-    { id: '7.1.14', weight: 170, cg: 40.0, expected: 13, strategy: 'within-bracket' },
+    { id: '7.1.14', weight: 170, cg: 40.0, expected: 13.5, strategy: 'within-bracket' },
     { id: '7.1.15', weight: 170, cg: 43.54064344, expected: 10, strategy: 'within-bracket' },
     { id: '7.1.16', weight: 170, cg: 45.0, expected: 35, strategy: 'above-envelope' },
   ];
@@ -118,11 +118,11 @@ describe('Test Set #7.2 · MediumToGood at W=130 t (medium)', () => {
   const cases: readonly Case[] = [
     { id: '7.2.01', weight: 130, cg: 8.0, expected: 35, strategy: 'below-envelope' },
     { id: '7.2.02', weight: 130, cg: 14.69578616, expected: 35, strategy: 'within-bracket' },
-    { id: '7.2.03', weight: 130, cg: 15.0, expected: 34, strategy: 'within-bracket' },
+    { id: '7.2.03', weight: 130, cg: 15.0, expected: 34.6, strategy: 'within-bracket' },
     { id: '7.2.04', weight: 130, cg: 19.69578616, expected: 30, strategy: 'within-bracket' },
-    { id: '7.2.05', weight: 130, cg: 22.0, expected: 27, strategy: 'within-bracket' },
+    { id: '7.2.05', weight: 130, cg: 22.0, expected: 27.6, strategy: 'within-bracket' },
     { id: '7.2.06', weight: 130, cg: 24.69578616, expected: 25, strategy: 'within-bracket' },
-    { id: '7.2.07', weight: 130, cg: 27.0, expected: 22, strategy: 'within-bracket' },
+    { id: '7.2.07', weight: 130, cg: 27.0, expected: 22.6, strategy: 'within-bracket' },
     { id: '7.2.08', weight: 130, cg: 29.69578616, expected: 20, strategy: 'within-bracket' },
     { id: '7.2.09', weight: 130, cg: 34.69578616, expected: 15, strategy: 'within-bracket' },
     { id: '7.2.10', weight: 130, cg: 39.69578616, expected: 10, strategy: 'within-bracket' },
@@ -141,10 +141,10 @@ describe('Test Set #7.3 · MediumToGood at W=160 t (mid)', () => {
   const cases: readonly Case[] = [
     { id: '7.3.01', weight: 160, cg: 15.0, expected: 35, strategy: 'below-envelope' },
     { id: '7.3.02', weight: 160, cg: 17.57942912, expected: 35, strategy: 'within-bracket' },
-    { id: '7.3.03', weight: 160, cg: 20.0, expected: 32, strategy: 'within-bracket' },
+    { id: '7.3.03', weight: 160, cg: 20.0, expected: 32.5, strategy: 'within-bracket' },
     { id: '7.3.04', weight: 160, cg: 22.57942912, expected: 30, strategy: 'within-bracket' },
-    { id: '7.3.05', weight: 160, cg: 25.0, expected: 27, strategy: 'within-bracket' },
-    { id: '7.3.06', weight: 160, cg: 30.0, expected: 22, strategy: 'within-bracket' },
+    { id: '7.3.05', weight: 160, cg: 25.0, expected: 27.5, strategy: 'within-bracket' },
+    { id: '7.3.06', weight: 160, cg: 30.0, expected: 22.5, strategy: 'within-bracket' },
     { id: '7.3.07', weight: 160, cg: 37.57942912, expected: 15, strategy: 'within-bracket' },
     { id: '7.3.08', weight: 160, cg: 42.57942912, expected: 10, strategy: 'within-bracket' },
   ];
@@ -159,6 +159,7 @@ describe('Test Set #7.4 · MediumToGood user-anchor + W=175 t coverage', () => {
   // Thresholds (W_kilolbs = 385.8085):
   //   T1=19.021 · T2=24.021 · T3=29.021 · T4=34.021 · T5=39.021 · T6=44.021
   // 7.4.02 is the Excel-verified anchor (W=175, CG=24 → 30 KT, sheet G7).
+  // Raw stays at 30.0213 → ROUNDDOWN-tenth = 30; pre-ADR-0017 was also 30.
   const cases: readonly Case[] = [
     { id: '7.4.01', weight: 175, cg: 10.0, expected: 35, strategy: 'below-envelope' },
     { id: '7.4.02', weight: 175, cg: 24.0, expected: 30, strategy: 'within-bracket' },
@@ -252,8 +253,8 @@ describe('Cross-condition ordering · Dry ≥ Good ≥ MediumToGood at same inpu
     const goodKt = good.value.maxCrosswindKnots as number;
     const mtgKt = mtg.value.maxCrosswindKnots as number;
     expect(dryKt).toBe(37);
-    expect(goodKt).toBe(33);
-    expect(mtgKt).toBe(23);
+    expect(goodKt).toBe(33.7);
+    expect(mtgKt).toBe(23.5);
     // Ordering invariant — load-bearing assertion regardless of exact
     // numbers (would catch any future data-edit that broke the
     // monotonicity).
