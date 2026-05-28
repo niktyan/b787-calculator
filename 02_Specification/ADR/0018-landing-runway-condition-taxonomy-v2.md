@@ -90,21 +90,21 @@ Therefore the split is **landing-only**.
    No formal migration is performed — the bundle is shipped with the
    app binary, so every install carries the matching schema.
 
-4. **Default screen state** changes from `good` to `goodWetDamp`.
-   Rationale: `goodWetDamp` carries the **higher** (more permissive)
-   manual base limit — but with the wider distribution of surface
-   conditions a typical pilot would expect "Good" to mean (clean wet
-   runway). Picking `goodSlushSnow` as the default would be more
-   conservative on paper but would mislead users selecting a wet
-   runway. `dry` would have been the safest starting state, but the
-   Sprint C screen already opens with `dry`; this ADR keeps that
-   behaviour because the *default state* of the screen on cold open
-   continues to be `dry` (per `useLandingScreenState.ts`). The
-   `goodWetDamp` substitution is only used as the **legacy-`good`
-   fallback** when restoring inputs from a pre-2.4.0 Recent
-   Calculations entry. Choosing the more permissive of the two new
-   variants preserves the user's prior expectation that "Good" meant
-   "you can land with the standard Good crosswind".
+4. **Default screen state** changes from `dry` (Sprint C) to
+   `goodWetDamp`. Rationale: `goodWetDamp` carries the higher
+   (more permissive) manual base limit of 37 KT — the same as Dry for
+   manual mode — and matches the surface condition a pilot mentally
+   reaches for when the runway state is "Good" in casual usage
+   (clean wet, not contaminated). Picking `goodSlushSnow` as the
+   default would be more conservative on paper but would mislead
+   users selecting a typical wet runway. `dry` was the Sprint C
+   default; the F2 prompt explicitly requests `goodWetDamp` as the
+   new default because it is the most-conservative MANUAL = 37 KT
+   landing that still represents a non-Dry surface — a more
+   realistic starting position than Dry for a working pilot.
+   The same value also serves as the **legacy-`good` fallback** when
+   restoring inputs from a pre-2.4.0 Recent Calculations entry, so
+   the cold-open default and the legacy mapping line up.
 
 5. **Recent Calculations — non-destructive legacy fallback.**
    Persisted entries with the old `good` or `mediumToGood` keys

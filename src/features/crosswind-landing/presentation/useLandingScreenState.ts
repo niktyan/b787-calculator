@@ -19,7 +19,12 @@ import type { LandingMode, YesNo } from '../domain/types';
 import { useRestoreFromRecent } from './useRestoreFromRecent';
 
 const DEFAULT_AIRCRAFT: AircraftVariant = 'b787_8';
-const DEFAULT_RUNWAY: LandingRunwayCondition = 'dry';
+// ADR-0018 § Decision point 4: default landing runway condition is
+// `goodWetDamp` — the more permissive of the two new Good splits
+// (manual base 37 KT for both aircraft). Picking the wet/damp surface
+// over the slush/snow surface matches the most common "Good runway"
+// mental model a pilot brings to the screen.
+const DEFAULT_RUNWAY: LandingRunwayCondition = 'goodWetDamp';
 const DEFAULT_LANDING_MODE: LandingMode = 'manual';
 const DEFAULT_YES_NO: YesNo = 'no';
 
