@@ -90,21 +90,23 @@ Therefore the split is **landing-only**.
    No formal migration is performed — the bundle is shipped with the
    app binary, so every install carries the matching schema.
 
-4. **Default screen state** changes from `dry` (Sprint C) to
-   `goodWetDamp`. Rationale: `goodWetDamp` carries the higher
-   (more permissive) manual base limit of 37 KT — the same as Dry for
-   manual mode — and matches the surface condition a pilot mentally
-   reaches for when the runway state is "Good" in casual usage
-   (clean wet, not contaminated). Picking `goodSlushSnow` as the
-   default would be more conservative on paper but would mislead
-   users selecting a typical wet runway. `dry` was the Sprint C
-   default; the F2 prompt explicitly requests `goodWetDamp` as the
-   new default because it is the most-conservative MANUAL = 37 KT
-   landing that still represents a non-Dry surface — a more
-   realistic starting position than Dry for a working pilot.
-   The same value also serves as the **legacy-`good` fallback** when
-   restoring inputs from a pre-2.4.0 Recent Calculations entry, so
-   the cold-open default and the legacy mapping line up.
+4. **Default screen state stays `dry`** (Sprint C carryover).
+   Rationale: `dry` is the most common operational case for line
+   pilots and provides the simplest, lowest-cognitive-load starting
+   state. The Reset action restores `dry` too — Reset is intended for
+   fast cleanup, not safety-defaulting.
+
+   An interim F2 follow-up briefly set the default to `goodWetDamp`
+   (commit `302f521`, justified as "most conservative MANUAL = 37 KT
+   non-Dry"); the user explicitly overrode that decision in F2 visual
+   fix v2 because the dropdown picker now makes the default visible
+   in the closed-state field, and showing `Good (Wet, Damp)` as the
+   first thing on screen was confusing for the typical Dry-runway
+   case. The `goodWetDamp` value is **retained as the legacy-`good`
+   fallback** only — `useRestoreFromRecent` maps a persisted v1
+   `'good'` entry to `'goodWetDamp'` when restoring inputs from a
+   pre-2.4.0 Recent Calculations entry (most permissive of the two
+   Good splits; preserves the user's prior expectation).
 
 5. **Recent Calculations — non-destructive legacy fallback.**
    Persisted entries with the old `good` or `mediumToGood` keys
@@ -133,6 +135,58 @@ Therefore the split is **landing-only**.
    modules now legitimately diverge in their runway-condition
    vocabulary because the source AFM tables themselves diverge.
 
+## UI Layout
+
+The 7 runway-condition labels vary roughly 4× in length — from a
+3-character `Dry` to the 32-character `Good (Slush, Dry Snow, Wet
+Snow)`. Two earlier attempts at a flat horizontal layout failed:
+
+1. **Flexible `SegmentedControl` with wrap=true** (initial Sprint F2
+   commit). Buttons reflowed by flex so widths became visibly uneven;
+   on iPad landscape the long Slush/Snow row dominated the track and
+   the surrounding buttons looked pinched. User feedback:
+   "растянуто, несуразно, неэстетично".
+2. **4 × 2 fixed grid with an invisible spacer cell** (F2 visual fix
+   v1, commit on this branch later reverted). Equal-width cells in
+   theory; in practice the selected-button background highlight made
+   the cell appear visually wider than its inactive siblings, and the
+   3 + 3 + 1 row distribution read as ragged.
+
+**Adopted pattern: single-line dropdown + bottom-sheet modal**, inspired
+by the Boeing Onboard Performance Tool COND control.
+
+- **Closed state.** A full-width `Pressable` field shows the current
+  selection's label + a trailing `chevron-down` Ionicons glyph. The
+  field mimics the `NumericInput` row's border / radius / padding /
+  height (`tokens.layout.runwayPicker.field*`), so the runway-condition
+  row visually aligns with the other input fields in the column.
+- **Open state.** Tapping the field fires a light haptic and opens a
+  `BottomSheet` modal (the same primitive Settings → Language / Theme
+  use). The sheet lists all 7 options vertically as full-width
+  `PickerRow` cells with a divider between rows. The active row's
+  label is `accentText` colour with a trailing `✓` glyph. A Cancel
+  button at the bottom dismisses the sheet without mutating the
+  value. Tapping the backdrop or the system back-gesture also
+  dismisses.
+- **Accessibility.** Closed field: `role="button"`,
+  `accessibilityState.expanded` mirrors `isOpen`, `accessibilityValue.text`
+  is the current label. Sheet wrapper: `role="radiogroup"`. Each row:
+  `role="radio"` + `accessibilityState.selected`. VoiceOver announces
+  the current label inside the field and the selection state of each
+  row inside the sheet.
+- **Tokens.** All spacing / radius / max-width values live under
+  `tokens.layout.runwayPicker` — no magic numbers in the component.
+- **No new dependencies.** `BottomSheet` and `Ionicons` are already
+  shipped. The picker uses the React Native `Modal` indirectly via
+  `BottomSheet` — no `@gorhom/bottom-sheet`, no `react-native-picker`,
+  no UIPickerView wheel.
+
+The dropdown gives every option the same vertical real-estate at full
+text length; horizontal-width compromises are eliminated because the
+sheet uses the natural single-line width of each label. The pattern is
+also familiar from iOS Settings, so pilots do not need to learn a new
+selection idiom.
+
 ## Consequences
 
 **Positive:**
@@ -148,11 +202,11 @@ Therefore the split is **landing-only**.
 
 **Negative / trade-offs:**
 
-- One more dimension on the landing input form. The compact iPhone
-  layout already wraps the runway segmented control; the new longest
-  label (`Good (Slush, Dry Snow, Wet Snow)`) extends the wrap.
-  Verified visually on iPhone SE 4.7" portrait — wraps cleanly to a
-  second row without label truncation.
+- The runway-condition row is now a dropdown (one extra tap to change
+  the selection vs. a segmented control). The trade-off was accepted
+  because the alternative layouts produced visibly uneven button
+  widths (see § UI Layout); a familiar dropdown is preferable to a
+  ragged segmented row.
 - A small amount of legacy-fallback code (label resolver, restore
   mapper) lives in the codebase indefinitely. Acceptable cost vs.
   silently wiping user data.

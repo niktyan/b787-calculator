@@ -48,6 +48,21 @@ const ELEVATION_MD = 3;
 // --- Touch target floor ---
 const MIN_TOUCH_TARGET = 44;
 
+// --- Crosswind Landing runway-condition picker (ADR-0018 § UI Layout) ---
+//
+// Single-line dropdown that opens a bottom-sheet modal listing the 7
+// runway-condition options vertically. Inspired by the Boeing Onboard
+// Performance Tool COND control. Dropdown field shares the closed-state
+// proportions of a NumericInput row so the runway row aligns visually
+// with the rest of the input column.
+const RUNWAY_PICKER_FIELD_RADIUS = RADIUS_MD;
+const RUNWAY_PICKER_FIELD_PADDING_H = SPACING_LG;
+const RUNWAY_PICKER_FIELD_PADDING_V = SPACING_SM;
+const RUNWAY_PICKER_ROW_MIN_HEIGHT = 48;
+const RUNWAY_PICKER_ROW_PADDING_H = SPACING_LG;
+const RUNWAY_PICKER_ROW_PADDING_V = SPACING_MD;
+const RUNWAY_PICKER_SHEET_MAX_WIDTH = 480;
+
 // --- Press-feedback motion ---
 //
 // Subtle scale + opacity animation applied to interactive surfaces (Button,
@@ -241,6 +256,15 @@ const breakpoints = {
 
 const layout = {
   minTouchTarget: MIN_TOUCH_TARGET,
+  runwayPicker: {
+    fieldRadius: RUNWAY_PICKER_FIELD_RADIUS,
+    fieldPaddingHorizontal: RUNWAY_PICKER_FIELD_PADDING_H,
+    fieldPaddingVertical: RUNWAY_PICKER_FIELD_PADDING_V,
+    rowMinHeight: RUNWAY_PICKER_ROW_MIN_HEIGHT,
+    rowPaddingHorizontal: RUNWAY_PICKER_ROW_PADDING_H,
+    rowPaddingVertical: RUNWAY_PICKER_ROW_PADDING_V,
+    sheetMaxWidth: RUNWAY_PICKER_SHEET_MAX_WIDTH,
+  },
 } as const;
 
 const motion = {

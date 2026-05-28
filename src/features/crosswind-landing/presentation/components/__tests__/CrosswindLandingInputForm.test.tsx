@@ -1,13 +1,18 @@
 /**
- * Snapshot + presence coverage for the Landing input form runway
- * segmented control (ADR-0018).
+ * Coverage for the Landing input form runway-condition row (ADR-0018).
  *
- * The contract under test:
- *   - exactly 7 runway-condition options render in the v2 order;
- *   - labels match the AFM Rev. 20 phrasing verbatim, in English in
- *     both locales per the aviation-term policy;
- *   - changing `isRegular` selects compact vs. regular sizing without
- *     dropping any option.
+ * The runway condition row is now a single-line `RunwayConditionPicker`
+ * (closed-state field showing the current label + a chevron-down icon)
+ * that opens a `BottomSheet` modal listing all 7 options. These tests
+ * confirm:
+ *   - the field renders with the current selection's label by default
+ *     (closed);
+ *   - the chevron icon is present;
+ *   - accessibility role + expanded state are correct for the closed
+ *     field.
+ *
+ * The full picker behaviour (open / select / cancel / a11y of rows)
+ * is covered in `RunwayConditionPicker.test.tsx`.
  */
 
 import { renderWithTheme } from '../../../../../design-system/_testing/renderWithTheme';
@@ -39,18 +44,8 @@ jest.mock('react-i18next', () => {
 
 const noop = (): void => {};
 
-const RUNWAY_LABELS_IN_ORDER: readonly string[] = [
-  'Dry',
-  'Good (Wet, Damp)',
-  'Good (Slush, Dry Snow, Wet Snow)',
-  'Good to Medium',
-  'Medium',
-  'Medium to Poor',
-  'Poor',
-];
-
-describe('CrosswindLandingInputForm · runway condition (ADR-0018)', () => {
-  it('renders the 7 runway options in the v2 order (compact / iPhone layout)', () => {
+describe('CrosswindLandingInputForm · runway condition row (ADR-0018)', () => {
+  it('renders the closed-state picker showing the current selection (compact)', () => {
     const tree = renderWithTheme(
       <CrosswindLandingInputForm
         aircraft="b787_8"
@@ -69,13 +64,17 @@ describe('CrosswindLandingInputForm · runway condition (ADR-0018)', () => {
         testID="form-compact"
       />,
     );
-    for (const label of RUNWAY_LABELS_IN_ORDER) {
-      expect(tree.getByText(label)).toBeTruthy();
-    }
+    // Closed picker field is the radio-group trigger; it renders the
+    // selected option's label as its child Text.
+    expect(tree.getByText('Dry')).toBeTruthy();
+    const field = tree.getByTestId('landing-runway');
+    expect(field.props.accessibilityRole).toBe('button');
+    expect(field.props.accessibilityState).toEqual({ expanded: false });
+    expect(field.props.accessibilityValue).toEqual({ text: 'Dry' });
     expect(tree.toJSON()).toMatchSnapshot();
   });
 
-  it('renders the 7 runway options in the v2 order (regular / iPad layout)', () => {
+  it('renders the closed-state picker showing the current selection (regular)', () => {
     const tree = renderWithTheme(
       <CrosswindLandingInputForm
         aircraft="b787_9"
@@ -94,33 +93,11 @@ describe('CrosswindLandingInputForm · runway condition (ADR-0018)', () => {
         testID="form-regular"
       />,
     );
-    for (const label of RUNWAY_LABELS_IN_ORDER) {
-      expect(tree.getByText(label)).toBeTruthy();
-    }
-    expect(tree.toJSON()).toMatchSnapshot();
-  });
-
-  it('renders the 7 runway labels in the exact AFM order via accessibilityState', () => {
-    const tree = renderWithTheme(
-      <CrosswindLandingInputForm
-        aircraft="b787_8"
-        runwayCondition="dry"
-        landingMode="manual"
-        asymReverse="no"
-        catIIIII="no"
-        engineInop="no"
-        onAircraftChange={noop}
-        onRunwayConditionChange={noop}
-        onLandingModeChange={noop}
-        onAsymReverseChange={noop}
-        onCatIIIIIChange={noop}
-        onEngineInopChange={noop}
-      />,
-    );
-    const renderedOrder = RUNWAY_LABELS_IN_ORDER.map((label) => {
-      const node = tree.getByText(label);
-      return node.props.children;
+    expect(tree.getByText('Good (Slush, Dry Snow, Wet Snow)')).toBeTruthy();
+    const field = tree.getByTestId('landing-runway');
+    expect(field.props.accessibilityValue).toEqual({
+      text: 'Good (Slush, Dry Snow, Wet Snow)',
     });
-    expect(renderedOrder).toEqual(RUNWAY_LABELS_IN_ORDER);
+    expect(tree.toJSON()).toMatchSnapshot();
   });
 });

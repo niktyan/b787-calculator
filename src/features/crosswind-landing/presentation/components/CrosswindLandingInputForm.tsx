@@ -26,6 +26,8 @@ import type {
 } from '../../../../design-system';
 import type { LandingMode, YesNo } from '../../domain/types';
 
+import { RunwayConditionPicker } from './RunwayConditionPicker';
+
 export interface CrosswindLandingInputFormProps {
   readonly aircraft: AircraftVariant;
   readonly runwayCondition: LandingRunwayCondition;
@@ -83,7 +85,6 @@ interface FormSizing {
   readonly sectionLabelGap: SpacingToken;
   readonly sectionLabelVariant: TextVariant;
   readonly sectionLabelStyle: TextStyle | undefined;
-  readonly runwayWrap: boolean;
 }
 
 function resolveSizing(isRegular: boolean): FormSizing {
@@ -96,7 +97,6 @@ function resolveSizing(isRegular: boolean): FormSizing {
       sectionLabelGap: 'md',
       sectionLabelVariant: 'body',
       sectionLabelStyle: REGULAR_SECTION_LABEL_STYLE,
-      runwayWrap: false,
     };
   }
   return {
@@ -107,7 +107,6 @@ function resolveSizing(isRegular: boolean): FormSizing {
     sectionLabelGap: 'xs',
     sectionLabelVariant: 'label',
     sectionLabelStyle: undefined,
-    runwayWrap: true,
   };
 }
 
@@ -192,12 +191,10 @@ function TopSections(props: TopSectionsProps): ReactNode {
       </Stack>
       <Stack gap={sizing.sectionLabelGap}>
         <SectionLabel text={t('crosswind-landing.runwayConditionLabel')} sizing={sizing} />
-        <SegmentedControl<LandingRunwayCondition>
+        <RunwayConditionPicker<LandingRunwayCondition>
           value={runwayCondition}
           options={RUNWAY_OPTIONS}
           onChange={onRunwayConditionChange}
-          size={sizing.segmentedSize}
-          wrap={sizing.runwayWrap}
           accessibilityLabel={t('crosswind-landing.runwayConditionLabel')}
           testID="landing-runway"
         />
