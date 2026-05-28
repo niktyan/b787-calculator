@@ -232,7 +232,7 @@ describe('Medium · cap-absence (maxCap=null)', () => {
 });
 
 describe('Cross-condition ordering · Dry ≥ Good ≥ MediumToGood ≥ Medium', () => {
-  it('W=170/CG=30: Dry → 37, Good → 33, MediumToGood → 23, Medium → 18.1', () => {
+  it('W=170/CG=30 after ADR-0017: Dry → 37, Good → 33.7, MediumToGood → 23.5, Medium → 18.1', () => {
     const { w, cg } = vo(170, 30);
     const inputs = {
       weightTons: w,
@@ -252,8 +252,8 @@ describe('Cross-condition ordering · Dry ≥ Good ≥ MediumToGood ≥ Medium',
     const mtgKt = mtg.value.maxCrosswindKnots as number;
     const medKt = med.value.maxCrosswindKnots as number;
     expect(dryKt).toBe(37);
-    expect(goodKt).toBe(33);
-    expect(mtgKt).toBe(23);
+    expect(goodKt).toBe(33.7);
+    expect(mtgKt).toBe(23.5);
     expect(medKt).toBe(18.1);
     // Monotonic invariant.
     expect(dryKt).toBeGreaterThanOrEqual(goodKt);

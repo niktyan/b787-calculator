@@ -122,11 +122,13 @@ describe('Crosswind route', () => {
     expect(tree.getByText('Enter weight and CG to see result')).toBeTruthy();
   });
 
-  it('computes result for W=170, CG=32 — flagship case (34 KT)', () => {
+  it('computes result for W=170, CG=32 — flagship case (34.2 KT post-ADR-0017)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     setNumericInput(getByTestId('crosswind-weight-input'), '170');
     setNumericInput(getByTestId('crosswind-cg-input'), '32');
-    expect(getByText('34')).toBeTruthy();
+    // raw 34.221; ROUNDDOWN at 0.1 boundary = 34.2; ResultPanel renders
+    // via `.toFixed(1)` → "34.2".
+    expect(getByText('34.2')).toBeTruthy();
     // Source chip moved to About per Принцип 4 — should NOT appear on result panel.
     expect(() => getByText('crosswind.sourceChip')).toThrow();
   });
@@ -149,18 +151,17 @@ describe('Crosswind route', () => {
     expect(getByTestId('crosswind-cg-error')).toBeTruthy();
   });
 
-  it('Good runway selection: W=150, CG=26 → 34 KT (PR 3 anchor case)', () => {
+  it('Good runway selection: W=150, CG=26 → 34.8 KT (PR 3 anchor, post-ADR-0017)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     // Default Aircraft is B787-8 and default Runway is Dry. Switch to
     // Good, then enter the Excel-verified anchor inputs.
     fireEvent.press(getByTestId('crosswind-runway-good'));
     setNumericInput(getByTestId('crosswind-weight-input'), '150');
     setNumericInput(getByTestId('crosswind-cg-input'), '26');
-    // Anchor expectation: raw 34.873 → ROUNDDOWN 34, below maxCap=37 so
-    // not clamped. The same inputs on Dry runway give a different value
-    // (Dry's brackets and slope differ); switching runway must
-    // recompute, NOT carry the previous Dry result.
-    expect(getByText('34')).toBeTruthy();
+    // Anchor expectation: raw 34.873 → ROUNDDOWN-tenth 34.8, below
+    // maxCap=37 so not clamped. The same inputs on Dry runway give a
+    // different value; switching runway must recompute.
+    expect(getByText('34.8')).toBeTruthy();
   });
 
   it('Good runway segment is enabled (was disabled in MVP pre-PR 3)', () => {
@@ -172,15 +173,15 @@ describe('Crosswind route', () => {
     expect(goodSegment.props.accessibilityState.disabled).toBe(false);
   });
 
-  it('MediumToGood runway selection: W=175, CG=24 → 30 KT (PR 4 anchor)', () => {
+  it('MediumToGood runway selection: W=175, CG=24 → 30.0 KT (PR 4 anchor)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.press(getByTestId('crosswind-runway-mediumToGood'));
     setNumericInput(getByTestId('crosswind-weight-input'), '175');
     setNumericInput(getByTestId('crosswind-cg-input'), '24');
-    // Anchor expectation per Excel "Medium to Good 788" sheet G7:
-    // raw 30.0213 in bracket [T1=19.02, T2=24.02] → ROUNDDOWN 30.
-    // maxCap=null → no clamp.
-    expect(getByText('30')).toBeTruthy();
+    // Anchor per Excel "Medium to Good 788" sheet G7: raw 30.0213 in
+    // bracket [T1=19.02, T2=24.02] → ROUNDDOWN-tenth 30.0; maxCap=null
+    // → no clamp. ResultPanel renders via `.toFixed(1)` = "30.0".
+    expect(getByText('30.0')).toBeTruthy();
   });
 
   it('MediumToGood runway segment is enabled (was disabled in MVP pre-PR 4)', () => {
@@ -232,13 +233,12 @@ describe('Crosswind route', () => {
     setNumericInput(getByTestId('crosswind-weight-input'), '182');
     setNumericInput(getByTestId('crosswind-cg-input'), '32');
     // The constant strategy ignores all input — same value=10
-    // regardless of W or CG. Verifies the strategy resolves
-    // correctly and the ResultPanel renders the integer constant
-    // without dropping to a different precision/format.
-    expect(getByText('10')).toBeTruthy();
+    // regardless of W or CG. ResultPanel renders via `.toFixed(1)`
+    // per ADR-0017 → "10.0".
+    expect(getByText('10.0')).toBeTruthy();
   });
 
-  it('Poor runway: input-independence check (W=110/CG=10 also → 10 KT)', () => {
+  it('Poor runway: input-independence check (W=110/CG=10 also → 10.0 KT)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     fireEvent.press(getByTestId('crosswind-runway-poor'));
     setNumericInput(getByTestId('crosswind-weight-input'), '110');
@@ -246,7 +246,7 @@ describe('Crosswind route', () => {
     // Same Poor segment, very different inputs (light + low CG vs
     // heavy + mid CG above): result is identically 10. This is the
     // defining property of the constant strategy in the UI layer.
-    expect(getByText('10')).toBeTruthy();
+    expect(getByText('10.0')).toBeTruthy();
   });
 
   it('Poor runway segment is enabled (last disabled segment activated in PR 7 — ALL 6 RWYCC now active)', () => {
@@ -287,7 +287,7 @@ describe('Crosswind route', () => {
     const tree = renderWithTheme(<CrosswindRoute />);
     setNumericInput(tree.getByTestId('crosswind-weight-input'), '170');
     setNumericInput(tree.getByTestId('crosswind-cg-input'), '32');
-    expect(tree.getByText('34')).toBeTruthy();
+    expect(tree.getByText('34.2')).toBeTruthy();
     fireEvent.press(tree.getByTestId('crosswind-reset'));
     expect(tree.getByText('Enter weight and CG to see result')).toBeTruthy();
   });

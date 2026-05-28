@@ -218,7 +218,7 @@ describe('Crosswind route · hide result on envelope violation (ADR-0012)', () =
     // Dry runway / W=170 / CG=32 → 34 KT (Excel-verified flagship anchor).
     // The idle state must render the number and the out-of-envelope panel
     // must NOT be present.
-    expect(getByText('34')).toBeTruthy();
+    expect(getByText('34.2')).toBeTruthy();
     expect(getByTestId('crosswind-result-panel')).toBeTruthy();
     expect(queryByTestId('crosswind-result-panel-out-of-envelope')).toBeNull();
     expect(queryByTestId('crosswind-warning-chip')).toBeNull();
@@ -289,7 +289,7 @@ describe('Crosswind route · hide result on envelope violation (ADR-0012)', () =
     setNumericInput(getByTestId('crosswind-cg-input'), '32');
     // Now both inside envelope → idle with the calculated number
     // (W=170 / CG=32 / Dry → 34 KT).
-    expect(getByText('34')).toBeTruthy();
+    expect(getByText('34.2')).toBeTruthy();
     expect(getByTestId('crosswind-result-panel')).toBeTruthy();
     expect(queryByTestId('crosswind-result-panel-out-of-envelope')).toBeNull();
   });

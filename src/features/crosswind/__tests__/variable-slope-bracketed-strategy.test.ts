@@ -1,20 +1,25 @@
 /**
  * Direct unit tests for `createVariableSlopeBracketedStrategy`.
  *
- * Covers:
+ * Per ADR-0017 the strategy returns the **raw** (un-rounded)
+ * advisory value; ROUNDDOWN to 0.1 KT is applied at the calculator
+ * boundary. Tests wrap each output with `roundDownToTenth` to assert
+ * the value the calculator boundary will produce.
+ *
+ * Covered:
  *  • Medium-shaped params reproduce the spec anchor (W=182 / CG=20 →
  *    23.9 KT) and a representative point per branch (below-envelope,
  *    within-bracket on the /E9 path, exact-T sub-case, above-envelope).
  *  • Conditional interpolation formula: synthetic params with tight
  *    bracket spacing (E9 < 1) exercise the `·E9` branch; the Medium
  *    anchor exercises the `/E9` branch.
- *  • `decimals: 1` preserves the fractional digit via ROUNDDOWN.
  *  • IFNA fallback uses `brackets[0].crosswindKnots` (not a hardcoded
  *    constant).
  *  • `maxCap: null` leaves output unclamped; `maxCap: <num>` clamps.
  *  • Empty brackets → CalculationFailed.
  */
 
+import { roundDownToTenth } from '../domain/rounding';
 import { createVariableSlopeBracketedStrategy } from '../domain/strategies/variable-slope-bracketed';
 import type { VariableSlopeBracketedContext } from '../domain/strategies/variable-slope-bracketed';
 import type { CalculatorInput, VariableSlopeBracketedParams } from '../domain/strategy';
@@ -65,24 +70,24 @@ describe('createVariableSlopeBracketedStrategy · Medium params snapshot', () =>
     expect(strategy.type).toBe('variableSlopeBracketed');
   });
 
-  it('anchor (Excel-verified W=182 / CG=20 → 23.9 KT)', () => {
+  it('anchor (Excel-verified W=182 / CG=20 → 23.9 KT after ROUNDDOWN at boundary)', () => {
     const r = strategy.calculate(input(182, 20));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(23.9);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(23.9);
     expect(r.value.metadata.calculationStrategy).toBe('within-bracket');
   });
 
   it('below-envelope → IFNA fallback brackets[0].crosswindKnots = 25', () => {
     const r = strategy.calculate(input(170, 8));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(25);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(25);
     expect(r.value.metadata.calculationStrategy).toBe('below-envelope');
   });
 
   it('above-envelope → same IFNA fallback (Excel-quirk preserved)', () => {
     const r = strategy.calculate(input(170, 50));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(25);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(25);
     expect(r.value.metadata.calculationStrategy).toBe('above-envelope');
   });
 
@@ -92,19 +97,19 @@ describe('createVariableSlopeBracketedStrategy · Medium params snapshot', () =>
     // and miscategorize this as "above T1").
     const r = strategy.calculate(input(182, 17.93970688));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(25);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(25);
   });
 });
 
 describe('E9 conditional formula', () => {
   it('Medium params hit the /E9 branch (E9 ≈ 1.87 ≥ 1)', () => {
     // W=182 / CG=20 lands in bracket [T1=17.94, T2=27.31]. E9 = 9.37/5
-    // = 1.87. raw = 25 − (20-17.94)/1.87 ≈ 23.9.
+    // = 1.87. raw = 25 − (20-17.94)/1.87 ≈ 23.9003.
     const r = createVariableSlopeBracketedStrategy(MEDIUM_PARAMS, CONTEXT).calculate(
       input(182, 20),
     );
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(23.9);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(23.9);
   });
 
   it('tightly-spaced brackets hit the ·E9 branch (E9 < 1, matches BracketedLinear)', () => {
@@ -114,7 +119,7 @@ describe('E9 conditional formula', () => {
     // intercepts: [10, 12, 14] giving E9 = 2/5 = 0.4 in each bracket.
     // CG = 11 lands in bracket [10, 12]; F7 = 30, F8 = 25.
     // raw = F7 − (cg − E7) · E9 = 30 − (11 − 10) · 0.4 = 30 − 0.4 = 29.6
-    // ROUNDDOWN(1) = 29.6. (If the strategy mistakenly used /E9 here:
+    // (If the strategy mistakenly used /E9 here:
     //   30 − 1/0.4 = 30 − 2.5 = 27.5 — would not match.)
     const tightParams: VariableSlopeBracketedParams = {
       brackets: [
@@ -127,26 +132,25 @@ describe('E9 conditional formula', () => {
     };
     const r = createVariableSlopeBracketedStrategy(tightParams, CONTEXT).calculate(input(170, 11));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(29.6);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(29.6);
   });
 });
 
-describe('decimals (ROUNDDOWN precision)', () => {
-  it('decimals=1 preserves 1 decimal place (Medium W=182 / CG=20 → 23.9, not 23)', () => {
-    const r = createVariableSlopeBracketedStrategy(MEDIUM_PARAMS, CONTEXT).calculate(
+describe('raw output (per ADR-0017, strategy no longer rounds)', () => {
+  it('returns identical raw value regardless of params.decimals', () => {
+    // params.decimals is parsed by the schema but ignored at runtime.
+    // Strategy outputs the same raw float for decimals=0 and decimals=1;
+    // ROUNDDOWN to 0.1 KT is applied uniformly at the calculator boundary.
+    const decOne = createVariableSlopeBracketedStrategy(MEDIUM_PARAMS, CONTEXT).calculate(
       input(182, 20),
     );
-    if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(23.9);
-    // String coercion (used by ResultPanel) must show the decimal.
-    expect(String(r.value.maxCrosswindKnots)).toBe('23.9');
-  });
-
-  it('decimals=0 floors to integer (same input → 23)', () => {
-    const params: VariableSlopeBracketedParams = { ...MEDIUM_PARAMS, decimals: 0 };
-    const r = createVariableSlopeBracketedStrategy(params, CONTEXT).calculate(input(182, 20));
-    if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(23);
+    const decZero = createVariableSlopeBracketedStrategy(
+      { ...MEDIUM_PARAMS, decimals: 0 },
+      CONTEXT,
+    ).calculate(input(182, 20));
+    if (!decZero.ok || !decOne.ok) throw new Error('expected ok');
+    expect(decZero.value.maxCrosswindKnots).toBe(decOne.value.maxCrosswindKnots);
+    expect(roundDownToTenth(decZero.value.maxCrosswindKnots)).toBe(23.9);
   });
 });
 
@@ -163,7 +167,7 @@ describe('IFNA fallback derived from brackets[0]', () => {
     };
     const r = createVariableSlopeBracketedStrategy(customParams, CONTEXT).calculate(input(170, 8));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(18);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(18);
     expect(r.value.metadata.calculationStrategy).toBe('below-envelope');
   });
 });
@@ -174,21 +178,21 @@ describe('maxCap behavior', () => {
       input(182, 20),
     );
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(23.9);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(23.9);
   });
 
-  it('maxCap=15 clamps a 23.9 result to 15', () => {
+  it('maxCap=15 clamps a raw 23.9 result to 15', () => {
     const cappedParams: VariableSlopeBracketedParams = { ...MEDIUM_PARAMS, maxCap: 15 };
     const r = createVariableSlopeBracketedStrategy(cappedParams, CONTEXT).calculate(input(182, 20));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(15);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(15);
   });
 
   it('maxCap=25 leaves an already-≤cap result alone (23.9 stays 23.9)', () => {
     const cappedParams: VariableSlopeBracketedParams = { ...MEDIUM_PARAMS, maxCap: 25 };
     const r = createVariableSlopeBracketedStrategy(cappedParams, CONTEXT).calculate(input(182, 20));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(23.9);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(23.9);
   });
 });
 

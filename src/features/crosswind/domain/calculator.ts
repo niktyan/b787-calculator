@@ -6,20 +6,30 @@
  *   • Step 1 — `resolveStrategy` looks up the per-(aircraft, condition)
  *     dataset and constructs the appropriate `CrosswindStrategy`, or
  *     returns `NoLookupData` for missing combos.
- *   • Step 2 — `strategy.calculate(input)`.
+ *   • Step 2 — `strategy.calculate(input)` returns the raw (un-rounded)
+ *     advisory value.
+ *   • Step 3 — `roundDownToTenth` applied at this single boundary
+ *     (ADR-0017). Every strategy benefits uniformly; the policy is not
+ *     scattered across strategy implementations.
  *
  * Spec: 02_Specification/05-crosswind-algorithm.md (algorithm dispatch),
- *       02_Specification/module-contracts/crosswind.md (Public API).
+ *       02_Specification/module-contracts/crosswind.md (Public API),
+ *       02_Specification/ADR/0017-crosswind-output-rounding-policy.md.
  */
 
-import { err } from '../../../core/result';
+import { err, ok } from '../../../core/result';
 import type { Result } from '../../../core/result';
 
 import type { CrosswindDataFile } from '../data/schema';
 
+import { roundDownToTenth } from './rounding';
 import { resolveStrategy } from './strategy-resolver';
 import type { CalculatorInput } from './strategy';
-import type { CrosswindCalculationError, CrosswindCalculationOutput } from './types';
+import type {
+  CrosswindCalculationError,
+  CrosswindCalculationOutput,
+  CrosswindKnots,
+} from './types';
 import { validateAlgorithmInput } from './validators';
 
 export type { CalculatorInput } from './strategy';
@@ -43,7 +53,23 @@ export function calculateCrosswindLimit(
     });
   }
 
-  return resolution.strategy.calculate(input);
+  const raw = resolution.strategy.calculate(input);
+  if (!raw.ok) {
+    return raw;
+  }
+  return ok(applyRoundingPolicy(raw.value));
+}
+
+function applyRoundingPolicy(output: CrosswindCalculationOutput): CrosswindCalculationOutput {
+  // Strategy guarantees `maxCrosswindKnots ∈ [0, 40]` via
+  // `makeCrosswindKnots` at its own boundary. `roundDownToTenth`
+  // floors toward zero, so the rounded value stays in [0, 40] and
+  // remains a valid `CrosswindKnots` — no re-validation needed.
+  const rounded = roundDownToTenth(output.maxCrosswindKnots) as CrosswindKnots;
+  return {
+    maxCrosswindKnots: rounded,
+    metadata: output.metadata,
+  };
 }
 
 /**

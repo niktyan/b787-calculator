@@ -1,6 +1,11 @@
 /**
  * Direct unit tests for `createCGOnlyPiecewiseStrategy`.
  *
+ * Per ADR-0017 the strategy returns the **raw** (un-rounded)
+ * advisory value; ROUNDDOWN to 0.1 KT is applied at the calculator
+ * boundary. Tests wrap each output with `roundDownToTenth` to assert
+ * the value the calculator boundary will produce.
+ *
  * Covers:
  *  • Plateau branch (CG < cgThreshold) returns plateauValue.
  *  • Decreasing branch (CG ≥ cgThreshold) interpolates linearly.
@@ -8,8 +13,6 @@
  *    branches collapse to the same value at the boundary).
  *  • Weight independence — three different weights with identical
  *    CG produce identical output.
- *  • decimals=0 floors to integer; decimals=1 keeps one fractional
- *    digit.
  *  • Very-large CG drives raw negative → CalculationFailed (per
  *    recommendation A1).
  *  • Defensive: NaN/Infinity inputs return NoLookupData; slopeDivisor=0
@@ -18,6 +21,7 @@
  *    single-point ranges (CG-only model has no bracket structure).
  */
 
+import { roundDownToTenth } from '../domain/rounding';
 import { createCGOnlyPiecewiseStrategy } from '../domain/strategies/cg-only-piecewise';
 import type { CGOnlyPiecewiseContext } from '../domain/strategies/cg-only-piecewise';
 import type { CGOnlyPiecewiseParams, CalculatorInput } from '../domain/strategy';
@@ -94,39 +98,39 @@ describe('createCGOnlyPiecewiseStrategy · decreasing branch (CG ≥ threshold)'
     expect(r.value.metadata.calculationStrategy).toBe('within-bracket');
   });
 
-  it('anchor: W=182 / CG=32 → 13.9 (Excel-verified, sheet G7)', () => {
-    // raw = 15 − (32 − 30)/1.9 = 15 − 1.05263 = 13.94737 → ROUNDDOWN(1) = 13.9.
+  it('anchor: W=182 / CG=32 → 13.9 (Excel-verified, sheet G7) after boundary ROUNDDOWN', () => {
+    // raw = 15 − (32 − 30)/1.9 = 15 − 1.05263 = 13.94737;
+    // calculator boundary applies roundDownToTenth → 13.9.
     const r = strategy.calculate(input(182, 32));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(13.9);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(13.9);
     expect(r.value.metadata.calculationStrategy).toBe('within-bracket');
-    expect(String(r.value.maxCrosswindKnots)).toBe('13.9');
   });
 
-  it('CG=34 → 12.8 (raw 12.8, exact one-decimal)', () => {
-    // raw = 15 − 4/1.9 = 15 − 2.10526 = 12.89474 → ROUNDDOWN(1) = 12.8.
+  it('CG=34 → 12.8 (raw 12.8947)', () => {
+    // raw = 15 − 4/1.9 = 15 − 2.10526 = 12.89474 → boundary 12.8.
     const r = strategy.calculate(input(170, 34));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(12.8);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(12.8);
   });
 
   it('CG=35 (upper operational envelope) → 12.3', () => {
-    // raw = 15 − 5/1.9 = 15 − 2.63158 = 12.36842 → ROUNDDOWN(1) = 12.3.
+    // raw = 15 − 5/1.9 = 15 − 2.63158 = 12.36842 → boundary 12.3.
     const r = strategy.calculate(input(170, 35));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(12.3);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(12.3);
   });
 });
 
 describe('Weight independence (defining property of CGOnlyPiecewise)', () => {
   const strategy = createCGOnlyPiecewiseStrategy(MEDIUM_TO_POOR_PARAMS, CONTEXT);
 
-  it('CG=32 with W ∈ {110, 130, 150, 170, 200} all produce 13.9 KT', () => {
+  it('CG=32 with W ∈ {110, 130, 150, 170, 200} all produce 13.9 KT after boundary ROUNDDOWN', () => {
     const weights = [110, 130, 150, 170, 200];
     const outputs = weights.map((w) => {
       const r = strategy.calculate(input(w, 32));
       if (!r.ok) throw new Error(`unexpected error at W=${w}`);
-      return r.value.maxCrosswindKnots;
+      return roundDownToTenth(r.value.maxCrosswindKnots);
     });
     expect(outputs).toEqual([13.9, 13.9, 13.9, 13.9, 13.9]);
   });
@@ -140,20 +144,20 @@ describe('Weight independence (defining property of CGOnlyPiecewise)', () => {
   });
 });
 
-describe('decimals (ROUNDDOWN precision)', () => {
-  it('decimals=1 preserves fractional digit (W=182/CG=32 → 13.9)', () => {
-    const r = createCGOnlyPiecewiseStrategy(MEDIUM_TO_POOR_PARAMS, CONTEXT).calculate(
+describe('raw output (per ADR-0017, strategy no longer rounds)', () => {
+  it('returns identical raw value regardless of params.decimals', () => {
+    // params.decimals is parsed by the schema but ignored at runtime.
+    // Strategy outputs the same raw float for decimals=0 and decimals=1.
+    const decOne = createCGOnlyPiecewiseStrategy(MEDIUM_TO_POOR_PARAMS, CONTEXT).calculate(
       input(182, 32),
     );
-    if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(13.9);
-  });
-
-  it('decimals=0 floors to integer (same input → 13)', () => {
-    const params: CGOnlyPiecewiseParams = { ...MEDIUM_TO_POOR_PARAMS, decimals: 0 };
-    const r = createCGOnlyPiecewiseStrategy(params, CONTEXT).calculate(input(182, 32));
-    if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(13);
+    const decZero = createCGOnlyPiecewiseStrategy(
+      { ...MEDIUM_TO_POOR_PARAMS, decimals: 0 },
+      CONTEXT,
+    ).calculate(input(182, 32));
+    if (!decOne.ok || !decZero.ok) throw new Error('expected ok');
+    expect(decOne.value.maxCrosswindKnots).toBe(decZero.value.maxCrosswindKnots);
+    expect(roundDownToTenth(decOne.value.maxCrosswindKnots)).toBe(13.9);
   });
 });
 
@@ -165,22 +169,22 @@ describe('Out-of-envelope CG (Excel-faithful negative → CalculationFailed per 
   const strategy = createCGOnlyPiecewiseStrategy(MEDIUM_TO_POOR_PARAMS, CONTEXT);
 
   it('CG=40 → 9.7 (still positive in decreasing branch)', () => {
-    // raw = 15 − 10/1.9 = 9.73684 → ROUNDDOWN(1) = 9.7.
+    // raw = 15 − 10/1.9 = 9.73684 → boundary 9.7.
     const r = strategy.calculate(input(170, 40));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(9.7);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(9.7);
   });
 
   it('CG=50 → 4.4 (still positive)', () => {
-    // raw = 15 − 20/1.9 = 4.47368 → ROUNDDOWN(1) = 4.4.
+    // raw = 15 − 20/1.9 = 4.47368 → boundary 4.4.
     const r = strategy.calculate(input(170, 50));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(4.4);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(4.4);
   });
 
   it('CG=60 → raw negative → CalculationFailed', () => {
-    // raw = 15 − 30/1.9 = -0.78947 → ROUNDDOWN(1) = -0.8 →
-    // makeCrosswindKnots rejects with Negative → CalculationFailed.
+    // raw = 15 − 30/1.9 = -0.78947 → makeCrosswindKnots rejects with
+    // Negative → CalculationFailed (strategy guards before boundary).
     const r = strategy.calculate(input(170, 60));
     if (r.ok) throw new Error('expected error');
     expect(r.error.kind).toBe('CalculationFailed');
@@ -228,7 +232,10 @@ describe('Metadata sanity', () => {
     if (!r.ok) throw new Error('expected ok');
     expect(r.value.metadata.cgBracket.lower).toBe(32);
     expect(r.value.metadata.cgBracket.upper).toBe(32);
-    expect(r.value.metadata.bracketCrosswindRange.lower).toBe(13.9);
-    expect(r.value.metadata.bracketCrosswindRange.upper).toBe(13.9);
+    // After ADR-0017, metadata carries raw (un-rounded) value as the
+    // degenerate single-point bracket range; boundary rounding is
+    // applied only to the user-facing `maxCrosswindKnots`.
+    expect(roundDownToTenth(r.value.metadata.bracketCrosswindRange.lower)).toBe(13.9);
+    expect(roundDownToTenth(r.value.metadata.bracketCrosswindRange.upper)).toBe(13.9);
   });
 });

@@ -35,7 +35,9 @@ describe('Crosswind module · acceptance', () => {
     if (!result.ok) {
       throw new Error(`unexpected error: ${JSON.stringify(result.error)}`);
     }
-    expect(result.value.maxCrosswindKnots).toBe(34);
+    // Pre-ADR-0017 this case returned integer 34 (decimals=0). Post-ADR-0017
+    // the boundary rounds raw 34.2213 down to 34.2 at the 0.1 grid.
+    expect(result.value.maxCrosswindKnots).toBe(34.2);
     expect(result.value.metadata.referenceDocument).toBe('Boeing 787 FCOM');
     expect(result.value.metadata.dataVersion).toBe(data.dataVersion);
     expect(result.value.metadata.calculationStrategy).toBe('within-bracket');

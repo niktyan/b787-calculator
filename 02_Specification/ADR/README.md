@@ -41,3 +41,4 @@ ADR не нужен для:
 | 0008 | Dependabot major-bump policy for SDK-coordinated packages | Accepted |
 | 0009 | Light-theme accent text contrast — split `accent` into `accent` + `accentText` | Accepted |
 | 0010 | Crosswind algorithm — Strategy pattern foundation | Accepted |
+| 0017 | Crosswind output rounding policy (ROUNDDOWN to 0.1 KT at boundary) | Accepted |

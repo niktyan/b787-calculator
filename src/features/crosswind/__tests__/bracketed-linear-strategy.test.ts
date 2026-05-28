@@ -1,18 +1,25 @@
 /**
  * Direct unit tests for `createBracketedLinearStrategy`.
  *
- * These cover behavior of the strategy as a standalone unit:
+ * Per ADR-0017 the strategy returns the **raw** (un-rounded)
+ * advisory value; ROUNDDOWN to 0.1 KT is applied at the calculator
+ * boundary. Tests therefore wrap each strategy output with
+ * `roundDownToTenth` to assert the value the calculator boundary
+ * will produce — preserving the spec-table semantics while reflecting
+ * the new single-source-of-truth rounding policy.
+ *
+ * Covered:
  *  • Dry-equivalent params reproduce the spec table at a representative
  *    set of points (one per strategy branch — below-envelope,
  *    within-bracket, exact-breakpoint, above-envelope). The full
  *    50+ test set is exercised end-to-end via `calculator.test.ts`.
  *  • `maxCap` clamps results above the cap and leaves results at/below
  *    the cap untouched.
- *  • `decimals = 1` keeps one fractional digit, ROUNDDOWN style.
  *  • IFNA fallback uses `brackets[0].crosswindKnots` (not a hardcoded 40).
  *  • Empty brackets → CalculationFailed.
  */
 
+import { roundDownToTenth } from '../domain/rounding';
 import { createBracketedLinearStrategy } from '../domain/strategies/bracketed-linear';
 import type { BracketedLinearParams, CalculatorInput } from '../domain/strategy';
 import type { BracketedLinearContext } from '../domain/strategies/bracketed-linear';
@@ -72,10 +79,10 @@ describe('createBracketedLinearStrategy · Dry params snapshot', () => {
     expect(r.value.metadata.calculationStrategy).toBe('below-envelope');
   });
 
-  it('1.08 within-bracket → 38 (ROUNDDOWN of 38.520)', () => {
+  it('1.08 within-bracket → 38.5 (ROUNDDOWN-tenth of raw 38.520)', () => {
     const r = strategy.calculate(input(170, 30));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(38);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(38.5);
     expect(r.value.metadata.calculationStrategy).toBe('within-bracket');
   });
 
@@ -92,12 +99,15 @@ describe('createBracketedLinearStrategy · Dry params snapshot', () => {
     expect(r.value.metadata.calculationStrategy).toBe('above-envelope');
   });
 
-  it('T2 discontinuity: CG=30.886 → 37, CG=30.88763904 → 35 (no smooth 36)', () => {
+  it('T2 discontinuity: CG=30.886 → 37.9, CG=30.88763904 → 35 (no smooth 36.X)', () => {
+    // Pre-ADR-0017 floored to integers (37/35). Post-ADR-0017 the raw
+    // 37.953 floors to 37.9 at the 0.1 grid; exact-breakpoint CG snaps to
+    // F7 = 35 (next bracket), so 35 stays.
     const r1 = strategy.calculate(input(170, 30.886));
     const r2 = strategy.calculate(input(170, 30.88763904));
     if (!r1.ok || !r2.ok) throw new Error('expected ok');
-    expect(r1.value.maxCrosswindKnots).toBe(37);
-    expect(r2.value.maxCrosswindKnots).toBe(35);
+    expect(roundDownToTenth(r1.value.maxCrosswindKnots)).toBe(37.9);
+    expect(roundDownToTenth(r2.value.maxCrosswindKnots)).toBe(35);
   });
 });
 
@@ -111,16 +121,16 @@ describe('maxCap behavior', () => {
     expect(r.value.maxCrosswindKnots).toBe(37);
   });
 
-  it('clamps a 39 within-bracket result to maxCap=37', () => {
+  it('clamps a raw 39.x within-bracket result to maxCap=37', () => {
     const r = strategy.calculate(input(170, 27.7));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(37);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(37);
   });
 
-  it('leaves a 34 within-bracket result untouched (≤ maxCap)', () => {
+  it('leaves a 34.2 within-bracket result untouched (≤ maxCap)', () => {
     const r = strategy.calculate(input(170, 32));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(34);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(34.2);
   });
 
   it('maxCap=null disables clamping (Dry default)', () => {
@@ -135,12 +145,13 @@ describe('Cap mechanism (PR 2 boundary)', () => {
   // behavior" block above covers typical clamps; these target the
   // inclusive boundary at 37 and the explicit null-cap escape hatch.
 
-  it('boundary: synthetic raw 37.001 → floor 37 → cap=37 NOT triggered (37 ≤ cap)', () => {
+  it('boundary: synthetic raw 37.001 → cap=37 NOT triggered (raw 37.001 > 37)', () => {
     // Weight-independent params (slope=0) so thresholds equal intercepts.
     // Bracket [T1=10, T2=15], F7=40, E9=(15-10)/5=1.
     // raw = 40 - (cg - 10) * 1 = 40 - (cg - 10).
-    // For raw = 37.001 → cg = 12.999. ROUNDDOWN(37.001,0)=37; cap=37 is
-    // inclusive (kicks in only when result > 37) so output stays at 37.
+    // For raw = 37.001 → cg = 12.999. Strategy returns raw 37.001; cap=37
+    // IS triggered (37.001 > 37) → clamped to 37; boundary
+    // roundDownToTenth(37) = 37.
     const params: BracketedLinearParams = {
       slope: 0,
       brackets: [
@@ -155,7 +166,7 @@ describe('Cap mechanism (PR 2 boundary)', () => {
     };
     const r = createBracketedLinearStrategy(params, CONTEXT).calculate(input(170, 12.999));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(37);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(37);
   });
 
   it('maxCap=null leaves raw output unchanged (synthetic Dry-shape, raw 40 → 40)', () => {
@@ -165,23 +176,26 @@ describe('Cap mechanism (PR 2 boundary)', () => {
     const noCap: BracketedLinearParams = { ...DRY_PARAMS, maxCap: null };
     const r = createBracketedLinearStrategy(noCap, CONTEXT).calculate(input(170, 8));
     if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(40);
+    expect(roundDownToTenth(r.value.maxCrosswindKnots)).toBe(40);
     expect(r.value.metadata.calculationStrategy).toBe('below-envelope');
   });
 });
 
-describe('decimals (ROUNDDOWN precision)', () => {
-  it('decimals=0 floors to integer (W=170, CG=30 → 38, raw ≈ 38.520)', () => {
-    const r = createBracketedLinearStrategy(DRY_PARAMS, CONTEXT).calculate(input(170, 30));
-    if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(38);
-  });
-
-  it('decimals=1 floors to one decimal (W=170, CG=30 → 38.5, raw ≈ 38.520)', () => {
-    const params: BracketedLinearParams = { ...DRY_PARAMS, decimals: 1 };
-    const r = createBracketedLinearStrategy(params, CONTEXT).calculate(input(170, 30));
-    if (!r.ok) throw new Error('expected ok');
-    expect(r.value.maxCrosswindKnots).toBe(38.5);
+describe('raw output (per ADR-0017, strategy no longer rounds)', () => {
+  it('returns raw value unchanged regardless of params.decimals', () => {
+    // params.decimals is parsed by the schema but ignored at runtime.
+    // Strategy outputs the same raw float for decimals=0 and decimals=1;
+    // ROUNDDOWN to 0.1 KT is applied uniformly at the calculator
+    // boundary. Verified by computing once with each precision and
+    // comparing identity.
+    const decZero = createBracketedLinearStrategy(DRY_PARAMS, CONTEXT).calculate(input(170, 30));
+    const decOne = createBracketedLinearStrategy({ ...DRY_PARAMS, decimals: 1 }, CONTEXT).calculate(
+      input(170, 30),
+    );
+    if (!decZero.ok || !decOne.ok) throw new Error('expected ok');
+    expect(decZero.value.maxCrosswindKnots).toBe(decOne.value.maxCrosswindKnots);
+    // Raw value is sub-grid; ROUNDDOWN at 0.1 yields 38.5.
+    expect(roundDownToTenth(decZero.value.maxCrosswindKnots)).toBe(38.5);
   });
 });
 

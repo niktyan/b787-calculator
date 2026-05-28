@@ -11,6 +11,11 @@
  *                  plateauValue),
  *               decimals)
  *
+ * The strategy returns the **raw** (un-rounded) advisory value.
+ * Output rounding (ROUNDDOWN to 0.1 KT) is applied uniformly at the
+ * calculator boundary per ADR-0017. The legacy `params.decimals`
+ * field is parsed by the schema but no longer consumed here.
+ *
  * Dramatically simpler than BracketedLinear / VariableSlopeBracketed:
  *  • No brackets, no XLOOKUP, no IFNA — single conditional formula.
  *  • No weight dependency — `input.weightTons` is ignored entirely.
@@ -47,17 +52,10 @@ import type {
 } from '../types';
 import { makeCrosswindKnots } from '../valueObjects';
 
-const ROUNDDOWN_DECIMAL_BASE = 10;
-
 export interface CGOnlyPiecewiseContext {
   readonly aircraft: AircraftVariant;
   readonly dataVersion: string;
   readonly referenceDocument: string;
-}
-
-function roundDown(value: number, decimals: 0 | 1): number {
-  const factor = ROUNDDOWN_DECIMAL_BASE ** decimals;
-  return Math.floor(value * factor) / factor;
 }
 
 interface Computation {
@@ -66,12 +64,12 @@ interface Computation {
 }
 
 function compute(cg: number, params: CGOnlyPiecewiseParams): Computation {
-  const { plateauValue, cgThreshold, slopeDivisor, decimals } = params;
+  const { plateauValue, cgThreshold, slopeDivisor } = params;
   if (cg < cgThreshold) {
-    return { value: roundDown(plateauValue, decimals), strategy: 'below-envelope' };
+    return { value: plateauValue, strategy: 'below-envelope' };
   }
   const raw = plateauValue - (cg - cgThreshold) / slopeDivisor;
-  return { value: roundDown(raw, decimals), strategy: 'within-bracket' };
+  return { value: raw, strategy: 'within-bracket' };
 }
 
 interface BuildMetadataArgs {

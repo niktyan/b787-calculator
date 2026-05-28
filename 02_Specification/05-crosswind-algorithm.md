@@ -1,5 +1,17 @@
 # 05 · Crosswind Calculation Algorithm
 
+> **ADR-0017 supersedes per-strategy rounding (Шаг 3).**
+> Per `02_Specification/ADR/0017-crosswind-output-rounding-policy.md`,
+> output ROUNDDOWN is applied **once** at the calculator boundary
+> uniformly to 0.1 KT, regardless of the per-condition `decimals`
+> field in bundled JSON. Strategies now return the **raw** advisory
+> value; `params.decimals` remains in the schema for backwards-compat
+> but is ignored at runtime. Test tables and expected-value snippets
+> in this document still reference the legacy per-strategy
+> `ROUNDDOWN(value, decimals)` step — read those as **superseded** by
+> the uniform 0.1 boundary policy until a follow-up spec sweep
+> rewrites them.
+
 ## Назначение документа
 
 Этот документ — **математически точная спецификация алгоритма расчёта максимально допустимого бокового ветра для взлёта Boeing 787-8**. Он содержит:

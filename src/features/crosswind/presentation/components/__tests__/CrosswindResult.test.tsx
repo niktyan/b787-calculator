@@ -48,14 +48,15 @@ function idleOutput(value: number): CrosswindCalculationOutput {
 }
 
 describe('CrosswindResult', () => {
-  it('renders the centred number for idle state (default W=170, CG=25 dry → 33 KT)', () => {
+  it('renders the centred number with one decimal place (ADR-0017: 33 → "33.0")', () => {
     const state: CrosswindUIState = {
       kind: 'idle',
       output: idleOutput(33),
     };
     const tree = renderWithTheme(<CrosswindResult state={state} testID="result" />);
     expect(tree.getByTestId('crosswind-result-panel')).toBeTruthy();
-    expect(tree.getByText('33')).toBeTruthy();
+    // toFixed(1) renders integer-valued knots as "33.0", not "33".
+    expect(tree.getByText('33.0')).toBeTruthy();
     expect(tree.getByText('KT')).toBeTruthy();
     // No warning chip is ever rendered in idle state (ADR-0012).
     expect(tree.queryByTestId('crosswind-warning-chip')).toBeNull();
@@ -129,14 +130,14 @@ describe('CrosswindResult', () => {
     expect(tree.getByText('Verify inputs and try again.')).toBeTruthy();
   });
 
-  it('updates the rendered value when the state changes', () => {
+  it('updates the rendered value when the state changes (one decimal place per ADR-0017)', () => {
     const initial: CrosswindUIState = {
       kind: 'idle',
       output: idleOutput(33),
     };
     const tree = renderWithTheme(<CrosswindResult state={initial} />);
-    expect(tree.getByText('33')).toBeTruthy();
+    expect(tree.getByText('33.0')).toBeTruthy();
     tree.rerender(<CrosswindResult state={{ kind: 'idle', output: idleOutput(28) }} />);
-    expect(tree.getByText('28')).toBeTruthy();
+    expect(tree.getByText('28.0')).toBeTruthy();
   });
 });

@@ -90,12 +90,12 @@ describe('Test Set #6.1 · Good at W=170 t (heavy)', () => {
     { id: '6.1.05', weight: 170, cg: 27.0, expected: 37, strategy: 'within-bracket' },
     { id: '6.1.06', weight: 170, cg: 28.0, expected: 37, strategy: 'within-bracket' },
     { id: '6.1.07', weight: 170, cg: 28.487124, expected: 35, strategy: 'within-bracket' },
-    { id: '6.1.08', weight: 170, cg: 29.0, expected: 34, strategy: 'within-bracket' },
-    { id: '6.1.09', weight: 170, cg: 30.0, expected: 33, strategy: 'within-bracket' },
-    { id: '6.1.10', weight: 170, cg: 31.0, expected: 32, strategy: 'within-bracket' },
-    { id: '6.1.11', weight: 170, cg: 32.0, expected: 32, strategy: 'within-bracket' },
+    { id: '6.1.08', weight: 170, cg: 29.0, expected: 34.5, strategy: 'within-bracket' },
+    { id: '6.1.09', weight: 170, cg: 30.0, expected: 33.7, strategy: 'within-bracket' },
+    { id: '6.1.10', weight: 170, cg: 31.0, expected: 32.9, strategy: 'within-bracket' },
+    { id: '6.1.11', weight: 170, cg: 32.0, expected: 32.1, strategy: 'within-bracket' },
     { id: '6.1.12', weight: 170, cg: 32.487124, expected: 30, strategy: 'within-bracket' },
-    { id: '6.1.13', weight: 170, cg: 34.0, expected: 28, strategy: 'within-bracket' },
+    { id: '6.1.13', weight: 170, cg: 34.0, expected: 28.7, strategy: 'within-bracket' },
     { id: '6.1.14', weight: 170, cg: 36.487124, expected: 25, strategy: 'within-bracket' },
     { id: '6.1.15', weight: 170, cg: 40.487124, expected: 20, strategy: 'within-bracket' },
     { id: '6.1.16', weight: 170, cg: 44.487124, expected: 15, strategy: 'within-bracket' },
@@ -117,10 +117,10 @@ describe('Test Set #6.2 · Good at W=130 t (medium)', () => {
     { id: '6.2.02', weight: 130, cg: 19.196036, expected: 37, strategy: 'within-bracket' },
     { id: '6.2.03', weight: 130, cg: 20.0, expected: 37, strategy: 'within-bracket' },
     { id: '6.2.04', weight: 130, cg: 23.196036, expected: 35, strategy: 'within-bracket' },
-    { id: '6.2.05', weight: 130, cg: 25.0, expected: 33, strategy: 'within-bracket' },
+    { id: '6.2.05', weight: 130, cg: 25.0, expected: 33.5, strategy: 'within-bracket' },
     { id: '6.2.06', weight: 130, cg: 27.196036, expected: 30, strategy: 'within-bracket' },
-    { id: '6.2.07', weight: 130, cg: 30.0, expected: 27, strategy: 'within-bracket' },
-    { id: '6.2.08', weight: 130, cg: 35.0, expected: 21, strategy: 'within-bracket' },
+    { id: '6.2.07', weight: 130, cg: 30.0, expected: 27.7, strategy: 'within-bracket' },
+    { id: '6.2.08', weight: 130, cg: 35.0, expected: 21.9, strategy: 'within-bracket' },
     { id: '6.2.09', weight: 130, cg: 39.196036, expected: 15, strategy: 'within-bracket' },
     { id: '6.2.10', weight: 130, cg: 40.0, expected: 37, strategy: 'above-envelope' },
   ];
@@ -138,10 +138,10 @@ describe('Test Set #6.3 · Good at W=160 t (mid)', () => {
     { id: '6.3.01', weight: 160, cg: 20.0, expected: 37, strategy: 'below-envelope' },
     { id: '6.3.02', weight: 160, cg: 23.164352, expected: 37, strategy: 'within-bracket' },
     { id: '6.3.03', weight: 160, cg: 24.0, expected: 37, strategy: 'within-bracket' },
-    { id: '6.3.04', weight: 160, cg: 28.0, expected: 34, strategy: 'within-bracket' },
-    { id: '6.3.05', weight: 160, cg: 32.0, expected: 29, strategy: 'within-bracket' },
+    { id: '6.3.04', weight: 160, cg: 28.0, expected: 34.3, strategy: 'within-bracket' },
+    { id: '6.3.05', weight: 160, cg: 32.0, expected: 29.3, strategy: 'within-bracket' },
     { id: '6.3.06', weight: 160, cg: 35.164352, expected: 25, strategy: 'within-bracket' },
-    { id: '6.3.07', weight: 160, cg: 40.0, expected: 19, strategy: 'within-bracket' },
+    { id: '6.3.07', weight: 160, cg: 40.0, expected: 19.3, strategy: 'within-bracket' },
     { id: '6.3.08', weight: 160, cg: 44.0, expected: 37, strategy: 'above-envelope' },
   ];
   cases.forEach((c) => {
@@ -157,8 +157,8 @@ describe('Test Set #6.4 · Good user-anchor + W=150 t coverage', () => {
   // 6.4.02 is the Excel-verified anchor case (W=150, CG=26 → 34 KT).
   const cases: readonly Case[] = [
     { id: '6.4.01', weight: 150, cg: 10.0, expected: 37, strategy: 'below-envelope' },
-    { id: '6.4.02', weight: 150, cg: 26.0, expected: 34, strategy: 'within-bracket' },
-    { id: '6.4.03', weight: 150, cg: 30.0, expected: 29, strategy: 'within-bracket' },
+    { id: '6.4.02', weight: 150, cg: 26.0, expected: 34.8, strategy: 'within-bracket' },
+    { id: '6.4.03', weight: 150, cg: 30.0, expected: 29.8, strategy: 'within-bracket' },
     { id: '6.4.04', weight: 150, cg: 35.0, expected: 24, strategy: 'within-bracket' },
     { id: '6.4.05', weight: 150, cg: 42.0, expected: 37, strategy: 'above-envelope' },
   ];
@@ -173,7 +173,7 @@ describe('Good · explicit anchor assertion (Excel-verified W=150 / CG=26 → 34
   // Standalone, named assertion duplicating case 6.4.02. Future
   // maintainers can grep "W=150" / "CG=26" to find the user-verified
   // reference point quickly, independent of the table-driven loop.
-  it('anchor: W=150 t, CG=26 %MAC on Good runway → 34 KT', () => {
+  it('anchor: W=150 t, CG=26 %MAC on Good runway → 34.8 KT (ADR-0017)', () => {
     const { w, cg } = vo(150, 26);
     const r = calculateCrosswindLimit(
       { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: RUNWAY },
@@ -182,7 +182,8 @@ describe('Good · explicit anchor assertion (Excel-verified W=150 / CG=26 → 34
     if (!r.ok) {
       throw new Error(`anchor case unexpectedly errored: ${JSON.stringify(r.error)}`);
     }
-    expect(r.value.maxCrosswindKnots).toBe(34);
+    // raw 34.873; ROUNDDOWN at 0.1 boundary = 34.8.
+    expect(r.value.maxCrosswindKnots).toBe(34.8);
     expect(r.value.metadata.calculationStrategy).toBe('within-bracket');
   });
 });

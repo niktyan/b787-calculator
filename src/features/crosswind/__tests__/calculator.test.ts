@@ -2,9 +2,13 @@
  * Authoritative test cases from `02_Specification/05-crosswind-algorithm.md`
  * Test Sets #1, #2, #3. Each row in the spec table → one `it` block.
  *
- * Expected values come EXACTLY from the spec — do not "adjust" them.
- * Discrepancies between the algorithm and the table are bugs, NOT
- * grounds to change the table.
+ * Per ADR-0017, output rounding is uniform ROUNDDOWN to 0.1 KT applied
+ * at the calculator boundary (was per-condition `decimals: 0 | 1`).
+ * Expected values below are recomputed from the same raw formula
+ * outputs using the new uniform 0.1-grid floor. Cases that snap to a
+ * bracket label (IFNA fallback, exact-T breakpoints) or that clamp to
+ * the integer `maxCap=37` remain integer-valued; only sub-grid
+ * formula outputs gain a fractional digit (e.g. 33 → 33.5, 34 → 34.9).
  */
 
 import { calculateCrosswindLimit } from '../domain/calculator';
@@ -82,17 +86,17 @@ describe('Test Set #1 · Weight = 170 t', () => {
     { id: '1.08', weight: 170, cg: 30.0, expected: 37, strategy: 'within-bracket' },
     { id: '1.09', weight: 170, cg: 30.886, expected: 37, strategy: 'within-bracket' },
     { id: '1.10', weight: 170, cg: 30.88763904, expected: 35, strategy: 'within-bracket' },
-    { id: '1.11', weight: 170, cg: 31.0, expected: 34, strategy: 'within-bracket' },
-    { id: '1.12', weight: 170, cg: 32.0, expected: 34, strategy: 'within-bracket' },
-    { id: '1.13', weight: 170, cg: 33.0, expected: 33, strategy: 'within-bracket' },
-    { id: '1.14', weight: 170, cg: 34.387, expected: 32, strategy: 'within-bracket' },
+    { id: '1.11', weight: 170, cg: 31.0, expected: 34.9, strategy: 'within-bracket' },
+    { id: '1.12', weight: 170, cg: 32.0, expected: 34.2, strategy: 'within-bracket' },
+    { id: '1.13', weight: 170, cg: 33.0, expected: 33.5, strategy: 'within-bracket' },
+    { id: '1.14', weight: 170, cg: 34.387, expected: 32.5, strategy: 'within-bracket' },
     { id: '1.15', weight: 170, cg: 34.38763904, expected: 30, strategy: 'within-bracket' },
-    { id: '1.16', weight: 170, cg: 34.4, expected: 29, strategy: 'within-bracket' },
-    { id: '1.17', weight: 170, cg: 35.0, expected: 29, strategy: 'within-bracket' },
-    { id: '1.18', weight: 170, cg: 36.0, expected: 28, strategy: 'within-bracket' },
+    { id: '1.16', weight: 170, cg: 34.4, expected: 29.9, strategy: 'within-bracket' },
+    { id: '1.17', weight: 170, cg: 35.0, expected: 29.5, strategy: 'within-bracket' },
+    { id: '1.18', weight: 170, cg: 36.0, expected: 28.8, strategy: 'within-bracket' },
     { id: '1.19', weight: 170, cg: 37.88763904, expected: 25, strategy: 'within-bracket' },
-    { id: '1.20', weight: 170, cg: 38.0, expected: 24, strategy: 'within-bracket' },
-    { id: '1.21', weight: 170, cg: 40.0, expected: 23, strategy: 'within-bracket' },
+    { id: '1.20', weight: 170, cg: 38.0, expected: 24.9, strategy: 'within-bracket' },
+    { id: '1.21', weight: 170, cg: 40.0, expected: 23.5, strategy: 'within-bracket' },
     { id: '1.22', weight: 170, cg: 41.38763904, expected: 20, strategy: 'within-bracket' },
     { id: '1.23', weight: 170, cg: 42.0, expected: 37, strategy: 'above-envelope' },
     { id: '1.24', weight: 170, cg: 50.0, expected: 37, strategy: 'above-envelope' },
@@ -113,9 +117,9 @@ describe('Test Set #2 · Weight = 130 t', () => {
     { id: '2.03', weight: 130, cg: 22.60819456, expected: 37, strategy: 'within-bracket' },
     { id: '2.04', weight: 130, cg: 23.0, expected: 37, strategy: 'within-bracket' },
     { id: '2.05', weight: 130, cg: 25.0, expected: 37, strategy: 'within-bracket' },
-    { id: '2.06', weight: 130, cg: 27.0, expected: 34, strategy: 'within-bracket' },
-    { id: '2.07', weight: 130, cg: 30.0, expected: 29, strategy: 'within-bracket' },
-    { id: '2.08', weight: 130, cg: 35.0, expected: 23, strategy: 'within-bracket' },
+    { id: '2.06', weight: 130, cg: 27.0, expected: 34.1, strategy: 'within-bracket' },
+    { id: '2.07', weight: 130, cg: 30.0, expected: 29.5, strategy: 'within-bracket' },
+    { id: '2.08', weight: 130, cg: 35.0, expected: 23.4, strategy: 'within-bracket' },
     { id: '2.09', weight: 130, cg: 36.30819456, expected: 20, strategy: 'within-bracket' },
     { id: '2.10', weight: 130, cg: 38.0, expected: 37, strategy: 'above-envelope' },
   ];
@@ -133,10 +137,10 @@ describe('Test Set #3 · Weight = 160 t', () => {
     { id: '3.01', weight: 160, cg: 20.0, expected: 37, strategy: 'below-envelope' },
     { id: '3.02', weight: 160, cg: 26.41777792, expected: 37, strategy: 'within-bracket' },
     { id: '3.03', weight: 160, cg: 27.0, expected: 37, strategy: 'within-bracket' },
-    { id: '3.04', weight: 160, cg: 30.0, expected: 34, strategy: 'within-bracket' },
-    { id: '3.05', weight: 160, cg: 33.0, expected: 32, strategy: 'within-bracket' },
-    { id: '3.06', weight: 160, cg: 35.0, expected: 28, strategy: 'within-bracket' },
-    { id: '3.07', weight: 160, cg: 40.0, expected: 22, strategy: 'within-bracket' },
+    { id: '3.04', weight: 160, cg: 30.0, expected: 34.7, strategy: 'within-bracket' },
+    { id: '3.05', weight: 160, cg: 33.0, expected: 32.6, strategy: 'within-bracket' },
+    { id: '3.06', weight: 160, cg: 35.0, expected: 28.6, strategy: 'within-bracket' },
+    { id: '3.07', weight: 160, cg: 40.0, expected: 22.6, strategy: 'within-bracket' },
   ];
   cases.forEach((c) => {
     it(`case ${c.id}: W=${c.weight}, CG=${c.cg} → ${c.expected} KT (${c.strategy})`, () => {
@@ -194,11 +198,11 @@ describe('Excel-equivalent peculiarities (regression)', () => {
     expect(r.value.metadata.calculationStrategy).toBe('above-envelope');
   });
 
-  it('uses Math.floor (ROUNDDOWN) — raw 33.521 → 33 not 34', () => {
-    // W=170, CG=33: raw ≈ 33.521. ROUNDDOWN(33.521, 0) = 33; cap=37 does
-    // not trigger (33 ≤ 37), so the floor behavior is observable. The
-    // prior W=170/CG=27.7 case (raw 39.992 → 39) is now masked by the
-    // cap and no longer exercises ROUNDDOWN directly.
+  it('uses Math.floor at 0.1 (ADR-0017) — raw 33.521 → 33.5 not 33.6', () => {
+    // W=170, CG=33: raw ≈ 33.521. Per ADR-0017 the boundary applies
+    // roundDownToTenth (Math.floor(value * 10) / 10) = 33.5 — strictly
+    // below the raw, never rounding up. cap=37 doesn't trigger
+    // (33.5 ≤ 37), so the 0.1-floor behavior is observable.
     const { w, cg } = vo(170, 33.0);
     const r = calculateCrosswindLimit(
       { weightTons: w, cgPercent: cg, aircraft: AIRCRAFT, phase: PHASE, runwayCondition: RUNWAY },
@@ -207,7 +211,7 @@ describe('Excel-equivalent peculiarities (regression)', () => {
     if (!r.ok) {
       throw new Error('expected success');
     }
-    expect(r.value.maxCrosswindKnots).toBe(33);
+    expect(r.value.maxCrosswindKnots).toBe(33.5);
   });
 });
 

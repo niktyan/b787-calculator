@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CrosswindResult renders the centred number for idle state (default W=170, CG=25 dry → 33 KT) 1`] = `
+exports[`CrosswindResult renders the centred number with one decimal place (ADR-0017: 33 → "33.0") 1`] = `
 <View
   layout={BaseAnimationMock {}}
   testID="result"
@@ -55,7 +55,7 @@ exports[`CrosswindResult renders the centred number for idle state (default W=17
       }
     >
       <Text
-        accessibilityLabel="33 KT"
+        accessibilityLabel="33.0 KT"
         allowFontScaling={false}
         style={
           [
@@ -72,7 +72,7 @@ exports[`CrosswindResult renders the centred number for idle state (default W=17
           ]
         }
       >
-        33
+        33.0
       </Text>
       <Text
         allowFontScaling={true}
@@ -283,7 +283,7 @@ exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 
       }
     >
       <Text
-        accessibilityLabel="33 KT"
+        accessibilityLabel="33.0 KT"
         allowFontScaling={false}
         style={
           [
@@ -303,7 +303,7 @@ exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 
           ]
         }
       >
-        33
+        33.0
       </Text>
       <Text
         allowFontScaling={true}
