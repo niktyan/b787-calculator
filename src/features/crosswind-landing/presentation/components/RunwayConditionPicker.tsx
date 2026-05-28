@@ -1,35 +1,39 @@
 /**
  * Crosswind Landing runway-condition picker — single-line dropdown
- * field that opens a bottom-sheet modal listing the 7 options
- * vertically (ADR-0018 § UI Layout).
+ * field with a hybrid presentation: anchored popover beside the field
+ * on iPad landscape, centred BottomSheet modal everywhere else
+ * (ADR-0018 § UI Layout, F2 visual fix v4).
  *
- * Inspired by the Boeing Onboard Performance Tool COND control. Chosen
- * over a segmented control / grid because the 7 runway-condition
- * labels vary roughly 4× in length ("Dry" vs. "Good (Slush, Dry Snow,
- * Wet Snow)") — any flex-based or fixed-column layout produced visibly
- * uneven button widths or ragged wrapping. A dropdown gives every
- * option the same vertical real-estate at full text length without
- * compromise.
+ * Presentation resolution at the call site:
  *
- * The `size` prop mirrors `SegmentedControlSize` and is supplied by
- * the parent form using the same `sizing.segmentedSize` value already
- * resolved by `resolveSizing(isRegular)`. Every size-dependent metric
- * (field height, label variant, chevron size, sheet-row padding, etc.)
- * routes through the existing `tokens.sizing.settingsRow` bundle plus
- * `tokens.spacing` — see `RunwayConditionPicker.sizing.ts`. No new
- * design tokens, no magic numbers. The closed field therefore matches
- * the adjacent SegmentedControls (Aircraft, Landing mode) at
- * iPad-regular height and font scale.
+ *   const { width, height } = useWindowDimensions();
+ *   const isTwoColumn = width >= tokens.breakpoints.regular;   // 1024
+ *   const isLandscape = width > height;
+ *   const anchored = isTwoColumn && isLandscape;
  *
- * Modal sheet rendering lives in `RunwayConditionSheet.tsx` so this
- * file stays inside the 300-line / 80-line caps. No new npm deps.
+ * The compound condition deliberately diverges from the keypad's
+ * pure width-only rule because the picker is only relevant in the
+ * 2-column landscape layout where the result panel sits to the right
+ * of the input column — the right column is precisely where the
+ * anchored popover lands. iPad 13" portrait is 1024 wide (so
+ * `isTwoColumn` is true there) but vertical, which means we want
+ * a centred sheet there, not an anchored popover.
+ *
+ * Anchored branch reuses the design-system `AnchoredPopoverHost`,
+ * which in turn reuses `computeAnchoredPosition` — the same pure
+ * function the custom numeric keypad already uses (ADR-0011
+ * Iteration 2). Modal-centre branch reuses the existing
+ * `BottomSheet`. No animation; backdrop dismiss; no new npm deps.
+ *
+ * `size` prop continues to drive field height + label scale via
+ * `tokens.sizing.settingsRow` — see `RunwayConditionPicker.sizing.ts`.
  */
 
 import { Ionicons } from '@expo/vector-icons';
-import { useCallback, useMemo, useState } from 'react';
-import type { ReactNode } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import type { ViewStyle } from 'react-native';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import type { ReactNode, RefObject } from 'react';
+import { Pressable, StyleSheet, useWindowDimensions } from 'react-native';
+import type { View, ViewStyle } from 'react-native';
 
 import { useHapticFeedback } from '../../../../core/haptics';
 import { useTranslation } from '../../../../core';
@@ -41,6 +45,7 @@ import type {
 } from '../../../../design-system';
 import { Text, tokens } from '../../../../design-system';
 
+import { RunwayAnchoredPopover } from './RunwayConditionAnchored';
 import type { PickerSizing } from './RunwayConditionPicker.sizing';
 import { resolvePickerSizing } from './RunwayConditionPicker.sizing';
 import { RunwaySheet } from './RunwayConditionSheet';
@@ -67,14 +72,17 @@ export function RunwayConditionPicker<TValue extends string>(
   const { value, options, onChange, accessibilityLabel, testID, size = 'compact' } = props;
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const { width, height } = useWindowDimensions();
   const palette = tokens.colors[theme.resolved];
   const haptics = useHapticFeedback();
   const [isOpen, setOpen] = useState(false);
+  const anchorRef = useRef<View | null>(null);
   const sizing = useMemo(() => resolvePickerSizing(size), [size]);
   const selectedLabel = useMemo<string>(
     () => options.find((o) => o.value === value)?.label ?? '',
     [options, value],
   );
+  const presentationAnchored = width >= tokens.breakpoints.regular && width > height;
   const open = useCallback((): void => {
     haptics.lightImpact();
     setOpen(true);
@@ -93,6 +101,7 @@ export function RunwayConditionPicker<TValue extends string>(
     <>
       <ClosedField
         accessibilityLabel={accessibilityLabel}
+        anchorRef={anchorRef}
         isOpen={isOpen}
         selectedLabel={selectedLabel}
         palette={palette}
@@ -100,8 +109,10 @@ export function RunwayConditionPicker<TValue extends string>(
         onPress={open}
         testID={testID}
       />
-      <RunwaySheet
-        visible={isOpen}
+      <PickerPresentation
+        anchored={presentationAnchored}
+        isOpen={isOpen}
+        anchorRef={anchorRef}
         title={t('crosswind-landing.runwayConditionSheetTitle')}
         cancelLabel={t('crosswind-landing.runwayConditionSheetCancel')}
         closeAccessibilityLabel={t('crosswind-landing.runwayConditionSheetCancel')}
@@ -117,8 +128,35 @@ export function RunwayConditionPicker<TValue extends string>(
   );
 }
 
+interface PickerPresentationProps<TValue extends string> {
+  readonly anchored: boolean;
+  readonly isOpen: boolean;
+  readonly anchorRef: RefObject<View | null>;
+  readonly title: string;
+  readonly cancelLabel: string;
+  readonly closeAccessibilityLabel: string;
+  readonly palette: ColorPalette;
+  readonly sizing: PickerSizing;
+  readonly options: readonly SegmentedControlOption<TValue>[];
+  readonly selectedValue: TValue;
+  readonly onSelect: (next: TValue) => void;
+  readonly onClose: () => void;
+  readonly testID: string | undefined;
+}
+
+function PickerPresentation<TValue extends string>(
+  props: PickerPresentationProps<TValue>,
+): ReactNode {
+  const { anchored, isOpen, anchorRef, ...rest } = props;
+  if (anchored) {
+    return <RunwayAnchoredPopover visible={isOpen} anchorRef={anchorRef} {...rest} />;
+  }
+  return <RunwaySheet visible={isOpen} {...rest} />;
+}
+
 interface ClosedFieldProps {
   readonly accessibilityLabel: string | undefined;
+  readonly anchorRef: RefObject<View | null>;
   readonly isOpen: boolean;
   readonly selectedLabel: string;
   readonly palette: ColorPalette;
@@ -128,7 +166,8 @@ interface ClosedFieldProps {
 }
 
 function ClosedField(props: ClosedFieldProps): ReactNode {
-  const { accessibilityLabel, isOpen, selectedLabel, palette, sizing, onPress, testID } = props;
+  const { accessibilityLabel, anchorRef, isOpen, selectedLabel, palette, sizing, onPress, testID } =
+    props;
   const fieldStyle = useMemo<ViewStyle>(
     () => ({
       backgroundColor: palette.bgInput,
@@ -147,6 +186,7 @@ function ClosedField(props: ClosedFieldProps): ReactNode {
   );
   return (
     <Pressable
+      ref={anchorRef}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
       accessibilityState={{ expanded: isOpen }}

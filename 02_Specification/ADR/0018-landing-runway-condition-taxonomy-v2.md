@@ -187,6 +187,81 @@ sheet uses the natural single-line width of each label. The pattern is
 also familiar from iOS Settings, so pilots do not need to learn a new
 selection idiom.
 
+### Hybrid presentation — anchored popover on iPad landscape (F2 visual fix v4)
+
+The dropdown's open-state container varies by viewport class:
+
+| Viewport | Open-state container | Rationale |
+|---|---|---|
+| iPhone, any orientation | `BottomSheet` modal (slide-up) | Compact width — bottom sheet is the iOS-native idiom |
+| iPad 11" portrait (834×1194) | `BottomSheet` modal (centred) | Width < 1024 — same path as iPhone |
+| iPad 13" portrait (1024×1366) | `BottomSheet` modal (centred) | Width ≥ 1024 but portrait — the landing screen still uses 2-column there, but the option list reads more naturally as a centred sheet than as a popover anchored to a column |
+| iPad 11" landscape (1194×834) | Anchored popover beside the field | 2-column layout — popover lands in the right-column area, overlaying the result panel where they intersect |
+| iPad 13" landscape (1366×1024) | Anchored popover beside the field | Same as 11" landscape |
+
+The resolution rule deliberately diverges from the keypad's pure
+width-only `≥ 768pt` cascade (ADR-0011 Iteration 2):
+
+```typescript
+const { width, height } = useWindowDimensions();
+const isTwoColumn = width >= tokens.breakpoints.regular;   // 1024
+const isLandscape = width > height;
+const presentationAnchored = isTwoColumn && isLandscape;
+```
+
+The compound `isTwoColumn && isLandscape` gate is required because the
+picker is most ergonomic next to the field only when the form is in
+its 2-column landscape layout — where the right column exists and has
+room for the popover. iPad 13" portrait satisfies `width ≥ 1024` but
+is vertical, and the same column-swap pattern there would clip / look
+ragged; the centred BottomSheet reads cleaner.
+
+### Shared anchored-popover primitive
+
+The anchored branch consumes a new design-system primitive,
+`AnchoredPopoverHost` (`src/design-system/anchored-popover/`), which
+is a generalisation of the keypad's existing host. It exposes:
+
+```typescript
+interface AnchoredPopoverHostProps {
+  readonly isOpen: boolean;
+  readonly anchorRef: RefObject<View | null>;
+  readonly contentSize: { width: number; height: number };
+  readonly onDismiss: () => void;
+  readonly accessibilityDismissLabel: string;
+  readonly children: ReactNode;
+  readonly testID?: string;
+}
+```
+
+Internally it:
+1. Calls `measureInWindow(...)` on `anchorRef` when `isOpen` flips
+   true.
+2. Feeds the resulting rect into `computeAnchoredPosition(...)` — the
+   same pure function the numeric keypad already uses (now exported
+   from the shared module; the keypad host imports it and re-exports
+   the legacy `computeKeypadPosition` alias for its existing unit
+   tests).
+3. Renders a transparent `Modal` (`animationType="none"`, no slide /
+   fade — keypad-parity) with a backdrop `Pressable` calling
+   `onDismiss`, and an absolutely-positioned popover surface holding
+   the children at the computed `{top, left}`.
+
+The picker's popover surface is **360 pt wide × 600 pt tall** — wider
+than the keypad's 280 pt because the longest runway label
+`Good (Slush, Dry Snow, Wet Snow)` reads better at 360 pt, and taller
+because the option list (7 rows + title + Cancel) needs the room at
+regular sizing.
+
+The keypad's own host (`NumericKeypadHost`) is **not yet refactored
+to consume `AnchoredPopoverHost`** — its Provider/Context registration
+flow (async `getAnchor()` Promise) does not map 1:1 to the host's
+`anchorRef`-prop API. A TODO at the bottom of `AnchoredPopoverHost.tsx`
+records the deferred unification. The two hosts share the
+`computeAnchoredPosition` math and the `animationType="none"` Modal
+shell pattern, which is the part that actually matters for visual
+parity.
+
 ## Consequences
 
 **Positive:**

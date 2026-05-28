@@ -1,25 +1,23 @@
 /**
- * Internal modal sheet rendered by `RunwayConditionPicker` — listed
- * here so the picker file stays inside the 300-line / 80-line caps.
- * Not exported from the module barrel.
+ * Modal-centre presentation branch for `RunwayConditionPicker`
+ * (iPhone any orientation + iPad portrait per ADR-0018 § UI Layout).
  *
- * Reuses the shared `BottomSheet` primitive plus an internal
- * `PickerRow` for each option (custom row visual rather than the
- * bordered `BottomSheetOption` used by Settings — see ADR-0018 § UI
- * Layout for the rationale).
+ * Wraps the shared `OptionList` in the design-system `BottomSheet` —
+ * slide-up sheet on iPhone, centred surface on iPad portrait.
+ * Pixel-identical content to the anchored-right branch, only the
+ * outer chrome differs.
  */
 
 import { useMemo } from 'react';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
 import type { ColorPalette, SegmentedControlOption } from '../../../../design-system';
-import { BottomSheet, Stack, Text, tokens } from '../../../../design-system';
+import { BottomSheet, tokens } from '../../../../design-system';
 
+import { OptionList } from './RunwayConditionPicker.parts';
 import type { PickerSizing } from './RunwayConditionPicker.sizing';
-
-const PRESSED_OPACITY = 0.6;
 
 export interface RunwaySheetProps<TValue extends string> {
   readonly visible: boolean;
@@ -49,6 +47,7 @@ export function RunwaySheet<TValue extends string>(props: RunwaySheetProps<TValu
     onClose,
     testID,
   } = props;
+  const containerStyle = useMemo<ViewStyle>(() => styles.container, []);
   return (
     <BottomSheet
       visible={visible}
@@ -56,142 +55,20 @@ export function RunwaySheet<TValue extends string>(props: RunwaySheetProps<TValu
       closeAccessibilityLabel={closeAccessibilityLabel}
       {...(testID === undefined ? {} : { testID })}
     >
-      <View style={styles.container} accessibilityRole="radiogroup" accessibilityLabel={title}>
-        <Stack gap="sm">
-          <Text variant={sizing.titleVariant} color="textSecondary" style={sizing.titleStyle}>
-            {title}
-          </Text>
-          <View>
-            {options.map((option, index) => (
-              <PickerRow
-                key={option.value}
-                label={option.label}
-                selected={option.value === selectedValue}
-                showDivider={index < options.length - 1}
-                palette={palette}
-                sizing={sizing}
-                onPress={(): void => onSelect(option.value)}
-                testID={testID === undefined ? undefined : `${testID}-option-${option.value}`}
-              />
-            ))}
-          </View>
-          <CancelButton
-            label={cancelLabel}
-            palette={palette}
-            sizing={sizing}
-            onPress={onClose}
-            testID={testID === undefined ? undefined : `${testID}-cancel`}
-          />
-        </Stack>
+      <View style={containerStyle}>
+        <OptionList
+          title={title}
+          cancelLabel={cancelLabel}
+          palette={palette}
+          sizing={sizing}
+          options={options}
+          selectedValue={selectedValue}
+          onSelect={onSelect}
+          onCancel={onClose}
+          testID={testID}
+        />
       </View>
     </BottomSheet>
-  );
-}
-
-interface CancelButtonProps {
-  readonly label: string;
-  readonly palette: ColorPalette;
-  readonly sizing: PickerSizing;
-  readonly onPress: () => void;
-  readonly testID: string | undefined;
-}
-
-function CancelButton({ label, palette, sizing, onPress, testID }: CancelButtonProps): ReactNode {
-  const cancelStyle = useMemo<ViewStyle>(
-    () => ({
-      alignItems: 'center',
-      alignSelf: 'center',
-      borderColor: palette.border,
-      borderRadius: tokens.radii.md,
-      borderWidth: 1,
-      marginTop: tokens.spacing.md,
-      minHeight: sizing.fieldMinHeight,
-      paddingHorizontal: tokens.spacing.xl,
-      paddingVertical: sizing.fieldPaddingVertical,
-    }),
-    [palette.border, sizing.fieldMinHeight, sizing.fieldPaddingVertical],
-  );
-  return (
-    <Pressable
-      accessibilityLabel={label}
-      accessibilityRole="button"
-      onPress={onPress}
-      style={({ pressed }): ViewStyle[] => {
-        const layered: ViewStyle[] = [cancelStyle];
-        if (pressed) {
-          layered.push(styles.pressed);
-        }
-        return layered;
-      }}
-      testID={testID}
-    >
-      <Text variant={sizing.labelVariant} color="textPrimary" style={sizing.labelStyle}>
-        {label}
-      </Text>
-    </Pressable>
-  );
-}
-
-interface PickerRowProps {
-  readonly label: string;
-  readonly selected: boolean;
-  readonly showDivider: boolean;
-  readonly palette: ColorPalette;
-  readonly sizing: PickerSizing;
-  readonly onPress: () => void;
-  readonly testID: string | undefined;
-}
-
-function PickerRow(props: PickerRowProps): ReactNode {
-  const { label, selected, showDivider, palette, sizing, onPress, testID } = props;
-  const rowStyle = useMemo<ViewStyle>(
-    () => ({
-      alignItems: 'center',
-      borderBottomColor: palette.border,
-      borderBottomWidth: showDivider ? StyleSheet.hairlineWidth : 0,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      minHeight: sizing.rowMinHeight,
-      paddingHorizontal: sizing.rowPaddingHorizontal,
-      paddingVertical: sizing.rowPaddingVertical,
-    }),
-    [
-      palette.border,
-      showDivider,
-      sizing.rowMinHeight,
-      sizing.rowPaddingHorizontal,
-      sizing.rowPaddingVertical,
-    ],
-  );
-  return (
-    <Pressable
-      accessibilityLabel={label}
-      accessibilityRole="radio"
-      accessibilityState={{ selected }}
-      onPress={onPress}
-      style={({ pressed }): ViewStyle[] => {
-        const layered: ViewStyle[] = [rowStyle];
-        if (pressed) {
-          layered.push(styles.pressed);
-        }
-        return layered;
-      }}
-      testID={testID}
-    >
-      <Text
-        variant={sizing.labelVariant}
-        color={selected ? 'accentText' : 'textPrimary'}
-        numberOfLines={1}
-        style={[styles.rowLabel, sizing.labelStyle]}
-      >
-        {label}
-      </Text>
-      {selected ? (
-        <Text variant={sizing.labelVariant} color="accentText">
-          ✓
-        </Text>
-      ) : null}
-    </Pressable>
   );
 }
 
@@ -200,11 +77,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     maxWidth: tokens.layout.runwayPicker.sheetMaxWidth,
     width: '100%',
-  },
-  pressed: {
-    opacity: PRESSED_OPACITY,
-  },
-  rowLabel: {
-    flex: 1,
   },
 });
