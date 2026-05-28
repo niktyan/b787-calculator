@@ -51,6 +51,27 @@ const RUNWAY_LABEL: Readonly<Record<RecentTakeoffEntry['inputs']['runwayConditio
   poor: 'Poor',
 };
 
+/**
+ * Landing-specific runway-condition labels (ADR-0018). Accepts both the
+ * current 7-value taxonomy and the two legacy keys from the Sprint C
+ * shape so Recent entries persisted before the v2 schema bump still
+ * render — they show with a "(legacy)" suffix so the pilot can see the
+ * value comes from the previous vocabulary.
+ */
+const LANDING_RUNWAY_LABEL: Readonly<
+  Record<RecentLandingEntry['inputs']['runwayCondition'], string>
+> = {
+  dry: 'Dry',
+  goodWetDamp: 'Good (Wet, Damp)',
+  goodSlushSnow: 'Good (Slush, Dry Snow, Wet Snow)',
+  goodToMedium: 'Good to Medium',
+  medium: 'Medium',
+  mediumToPoor: 'Medium to Poor',
+  poor: 'Poor',
+  good: 'Good (legacy)',
+  mediumToGood: 'Medium to Good (legacy)',
+};
+
 export interface RecentListItemProps {
   readonly entry: RecentEntry;
   readonly onPress: (entry: RecentEntry) => void;
@@ -149,7 +170,7 @@ function renderLandingInputs(entry: RecentLandingEntry, t: (key: string) => stri
     entry.inputs;
   const parts: string[] = [
     AIRCRAFT_LABEL[aircraft],
-    RUNWAY_LABEL[runwayCondition],
+    LANDING_RUNWAY_LABEL[runwayCondition],
     landingMode === 'auto' ? 'Autoland' : 'Manual',
   ];
   parts.push(`Asym ${asymReverse === 'yes' ? t('recent.yes') : t('recent.no')}`);

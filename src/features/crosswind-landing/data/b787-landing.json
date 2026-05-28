@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0.0",
-  "dataVersion": "2026-05-23.001",
+  "schemaVersion": "2.4.0",
+  "dataVersion": "2026-05-28.001",
   "phase": "landing",
   "adjustments": {
     "catIIIIICap": 25,
@@ -11,34 +11,36 @@
       "engineInopAutolandLimit": 28,
       "baseTable": {
         "dry": { "manual": 37, "auto": 33 },
-        "good": { "manual": 35, "auto": 33 },
-        "mediumToGood": { "manual": 35, "auto": 33 },
+        "goodWetDamp": { "manual": 37, "auto": 33 },
+        "goodSlushSnow": { "manual": 35, "auto": 33 },
+        "goodToMedium": { "manual": 35, "auto": 33 },
         "medium": { "manual": 35, "auto": 33 },
         "mediumToPoor": { "manual": 20, "auto": 20 },
         "poor": { "manual": 17, "auto": 17 }
       },
       "metadata": {
-        "createdAt": "2026-05-23",
+        "createdAt": "2026-05-28",
         "validatedBy": "active-line-pilots",
-        "referenceDocument": "Boeing 787 FCOM (Uzbekistan Airways SOP PSK.FLT-09.ENG Rev.0 06.04.2026, Tab 2.29.3 + page 2-105)",
-        "notes": "Landing crosswind base lookup + FCOM CAUTION adjustments. catIIIIICap and asymReversePenalty shared across both aircraft; engineInopAutolandLimit is per-aircraft (B787-8 = 28 KT)."
+        "referenceDocument": "Boeing 787 AFM Rev. 20 'MAXIMUM CROSS WIND FOR LANDING' table + Landing (2).xlsx 'Data' sheet (curator)",
+        "notes": "Landing crosswind base lookup + FCOM CAUTION adjustments. Taxonomy v2 per ADR-0018: 'good' split into 'goodWetDamp' and 'goodSlushSnow'; 'mediumToGood' renamed to 'goodToMedium'. catIIIIICap and asymReversePenalty shared across both aircraft; engineInopAutolandLimit is per-aircraft (B787-8 = 28 KT)."
       }
     },
     "b787_9": {
       "engineInopAutolandLimit": 37,
       "baseTable": {
         "dry": { "manual": 37, "auto": 28 },
-        "good": { "manual": 35, "auto": 28 },
-        "mediumToGood": { "manual": 35, "auto": 28 },
+        "goodWetDamp": { "manual": 37, "auto": 28 },
+        "goodSlushSnow": { "manual": 35, "auto": 28 },
+        "goodToMedium": { "manual": 35, "auto": 28 },
         "medium": { "manual": 25, "auto": 25 },
         "mediumToPoor": { "manual": 17, "auto": 17 },
         "poor": { "manual": 15, "auto": 15 }
       },
       "metadata": {
-        "createdAt": "2026-05-23",
+        "createdAt": "2026-05-28",
         "validatedBy": "active-line-pilots",
-        "referenceDocument": "Boeing 787 FCOM (Uzbekistan Airways SOP page 2-105)",
-        "notes": "Landing crosswind for B787-9. engineInopAutolandLimit=37 is per FCOM but operationally non-binding — all baseTable values for B787-9 are <=28, so the 37 cap never restricts results. Kept literal per FCOM."
+        "referenceDocument": "Boeing 787 AFM Rev. 20 'MAXIMUM CROSS WIND FOR LANDING' table + Landing (2).xlsx 'Data' sheet (curator)",
+        "notes": "Landing crosswind for B787-9, taxonomy v2 per ADR-0018. engineInopAutolandLimit=37 is per FCOM but operationally non-binding — all baseTable values for B787-9 are <=28, so the 37 cap never restricts results. Kept literal per FCOM."
       }
     }
   }

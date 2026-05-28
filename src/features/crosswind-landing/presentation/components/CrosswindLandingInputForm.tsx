@@ -15,7 +15,7 @@
 import type { ReactNode } from 'react';
 import type { TextStyle } from 'react-native';
 
-import type { AircraftVariant, RunwayCondition } from '../../../../core/aviation';
+import type { AircraftVariant, LandingRunwayCondition } from '../../../../core/aviation';
 import { useTranslation } from '../../../../core';
 import { SegmentedControl, Stack, Text } from '../../../../design-system';
 import type {
@@ -28,13 +28,13 @@ import type { LandingMode, YesNo } from '../../domain/types';
 
 export interface CrosswindLandingInputFormProps {
   readonly aircraft: AircraftVariant;
-  readonly runwayCondition: RunwayCondition;
+  readonly runwayCondition: LandingRunwayCondition;
   readonly landingMode: LandingMode;
   readonly asymReverse: YesNo;
   readonly catIIIII: YesNo;
   readonly engineInop: YesNo;
   readonly onAircraftChange: (next: AircraftVariant) => void;
-  readonly onRunwayConditionChange: (next: RunwayCondition) => void;
+  readonly onRunwayConditionChange: (next: LandingRunwayCondition) => void;
   readonly onLandingModeChange: (next: LandingMode) => void;
   readonly onAsymReverseChange: (next: YesNo) => void;
   readonly onCatIIIIIChange: (next: YesNo) => void;
@@ -60,10 +60,11 @@ const AIRCRAFT_OPTIONS: readonly SegmentedControlOption<AircraftVariant>[] = [
   { value: 'b787_9', label: 'B787-9' },
 ];
 
-const RUNWAY_OPTIONS: readonly SegmentedControlOption<RunwayCondition>[] = [
+const RUNWAY_OPTIONS: readonly SegmentedControlOption<LandingRunwayCondition>[] = [
   { value: 'dry', label: 'Dry' },
-  { value: 'good', label: 'Good' },
-  { value: 'mediumToGood', label: 'Medium to Good' },
+  { value: 'goodWetDamp', label: 'Good (Wet, Damp)' },
+  { value: 'goodSlushSnow', label: 'Good (Slush, Dry Snow, Wet Snow)' },
+  { value: 'goodToMedium', label: 'Good to Medium' },
   { value: 'medium', label: 'Medium' },
   { value: 'mediumToPoor', label: 'Medium to Poor' },
   { value: 'poor', label: 'Poor' },
@@ -167,9 +168,9 @@ function YesNoRow({
 
 interface TopSectionsProps {
   readonly aircraft: AircraftVariant;
-  readonly runwayCondition: RunwayCondition;
+  readonly runwayCondition: LandingRunwayCondition;
   readonly onAircraftChange: (next: AircraftVariant) => void;
-  readonly onRunwayConditionChange: (next: RunwayCondition) => void;
+  readonly onRunwayConditionChange: (next: LandingRunwayCondition) => void;
   readonly sizing: FormSizing;
   readonly t: (key: string) => string;
 }
@@ -191,7 +192,7 @@ function TopSections(props: TopSectionsProps): ReactNode {
       </Stack>
       <Stack gap={sizing.sectionLabelGap}>
         <SectionLabel text={t('crosswind-landing.runwayConditionLabel')} sizing={sizing} />
-        <SegmentedControl<RunwayCondition>
+        <SegmentedControl<LandingRunwayCondition>
           value={runwayCondition}
           options={RUNWAY_OPTIONS}
           onChange={onRunwayConditionChange}

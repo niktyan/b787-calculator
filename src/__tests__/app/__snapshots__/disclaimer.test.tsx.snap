@@ -109,7 +109,7 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
             ]
           }
         >
-          B787 Calculator
+          B787 Tools
         </Text>
         <Text
           allowFontScaling={true}
@@ -400,7 +400,7 @@ exports[`Disclaimer route renders the brand block, the amber disclaimer card, an
             ]
           }
         >
-          B787 Calculator
+          B787 Tools
         </Text>
         <Text
           allowFontScaling={true}

@@ -10,4 +10,4 @@ export const TERMS_OF_USE_URL = 'https://niktyan.github.io/b787-calculator/terms
 
 export const SUPPORT_EMAIL = 'supportb787calculator@protonmail.com';
 
-export const SUPPORT_MAILTO_SUBJECT = 'B787 Calculator support';
+export const SUPPORT_MAILTO_SUBJECT = 'B787 Tools support';

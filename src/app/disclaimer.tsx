@@ -78,7 +78,7 @@ export default function Disclaimer(): ReactNode {
           </Text>
         </View>
         <Stack gap="xs" align="center">
-          <Text variant="heading3">B787 Calculator</Text>
+          <Text variant="heading3">B787 Tools</Text>
           <Text variant="caption" color="textSecondary">
             {t('splash.tagline')} · v{version}
           </Text>

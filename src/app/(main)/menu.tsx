@@ -76,7 +76,7 @@ export default function MainMenu(): ReactNode {
     <Screen testID="main-menu-screen">
       <Stack gap="md">
         <ScreenHeader
-          title="B787 Calculator"
+          title="B787 Tools"
           tabs={tabs}
           activeTabId="modules"
           onTabChange={handlers.onTabChange}

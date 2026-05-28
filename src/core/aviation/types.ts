@@ -8,6 +8,13 @@
  * (takeoff) and `features/crosswind-landing` — extracted here so neither
  * feature imports from the other (forbidden cross-feature dependency).
  *
+ * `RunwayCondition` and `LandingRunwayCondition` deliberately diverge.
+ * Per ADR-0018 the AFM Rev. 20 landing crosswind table splits the old
+ * single `Good` row into `Good (Wet, Damp)` and `Good (Slush, Dry Snow,
+ * Wet Snow)`. The takeoff table does not split — it keeps the legacy
+ * 6-category vocabulary. Bridging code that crosses both phases (none in
+ * MVP) would have to map between the two unions explicitly.
+ *
  * Pure TypeScript — no runtime dependencies. Safe to import from any
  * layer (domain / data / presentation) of any feature.
  */
@@ -29,6 +36,22 @@ export const RUNWAY_CONDITIONS = [
   'poor',
 ] as const;
 export type RunwayCondition = (typeof RUNWAY_CONDITIONS)[number];
+
+/**
+ * Landing-specific runway-condition taxonomy (ADR-0018). Order matches
+ * the AFM Rev. 20 "MAXIMUM CROSS WIND FOR LANDING" table and the order
+ * shown by the landing input segmented control.
+ */
+export const LANDING_RUNWAY_CONDITIONS = [
+  'dry',
+  'goodWetDamp',
+  'goodSlushSnow',
+  'goodToMedium',
+  'medium',
+  'mediumToPoor',
+  'poor',
+] as const;
+export type LandingRunwayCondition = (typeof LANDING_RUNWAY_CONDITIONS)[number];
 
 /**
  * ICAO Runway Condition Code (1–6). Each `RunwayCondition` maps to a

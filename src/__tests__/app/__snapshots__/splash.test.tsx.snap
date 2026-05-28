@@ -109,7 +109,7 @@ exports[`Splash route (mounted at /) renders correctly in light theme 1`] = `
             ]
           }
         >
-          B787 Calculator
+          B787 Tools
         </Text>
         <Text
           allowFontScaling={true}
@@ -266,7 +266,7 @@ exports[`Splash route (mounted at /) renders the brand placeholder, app name, ve
             ]
           }
         >
-          B787 Calculator
+          B787 Tools
         </Text>
         <Text
           allowFontScaling={true}

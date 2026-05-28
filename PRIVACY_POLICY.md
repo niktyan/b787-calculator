@@ -5,7 +5,7 @@
 
 ## Overview
 
-B787 Calculator ("the App") is an offline advisory tool for Boeing 787 pilots. We are committed to protecting your privacy. This Privacy Policy explains our complete approach: we do not collect, store, transmit, or share any personal data.
+B787 Tools ("the App") is an offline advisory tool for Boeing 787 pilots. We are committed to protecting your privacy. This Privacy Policy explains our complete approach: we do not collect, store, transmit, or share any personal data.
 
 ## What data the App accesses or stores
 

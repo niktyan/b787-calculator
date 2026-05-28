@@ -78,7 +78,7 @@ describe('useRestoreFromRecent (landing)', () => {
       module: 'landing',
       inputs: {
         aircraft: 'b787_9',
-        runwayCondition: 'good',
+        runwayCondition: 'goodWetDamp',
         landingMode: 'auto',
         asymReverse: 'yes',
         catIIIII: 'yes',
@@ -94,11 +94,57 @@ describe('useRestoreFromRecent (landing)', () => {
     await waitFor(() => {
       expect(calls.aircraft).toEqual(['b787_9']);
     });
-    expect(calls.runway).toEqual(['good']);
+    expect(calls.runway).toEqual(['goodWetDamp']);
     expect(calls.landingMode).toEqual(['auto']);
     expect(calls.asymReverse).toEqual(['yes']);
     expect(calls.catIIIII).toEqual(['yes']);
     expect(calls.engineInop).toEqual(['no']);
+  });
+
+  it('maps legacy `good` runway condition to `goodWetDamp` on restore (ADR-0018)', async () => {
+    const saved = await saveRecent({
+      module: 'landing',
+      inputs: {
+        aircraft: 'b787_8',
+        runwayCondition: 'good',
+        landingMode: 'manual',
+        asymReverse: 'no',
+        catIIIII: 'no',
+        engineInop: 'no',
+      },
+      result: 37,
+    });
+    mockParams = { recentEntryId: saved.id };
+
+    const { apply, calls } = makeApply();
+    renderHook(() => useRestoreFromRecent(apply));
+
+    await waitFor(() => {
+      expect(calls.runway).toEqual(['goodWetDamp']);
+    });
+  });
+
+  it('maps legacy `mediumToGood` runway condition to `goodToMedium` on restore (ADR-0018)', async () => {
+    const saved = await saveRecent({
+      module: 'landing',
+      inputs: {
+        aircraft: 'b787_8',
+        runwayCondition: 'mediumToGood',
+        landingMode: 'manual',
+        asymReverse: 'no',
+        catIIIII: 'no',
+        engineInop: 'no',
+      },
+      result: 35,
+    });
+    mockParams = { recentEntryId: saved.id };
+
+    const { apply, calls } = makeApply();
+    renderHook(() => useRestoreFromRecent(apply));
+
+    await waitFor(() => {
+      expect(calls.runway).toEqual(['goodToMedium']);
+    });
   });
 
   it('is a no-op when the entry id refers to a takeoff entry (wrong module)', async () => {

@@ -136,7 +136,7 @@ exports[`Main Menu route renders correctly in light theme 1`] = `
                 ]
               }
             >
-              B787 Calculator
+              B787 Tools
             </Text>
           </View>
           <View
@@ -1108,7 +1108,7 @@ exports[`Main Menu route renders the header, NavPills, and the three active card
                 ]
               }
             >
-              B787 Calculator
+              B787 Tools
             </Text>
           </View>
           <View

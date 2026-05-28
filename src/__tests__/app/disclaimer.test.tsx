@@ -57,7 +57,7 @@ describe('Disclaimer route', () => {
     expect(tree.getByTestId('disclaimer-screen')).toBeTruthy();
     expect(tree.getByTestId('disclaimer-logo')).toBeTruthy();
     expect(tree.getByText('B7')).toBeTruthy();
-    expect(tree.getByText('B787 Calculator')).toBeTruthy();
+    expect(tree.getByText('B787 Tools')).toBeTruthy();
     expect(tree.getByTestId('disclaimer-card')).toBeTruthy();
     // Title carries the ⚠ prefix from the DS component (text-content, not visual);
     // body is the spec text verbatim.

@@ -34,7 +34,7 @@ describe('Main Menu route', () => {
     const tree = renderWithTheme(<MainMenu />, { mode: 'dark' });
     expect(tree.getByTestId('main-menu-screen')).toBeTruthy();
     expect(tree.getByTestId('main-menu-logo')).toBeTruthy();
-    expect(tree.getByText('B787 Calculator')).toBeTruthy();
+    expect(tree.getByText('B787 Tools')).toBeTruthy();
     expect(tree.getByTestId('main-menu-tabs')).toBeTruthy();
     expect(tree.getByTestId('main-menu-grid')).toBeTruthy();
     // Sprint C / ADR-0014: both crosswind cards are active.

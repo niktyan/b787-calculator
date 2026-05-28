@@ -1,0 +1,2786 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CrosswindLandingInputForm · runway condition (ADR-0018) renders the 7 runway options in the v2 order (compact / iPhone layout) 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "stretch",
+        "flexDirection": "column",
+        "gap": 16,
+        "justifyContent": "flex-start",
+      },
+      undefined,
+    ]
+  }
+  testID="form-compact"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "600",
+            "letterSpacing": 0.6,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Aircraft
+    </Text>
+    <View
+      accessibilityLabel="Aircraft"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-aircraft"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="B787-8"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-aircraft-b787_8"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            B787-8
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="B787-9"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-aircraft-b787_9"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            B787-9
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "600",
+            "letterSpacing": 0.6,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Runway condition
+    </Text>
+    <View
+      accessibilityLabel="Runway condition"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-runway"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Dry"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-runway-dry"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Dry
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Good (Wet, Damp)"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-goodWetDamp"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Good (Wet, Damp)
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Good (Slush, Dry Snow, Wet Snow)"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-goodSlushSnow"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Good (Slush, Dry Snow, Wet Snow)
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Good to Medium"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-goodToMedium"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Good to Medium
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Medium"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-medium"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Medium
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Medium to Poor"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-mediumToPoor"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Medium to Poor
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Poor"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-poor"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Poor
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "600",
+            "letterSpacing": 0.6,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Asymmetric Reverse Thrust
+    </Text>
+    <View
+      accessibilityLabel="Asymmetric Reverse Thrust"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-asym-reverse"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="No"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-asym-reverse-no"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            No
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Yes"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-asym-reverse-yes"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Yes
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 4,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 12,
+            "fontWeight": "600",
+            "letterSpacing": 0.6,
+            "lineHeight": 16,
+            "textAlign": "auto",
+          },
+          undefined,
+        ]
+      }
+    >
+      Landing
+    </Text>
+    <View
+      accessibilityLabel="Landing"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-mode"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Manual"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-mode-manual"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Manual
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Autoland"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 38,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-mode-auto"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 14,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            Autoland
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`CrosswindLandingInputForm · runway condition (ADR-0018) renders the 7 runway options in the v2 order (regular / iPad layout) 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "stretch",
+        "flexDirection": "column",
+        "gap": 24,
+        "justifyContent": "space-between",
+      },
+      {
+        "flex": 1,
+      },
+    ]
+  }
+  testID="form-regular"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontWeight": "600",
+            "letterSpacing": 1,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      Aircraft
+    </Text>
+    <View
+      accessibilityLabel="Aircraft"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-aircraft"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="B787-8"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-aircraft-b787_8"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            B787-8
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="B787-9"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-aircraft-b787_9"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            B787-9
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontWeight": "600",
+            "letterSpacing": 1,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      Runway condition
+    </Text>
+    <View
+      accessibilityLabel="Runway condition"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-runway"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Dry"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-dry"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Dry
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Good (Wet, Damp)"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-goodWetDamp"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Good (Wet, Damp)
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Good (Slush, Dry Snow, Wet Snow)"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-runway-goodSlushSnow"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Good (Slush, Dry Snow, Wet Snow)
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Good to Medium"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-goodToMedium"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Good to Medium
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Medium"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-medium"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Medium
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Medium to Poor"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-mediumToPoor"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Medium to Poor
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Poor"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-runway-poor"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Poor
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontWeight": "600",
+            "letterSpacing": 1,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      Asymmetric Reverse Thrust
+    </Text>
+    <View
+      accessibilityLabel="Asymmetric Reverse Thrust"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-asym-reverse"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="No"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-asym-reverse-no"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            No
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Yes"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-asym-reverse-yes"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Yes
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontWeight": "600",
+            "letterSpacing": 1,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      Landing
+    </Text>
+    <View
+      accessibilityLabel="Landing"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-mode"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Manual"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-mode-manual"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Manual
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Autoland"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-mode-auto"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Autoland
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontWeight": "600",
+            "letterSpacing": 1,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      CAT II-III (RVR less 350 m)
+    </Text>
+    <View
+      accessibilityLabel="CAT II-III (RVR less 350 m)"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-cat-iiiii"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="No"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-cat-iiiii-no"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            No
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Yes"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-cat-iiiii-yes"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Yes
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "letterSpacing": 0,
+            "lineHeight": 22,
+            "textAlign": "auto",
+          },
+          {
+            "fontWeight": "600",
+            "letterSpacing": 1,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      ONE ENG INOP
+    </Text>
+    <View
+      accessibilityLabel="ONE ENG INOP"
+      accessibilityRole="radiogroup"
+      style={
+        {
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 8,
+          "borderWidth": 1,
+          "flexDirection": "column",
+          "gap": 4,
+          "padding": 3,
+        }
+      }
+      testID="landing-engine-inop"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 2,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="No"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": true,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              {
+                "backgroundColor": "#00C2A8",
+              },
+              null,
+            ]
+          }
+          testID="landing-engine-inop-no"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            No
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="Yes"
+          accessibilityRole="radio"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": false,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 4,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 66,
+                "paddingHorizontal": 8,
+                "paddingVertical": 4,
+              },
+              null,
+              null,
+            ]
+          }
+          testID="landing-engine-inop-yes"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                {
+                  "fontWeight": "500",
+                },
+              ]
+            }
+          >
+            Yes
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

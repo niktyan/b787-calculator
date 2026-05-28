@@ -41,9 +41,9 @@ describe('Crosswind Landing repository · corruption', () => {
     expect(r1).toBe(r2);
   });
 
-  it('rejects schemaVersion outside 1.x', () => {
+  it('rejects schemaVersion outside 2.4.x (ADR-0018)', () => {
     const corrupted = withCorruption((raw) => {
-      raw['schemaVersion'] = '2.0.0';
+      raw['schemaVersion'] = '1.0.0';
       return raw;
     });
     const repo = createCrosswindLandingRepository({ raw: corrupted });

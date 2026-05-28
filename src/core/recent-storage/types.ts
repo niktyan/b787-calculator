@@ -18,10 +18,25 @@
 
 import { z } from 'zod';
 
-import { AIRCRAFT_VARIANTS, RUNWAY_CONDITIONS } from '../aviation';
+import { AIRCRAFT_VARIANTS, LANDING_RUNWAY_CONDITIONS, RUNWAY_CONDITIONS } from '../aviation';
 
 const aircraftVariantSchema = z.enum(AIRCRAFT_VARIANTS);
 const runwayConditionSchema = z.enum(RUNWAY_CONDITIONS);
+
+/**
+ * Landing-runway-condition values accepted by the Recent storage layer.
+ * Accepts the current 7-value taxonomy (ADR-0018) plus the two legacy
+ * keys (`good`, `mediumToGood`) shipped by Sprint C so persisted entries
+ * created before the v2 schema bump continue to deserialize and surface
+ * in the Recent list (as `Good (legacy)` / `Medium to Good (legacy)`).
+ * The legacy values are never produced by current code — they only flow
+ * in from older AsyncStorage payloads.
+ */
+const landingRunwayConditionPersistedSchema = z.enum([
+  ...LANDING_RUNWAY_CONDITIONS,
+  'good',
+  'mediumToGood',
+]);
 
 export const RECENT_SCHEMA_VERSION = 1;
 export const RECENT_MAX_ENTRIES = 20;
@@ -38,7 +53,7 @@ export const yesNoSchema = z.enum(['no', 'yes']);
 
 export const recentLandingInputsSchema = z.object({
   aircraft: aircraftVariantSchema,
-  runwayCondition: runwayConditionSchema,
+  runwayCondition: landingRunwayConditionPersistedSchema,
   landingMode: landingModeSchema,
   asymReverse: yesNoSchema,
   catIIIII: yesNoSchema,
