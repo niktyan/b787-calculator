@@ -16,7 +16,7 @@ exports[`CrosswindLandingResult renders the centred number for idle state (defau
         "flex": 0,
         "gap": 8,
         "justifyContent": "center",
-        "minHeight": 200,
+        "minHeight": 160,
         "padding": 16,
       }
     }
@@ -115,7 +115,7 @@ exports[`CrosswindLandingResult renders the data-not-available caption for an un
         "flex": 0,
         "gap": 8,
         "justifyContent": "center",
-        "minHeight": 200,
+        "minHeight": 160,
         "padding": 16,
       }
     }

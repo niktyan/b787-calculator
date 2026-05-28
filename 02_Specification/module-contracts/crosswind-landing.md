@@ -135,18 +135,30 @@ formalization). Кратко:
 Все значения целочисленные. Финального округления не требуется (base
 table и adjustments — integer per FCOM).
 
-## Conditional UI behaviour
+## Conditional UI behaviour (F3 / ADR-0019 — reserved-slot)
 
-`CrosswindLandingInputForm` рендерит:
+`CrosswindLandingInputForm` рендерит **static 5-row grid**:
 
-- В Manual: 4 toggle-секции (Aircraft, Runway condition, Landing,
-  Asymmetric Reverse Thrust).
-- В Autoland: 6 toggle-секций (плюс CAT II-III и ONE ENG INOP).
+```
+Row 1 — Aircraft                    (full width)
+Row 2 — Runway condition            (full width, picker)
+Row 3 — Asymmetric Reverse Thrust   (full width)
+Row 4 — Landing                     (full width)
+Row 5 — [CAT II/III | ONE ENG INOP] (2-column reserved pair)
+```
 
-CAT II-III и ONE ENG INOP **не disabled, а unmount-ятся** при Manual.
-Когда пилот переключается обратно на Autoland, рядки появляются с
-текущими значениями state (`useState` на верхнем экране сохраняет их
-между переключениями).
+Row 5 — это **always-mounted** пара `<ToggleCell>` с пропом
+`hidden={landingMode !== 'auto'}`. В Manual обе cell'ы рендерятся
+как **invisible spacers** (`opacity: 0`, `pointerEvents: 'none'`,
+`accessibilityElementsHidden: true`, `importantForAccessibility:
+'no-hide-descendants'`), но **сохраняют свою layout-высоту** — поэтому
+result-панель не сдвигается при flip'е Manual ↔ Autoland. При Autoland
+те же cell'ы становятся visible + interactive **в том же offset'е**.
+Переход instant (без анимации).
+
+Sprint-C поведение (unmount + ScrollView + auto-scroll hook) удалено
+в F3. См. ADR-0019 § Decision и § Alternatives considered (a)–(c) для
+обоснования.
 
 Спека для UI: `06-ui-spec.md` § "Экран 4b · Crosswind Landing Calculator".
 

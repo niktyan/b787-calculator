@@ -1,9 +1,15 @@
 /**
- * Crosswind Landing screen — Sprint C / ADR-0014.
+ * Crosswind Landing screen — static layout, no ScrollView (F3 / ADR-0019).
  *
- * Layout mirrors the Takeoff screen:
  *   • iPad landscape (>= 1024 pt): 2 columns (input form | result panel).
  *   • iPad portrait / iPhone: stacked vertically.
+ *
+ * The whole screen MUST fit the smallest target viewport (iPhone SE,
+ * 4.7", height ≈ 667 pt) without scroll. The 2-column toggle grid in
+ * `CrosswindLandingInputForm` is what makes that possible — Aircraft
+ * and Runway are full-width rows; AsymReverse + Landing share row 3;
+ * CAT II/III + ONE ENG INOP share row 4 (reserved slot, invisible in
+ * Manual). See ADR-0019 for the 7-viewport height-fit matrix.
  *
  * Reset button restores the 6-toggle default state — Aircraft = B787-8,
  * Runway = Dry, Landing = Manual, all Yes/No toggles = No.
@@ -13,9 +19,9 @@
  */
 
 import { useRouter } from 'expo-router';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme, useTranslation } from '../../../core';
@@ -25,7 +31,6 @@ import type { CrosswindLandingDataFile } from '../data/schema';
 
 import { CrosswindLandingInputForm } from './components/CrosswindLandingInputForm';
 import { CrosswindLandingResult } from './components/CrosswindLandingResult';
-import { useAutoScrollOnAutoland } from './useAutoScrollOnAutoland';
 import { useCrosswindLandingCalculator } from './useCrosswindLandingCalculator';
 import { useLandingScreenState } from './useLandingScreenState';
 
@@ -68,8 +73,6 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
     [s.aircraft, s.runwayCondition, s.landingMode, s.asymReverse, s.catIIIII, s.engineInop],
   );
   const { state } = useCrosswindLandingCalculator({ inputs, data });
-  const scrollViewRef = useRef<ScrollView>(null);
-  const onContentSizeChange = useAutoScrollOnAutoland(scrollViewRef, s.landingMode, !isTwoColumn);
   const handleBack = useCallback((): void => router.back(), [router]);
 
   const inputForm = (
@@ -101,32 +104,22 @@ function CrosswindLandingScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
 
   return (
     <Screen testID="crosswind-landing-screen">
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.fillHeight}
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-        onContentSizeChange={onContentSizeChange}
-        showsVerticalScrollIndicator={false}
-        testID="crosswind-landing-scroll"
-      >
-        <Stack gap="lg" style={styles.fillHeight}>
-          <LandingHeader
-            title={t('crosswind-landing.title')}
-            backLabel={`← ${t('common.back')}`}
-            resetLabel={t('crosswind-landing.resetLabel')}
-            onBack={handleBack}
-            onReset={s.reset}
-            isRegular={isRegular}
-          />
-          <LandingBody
-            isTwoColumn={isTwoColumn}
-            isRegular={isRegular}
-            inputForm={inputForm}
-            resultPanel={resultPanel}
-          />
-        </Stack>
-      </ScrollView>
+      <Stack gap="lg" style={styles.fillHeight}>
+        <LandingHeader
+          title={t('crosswind-landing.title')}
+          backLabel={`← ${t('common.back')}`}
+          resetLabel={t('crosswind-landing.resetLabel')}
+          onBack={handleBack}
+          onReset={s.reset}
+          isRegular={isRegular}
+        />
+        <LandingBody
+          isTwoColumn={isTwoColumn}
+          isRegular={isRegular}
+          inputForm={inputForm}
+          resultPanel={resultPanel}
+        />
+      </Stack>
     </Screen>
   );
 }
@@ -152,8 +145,11 @@ function LandingBody({
       </Row>
     );
   }
+  // Compact (iPhone): gap "md" between form and result keeps the
+  // no-scroll layout inside the iPhone SE budget. Regular (iPad
+  // portrait): gap "lg" preserves the airier rhythm there is room for.
   return (
-    <Stack gap="lg" style={isRegular ? styles.fillHeight : undefined}>
+    <Stack gap={isRegular ? 'lg' : 'md'} style={isRegular ? styles.fillHeight : undefined}>
       {inputForm}
       {resultPanel}
     </Stack>
@@ -290,15 +286,5 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: PILL_PRESSED_OPACITY,
-  },
-  // `flexGrow: 1` lets the inner Stack with `flex: 1` still fill the
-  // viewport on iPad landscape so the result Card occupies the full
-  // right-column height. Without it ScrollView's content sizes to its
-  // intrinsic height and the landscape `fillHeight` chain breaks.
-  // `paddingBottom` gives breathing space at the scroll end on portrait /
-  // iPhone where content does overflow.
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: tokens.spacing.lg,
   },
 });
