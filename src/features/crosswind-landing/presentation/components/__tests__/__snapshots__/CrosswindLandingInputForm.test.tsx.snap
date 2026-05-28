@@ -286,13 +286,13 @@ exports[`CrosswindLandingInputForm · runway condition row (ADR-0018) renders th
             "borderWidth": 1,
             "flexDirection": "row",
             "justifyContent": "space-between",
-            "minHeight": 44,
-            "paddingHorizontal": 16,
-            "paddingVertical": 8,
           },
           {
             "backgroundColor": "#11161F",
             "borderColor": "rgba(255, 255, 255, 0.08)",
+            "minHeight": 44,
+            "paddingHorizontal": 16,
+            "paddingVertical": 8,
           },
         ]
       }
@@ -1022,13 +1022,13 @@ exports[`CrosswindLandingInputForm · runway condition row (ADR-0018) renders th
             "borderWidth": 1,
             "flexDirection": "row",
             "justifyContent": "space-between",
-            "minHeight": 44,
-            "paddingHorizontal": 16,
-            "paddingVertical": 8,
           },
           {
             "backgroundColor": "#11161F",
             "borderColor": "rgba(255, 255, 255, 0.08)",
+            "minHeight": 72,
+            "paddingHorizontal": 24,
+            "paddingVertical": 16,
           },
         ]
       }
@@ -1048,7 +1048,9 @@ exports[`CrosswindLandingInputForm · runway condition row (ADR-0018) renders th
               "lineHeight": 22,
               "textAlign": "auto",
             },
-            undefined,
+            {
+              "fontWeight": "500",
+            },
           ]
         }
       >
@@ -1061,7 +1063,7 @@ exports[`CrosswindLandingInputForm · runway condition row (ADR-0018) renders th
           [
             {
               "color": "#8B949E",
-              "fontSize": 20,
+              "fontSize": 22,
             },
             undefined,
             {

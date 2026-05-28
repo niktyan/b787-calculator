@@ -18,6 +18,7 @@ import { fireEvent } from '@testing-library/react-native';
 
 import { renderWithTheme } from '../../../../../design-system/_testing/renderWithTheme';
 import type { SegmentedControlOption } from '../../../../../design-system';
+import { tokens } from '../../../../../design-system';
 import type { LandingRunwayCondition } from '../../../../../core/aviation';
 import { RunwayConditionPicker } from '../RunwayConditionPicker';
 
@@ -74,6 +75,122 @@ describe('RunwayConditionPicker · closed state', () => {
     expect(field.props.accessibilityRole).toBe('button');
     expect(field.props.accessibilityState).toEqual({ expanded: false });
     expect(field.props.accessibilityValue).toEqual({ text: 'Dry' });
+  });
+});
+
+describe('RunwayConditionPicker · size parity with SegmentedControl', () => {
+  // Closed field on `size="regular"` must reach the same minHeight as
+  // the regular SegmentedControl track (72 pt, sourced from
+  // `tokens.sizing.settingsRow.regular.minHeight`). This guards
+  // against the iPad regression where the picker looked smaller than
+  // the adjacent Aircraft / Landing-mode controls.
+  it('closed field at size=regular has minHeight = settingsRow.regular.minHeight', () => {
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="dry"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        size="regular"
+        testID="picker"
+      />,
+    );
+    const field = tree.getByTestId('picker');
+    const styleArray = Array.isArray(field.props.style) ? field.props.style : [field.props.style];
+    const flat = Object.assign({}, ...styleArray) as { minHeight?: number };
+    expect(flat.minHeight).toBe(tokens.sizing.settingsRow.regular.minHeight);
+  });
+
+  it('closed field at size=compact has minHeight = minTouchTarget', () => {
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="dry"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        size="compact"
+        testID="picker"
+      />,
+    );
+    const field = tree.getByTestId('picker');
+    const styleArray = Array.isArray(field.props.style) ? field.props.style : [field.props.style];
+    const flat = Object.assign({}, ...styleArray) as { minHeight?: number };
+    expect(flat.minHeight).toBe(tokens.layout.minTouchTarget);
+  });
+
+  it('sheet rows at size=regular use settingsRow.regular row metrics', () => {
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="dry"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        size="regular"
+        testID="picker"
+      />,
+    );
+    fireEvent.press(tree.getByTestId('picker'));
+    const row = tree.getByTestId('picker-sheet-option-dry');
+    const styleArray = Array.isArray(row.props.style) ? row.props.style : [row.props.style];
+    const flat = Object.assign({}, ...styleArray) as {
+      minHeight?: number;
+      paddingHorizontal?: number;
+    };
+    expect(flat.minHeight).toBe(tokens.sizing.settingsRow.regular.minHeight);
+    expect(flat.paddingHorizontal).toBe(tokens.sizing.settingsRow.regular.paddingH);
+  });
+});
+
+describe('RunwayConditionPicker · visual regression (size × state)', () => {
+  it('size=compact, closed', () => {
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="dry"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        size="compact"
+        testID="picker"
+      />,
+    );
+    expect(tree.toJSON()).toMatchSnapshot();
+  });
+
+  it('size=regular, closed', () => {
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="goodWetDamp"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        size="regular"
+        testID="picker"
+      />,
+    );
+    expect(tree.toJSON()).toMatchSnapshot();
+  });
+
+  it('size=compact, open (sheet visible)', () => {
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="dry"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        size="compact"
+        testID="picker"
+      />,
+    );
+    fireEvent.press(tree.getByTestId('picker'));
+    expect(tree.toJSON()).toMatchSnapshot();
+  });
+
+  it('size=regular, open (sheet visible)', () => {
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="goodWetDamp"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        size="regular"
+        testID="picker"
+      />,
+    );
+    fireEvent.press(tree.getByTestId('picker'));
+    expect(tree.toJSON()).toMatchSnapshot();
   });
 });
 

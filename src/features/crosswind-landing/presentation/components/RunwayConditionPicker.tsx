@@ -11,36 +11,39 @@
  * option the same vertical real-estate at full text length without
  * compromise.
  *
- * Closed-state field mimics a `NumericInput` row (same border radius,
- * padding, height) so the runway condition section visually aligns
- * with the rest of the input column. A trailing chevron-down icon
- * signals the dropdown affordance.
+ * The `size` prop mirrors `SegmentedControlSize` and is supplied by
+ * the parent form using the same `sizing.segmentedSize` value already
+ * resolved by `resolveSizing(isRegular)`. Every size-dependent metric
+ * (field height, label variant, chevron size, sheet-row padding, etc.)
+ * routes through the existing `tokens.sizing.settingsRow` bundle plus
+ * `tokens.spacing` — see `RunwayConditionPicker.sizing.ts`. No new
+ * design tokens, no magic numbers. The closed field therefore matches
+ * the adjacent SegmentedControls (Aircraft, Landing mode) at
+ * iPad-regular height and font scale.
  *
- * Open-state modal reuses the shared `BottomSheet` primitive
- * (`src/design-system/components/BottomSheet`) — already a slide-up
- * modal on iPhone, dismissable by tapping the backdrop. On iPad the
- * sheet is constrained to `tokens.layout.runwayPicker.sheetMaxWidth`
- * for a centred-feel without introducing a new modal-presentation
- * primitive. Each row is a custom `PickerRow` (no extra third-party
- * dependency) with a divider between rows, selected-state accent
- * colour, and trailing ✓ glyph — visually distinct from the bordered
- * card style used by Settings → Language / Theme.
- *
- * No new npm dependencies. Haptic + accessibility behaviour matches
- * the surrounding controls.
+ * Modal sheet rendering lives in `RunwayConditionSheet.tsx` so this
+ * file stays inside the 300-line / 80-line caps. No new npm deps.
  */
 
 import { Ionicons } from '@expo/vector-icons';
 import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
 import { useHapticFeedback } from '../../../../core/haptics';
 import { useTranslation } from '../../../../core';
 import { useTheme } from '../../../../core/theming';
-import type { ColorPalette, SegmentedControlOption } from '../../../../design-system';
-import { BottomSheet, Stack, Text, tokens } from '../../../../design-system';
+import type {
+  ColorPalette,
+  SegmentedControlOption,
+  SegmentedControlSize,
+} from '../../../../design-system';
+import { Text, tokens } from '../../../../design-system';
+
+import type { PickerSizing } from './RunwayConditionPicker.sizing';
+import { resolvePickerSizing } from './RunwayConditionPicker.sizing';
+import { RunwaySheet } from './RunwayConditionSheet';
 
 export interface RunwayConditionPickerProps<TValue extends string> {
   readonly value: TValue;
@@ -48,39 +51,35 @@ export interface RunwayConditionPickerProps<TValue extends string> {
   readonly onChange: (next: TValue) => void;
   readonly accessibilityLabel?: string;
   readonly testID?: string;
+  /**
+   * Picker size class. Defaults to `compact`. Pass `sizing.segmentedSize`
+   * from the parent form so the picker scales together with the other
+   * SegmentedControls in the same column.
+   */
+  readonly size?: SegmentedControlSize;
 }
 
-const CHEVRON_SIZE = 20;
-const ROW_DIVIDER_WIDTH = 1;
 const PRESSED_OPACITY = 0.6;
 
-export function RunwayConditionPicker<TValue extends string>({
-  value,
-  options,
-  onChange,
-  accessibilityLabel,
-  testID,
-}: RunwayConditionPickerProps<TValue>): ReactNode {
+export function RunwayConditionPicker<TValue extends string>(
+  props: RunwayConditionPickerProps<TValue>,
+): ReactNode {
+  const { value, options, onChange, accessibilityLabel, testID, size = 'compact' } = props;
   const { theme } = useTheme();
   const { t } = useTranslation();
   const palette = tokens.colors[theme.resolved];
   const haptics = useHapticFeedback();
   const [isOpen, setOpen] = useState(false);
-
-  const selectedLabel = useMemo<string>(() => {
-    const match = options.find((option) => option.value === value);
-    return match?.label ?? '';
-  }, [options, value]);
-
+  const sizing = useMemo(() => resolvePickerSizing(size), [size]);
+  const selectedLabel = useMemo<string>(
+    () => options.find((o) => o.value === value)?.label ?? '',
+    [options, value],
+  );
   const open = useCallback((): void => {
     haptics.lightImpact();
     setOpen(true);
   }, [haptics]);
-
-  const close = useCallback((): void => {
-    setOpen(false);
-  }, []);
-
+  const close = useCallback((): void => setOpen(false), []);
   const handleSelect = useCallback(
     (next: TValue): void => {
       haptics.lightImpact();
@@ -90,47 +89,24 @@ export function RunwayConditionPicker<TValue extends string>({
     [haptics, onChange],
   );
 
-  const fieldStyle = useMemo<ViewStyle>(
-    () => ({
-      backgroundColor: palette.bgInput,
-      borderColor: palette.border,
-    }),
-    [palette.bgInput, palette.border],
-  );
-
   return (
     <>
-      <Pressable
+      <ClosedField
         accessibilityLabel={accessibilityLabel}
-        accessibilityRole="button"
-        accessibilityState={{ expanded: isOpen }}
-        accessibilityValue={{ text: selectedLabel }}
+        isOpen={isOpen}
+        selectedLabel={selectedLabel}
+        palette={palette}
+        sizing={sizing}
         onPress={open}
-        style={({ pressed }): ViewStyle[] => {
-          const layered: ViewStyle[] = [styles.field, fieldStyle];
-          if (pressed) {
-            layered.push(styles.pressed);
-          }
-          return layered;
-        }}
         testID={testID}
-      >
-        <Text variant="body" color="textPrimary" numberOfLines={1}>
-          {selectedLabel}
-        </Text>
-        <Ionicons
-          name="chevron-down"
-          size={CHEVRON_SIZE}
-          color={palette.textSecondary}
-          testID={testID === undefined ? undefined : `${testID}-chevron`}
-        />
-      </Pressable>
+      />
       <RunwaySheet
         visible={isOpen}
         title={t('crosswind-landing.runwayConditionSheetTitle')}
         cancelLabel={t('crosswind-landing.runwayConditionSheetCancel')}
         closeAccessibilityLabel={t('crosswind-landing.runwayConditionSheetCancel')}
         palette={palette}
+        sizing={sizing}
         options={options}
         selectedValue={value}
         onSelect={handleSelect}
@@ -141,133 +117,43 @@ export function RunwayConditionPicker<TValue extends string>({
   );
 }
 
-interface RunwaySheetProps<TValue extends string> {
-  readonly visible: boolean;
-  readonly title: string;
-  readonly cancelLabel: string;
-  readonly closeAccessibilityLabel: string;
+interface ClosedFieldProps {
+  readonly accessibilityLabel: string | undefined;
+  readonly isOpen: boolean;
+  readonly selectedLabel: string;
   readonly palette: ColorPalette;
-  readonly options: readonly SegmentedControlOption<TValue>[];
-  readonly selectedValue: TValue;
-  readonly onSelect: (next: TValue) => void;
-  readonly onClose: () => void;
-  readonly testID: string | undefined;
-}
-
-function RunwaySheet<TValue extends string>({
-  visible,
-  title,
-  cancelLabel,
-  closeAccessibilityLabel,
-  palette,
-  options,
-  selectedValue,
-  onSelect,
-  onClose,
-  testID,
-}: RunwaySheetProps<TValue>): ReactNode {
-  const containerStyle = useMemo<ViewStyle>(
-    () => ({
-      alignSelf: 'center',
-      maxWidth: tokens.layout.runwayPicker.sheetMaxWidth,
-      width: '100%',
-    }),
-    [],
-  );
-  const cancelStyle = useMemo<ViewStyle>(
-    () => ({
-      alignItems: 'center',
-      alignSelf: 'center',
-      borderColor: palette.border,
-      borderRadius: tokens.radii.md,
-      borderWidth: 1,
-      marginTop: tokens.spacing.md,
-      paddingHorizontal: tokens.spacing.xl,
-      paddingVertical: tokens.spacing.sm,
-    }),
-    [palette.border],
-  );
-
-  return (
-    <BottomSheet
-      visible={visible}
-      onClose={onClose}
-      closeAccessibilityLabel={closeAccessibilityLabel}
-      {...(testID === undefined ? {} : { testID })}
-    >
-      <View style={containerStyle} accessibilityRole="radiogroup" accessibilityLabel={title}>
-        <Stack gap="sm">
-          <Text variant="microUppercase" color="textSecondary">
-            {title}
-          </Text>
-          <View>
-            {options.map((option, index) => (
-              <PickerRow
-                key={option.value}
-                label={option.label}
-                selected={option.value === selectedValue}
-                showDivider={index < options.length - 1}
-                palette={palette}
-                onPress={(): void => onSelect(option.value)}
-                testID={testID === undefined ? undefined : `${testID}-option-${option.value}`}
-              />
-            ))}
-          </View>
-          <Pressable
-            accessibilityLabel={cancelLabel}
-            accessibilityRole="button"
-            onPress={onClose}
-            style={({ pressed }): ViewStyle[] => {
-              const layered: ViewStyle[] = [cancelStyle];
-              if (pressed) {
-                layered.push(styles.pressed);
-              }
-              return layered;
-            }}
-            testID={testID === undefined ? undefined : `${testID}-cancel`}
-          >
-            <Text variant="body" color="textPrimary">
-              {cancelLabel}
-            </Text>
-          </Pressable>
-        </Stack>
-      </View>
-    </BottomSheet>
-  );
-}
-
-interface PickerRowProps {
-  readonly label: string;
-  readonly selected: boolean;
-  readonly showDivider: boolean;
-  readonly palette: ColorPalette;
+  readonly sizing: PickerSizing;
   readonly onPress: () => void;
   readonly testID: string | undefined;
 }
 
-function PickerRow({
-  label,
-  selected,
-  showDivider,
-  palette,
-  onPress,
-  testID,
-}: PickerRowProps): ReactNode {
-  const rowStyle = useMemo<ViewStyle>(
+function ClosedField(props: ClosedFieldProps): ReactNode {
+  const { accessibilityLabel, isOpen, selectedLabel, palette, sizing, onPress, testID } = props;
+  const fieldStyle = useMemo<ViewStyle>(
     () => ({
-      borderBottomColor: palette.border,
-      borderBottomWidth: showDivider ? ROW_DIVIDER_WIDTH : 0,
+      backgroundColor: palette.bgInput,
+      borderColor: palette.border,
+      minHeight: sizing.fieldMinHeight,
+      paddingHorizontal: sizing.fieldPaddingHorizontal,
+      paddingVertical: sizing.fieldPaddingVertical,
     }),
-    [palette.border, showDivider],
+    [
+      palette.bgInput,
+      palette.border,
+      sizing.fieldMinHeight,
+      sizing.fieldPaddingHorizontal,
+      sizing.fieldPaddingVertical,
+    ],
   );
   return (
     <Pressable
-      accessibilityLabel={label}
-      accessibilityRole="radio"
-      accessibilityState={{ selected }}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole="button"
+      accessibilityState={{ expanded: isOpen }}
+      accessibilityValue={{ text: selectedLabel }}
       onPress={onPress}
       style={({ pressed }): ViewStyle[] => {
-        const layered: ViewStyle[] = [styles.row, rowStyle];
+        const layered: ViewStyle[] = [styles.field, fieldStyle];
         if (pressed) {
           layered.push(styles.pressed);
         }
@@ -276,18 +162,19 @@ function PickerRow({
       testID={testID}
     >
       <Text
-        variant="body"
-        color={selected ? 'accentText' : 'textPrimary'}
+        variant={sizing.labelVariant}
+        color="textPrimary"
         numberOfLines={1}
-        style={styles.rowLabel}
+        style={sizing.labelStyle}
       >
-        {label}
+        {selectedLabel}
       </Text>
-      {selected ? (
-        <Text variant="body" color="accentText">
-          ✓
-        </Text>
-      ) : null}
+      <Ionicons
+        name="chevron-down"
+        size={sizing.chevronSize}
+        color={palette.textSecondary}
+        testID={testID === undefined ? undefined : `${testID}-chevron`}
+      />
     </Pressable>
   );
 }
@@ -295,26 +182,12 @@ function PickerRow({
 const styles = StyleSheet.create({
   field: {
     alignItems: 'center',
-    borderRadius: tokens.layout.runwayPicker.fieldRadius,
+    borderRadius: tokens.radii.md,
     borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    minHeight: tokens.layout.minTouchTarget,
-    paddingHorizontal: tokens.layout.runwayPicker.fieldPaddingHorizontal,
-    paddingVertical: tokens.layout.runwayPicker.fieldPaddingVertical,
   },
   pressed: {
     opacity: PRESSED_OPACITY,
-  },
-  row: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    minHeight: tokens.layout.runwayPicker.rowMinHeight,
-    paddingHorizontal: tokens.layout.runwayPicker.rowPaddingHorizontal,
-    paddingVertical: tokens.layout.runwayPicker.rowPaddingVertical,
-  },
-  rowLabel: {
-    flex: 1,
   },
 });

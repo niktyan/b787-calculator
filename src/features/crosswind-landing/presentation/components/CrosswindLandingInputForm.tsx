@@ -195,6 +195,7 @@ function TopSections(props: TopSectionsProps): ReactNode {
           value={runwayCondition}
           options={RUNWAY_OPTIONS}
           onChange={onRunwayConditionChange}
+          size={sizing.segmentedSize}
           accessibilityLabel={t('crosswind-landing.runwayConditionLabel')}
           testID="landing-runway"
         />

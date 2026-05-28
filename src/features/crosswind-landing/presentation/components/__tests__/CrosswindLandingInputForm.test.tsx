@@ -16,6 +16,7 @@
  */
 
 import { renderWithTheme } from '../../../../../design-system/_testing/renderWithTheme';
+import { tokens } from '../../../../../design-system';
 import { CrosswindLandingInputForm } from '../CrosswindLandingInputForm';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -99,5 +100,31 @@ describe('CrosswindLandingInputForm · runway condition row (ADR-0018)', () => {
       text: 'Good (Slush, Dry Snow, Wet Snow)',
     });
     expect(tree.toJSON()).toMatchSnapshot();
+  });
+
+  it('picker field at isRegular=true reaches the regular settings-row min-height (size parity)', () => {
+    const tree = renderWithTheme(
+      <CrosswindLandingInputForm
+        aircraft="b787_8"
+        runwayCondition="dry"
+        landingMode="manual"
+        asymReverse="no"
+        catIIIII="no"
+        engineInop="no"
+        onAircraftChange={noop}
+        onRunwayConditionChange={noop}
+        onLandingModeChange={noop}
+        onAsymReverseChange={noop}
+        onCatIIIIIChange={noop}
+        onEngineInopChange={noop}
+        isRegular
+        testID="form-regular"
+      />,
+    );
+    const field = tree.getByTestId('landing-runway');
+    const styleArray = Array.isArray(field.props.style) ? field.props.style : [field.props.style];
+    const flat = Object.assign({}, ...styleArray) as { minHeight?: number };
+    // Same value the regular SegmentedControl reaches via REGULAR_TRACK_HEIGHT.
+    expect(flat.minHeight).toBe(tokens.sizing.settingsRow.regular.minHeight);
   });
 });
