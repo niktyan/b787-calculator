@@ -56,19 +56,19 @@ export interface AnchoredPopoverHostProps {
   readonly testID?: string;
 }
 
-interface MeasuredAnchor {
-  readonly rect: AnchorRect;
-}
+const ZERO_ANCHOR: AnchorRect = { x: 0, y: 0, width: 0, height: 0 };
 
-async function measureAnchor(ref: RefObject<View | null>): Promise<MeasuredAnchor | null> {
+function measureAnchor(ref: RefObject<View | null>, onMeasured: (rect: AnchorRect) => void): void {
   const node = ref.current;
   if (node === null || typeof node.measureInWindow !== 'function') {
-    return null;
+    // Test renderer / native handle not attached → leave the initial
+    // ZERO_ANCHOR in place. Matches the keypad's `useNumericKeypad`
+    // ZERO_ANCHOR fallback (acceptable defensive default in
+    // production; correct behaviour in test env).
+    return;
   }
-  return new Promise((resolve) => {
-    node.measureInWindow((x, y, width, height) => {
-      resolve({ rect: { x, y, width, height } });
-    });
+  node.measureInWindow((x, y, width, height) => {
+    onMeasured({ x, y, width, height });
   });
 }
 
@@ -85,10 +85,14 @@ export function AnchoredPopoverHost(props: AnchoredPopoverHostProps): ReactNode 
       setAnchor(null);
       return;
     }
+    // Seed synchronously with ZERO_ANCHOR so the popover renders on
+    // the first commit (test renderers + first-paint defensive case),
+    // then update from `measureInWindow` if available.
+    setAnchor(ZERO_ANCHOR);
     let cancelled = false;
-    void measureAnchor(anchorRef).then((measured) => {
+    measureAnchor(anchorRef, (rect) => {
       if (!cancelled) {
-        setAnchor(measured?.rect ?? null);
+        setAnchor(rect);
       }
     });
     return (): void => {

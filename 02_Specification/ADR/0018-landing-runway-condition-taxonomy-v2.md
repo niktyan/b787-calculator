@@ -262,6 +262,36 @@ records the deferred unification. The two hosts share the
 shell pattern, which is the part that actually matters for visual
 parity.
 
+### Centred-modal animation + Cancel button removal (F2 visual fix v5)
+
+The first v4 cut used the design-system `BottomSheet` for the
+modal-centre branch, which slides up from the bottom edge of the
+screen. User feedback rejected that motion — pilots read it as a
+"bottom sheet" rather than as a "picker dialog". v5 inlines a new
+modal directly inside `RunwayConditionSheet.tsx`:
+
+- Transparent `<Modal animationType="fade">` (no slide motion).
+- Flex-centred overlay (`justifyContent: 'center', alignItems: 'center'`)
+  with semi-transparent backdrop.
+- Card: `maxWidth: 520`, `width: '100%'`, intrinsic height (grows to
+  content on portrait), `maxHeight: '90%'` + inner `ScrollView` only
+  in iPhone landscape where 7 rows exceed the viewport.
+- The shared `BottomSheet` design-system primitive is untouched —
+  Settings → Language / Theme continue to consume it.
+
+Also in v5: the **Cancel button was removed entirely** from the
+picker. Backdrop tap dismisses without mutation; system back gesture
+dismisses; tap-outside-the-card on iPhone dismisses. The redundant
+Cancel button created vertical clutter, an unaligned bottom edge
+inside the anchored popover, and looked oversized at iPad-regular
+sizing. The `runwayConditionSheetCancel` i18n key is retained as the
+accessibility label on the backdrop Pressable (announced "Cancel" to
+VoiceOver when focus lands on the dismiss target).
+
+Anchored-popover height at regular sizing without Cancel:
+`12 (top padding) + 16 (title) + 8 (gap) + 7 × 72 (rows) + 12
+(bottom padding) = 552 pt → 560 pt buffer.`
+
 ## Consequences
 
 **Positive:**

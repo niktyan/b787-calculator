@@ -21,16 +21,23 @@ import type { PickerSizing } from './RunwayConditionPicker.sizing';
 
 // Picker popover surface dimensions — wider than the keypad (280 pt)
 // because the longest runway label ("Good (Slush, Dry Snow, Wet Snow)")
-// reads better at 360 pt single-line. Height accommodates 7 rows at
-// regular sizing (7 × 72 pt minHeight) plus title + Cancel + padding.
+// reads better at 360 pt single-line.
+//
+// Height math at regular sizing (v5 follow-up — Cancel button removed,
+// backdrop dismiss only):
+//   12 popover topPadding
+// + 16 title (label variant 12 pt + line-height 16)
+// +  8 Stack gap between title and list
+// + 7 × 72 rows at settingsRow.regular.minHeight = 504
+// + 12 popover bottomPadding
+// = 552 pt → round up to 560 for hairline-divider + sub-pixel buffer.
 const POPOVER_WIDTH = 360;
-const POPOVER_HEIGHT = 600;
+const POPOVER_HEIGHT = 560;
 
 export interface RunwayAnchoredPopoverProps<TValue extends string> {
   readonly visible: boolean;
   readonly anchorRef: RefObject<View | null>;
   readonly title: string;
-  readonly cancelLabel: string;
   readonly closeAccessibilityLabel: string;
   readonly palette: ColorPalette;
   readonly sizing: PickerSizing;
@@ -48,7 +55,6 @@ export function RunwayAnchoredPopover<TValue extends string>(
     visible,
     anchorRef,
     title,
-    cancelLabel,
     closeAccessibilityLabel,
     palette,
     sizing,
@@ -69,13 +75,11 @@ export function RunwayAnchoredPopover<TValue extends string>(
     >
       <OptionList
         title={title}
-        cancelLabel={cancelLabel}
         palette={palette}
         sizing={sizing}
         options={options}
         selectedValue={selectedValue}
         onSelect={onSelect}
-        onCancel={onClose}
         testID={testID}
       />
     </AnchoredPopoverHost>

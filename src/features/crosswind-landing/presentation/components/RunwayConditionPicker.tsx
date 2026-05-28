@@ -114,7 +114,6 @@ export function RunwayConditionPicker<TValue extends string>(
         isOpen={isOpen}
         anchorRef={anchorRef}
         title={t('crosswind-landing.runwayConditionSheetTitle')}
-        cancelLabel={t('crosswind-landing.runwayConditionSheetCancel')}
         closeAccessibilityLabel={t('crosswind-landing.runwayConditionSheetCancel')}
         palette={palette}
         sizing={sizing}
@@ -133,7 +132,6 @@ interface PickerPresentationProps<TValue extends string> {
   readonly isOpen: boolean;
   readonly anchorRef: RefObject<View | null>;
   readonly title: string;
-  readonly cancelLabel: string;
   readonly closeAccessibilityLabel: string;
   readonly palette: ColorPalette;
   readonly sizing: PickerSizing;

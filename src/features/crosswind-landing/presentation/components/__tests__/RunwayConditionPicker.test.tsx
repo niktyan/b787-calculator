@@ -137,31 +137,57 @@ describe('RunwayConditionPicker · presentation resolution', () => {
     );
     fireEvent.press(tree.getByTestId('picker'));
 
-    // Anchored uses computeAnchoredPosition; the AnchoredPopoverHost
-    // initially needs measureInWindow to resolve before rendering its
-    // testID. In both branches the rows are queryable once the modal
-    // mounts. We distinguish by the presence of the picker-sheet
-    // wrapping testIDs — sheet-cancel exists in both, sheet-backdrop
-    // exists only in modal-centre (BottomSheet's testID-backdrop is
-    // hardcoded suffix) — but the cleanest distinguishing signal is
-    // whether the BottomSheet's container with the max-width wrapper
-    // appears. Use the option testID presence as the universal proof
-    // the sheet is mounted, then assert on the host wrapper type.
+    // Modal-centre branch always mounts `picker-sheet-card` (the v5
+    // centred Modal's card surface). Anchored branch does not.
     if (expected === 'modal-centre') {
-      // BottomSheet always mounts its testID-backdrop child Pressable.
-      expect(tree.getByTestId('picker-sheet-backdrop')).toBeTruthy();
+      expect(tree.getByTestId('picker-sheet-card')).toBeTruthy();
     } else {
-      // Anchored host doesn't mount the BottomSheet, so there is no
-      // picker-sheet-backdrop. But it DOES expose its own backdrop:
-      // <AnchoredPopoverHost testID="picker-sheet"> renders
-      // `${testID}-backdrop`. measureInWindow may resolve asynchronously
-      // in the test env — measureAnchor falls back to skipping render
-      // when the ref returns no native handle, so we accept either
-      // "anchored host visible" or "anchored host not yet measured" as
-      // proof. The harder assertion is the NEGATIVE — no BottomSheet
-      // backdrop, no centred container.
-      expect(tree.queryByTestId('picker-sheet-backdrop')).toBeNull();
+      expect(tree.queryByTestId('picker-sheet-card')).toBeNull();
     }
+  });
+});
+
+describe('RunwayConditionPicker · centred modal contract (F2 v5)', () => {
+  // Pre-push self-verification, items (a) (b) (c) from the v5 spec.
+  // These assertions are the regression guard against re-introducing
+  // the bottom-sheet slide-up or the Cancel-outside-card overflow.
+  it('uses animationType="fade" on the centred path (NOT slide)', () => {
+    setViewport(IPHONE);
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="dry"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        testID="picker"
+      />,
+    );
+    fireEvent.press(tree.getByTestId('picker'));
+    const modal = tree.getByTestId('picker-sheet-modal');
+    expect(modal.props.animationType).toBe('fade');
+    expect(modal.props.animationType).not.toBe('slide');
+  });
+
+  it('overlay uses justifyContent: center + alignItems: center', () => {
+    setViewport(IPHONE);
+    const tree = renderWithTheme(
+      <RunwayConditionPicker<LandingRunwayCondition>
+        value="dry"
+        options={OPTIONS}
+        onChange={jest.fn()}
+        testID="picker"
+      />,
+    );
+    fireEvent.press(tree.getByTestId('picker'));
+    const overlay = tree.getByTestId('picker-sheet-backdrop');
+    const styleArr = Array.isArray(overlay.props.style)
+      ? overlay.props.style
+      : [overlay.props.style];
+    const flat = Object.assign({}, ...styleArr) as {
+      justifyContent?: string;
+      alignItems?: string;
+    };
+    expect(flat.justifyContent).toBe('center');
+    expect(flat.alignItems).toBe('center');
   });
 });
 
@@ -181,22 +207,6 @@ describe('RunwayConditionPicker · selection flow', () => {
     fireEvent.press(tree.getByTestId('picker-sheet-option-goodSlushSnow'));
     expect(onChange).toHaveBeenCalledWith('goodSlushSnow');
     expect(tree.getByTestId('picker').props.accessibilityState).toEqual({ expanded: false });
-  });
-
-  it('tapping Cancel closes without calling onChange (modal-centre)', () => {
-    setViewport(IPHONE);
-    const onChange = jest.fn<void, [LandingRunwayCondition]>();
-    const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
-        value="dry"
-        options={OPTIONS}
-        onChange={onChange}
-        testID="picker"
-      />,
-    );
-    fireEvent.press(tree.getByTestId('picker'));
-    fireEvent.press(tree.getByTestId('picker-sheet-cancel'));
-    expect(onChange).not.toHaveBeenCalled();
   });
 
   it('tapping the backdrop closes without calling onChange (modal-centre)', () => {
@@ -250,78 +260,6 @@ describe('RunwayConditionPicker · size parity with SegmentedControl', () => {
   });
 });
 
-describe('RunwayConditionPicker · visual regression (viewport × state)', () => {
-  it('iPhone — closed', () => {
-    setViewport(IPHONE);
-    const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
-        value="dry"
-        options={OPTIONS}
-        onChange={jest.fn()}
-        size="compact"
-        testID="picker"
-      />,
-    );
-    expect(tree.toJSON()).toMatchSnapshot();
-  });
-
-  it('iPhone — open (modal-centre)', () => {
-    setViewport(IPHONE);
-    const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
-        value="dry"
-        options={OPTIONS}
-        onChange={jest.fn()}
-        size="compact"
-        testID="picker"
-      />,
-    );
-    fireEvent.press(tree.getByTestId('picker'));
-    expect(tree.toJSON()).toMatchSnapshot();
-  });
-
-  it('iPad 13" portrait (1024×1366) — open stays modal-centre', () => {
-    setViewport(IPAD_13_PORTRAIT);
-    const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
-        value="goodWetDamp"
-        options={OPTIONS}
-        onChange={jest.fn()}
-        size="regular"
-        testID="picker"
-      />,
-    );
-    fireEvent.press(tree.getByTestId('picker'));
-    expect(tree.toJSON()).toMatchSnapshot();
-  });
-
-  it('iPad 11" landscape (1194×834) — open is anchored', () => {
-    setViewport(IPAD_11_LANDSCAPE);
-    const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
-        value="goodWetDamp"
-        options={OPTIONS}
-        onChange={jest.fn()}
-        size="regular"
-        testID="picker"
-      />,
-    );
-    fireEvent.press(tree.getByTestId('picker'));
-    expect(tree.toJSON()).toMatchSnapshot();
-  });
-
-  it('iPad 13" landscape (1366×1024) — open is anchored', () => {
-    setViewport(IPAD_13_LANDSCAPE);
-    const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
-        value="goodWetDamp"
-        options={OPTIONS}
-        onChange={jest.fn()}
-        size="regular"
-        testID="picker"
-      />,
-    );
-    fireEvent.press(tree.getByTestId('picker'));
-    expect(tree.toJSON()).toMatchSnapshot();
-  });
-});
+// Visual-regression snapshots for the five viewport classes live in
+// `RunwayConditionPicker.snapshots.test.tsx` so this file stays inside
+// the 300-line cap.
