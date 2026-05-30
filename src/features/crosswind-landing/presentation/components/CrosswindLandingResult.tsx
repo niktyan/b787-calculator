@@ -46,7 +46,11 @@ const ICON_SIZE_REGULAR = 48;
 const CAPTION_MAX_WIDTH_COMPACT = 280;
 const CAPTION_MAX_WIDTH_REGULAR = 380;
 const CARD_BORDER_WIDTH = 1;
-const CARD_MIN_HEIGHT_COMPACT = 200;
+// Lowered from 200 → 160 in F3 / ADR-0019 so the no-scroll Landing
+// layout fits iPhone SE (375×667). The result content (status caption
+// + 48 pt display number + KT suffix + 16 pt padding) measures ~118 pt,
+// so 160 pt still leaves comfortable headroom.
+const CARD_MIN_HEIGHT_COMPACT = 160;
 const CARD_MIN_HEIGHT_REGULAR_PORTRAIT = 280;
 const CARD_MIN_HEIGHT_REGULAR_LANDSCAPE = 320;
 const TRANSITION_DURATION_MS = 200;

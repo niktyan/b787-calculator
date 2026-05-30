@@ -858,34 +858,52 @@ lookup по FCOM Tab 2.29.3 + page 2-105 + FCOM CAUTION adjustments.
 Header — Logo + Title + Back/Reset pills, идентичный takeoff'у;
 `isRegular` breakpoint = 768 pt управляет typography sizing.
 
-**Input form (6 segmented controls).** Render order сверху вниз:
+**Input form — static 5-row grid (ADR-0019).** Никакого `<ScrollView>`.
+Render order сверху вниз:
 
 1. **AIRCRAFT** — `SegmentedControl<AircraftVariant>` с двумя сегментами
-   (B787-8 / B787-9). Аналогично Takeoff Aircraft selector.
-2. **RUNWAY CONDITION** — `SegmentedControl<RunwayCondition>` с шестью
-   сегментами (Dry / Good / Medium to Good / Medium / Medium to Poor /
-   Poor). На iPad-regular — одна строка; на iPhone / iPad-compact —
-   `wrap: true` → 2 ряда по 3.
-3. **LANDING** — `SegmentedControl<LandingMode>` с двумя сегментами
-   (Manual / Autoland). Aviation-термины, не локализуются.
-4. **ASYMMETRIC REVERSE THRUST** — `SegmentedControl<YesNo>` с двумя
-   сегментами (No / Yes). Yes/No локализуются.
+   (B787-8 / B787-9). Full-width row.
+2. **RUNWAY CONDITION** — single-line `RunwayConditionPicker` (см.
+   ADR-0018). Full-width row.
+3. **ASYMMETRIC REVERSE THRUST** — `SegmentedControl<YesNo>` (No / Yes).
+   Full-width row.
+4. **LANDING** — `SegmentedControl<LandingMode>` (Manual / Autoland).
+   Full-width row.
+5. **Reserved Autoland pair** — две `ToggleCell` рядом в `<Row gap="md">`:
+   - **CAT II/III (RVR < 350 m)** — `SegmentedControl<YesNo>`.
+   - **ONE ENG INOP** — `SegmentedControl<YesNo>`.
 
-**Conditional rows (Auto-only).** При `landingMode === 'auto'`
-дополнительно рендерятся ниже:
+   Каждая cell занимает `flex: 1` (половину строки минус
+   inter-cell-gap `tokens.spacing.md`). Cell-label рендерится
+   `tokens.typography.caption` на compact (с `numberOfLines={2}` для
+   CAT-подписи) и `body` + uppercase на regular.
 
-5. **CAT II-III (RVR less 350 m)** — `SegmentedControl<YesNo>`.
-6. **ONE ENG INOP** — `SegmentedControl<YesNo>`.
+**Reserved-slot pattern (ADR-0019).** Row 5 — это **always-mounted**
+2-column пара. При `landingMode === 'manual'` обе cell'ы рендерятся
+как **invisible spacers**: `opacity: 0`, `pointerEvents: 'none'`,
+`accessibilityElementsHidden: true`,
+`importantForAccessibility: 'no-hide-descendants'`. Высота слота
+сохраняется. При `landingMode === 'auto'` те же cell'ы становятся
+visible + interactive **в том же layout-offset** — никакой другой
+элемент не смещается. Переход instant (без анимации) — по precedent'у
+ADR-0011 Iteration 3 §2.
 
-При `landingMode === 'manual'` обе CAT/INOP-секции **полностью
-unmount-ятся** (не disabled — исчезают). Причина: в Manual эти значения
-не влияют на результат. При переключении обратно в Autoland секции
-появляются с текущими значениями `useState` (по умолчанию `no` / `no`).
+Зачем reserved-slot вместо unmount: Sprint-C unmount + ScrollView +
+auto-scroll hook давали jitter result-панели при каждом Manual ↔
+Autoland flip'е. F3 заменяет этот паттерн на static layout — pilot
+видит число всегда в одном и том же пикселе.
 
-Aviation-метки rows 4-6 в обеих локалях остаются на английском:
-"Asymmetric Reverse Thrust", "CAT II-III (RVR less 350 m)", "ONE ENG
+Aviation-метки rows 3, 5 в обеих локалях остаются на английском:
+"Asymmetric Reverse Thrust", "CAT II/III (RVR < 350 m)", "ONE ENG
 INOP", "Manual", "Autoland". Локализуются только Тип ВС / Состояние
 ВПП / Посадка / No-Yes labels.
+
+**7-viewport height-fit (ADR-0019).** Экран обязан укладываться без
+overflow в каждом из 7 поддерживаемых viewport'ов: iPhone SE
+(375×667), iPhone 15 Pro (393×852), iPhone 15 Pro Max (430×932), iPad
+11" portrait/landscape (834×1194 / 1194×834), iPad 13" portrait/
+landscape (1024×1366 / 1366×1024). Проверяется snapshot-матрицей
+(7 × 2 = 14 snapshots) в `CrosswindLandingInputForm.test.tsx`.
 
 **Result panel.** Single-card panel со status label "MAX CROSSWIND ·
 LANDING" (uppercase, accent), большое число (`displayLarge` / `monoXL`

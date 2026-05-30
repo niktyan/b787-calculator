@@ -2,12 +2,10 @@
  * Local state machinery for the Crosswind Landing screen.
  *
  * Bundles the six toggle states and the Reset action so the screen
- * component itself stays inside the 80-line / 300-line caps after the
- * Sprint C bug-fix wrapped the body in a ScrollView (adding extra
- * indentation and the new sub-component). The Reset action also fires
- * a medium-impact haptic (ADR-0015) — colocated here rather than in the
- * screen body so the screen function does not regrow past the 80-line
- * cap.
+ * component itself stays inside the 80-line / 300-line caps. The Reset
+ * action also fires a medium-impact haptic (ADR-0015) — colocated here
+ * rather than in the screen body so the screen function does not
+ * regrow past the 80-line cap.
  */
 
 import { useCallback, useState } from 'react';
