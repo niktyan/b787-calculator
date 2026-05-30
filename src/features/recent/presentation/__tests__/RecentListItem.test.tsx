@@ -13,7 +13,24 @@ jest.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: jest.fn() },
 }));
 
-const FIXED_TIMESTAMP = new Date('2026-05-23T12:00:00Z').toISOString();
+// `RecentListItem` renders the entry's timestamp via
+// `formatDistanceToNow(entry.timestamp)` from date-fns, which reads the
+// current wall clock. Snapshotting that output without freezing time
+// makes the snapshot drift across calendar days ("3 days ago" → "5
+// days ago" → …). We freeze the system clock to a fixed anchor in
+// `beforeEach` so the relative-time string is deterministic, and shift
+// the fixture timestamp to live exactly 3 days before the anchor so
+// the rendered text is the stable string "3 days ago".
+const FROZEN_NOW = new Date('2026-01-15T12:00:00Z');
+const FIXED_TIMESTAMP = new Date('2026-01-12T12:00:00Z').toISOString();
+
+beforeEach(() => {
+  jest.useFakeTimers({ now: FROZEN_NOW });
+});
+
+afterEach(() => {
+  jest.useRealTimers();
+});
 
 function takeoffEntry(): RecentTakeoffEntry {
   return {
