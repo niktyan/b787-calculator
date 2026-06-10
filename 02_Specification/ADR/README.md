@@ -45,3 +45,4 @@ ADR не нужен для:
 | 0018 | Landing runway condition taxonomy v2 (7 values; Good split) | Accepted |
 | 0019 | Static Landing layout (no scroll, reserved Autoland slot) | Accepted |
 | 0020 | Takeoff CAUTION advisory line | Accepted |
+| 0021 | RunwayConditionPicker promoted to design-system; Takeoff adopts the dropdown | Accepted |

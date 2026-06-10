@@ -74,8 +74,6 @@
     "title": "Crosswind · Landing",
     "aircraftLabel": "Aircraft",
     "runwayConditionLabel": "Runway condition",
-    "runwayConditionSheetTitle": "RUNWAY CONDITION",
-    "runwayConditionSheetCancel": "Cancel",
     "landingModeLabel": "Landing",
     "toggleNo": "No",
     "toggleYes": "Yes",
@@ -87,6 +85,10 @@
     "errorDataAircraft": "No data available for the selected aircraft.",
     "errorDataCondition": "No data available for the selected runway condition.",
     "errorDataMode": "No data available for the selected landing mode."
+  },
+  "runwayPicker": {
+    "sheetTitle": "RUNWAY CONDITION",
+    "sheetCancel": "Cancel"
   },
   "settings": {
     "title": "Settings",

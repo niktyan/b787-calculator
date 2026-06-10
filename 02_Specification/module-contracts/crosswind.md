@@ -174,7 +174,7 @@ export type { CrosswindRepository } from './data';
 
 **От других модулей:**
 - `core` — `useTranslation`, `useTheme`, `logger`, `ok`, `err`, `Result`, `useFeatureFlag` (для возможного скрытия модуля флагом).
-- `design-system` — `Screen`, `Stack`, `Card`, `Text`, `MonoText`, `NumericInput`, `SegmentedControl`, `ResultPanel`, `BackButton`.
+- `design-system` — `Screen`, `Stack`, `Card`, `Text`, `MonoText`, `NumericInput`, `SegmentedControl` (Aircraft), `RunwayConditionPicker` (runway condition — dropdown с G2 / ADR-0021, заменил 6-сегментный SegmentedControl), `ResultPanel`, `BackButton`.
 
 **От библиотек:**
 - `react`, `react-native`.
@@ -228,7 +228,7 @@ export type { CrosswindRepository } from './data';
 
 **UI-тесты:**
 - Snapshot тесты для `CrosswindScreen` в empty, idle, error, out-of-envelope состояниях.
-- Behavior тесты для `CrosswindInputForm`: ввод значений, валидация, переключение runway condition.
+- Behavior тесты для `CrosswindInputForm`: ввод значений, валидация, переключение runway condition через `RunwayConditionPicker` (open → select → callback), 3-viewport снапшоты, restore-матрица 6 conditions × 2 aircraft (closed field показывает label восстановленного значения).
 
 **Coverage threshold:** Domain ≥ 90%, общий по модулю ≥ 80%.
 

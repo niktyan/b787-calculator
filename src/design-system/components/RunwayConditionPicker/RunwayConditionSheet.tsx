@@ -10,11 +10,11 @@
  * cascade from breaking: the card's `maxHeight: 90%` resolves against
  * the overlay's height, which is the full Modal root.
  *
- * Card content (title + 7 rows + Cancel) lives in the shared
+ * Card content (title + option rows) lives in the shared
  * `OptionList` so this branch and the anchored-right branch render
  * pixel-identical inner content.
  *
- * iPhone-landscape edge case: 7 rows + title + Cancel may exceed the
+ * iPhone-landscape edge case: the option rows + title may exceed the
  * viewport height (~393 pt). When landscape is detected the card
  * wraps content in a `ScrollView`. Portrait viewports never scroll —
  * the card grows to content (no fixed height) and is centred.
@@ -25,8 +25,9 @@ import type { ReactNode } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
-import type { ColorPalette, SegmentedControlOption } from '../../../../design-system';
-import { tokens } from '../../../../design-system';
+import type { ColorPalette } from '../../tokens';
+import { tokens } from '../../tokens';
+import type { SegmentedControlOption } from '../SegmentedControl';
 
 import { OptionList } from './RunwayConditionPicker.parts';
 import type { PickerSizing } from './RunwayConditionPicker.sizing';

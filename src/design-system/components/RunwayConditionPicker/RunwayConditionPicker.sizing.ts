@@ -8,14 +8,15 @@
  *
  * No new design tokens, no magic numbers — the only literal values
  * here are font weights / letter-spacing for the regular section
- * title, which mirror the form's `REGULAR_SECTION_LABEL_STYLE` used by
- * CrosswindLandingInputForm.
+ * title, which mirror the `REGULAR_SECTION_LABEL_STYLE` used by the
+ * consumer forms (Landing and Takeoff input forms).
  */
 
 import type { TextStyle } from 'react-native';
 
-import type { SegmentedControlSize, TextVariant } from '../../../../design-system';
-import { tokens } from '../../../../design-system';
+import { tokens } from '../../tokens';
+import type { SegmentedControlSize } from '../SegmentedControl';
+import type { TextVariant } from '../Text';
 
 const REGULAR_LABEL_FONT_WEIGHT = '500';
 const REGULAR_TITLE_FONT_WEIGHT = '600';

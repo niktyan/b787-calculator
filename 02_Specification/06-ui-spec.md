@@ -540,9 +540,9 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
      brackets соответствующего ВС. Aircraft по умолчанию = `B787-8`.
 2. **TOW actual (t)** — числовое поле, integer. «Takeoff Weight Actual» — стандартная авиационная аббревиатура. Единица — **метрические тонны** (домен использует tons throughout — см. `04-domain-model.md` Принцип «вес всегда в тоннах внутри domain»). Range и валидация — см. ниже.
 3. **Center of gravity (% MAC)** — числовое поле, decimal с 1 знаком после запятой.
-4. **Runway condition** — segmented control с шестью значениями RWYCC scale: Dry / Good / Medium to Good / Medium / Medium to Poor / Poor.
-   - В MVP активен только Dry. Остальные 5 значений отображаются как **disabled** с подписью disabled. Тап показывает короткий toast «Available in upcoming release».
-   - На compact-ширине 6 сегментов wrap-ятся в 2 строки по 3 (см. § Segmented control wrap rules ниже). На regular-ширине — single-row из 6 сегментов.
+4. **Runway condition** — single-line dropdown `RunwayConditionPicker` (G2 / ADR-0021; ранее — segmented control, superseded) с шестью значениями RWYCC scale в фиксированном порядке: Dry / Good / Medium to Good / Medium / Medium to Poor / Poor.
+   - Closed state: full-width поле показывает label текущего значения + chevron-down. Тап открывает option sheet: центрированный fade-in modal на iPhone (любая ориентация) и iPad portrait; anchored popover справа от поля на iPad landscape — тот же гибридный паттерн, что у Landing (ADR-0018 § UI Layout). Все 6 значений активны (с PR 7).
+   - Высота anchored-попапа вычисляется из числа опций (6 для Takeoff, 7 для Landing) — см. ADR-0021.
 
 > **Mockup note (kg → t).** В `03_Mockups/index.html` секция 3 поле
 > подписано как «Landing weight (kg)»; это артефакт ранней версии
@@ -558,7 +558,7 @@ press-feedback анимация (scale 1 → 0.97 + opacity 1 → 0.85) прим
   - TOW actual: «e.g. 170» (тонны)
   - CG: «e.g. 25.5»
 - Aircraft по умолчанию = `B787-8`.
-- Runway condition по умолчанию = `Dry` (т.к. это единственный активный вариант в MVP).
+- Runway condition по умолчанию = `Dry`.
 - Live update: после того как **оба** обязательных поля (TOW, CG) заполнены валидными числами, результат пересчитывается немедленно при любом изменении aircraft / weight / CG / runway condition.
 - Пока хотя бы одно поле пусто → result-секция в состоянии `empty` (см. ниже), расчёт не производится.
 - Валидация формата: все числовые поля используют `keyboardType="decimal-pad"` + `inputMode="decimal"`. На iPad доступен переключатель «ABC» в системной клавиатуре, поэтому защита от букв реализована вторым уровнем — sanitizer в `onChangeText` стрипает любые не-цифры (regex `/[^0-9.,]/g`), нормализует европейскую запятую в точку и оставляет только один decimal separator. Это покрывает буквы из ABC-режима, paste из буфера и сторонние клавиатуры.
@@ -770,7 +770,7 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
 - Slot выставляет `testID={`${inputTestID}-error-slot`}` для
   height-stability assertions в unit-тестах.
 
-*Aircraft selector + Runway condition — segmented (compact):*
+*Aircraft selector — segmented (compact):*
 
 - Surface: фон `tokens.colors.bgCard`, граница
   `tokens.colors.border` (1 pt), внешний `borderRadius:
@@ -785,24 +785,23 @@ Calculator — Input + Result», классы `.calc-layout`, `.input-group`,
   toast «Available in upcoming release» оставлен на усмотрение
   реализации; в текущем коде disabled-сегмент просто игнорирует тапы.
 
-*Aircraft selector + Runway condition — segmented (regular):*
+*Aircraft selector — segmented (regular):*
 
 - DS-проп `<SegmentedControl size="regular">`:
   - Track height 56 pt (segment minHeight 50 pt + 3 pt padding × 2).
   - Segment label variant `caption` (sans 12 pt, weight 400).
-- Aircraft selector — single-row (2 опции).
-- Runway condition — single-row из 6 RWYCC сегментов на regular
-  ширине (iPad landscape).
+- Aircraft selector — single-row (2 опции, `wrap=false`).
 
-*Segmented wrap rules (RWYCC, compact):*
+*Runway condition — dropdown picker (G2 / ADR-0021):*
 
-- DS-проп `<SegmentedControl wrap>`. Когда `options.length >= 5`,
-  компонент делит сегменты на 2 равные строки **внутри одной
-  bordered surface**: row gap 4 pt (`TRACK_GAP * 2`), segment gap
-  внутри строки 2 pt.
-- Aircraft selector — `wrap=false` (всего 2 опции, всегда single-row).
-- Runway condition — `wrap={!isRegular}`. На compact ширине → 2 ряда
-  по 3 сегмента; на regular — single-row.
+- DS-компонент `<RunwayConditionPicker size={compact|regular}>` —
+  тот же примитив, что у Landing-формы (см. § Экран 4b Row 2 и
+  module-contracts/design-system.md § Inputs · RunwayConditionPicker).
+- `size` проброшен из form sizing (`sizing.segmentedSize`), так что
+  closed field по высоте совпадает с соседним Aircraft
+  SegmentedControl на обоих breakpoint-ах.
+- Прежние segmented wrap rules для RWYCC (2 ряда по 3 на compact)
+  **superseded** — пикер всегда single-line.
 
 *Form vertical sizing:*
 
@@ -1344,9 +1343,9 @@ landscape (`width >= 1024`) Crosswind-screen переходит в
 
 | Viewport | Layout | Input form sizing | Result-panel typography |
 |----------|--------|-------------------|-------------------------|
-| iPhone any orientation (`< 1024`) | stacked vertical | compact (44 pt fields, segmented wrap 2×3 для RWYCC) | compact (`display` 48 / `monoMedium` 24) |
-| iPad portrait (regular width, `< 1024`) | stacked vertical | compact | compact |
-| iPad landscape (regular width, `≥ 1024`) | 2-column (input \| result) | regular (64 pt fields, monoMedium value, single-row 6-segment runway) + form `flex: 1` + `justify: space-between` | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) |
+| iPhone any orientation (`< 1024`) | stacked vertical | compact (44 pt fields, runway = single-line picker, centred-modal sheet) | compact (`display` 48 / `monoMedium` 24) |
+| iPad portrait (regular width, `< 1024`) | stacked vertical | compact (runway picker → centred-modal sheet) | compact |
+| iPad landscape (regular width, `≥ 1024`) | 2-column (input \| result) | regular (64 pt fields, monoMedium value, runway picker → anchored popover) + form `flex: 1` + `justify: space-between` | regular (`displayLarge` 72 / `monoXL` 36 + `flex: 1` fill) |
 
 **Layout · Settings.** В отличие от Crosswind, Settings переключает
 свой sizing-набор по **`regularHeader` breakpoint-у (768 pt)**, не по

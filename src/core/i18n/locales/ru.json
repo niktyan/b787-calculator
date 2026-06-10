@@ -74,8 +74,6 @@
     "title": "Crosswind · Landing",
     "aircraftLabel": "Тип ВС",
     "runwayConditionLabel": "Состояние ВПП",
-    "runwayConditionSheetTitle": "СОСТОЯНИЕ ВПП",
-    "runwayConditionSheetCancel": "Отмена",
     "landingModeLabel": "Посадка",
     "toggleNo": "Нет",
     "toggleYes": "Да",
@@ -87,6 +85,10 @@
     "errorDataAircraft": "Нет данных для выбранного типа ВС.",
     "errorDataCondition": "Нет данных для выбранного состояния ВПП.",
     "errorDataMode": "Нет данных для выбранного режима посадки."
+  },
+  "runwayPicker": {
+    "sheetTitle": "СОСТОЯНИЕ ВПП",
+    "sheetCancel": "Отмена"
   },
   "settings": {
     "title": "Настройки",

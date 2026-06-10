@@ -33,6 +33,21 @@ function setNumericInput(input: TestInstance, value: string): void {
   });
 }
 
+/**
+ * Select a runway condition through the `RunwayConditionPicker` (G2 —
+ * the Takeoff form replaced the 6-segment control with the picker).
+ * At the default 0×0 test viewport the picker resolves to the
+ * modal-centre presentation, so the option rows live under the
+ * `crosswind-runway-sheet` testID namespace.
+ */
+function selectRunway(
+  getByTestId: ReturnType<typeof renderWithTheme>['getByTestId'],
+  value: string,
+): void {
+  fireEvent.press(getByTestId('crosswind-runway'));
+  fireEvent.press(getByTestId(`crosswind-runway-sheet-option-${value}`));
+}
+
 const mockBack = jest.fn();
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -154,8 +169,8 @@ describe('Crosswind route', () => {
   it('Good runway selection: W=150, CG=26 → 34.8 KT (PR 3 anchor, post-ADR-0017)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
     // Default Aircraft is B787-8 and default Runway is Dry. Switch to
-    // Good, then enter the Excel-verified anchor inputs.
-    fireEvent.press(getByTestId('crosswind-runway-good'));
+    // Good via the picker, then enter the Excel-verified anchor inputs.
+    selectRunway(getByTestId, 'good');
     setNumericInput(getByTestId('crosswind-weight-input'), '150');
     setNumericInput(getByTestId('crosswind-cg-input'), '26');
     // Anchor expectation: raw 34.873 → ROUNDDOWN-tenth 34.8, below
@@ -164,18 +179,22 @@ describe('Crosswind route', () => {
     expect(getByText('34.8')).toBeTruthy();
   });
 
-  it('Good runway segment is enabled (was disabled in MVP pre-PR 3)', () => {
+  it('picker sheet lists all 6 takeoff runway conditions in fixed order (all active since PR 7)', () => {
+    // Successor of the per-segment "is enabled" guards (PR 3–7): with
+    // the picker every option row is selectable by construction, so the
+    // load-bearing assertion is that all 6 conditions render in the
+    // sheet. The anchor-value tests below prove each one drives a
+    // recalculation.
     const { getByTestId } = renderWithTheme(<CrosswindRoute />);
-    const goodSegment = getByTestId('crosswind-runway-good');
-    // accessibilityState.disabled was `true` before PR 3 (MVP shipped
-    // Good as a capability-disclosure teaser). With Good now active,
-    // the segment must be selectable.
-    expect(goodSegment.props.accessibilityState.disabled).toBe(false);
+    fireEvent.press(getByTestId('crosswind-runway'));
+    for (const value of ['dry', 'good', 'mediumToGood', 'medium', 'mediumToPoor', 'poor']) {
+      expect(getByTestId(`crosswind-runway-sheet-option-${value}`)).toBeTruthy();
+    }
   });
 
   it('MediumToGood runway selection: W=175, CG=24 → 30.0 KT (PR 4 anchor)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
-    fireEvent.press(getByTestId('crosswind-runway-mediumToGood'));
+    selectRunway(getByTestId, 'mediumToGood');
     setNumericInput(getByTestId('crosswind-weight-input'), '175');
     setNumericInput(getByTestId('crosswind-cg-input'), '24');
     // Anchor per Excel "Medium to Good 788" sheet G7: raw 30.0213 in
@@ -184,15 +203,9 @@ describe('Crosswind route', () => {
     expect(getByText('30.0')).toBeTruthy();
   });
 
-  it('MediumToGood runway segment is enabled (was disabled in MVP pre-PR 4)', () => {
-    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
-    const segment = getByTestId('crosswind-runway-mediumToGood');
-    expect(segment.props.accessibilityState.disabled).toBe(false);
-  });
-
   it('Medium runway selection: W=182, CG=20 → 23.9 KT (PR 5 anchor, 1-decimal precision)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
-    fireEvent.press(getByTestId('crosswind-runway-medium'));
+    selectRunway(getByTestId, 'medium');
     setNumericInput(getByTestId('crosswind-weight-input'), '182');
     setNumericInput(getByTestId('crosswind-cg-input'), '20');
     // First condition shipping with decimals=1 — the rendered string
@@ -202,15 +215,9 @@ describe('Crosswind route', () => {
     expect(getByText('23.9')).toBeTruthy();
   });
 
-  it('Medium runway segment is enabled (was disabled in MVP pre-PR 5)', () => {
-    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
-    const segment = getByTestId('crosswind-runway-medium');
-    expect(segment.props.accessibilityState.disabled).toBe(false);
-  });
-
   it('MediumToPoor runway selection: W=182, CG=32 → 13.9 KT (PR 6 anchor, weight-independent)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
-    fireEvent.press(getByTestId('crosswind-runway-mediumToPoor'));
+    selectRunway(getByTestId, 'mediumToPoor');
     setNumericInput(getByTestId('crosswind-weight-input'), '182');
     setNumericInput(getByTestId('crosswind-cg-input'), '32');
     // The cgOnlyPiecewise strategy ignores weight — same CG=32 with
@@ -221,15 +228,9 @@ describe('Crosswind route', () => {
     expect(getByText('13.9')).toBeTruthy();
   });
 
-  it('MediumToPoor runway segment is enabled (was disabled in MVP pre-PR 6)', () => {
-    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
-    const segment = getByTestId('crosswind-runway-mediumToPoor');
-    expect(segment.props.accessibilityState.disabled).toBe(false);
-  });
-
   it('Poor runway selection: W=182, CG=32 → 10 KT (PR 7 anchor, input-independent)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
-    fireEvent.press(getByTestId('crosswind-runway-poor'));
+    selectRunway(getByTestId, 'poor');
     setNumericInput(getByTestId('crosswind-weight-input'), '182');
     setNumericInput(getByTestId('crosswind-cg-input'), '32');
     // The constant strategy ignores all input — same value=10
@@ -240,19 +241,13 @@ describe('Crosswind route', () => {
 
   it('Poor runway: input-independence check (W=110/CG=10 also → 10.0 KT)', () => {
     const { getByTestId, getByText } = renderWithTheme(<CrosswindRoute />);
-    fireEvent.press(getByTestId('crosswind-runway-poor'));
+    selectRunway(getByTestId, 'poor');
     setNumericInput(getByTestId('crosswind-weight-input'), '110');
     setNumericInput(getByTestId('crosswind-cg-input'), '10');
     // Same Poor segment, very different inputs (light + low CG vs
     // heavy + mid CG above): result is identically 10. This is the
     // defining property of the constant strategy in the UI layer.
     expect(getByText('10.0')).toBeTruthy();
-  });
-
-  it('Poor runway segment is enabled (last disabled segment activated in PR 7 — ALL 6 RWYCC now active)', () => {
-    const { getByTestId } = renderWithTheme(<CrosswindRoute />);
-    const segment = getByTestId('crosswind-runway-poor');
-    expect(segment.props.accessibilityState.disabled).toBe(false);
   });
 
   it('below operational envelope (weight=95 < 104.1): result hidden, out-of-envelope panel shown per ADR-0012', () => {

@@ -1,8 +1,12 @@
 /**
- * Crosswind Landing runway-condition picker — single-line dropdown
- * field with a hybrid presentation: anchored popover beside the field
- * on iPad landscape, centred BottomSheet modal everywhere else
- * (ADR-0018 § UI Layout, F2 visual fix v4).
+ * Runway-condition picker — single-line dropdown field with a hybrid
+ * presentation: anchored popover beside the field on iPad landscape,
+ * centred modal everywhere else (ADR-0018 § UI Layout, F2 visual fix
+ * v4; promoted to design-system in G2 / ADR-0021).
+ *
+ * Generic on `TValue extends string` — the consumer always supplies
+ * the `options` array, so the component carries no feature taxonomy:
+ * Landing passes its 7-condition list, Takeoff its 6-condition list.
  *
  * Presentation resolution at the call site:
  *
@@ -35,15 +39,13 @@ import type { ReactNode, RefObject } from 'react';
 import { Pressable, StyleSheet, useWindowDimensions } from 'react-native';
 import type { View, ViewStyle } from 'react-native';
 
-import { useHapticFeedback } from '../../../../core/haptics';
-import { useTranslation } from '../../../../core';
-import { useTheme } from '../../../../core/theming';
-import type {
-  ColorPalette,
-  SegmentedControlOption,
-  SegmentedControlSize,
-} from '../../../../design-system';
-import { Text, tokens } from '../../../../design-system';
+import { useTranslation } from '../../../core';
+import { useHapticFeedback } from '../../../core/haptics';
+import { useTheme } from '../../../core/theming';
+import type { ColorPalette } from '../../tokens';
+import { tokens } from '../../tokens';
+import type { SegmentedControlOption, SegmentedControlSize } from '../SegmentedControl';
+import { Text } from '../Text';
 
 import { RunwayAnchoredPopover } from './RunwayConditionAnchored';
 import type { PickerSizing } from './RunwayConditionPicker.sizing';
@@ -113,8 +115,8 @@ export function RunwayConditionPicker<TValue extends string>(
         anchored={presentationAnchored}
         isOpen={isOpen}
         anchorRef={anchorRef}
-        title={t('crosswind-landing.runwayConditionSheetTitle')}
-        closeAccessibilityLabel={t('crosswind-landing.runwayConditionSheetCancel')}
+        title={t('runwayPicker.sheetTitle')}
+        closeAccessibilityLabel={t('runwayPicker.sheetCancel')}
         palette={palette}
         sizing={sizing}
         options={options}

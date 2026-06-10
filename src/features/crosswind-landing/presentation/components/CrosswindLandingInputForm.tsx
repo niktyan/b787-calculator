@@ -35,7 +35,13 @@ import type { ReactNode } from 'react';
 
 import type { AircraftVariant, LandingRunwayCondition } from '../../../../core/aviation';
 import { useTranslation } from '../../../../core';
-import { Row, SegmentedControl, Stack, Text } from '../../../../design-system';
+import {
+  Row,
+  RunwayConditionPicker,
+  SegmentedControl,
+  Stack,
+  Text,
+} from '../../../../design-system';
 import type {
   SegmentedControlOption,
   SegmentedControlSize,
@@ -45,7 +51,6 @@ import type {
 import type { TextStyle } from 'react-native';
 import type { LandingMode, YesNo } from '../../domain/types';
 
-import { RunwayConditionPicker } from './RunwayConditionPicker';
 import { ToggleCell } from './ToggleCell';
 
 export interface CrosswindLandingInputFormProps {
