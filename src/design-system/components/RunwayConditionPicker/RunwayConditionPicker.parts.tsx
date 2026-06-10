@@ -19,8 +19,10 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { ViewStyle } from 'react-native';
 
-import type { ColorPalette, SegmentedControlOption } from '../../../../design-system';
-import { Stack, Text } from '../../../../design-system';
+import type { ColorPalette } from '../../tokens';
+import type { SegmentedControlOption } from '../SegmentedControl';
+import { Stack } from '../Stack';
+import { Text } from '../Text';
 
 import type { PickerSizing } from './RunwayConditionPicker.sizing';
 

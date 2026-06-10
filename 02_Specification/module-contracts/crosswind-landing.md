@@ -173,7 +173,9 @@ Sprint-C поведение (unmount + ScrollView + auto-scroll hook) удале
 - `core` — `useTranslation`, `useTheme`, `useReduceMotion`, `ok`, `err`,
   `Result`.
 - `design-system` — `Screen`, `Stack`, `Row`, `Text`, `SegmentedControl`,
-  `ErrorState`, `tokens`.
+  `RunwayConditionPicker` (с G2 / ADR-0021 компонент живёт в
+  design-system как generic-примитив; до этого был feature-local в
+  `presentation/components/`), `ErrorState`, `tokens`.
 
 **От библиотек:**
 

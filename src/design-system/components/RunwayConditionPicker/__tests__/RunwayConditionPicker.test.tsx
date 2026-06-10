@@ -17,18 +17,29 @@
 
 import { fireEvent } from '@testing-library/react-native';
 
-import { renderWithTheme } from '../../../../../design-system/_testing/renderWithTheme';
-import type { SegmentedControlOption } from '../../../../../design-system';
-import { tokens } from '../../../../../design-system';
-import type { LandingRunwayCondition } from '../../../../../core/aviation';
+import { renderWithTheme } from '../../../_testing/renderWithTheme';
+import { tokens } from '../../../tokens';
+import type { SegmentedControlOption } from '../../SegmentedControl';
 import { RunwayConditionPicker } from '../RunwayConditionPicker';
+
+// Local 7-value union exercising the generic — mirrors the Landing
+// taxonomy's shape without importing a feature-flavoured type into a
+// design-system test (the component itself is feature-agnostic).
+type TestCondition =
+  | 'dry'
+  | 'goodWetDamp'
+  | 'goodSlushSnow'
+  | 'goodToMedium'
+  | 'medium'
+  | 'mediumToPoor'
+  | 'poor';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
 jest.mock('react-i18next', () => {
-  const en = require('../../../../../core/i18n/locales/en.json') as Record<string, unknown>;
+  const en = require('../../../../core/i18n/locales/en.json') as Record<string, unknown>;
   const resolve = (key: string): string => {
     const parts = key.split('.');
     let cur: unknown = en;
@@ -90,7 +101,7 @@ beforeEach(() => {
   setViewport(DEFAULT_VIEWPORT);
 });
 
-const OPTIONS: readonly SegmentedControlOption<LandingRunwayCondition>[] = [
+const OPTIONS: readonly SegmentedControlOption<TestCondition>[] = [
   { value: 'dry', label: 'Dry' },
   { value: 'goodWetDamp', label: 'Good (Wet, Damp)' },
   { value: 'goodSlushSnow', label: 'Good (Slush, Dry Snow, Wet Snow)' },
@@ -103,7 +114,7 @@ const OPTIONS: readonly SegmentedControlOption<LandingRunwayCondition>[] = [
 describe('RunwayConditionPicker · closed state', () => {
   it('renders the current selection label inside the closed field', () => {
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -128,7 +139,7 @@ describe('RunwayConditionPicker · presentation resolution', () => {
   ])('%s → %s', (_label, viewport, expected) => {
     setViewport(viewport);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -154,7 +165,7 @@ describe('RunwayConditionPicker · centred modal contract (F2 v5)', () => {
   it('uses animationType="fade" on the centred path (NOT slide)', () => {
     setViewport(IPHONE);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -170,7 +181,7 @@ describe('RunwayConditionPicker · centred modal contract (F2 v5)', () => {
   it('overlay uses justifyContent: center + alignItems: center', () => {
     setViewport(IPHONE);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -194,9 +205,9 @@ describe('RunwayConditionPicker · centred modal contract (F2 v5)', () => {
 describe('RunwayConditionPicker · selection flow', () => {
   it('tapping a row calls onChange with the value and closes (modal-centre)', () => {
     setViewport(IPHONE);
-    const onChange = jest.fn<void, [LandingRunwayCondition]>();
+    const onChange = jest.fn<void, [TestCondition]>();
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={onChange}
@@ -211,9 +222,9 @@ describe('RunwayConditionPicker · selection flow', () => {
 
   it('tapping the backdrop closes without calling onChange (modal-centre)', () => {
     setViewport(IPHONE);
-    const onChange = jest.fn<void, [LandingRunwayCondition]>();
+    const onChange = jest.fn<void, [TestCondition]>();
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={onChange}
@@ -229,7 +240,7 @@ describe('RunwayConditionPicker · selection flow', () => {
 describe('RunwayConditionPicker · size parity with SegmentedControl', () => {
   it('closed field at size=regular has minHeight = settingsRow.regular.minHeight', () => {
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -245,7 +256,7 @@ describe('RunwayConditionPicker · size parity with SegmentedControl', () => {
 
   it('closed field at size=compact has minHeight = minTouchTarget', () => {
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={jest.fn()}

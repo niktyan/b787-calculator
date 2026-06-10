@@ -14,17 +14,28 @@
 
 import { fireEvent } from '@testing-library/react-native';
 
-import { renderWithTheme } from '../../../../../design-system/_testing/renderWithTheme';
-import type { SegmentedControlOption } from '../../../../../design-system';
-import type { LandingRunwayCondition } from '../../../../../core/aviation';
+import { renderWithTheme } from '../../../_testing/renderWithTheme';
+import type { SegmentedControlOption } from '../../SegmentedControl';
 import { RunwayConditionPicker } from '../RunwayConditionPicker';
+
+// Local 7-value union exercising the generic — mirrors the Landing
+// taxonomy's shape without importing a feature-flavoured type into a
+// design-system test (the component itself is feature-agnostic).
+type TestCondition =
+  | 'dry'
+  | 'goodWetDamp'
+  | 'goodSlushSnow'
+  | 'goodToMedium'
+  | 'medium'
+  | 'mediumToPoor'
+  | 'poor';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
 jest.mock('react-i18next', () => {
-  const en = require('../../../../../core/i18n/locales/en.json') as Record<string, unknown>;
+  const en = require('../../../../core/i18n/locales/en.json') as Record<string, unknown>;
   const resolve = (key: string): string => {
     const parts = key.split('.');
     let cur: unknown = en;
@@ -68,7 +79,7 @@ function setViewport(viewport: Viewport): void {
   mock.mockReturnValue(viewport);
 }
 
-const OPTIONS: readonly SegmentedControlOption<LandingRunwayCondition>[] = [
+const OPTIONS: readonly SegmentedControlOption<TestCondition>[] = [
   { value: 'dry', label: 'Dry' },
   { value: 'goodWetDamp', label: 'Good (Wet, Damp)' },
   { value: 'goodSlushSnow', label: 'Good (Slush, Dry Snow, Wet Snow)' },
@@ -84,7 +95,7 @@ describe('RunwayConditionPicker · open snapshots', () => {
   it('iPhone portrait — centred modal, fade', () => {
     setViewport(IPHONE);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="dry"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -99,7 +110,7 @@ describe('RunwayConditionPicker · open snapshots', () => {
   it('iPad 11" portrait — centred modal (~480 pt card)', () => {
     setViewport(IPAD_11_PORTRAIT);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="goodWetDamp"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -114,7 +125,7 @@ describe('RunwayConditionPicker · open snapshots', () => {
   it('iPad 13" portrait — centred modal (~480 pt card)', () => {
     setViewport(IPAD_13_PORTRAIT);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="goodWetDamp"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -129,7 +140,7 @@ describe('RunwayConditionPicker · open snapshots', () => {
   it('iPad 11" landscape — anchored popover (660 pt high)', () => {
     setViewport(IPAD_11_LANDSCAPE);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="goodWetDamp"
         options={OPTIONS}
         onChange={jest.fn()}
@@ -144,7 +155,7 @@ describe('RunwayConditionPicker · open snapshots', () => {
   it('iPad 13" landscape — anchored popover (660 pt high)', () => {
     setViewport(IPAD_13_LANDSCAPE);
     const tree = renderWithTheme(
-      <RunwayConditionPicker<LandingRunwayCondition>
+      <RunwayConditionPicker<TestCondition>
         value="goodWetDamp"
         options={OPTIONS}
         onChange={jest.fn()}

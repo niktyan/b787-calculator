@@ -10,11 +10,14 @@
  * keypad uses (ADR-0011 Iteration 2). No animation, snappy dismiss.
  */
 
+import { useMemo } from 'react';
 import type { ReactNode, RefObject } from 'react';
 import type { View } from 'react-native';
 
-import type { ColorPalette, SegmentedControlOption } from '../../../../design-system';
-import { AnchoredPopoverHost } from '../../../../design-system';
+import { AnchoredPopoverHost } from '../../anchored-popover';
+import type { ColorPalette } from '../../tokens';
+import { tokens } from '../../tokens';
+import type { SegmentedControlOption } from '../SegmentedControl';
 
 import { OptionList } from './RunwayConditionPicker.parts';
 import type { PickerSizing } from './RunwayConditionPicker.sizing';
@@ -23,16 +26,22 @@ import type { PickerSizing } from './RunwayConditionPicker.sizing';
 // because the longest runway label ("Good (Slush, Dry Snow, Wet Snow)")
 // reads better at 360 pt single-line.
 //
-// Height math at regular sizing (v5 follow-up — Cancel button removed,
-// backdrop dismiss only):
-//   12 popover topPadding
-// + 16 title (label variant 12 pt + line-height 16)
-// +  8 Stack gap between title and list
-// + 7 × 72 rows at settingsRow.regular.minHeight = 504
-// + 12 popover bottomPadding
-// = 552 pt → round up to 560 for hairline-divider + sub-pixel buffer.
+// Height is computed from the consumer's option count (G2 / ADR-0021 —
+// Landing passes 7 rows, Takeoff passes 6; a fixed 7-row height would
+// leave a dead strip under shorter lists):
+//   chrome = popover top+bottom padding (2 × spacing.md)
+//          + title line (label variant 12 pt renders at 16 pt line
+//            height — no line-height token exists)
+//          + Stack gap "sm" between title and list,
+//   height = chrome + rows × sizing.rowMinHeight + buffer.
+// At regular sizing with 7 rows: 24 + 16 + 8 + 504 + 8 = 560 pt —
+// identical to the fixed v5 value, so Landing renders unchanged.
 const POPOVER_WIDTH = 360;
-const POPOVER_HEIGHT = 560;
+const POPOVER_TITLE_LINE_HEIGHT = 16;
+const POPOVER_VERTICAL_CHROME =
+  2 * tokens.spacing.md + POPOVER_TITLE_LINE_HEIGHT + tokens.spacing.sm;
+// Hairline dividers + sub-pixel rounding headroom.
+const POPOVER_HEIGHT_BUFFER = 8;
 
 export interface RunwayAnchoredPopoverProps<TValue extends string> {
   readonly visible: boolean;
@@ -64,11 +73,19 @@ export function RunwayAnchoredPopover<TValue extends string>(
     onClose,
     testID,
   } = props;
+  const contentSize = useMemo(
+    () => ({
+      width: POPOVER_WIDTH,
+      height:
+        POPOVER_VERTICAL_CHROME + options.length * sizing.rowMinHeight + POPOVER_HEIGHT_BUFFER,
+    }),
+    [options.length, sizing.rowMinHeight],
+  );
   return (
     <AnchoredPopoverHost
       isOpen={visible}
       anchorRef={anchorRef}
-      contentSize={{ width: POPOVER_WIDTH, height: POPOVER_HEIGHT }}
+      contentSize={contentSize}
       onDismiss={onClose}
       accessibilityDismissLabel={closeAccessibilityLabel}
       {...(testID === undefined ? {} : { testID })}

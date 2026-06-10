@@ -338,6 +338,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -1581,6 +1582,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -2824,6 +2826,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -4067,6 +4070,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -5310,6 +5314,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -6553,6 +6558,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -7796,6 +7802,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -9039,6 +9046,7 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "textAlign": "auto",
               },
               {
+                "fontSize": 18,
                 "fontWeight": "500",
               },
             ]
@@ -10267,7 +10275,9 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
-              undefined,
+              {
+                "fontSize": 18,
+              },
             ]
           }
         >
@@ -11469,7 +11479,9 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
-              undefined,
+              {
+                "fontSize": 18,
+              },
             ]
           }
         >
@@ -12671,7 +12683,9 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
-              undefined,
+              {
+                "fontSize": 18,
+              },
             ]
           }
         >
@@ -13873,7 +13887,9 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
-              undefined,
+              {
+                "fontSize": 18,
+              },
             ]
           }
         >
@@ -15075,7 +15091,9 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
-              undefined,
+              {
+                "fontSize": 18,
+              },
             ]
           }
         >
@@ -16277,7 +16295,9 @@ exports[`CrosswindLandingInputForm · static layout & reserved Autoland slot (AD
                 "lineHeight": 22,
                 "textAlign": "auto",
               },
-              undefined,
+              {
+                "fontSize": 18,
+              },
             ]
           }
         >

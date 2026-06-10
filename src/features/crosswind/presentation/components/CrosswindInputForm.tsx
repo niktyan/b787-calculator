@@ -2,7 +2,13 @@ import type { ReactNode } from 'react';
 import type { TextStyle } from 'react-native';
 
 import { useTranslation } from '../../../../core';
-import { NumericInput, SegmentedControl, Stack, Text } from '../../../../design-system';
+import {
+  NumericInput,
+  RunwayConditionPicker,
+  SegmentedControl,
+  Stack,
+  Text,
+} from '../../../../design-system';
 import type {
   NumericInputSize,
   SegmentedControlOption,
@@ -25,9 +31,8 @@ export interface CrosswindInputFormProps {
   readonly onRunwayConditionChange: (next: RunwayCondition) => void;
   /**
    * `true` on iPad-regular landscape: bigger inputs, full-vertical-height
-   * column (justifyContent space-between), single-row segmented controls.
-   * `false` on iPhone / iPad portrait: compact inputs, runway-condition
-   * segmented wraps to 2 rows of 3.
+   * column (justifyContent space-between), regular-size controls.
+   * `false` on iPhone / iPad portrait: compact inputs and controls.
    */
   readonly isRegular?: boolean;
   readonly testID?: string | undefined;
@@ -64,7 +69,6 @@ interface FormSizing {
   readonly sectionLabelGap: SpacingToken;
   readonly sectionLabelVariant: TextVariant;
   readonly sectionLabelStyle: TextStyle | undefined;
-  readonly runwayWrap: boolean;
 }
 
 function resolveSizing(isRegular: boolean): FormSizing {
@@ -78,7 +82,6 @@ function resolveSizing(isRegular: boolean): FormSizing {
       sectionLabelGap: 'md',
       sectionLabelVariant: 'body',
       sectionLabelStyle: REGULAR_SECTION_LABEL_STYLE,
-      runwayWrap: false,
     };
   }
   return {
@@ -90,7 +93,6 @@ function resolveSizing(isRegular: boolean): FormSizing {
     sectionLabelGap: 'xs',
     sectionLabelVariant: 'label',
     sectionLabelStyle: undefined,
-    runwayWrap: true,
   };
 }
 
@@ -169,12 +171,11 @@ export function CrosswindInputForm(props: CrosswindInputFormProps): ReactNode {
       />
       <Stack gap={sizing.sectionLabelGap}>
         <SectionLabel text={t('crosswind.runwayConditionLabel')} sizing={sizing} />
-        <SegmentedControl<RunwayCondition>
+        <RunwayConditionPicker<RunwayCondition>
           value={runwayCondition}
           options={RUNWAY_OPTIONS}
           onChange={onRunwayConditionChange}
           size={sizing.segmentedSize}
-          wrap={sizing.runwayWrap}
           accessibilityLabel={t('crosswind.runwayConditionLabel')}
           testID="crosswind-runway"
         />
