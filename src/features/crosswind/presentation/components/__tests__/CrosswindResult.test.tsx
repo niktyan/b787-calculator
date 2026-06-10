@@ -163,6 +163,26 @@ describe('CrosswindResult', () => {
       expect(caution.props.children).toBe(FCOM_CAUTION_TEXT);
     });
 
+    it('does not cap the CAUTION caption with numberOfLines (full FCOM text never truncates)', () => {
+      // ADR-0020 follow-up #2: at the bumped `body` typography variant
+      // the verbatim FCOM string wraps to more than 3 lines on iPhone
+      // compact, so a numberOfLines clamp would clip the tail ("not
+      // rolling takeoff"). The CAUTION string is bounded by its i18n
+      // key — unbounded wrap is safe. Asserting prop absence here is
+      // viewport-independent: without `numberOfLines` RN never
+      // ellipsizes, regardless of how many wrap lines the text takes
+      // on iPhone SE (375 pt) through iPad 13" landscape (1366 pt).
+      const tree = renderWithTheme(
+        <CrosswindResult state={{ kind: 'idle', output: idleOutput(33) }} />,
+      );
+      const caution = tree.getByTestId('crosswind-result-caution');
+      expect(caution.props.numberOfLines).toBeUndefined();
+      // And the rendered children are the full FCOM string — no caller
+      // is silently shortening it.
+      expect(caution.props.children).toBe(FCOM_CAUTION_TEXT);
+      expect((caution.props.children as string).endsWith('(not rolling takeoff).')).toBe(true);
+    });
+
     it('renders the CAUTION caption on the iPad-regular variant too', () => {
       const state: CrosswindUIState = {
         kind: 'idle',

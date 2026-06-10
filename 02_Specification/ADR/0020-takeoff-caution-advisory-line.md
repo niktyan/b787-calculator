@@ -120,6 +120,16 @@ the textSecondary colour and supplementary visual weight. `label`
 size as `caption`; only `body` delivers an actual size bump without
 introducing a new typography token.
 
+**Follow-up #2 (G1 line cap dropped).** After the `body` bump, the
+verbatim FCOM string wrapped to more than 3 lines on iPhone compact
+and the `numberOfLines={3}` clamp ellipsized the tail
+("(not rolling takeoff).") — losing operationally critical wording.
+The cap was removed entirely. The CAUTION string is bounded by its
+i18n key (a verbatim FCOM quote, fixed-length), so unbounded wrap is
+safe across every supported viewport from iPhone SE through iPad 13".
+The Card has no fixed-height constraint on the inner stack, so it
+grows to fit the wrapped text.
+
 The line is centred horizontally to match the centred value row, the
 max width is capped to the compact (280 pt) or regular (380 pt)
 caption-width budget — same budget already used by the empty and

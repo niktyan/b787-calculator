@@ -160,11 +160,6 @@ interface IdleViewProps {
   readonly fillHeight: boolean;
 }
 
-// ADR-0020: the FCOM CAUTION advisory caption is allowed to wrap up
-// to 3 lines, matching the cap used by the existing empty / out-of-
-// envelope captions for the iPhone-compact viewport.
-const CAUTION_MAX_LINES = 3;
-
 function IdleView(props: IdleViewProps): ReactNode {
   const { output, statusLabel, cautionText, isRegular, fillHeight } = props;
   const statusVariant: TextVariant = isRegular ? 'body' : 'microUppercase';
@@ -176,13 +171,7 @@ function IdleView(props: IdleViewProps): ReactNode {
       </Text>
       <ValueRow value={output.maxCrosswindKnots} isRegular={isRegular} />
       <View style={[captionMaxWidth(isRegular), styles.cautionWrapper]}>
-        <Text
-          variant="body"
-          color="textSecondary"
-          align="center"
-          numberOfLines={CAUTION_MAX_LINES}
-          testID="crosswind-result-caution"
-        >
+        <Text variant="body" color="textSecondary" align="center" testID="crosswind-result-caution">
           {cautionText}
         </Text>
       </View>
