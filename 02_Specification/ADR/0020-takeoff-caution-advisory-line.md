@@ -105,9 +105,20 @@ exactly the same pattern used by the existing `crosswind.title`
 The CAUTION line lives **inside the same result Card** as the
 status label and value row, rendered directly under the `KT` number
 with `marginTop: tokens.spacing.md` (12 pt) of breathing space.
-Typography token `caption` (12 pt sans 400-weight); colour token
+Typography token `body` (16 pt sans 400-weight); colour token
 `textSecondary` so it reads as supplementary information rather than
 a second readout.
+
+**Follow-up (G1 typography bump).** The caption originally shipped at
+the `caption` variant (12 pt). Pilot feedback after the G1 merge:
+the 12 pt caption read too small relative to the result number on
+both iPhone and iPad, especially at typical cockpit viewing distance.
+The variant was promoted one tier to `body` (16 pt sans 400-weight) —
+the next-larger size in the existing token system that still keeps
+the textSecondary colour and supplementary visual weight. `label`
+(12 pt sans 600-weight) was rejected because it is the same font
+size as `caption`; only `body` delivers an actual size bump without
+introducing a new typography token.
 
 The line is centred horizontally to match the centred value row, the
 max width is capped to the compact (280 pt) or regular (380 pt)

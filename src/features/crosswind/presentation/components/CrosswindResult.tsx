@@ -177,7 +177,7 @@ function IdleView(props: IdleViewProps): ReactNode {
       <ValueRow value={output.maxCrosswindKnots} isRegular={isRegular} />
       <View style={[captionMaxWidth(isRegular), styles.cautionWrapper]}>
         <Text
-          variant="caption"
+          variant="body"
           color="textSecondary"
           align="center"
           numberOfLines={CAUTION_MAX_LINES}
