@@ -78,6 +78,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
             "textAlign": "auto",
           },
           {
+            "fontSize": 18,
             "fontWeight": "500",
           },
         ]
@@ -316,6 +317,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -392,6 +394,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -487,6 +490,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -563,6 +567,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -639,6 +644,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -715,6 +721,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -791,6 +798,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -887,6 +895,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
             "textAlign": "auto",
           },
           {
+            "fontSize": 18,
             "fontWeight": "500",
           },
         ]
@@ -1121,6 +1130,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -1197,6 +1207,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -1292,6 +1303,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -1368,6 +1380,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -1444,6 +1457,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -1520,6 +1534,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -1596,6 +1611,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -1692,6 +1708,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
             "textAlign": "auto",
           },
           {
+            "fontSize": 18,
             "fontWeight": "500",
           },
         ]
@@ -1930,6 +1947,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2006,6 +2024,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2101,6 +2120,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2177,6 +2197,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2253,6 +2274,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2329,6 +2351,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2405,6 +2428,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2501,6 +2525,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
             "textAlign": "auto",
           },
           {
+            "fontSize": 18,
             "fontWeight": "500",
           },
         ]
@@ -2735,6 +2760,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2811,6 +2837,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2906,6 +2933,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -2982,6 +3010,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -3058,6 +3087,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -3134,6 +3164,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -3210,6 +3241,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
                           "flex": 1,
                         },
                         {
+                          "fontSize": 18,
                           "fontWeight": "500",
                         },
                       ],
@@ -3305,7 +3337,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
             "lineHeight": 22,
             "textAlign": "auto",
           },
-          undefined,
+          {
+            "fontSize": 18,
+          },
         ]
       }
     >
@@ -3512,7 +3546,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
                         {
                           "flex": 1,
                         },
-                        undefined,
+                        {
+                          "fontSize": 18,
+                        },
                       ],
                     ]
                   }
@@ -3605,7 +3641,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
                         {
                           "flex": 1,
                         },
-                        undefined,
+                        {
+                          "fontSize": 18,
+                        },
                       ],
                     ]
                   }
@@ -3679,7 +3717,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
                         {
                           "flex": 1,
                         },
-                        undefined,
+                        {
+                          "fontSize": 18,
+                        },
                       ],
                     ]
                   }
@@ -3753,7 +3793,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
                         {
                           "flex": 1,
                         },
-                        undefined,
+                        {
+                          "fontSize": 18,
+                        },
                       ],
                     ]
                   }
@@ -3827,7 +3869,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
                         {
                           "flex": 1,
                         },
-                        undefined,
+                        {
+                          "fontSize": 18,
+                        },
                       ],
                     ]
                   }
@@ -3901,7 +3945,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
                         {
                           "flex": 1,
                         },
-                        undefined,
+                        {
+                          "fontSize": 18,
+                        },
                       ],
                     ]
                   }
@@ -3975,7 +4021,9 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
                         {
                           "flex": 1,
                         },
-                        undefined,
+                        {
+                          "fontSize": 18,
+                        },
                       ],
                     ]
                   }

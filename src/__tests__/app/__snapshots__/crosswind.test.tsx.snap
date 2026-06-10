@@ -987,7 +987,9 @@ exports[`Crosswind route renders correctly in dark theme (snapshot) 1`] = `
                               "lineHeight": 22,
                               "textAlign": "auto",
                             },
-                            undefined,
+                            {
+                              "fontSize": 18,
+                            },
                           ]
                         }
                       >
@@ -2087,7 +2089,9 @@ exports[`Crosswind route renders correctly in light theme (snapshot) 1`] = `
                               "lineHeight": 22,
                               "textAlign": "auto",
                             },
-                            undefined,
+                            {
+                              "fontSize": 18,
+                            },
                           ]
                         }
                       >

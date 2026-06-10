@@ -22,6 +22,15 @@ const REGULAR_LABEL_FONT_WEIGHT = '500';
 const REGULAR_TITLE_FONT_WEIGHT = '600';
 const REGULAR_TITLE_LETTER_SPACING = 1;
 
+// Label bump (user feedback, post-G2): the runway-condition labels —
+// closed field and option rows, both size classes — render at the
+// heading3 size (18 pt) instead of body (16 pt) so the selected
+// condition reads clearly at a glance. Identical in the Takeoff and
+// Landing modules because both consume this shared sizing. The size is
+// borrowed from the existing typography scale (no new token); `body`'s
+// 22 pt line height already matches heading3's, so no override needed.
+const LABEL_FONT_SIZE = tokens.typography.variants.heading3.fontSize;
+
 export interface PickerSizing {
   readonly fieldMinHeight: number;
   readonly fieldPaddingHorizontal: number;
@@ -46,11 +55,10 @@ export function resolvePickerSizing(size: SegmentedControlSize): PickerSizing {
       fieldPaddingHorizontal: row.paddingH,
       fieldPaddingVertical: row.paddingV,
       chevronSize: row.chevronSize,
-      // SegmentedControl regular uses `body` (16 pt) + weight 500 —
-      // copied 1:1 so the closed field renders the selected label at
-      // the same scale as a regular-segment label.
+      // Weight 500 mirrors the regular-segment label; size bumped to
+      // 18 pt per the post-G2 readability feedback (see LABEL_FONT_SIZE).
       labelVariant: 'body',
-      labelStyle: { fontWeight: REGULAR_LABEL_FONT_WEIGHT },
+      labelStyle: { fontSize: LABEL_FONT_SIZE, fontWeight: REGULAR_LABEL_FONT_WEIGHT },
       rowMinHeight: row.minHeight,
       rowPaddingHorizontal: row.paddingH,
       rowPaddingVertical: row.paddingV,
@@ -70,7 +78,7 @@ export function resolvePickerSizing(size: SegmentedControlSize): PickerSizing {
     fieldPaddingVertical: tokens.spacing.sm,
     chevronSize: row.chevronSize,
     labelVariant: 'body',
-    labelStyle: undefined,
+    labelStyle: { fontSize: LABEL_FONT_SIZE },
     rowMinHeight: row.minHeight,
     rowPaddingHorizontal: row.paddingH,
     rowPaddingVertical: row.paddingV,
