@@ -1,59 +1,83 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Row honours wrap, gap, align and justify overrides 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "alignItems": "flex-end",
-        "flexDirection": "row",
-        "flexWrap": "wrap",
-        "gap": 16,
-        "justifyContent": "space-between",
+        "flex": 1,
       },
       undefined,
     ]
   }
-  testID="row"
 >
-  <View>
-    <Text>
-      A
-    </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "flex-end",
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 16,
+          "justifyContent": "space-between",
+        },
+        undefined,
+      ]
+    }
+    testID="row"
+  >
+    <View>
+      <Text>
+        A
+      </Text>
+    </View>
+    <View>
+      <Text>
+        B
+      </Text>
+    </View>
   </View>
-  <View>
-    <Text>
-      B
-    </Text>
-  </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Row renders children inline with default props 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "flexWrap": "nowrap",
-        "gap": 8,
-        "justifyContent": "flex-start",
+        "flex": 1,
       },
       undefined,
     ]
   }
-  testID="row"
 >
-  <View>
-    <Text>
-      A
-    </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "flexWrap": "nowrap",
+          "gap": 8,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+    testID="row"
+  >
+    <View>
+      <Text>
+        A
+      </Text>
+    </View>
+    <View>
+      <Text>
+        B
+      </Text>
+    </View>
   </View>
-  <View>
-    <Text>
-      B
-    </Text>
-  </View>
-</View>
+</RNCSafeAreaProvider>
 `;

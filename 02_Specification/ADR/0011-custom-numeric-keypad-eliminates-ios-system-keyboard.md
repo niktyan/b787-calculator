@@ -408,3 +408,151 @@ long as `minTouchTarget` doesn't move.
 Positioning tests are untouched: `computeKeypadPosition` still accepts
 `keypadSize` as a parameter, the unit tests still feed an explicit
 fixture. The pure-function signature is unchanged.
+
+## Iteration 4 (2026-06-11) — bottom-dock on iPhone-compact viewport
+
+After Sprint G shipped, pilot feedback on the iPhone build flagged
+that tapping the Center of Gravity field opens the keypad **above**
+the field (per Iteration 2's "compact-screen above-or-below cascade"),
+which covers the Aircraft and TOW rows sitting in the upper half of
+the form. The pilot's eye has to travel from the bottom-mid (where the
+CG digits are being typed) to a popover floating over the top half of
+the screen — the opposite of where a native iOS keyboard would sit.
+
+iOS solves this on every system text-input by docking the keyboard
+flush to the bottom edge of the screen and pushing the form content
+upward when the active field would otherwise be hidden. Iteration 4
+adopts the same contract for the custom keypad on **iPhone-compact
+widths only**. iPad presentation is untouched — its anchored-popover
+cascade (Iteration 2) remains the correct pattern for the wide split-
+column layout, where the anchored popover lands beside the field in
+empty horizontal space, not on top of the form.
+
+### 1 · `positionBottomDocked` pure helper
+
+New exported helper in
+`src/design-system/anchored-popover/computeAnchoredPosition.ts`:
+
+```ts
+export function positionBottomDocked(
+  screen: { width: number; height: number },
+  popover: { width: number; height: number },
+  safeAreaBottom: number,
+): { top: number; left: number };
+```
+
+Invariants:
+
+- `position.top + popover.height === screen.height - safeAreaBottom`
+  (the popover's bottom edge sits exactly on the safe-area top).
+- `position.left === (screen.width - popover.width) / 2`
+  (horizontally centred; for a full-width popover, `left === 0`).
+- **No anchor parameter.** The dock position is a pure function of
+  viewport + popover size + safe-area inset. The active field's
+  position does not influence the dock.
+
+The existing `computeAnchoredPosition` dispatch is unchanged — its
+compact branch (`positionAboveOrBelow`) is still reachable via the
+`computeKeypadPosition` re-export and remains pinned by its existing
+unit tests. The host now bypasses `computeAnchoredPosition` on iPhone
+widths and calls `positionBottomDocked` directly.
+
+### 2 · Host integration
+
+`NumericKeypadHost.tsx`:
+
+- Reads `useSafeAreaInsets().bottom` (the package is already mounted
+  via `SafeAreaProvider` in `src/app/_layout.tsx`).
+- Branches by `screen.width < COMPACT_WIDTH_BREAKPOINT` (768 pt):
+  - **Compact:** `keypadWidth = screen.width` (full width, system-
+    keyboard-flush); `position = positionBottomDocked(...)`.
+  - **Wide:** `keypadWidth = 280` (unchanged); `position =
+    computeAnchoredPosition(...)`.
+- Style adjustments for the dock variant:
+  - `borderTopLeftRadius` + `borderTopRightRadius` only (no bottom
+    rounding — the sheet anchors to the safe-area edge).
+  - `borderTopWidth` only (no left/right/bottom border — they'd be
+    flush against the screen edge invisibly).
+  - Shadow offset Y inverted (negative) so the cast shadow lifts
+    above the top edge where the popover meets the form.
+- **Visibility gate relaxed on compact.** The dock is anchor-
+  independent, so the gate collapses to `activeFieldId !== null`.
+  On wide the existing `activeFieldId !== null && activeAnchor !==
+  null` gate is preserved (the anchored popover still needs measured
+  geometry).
+
+### 3 · Active-field visibility — ScrollView at the Takeoff screen
+
+The Takeoff screen previously laid its form out in a flat `<Stack>`
+with no scroll. With a bottom-docked keypad, the lower stack items
+(Runway segmented control, result panel + FCOM CAUTION) are covered
+when the keypad opens. On iPhone-compact the screen now wraps its
+form column in a `<ScrollView>`:
+
+- `contentContainerStyle.paddingBottom` equals the new
+  `useNumericKeypadDockOffset()` value: `0` when closed,
+  `keypadHeight + insets.bottom` when open.
+- `keyboardShouldPersistTaps="always"` so tapping a segmented-control
+  option doesn't dismiss the keypad mid-edit.
+- The user can swipe to reveal the runway picker / result panel
+  while the keypad stays docked; tapping Done closes the keypad and
+  the bottom padding collapses, returning the form to its natural
+  height.
+
+`KeyboardAvoidingView` from `react-native` is **not** used — that
+component targets the native iOS keyboard; our keypad is custom and
+already managed by the keypad Provider/Host. Mixing the two would
+double-shift the form.
+
+### 4 · Public `useNumericKeypadDockOffset` hook
+
+New design-system export
+(`src/design-system/components/NumericKeypad/useNumericKeypadDockOffset.ts`):
+
+```ts
+export function useNumericKeypadDockOffset(): number;
+```
+
+Returns the number of pt the screen should reserve as bottom padding
+to keep the active field reachable above the dock. `0` when the
+keypad is closed or when the viewport is wide (the anchored popover
+doesn't oblige the screen to scroll).
+
+Kept as a focused hook rather than re-exporting the full
+`NumericKeypadContext` so screens import a single number, not the
+entire state surface.
+
+### 5 · Test pinning
+
+- `positionBottomDocked` pure-function tests verify the
+  bottom-flush invariant, full-width centring, narrow-popover
+  centring, anchor-independence, and `safeAreaBottom=0`.
+- Host integration tests on iPhone widths verify the dock geometry,
+  full-width style, top-only corner rounding, anchor-independent
+  visibility, and the Done-button bottom-Y clamp (must sit within
+  `[screen.height - safeBottom - 60, screen.height - safeBottom + 1)`
+  — a regression net that fires if a future change drifts safe-area
+  handling or `KEYPAD_HEIGHT`).
+- The existing `computeKeypadPosition` compact-branch tests
+  (Iteration 2) stay intact — `computeAnchoredPosition` itself is
+  unchanged, and the `AnchoredPopoverHost` consumer (used by the
+  runway-condition picker on iPad-landscape only) is not affected.
+
+### Trade-offs
+
+- The dock no longer "follows" the field. A pilot tapping CG sees
+  the keypad in the same screen position as when they tap TOW.
+  Acceptable on iPhone-compact (the screen is small enough that
+  bottom docking is more predictable than chasing the field) and
+  preferred per pilot feedback.
+- The bottom of the form (Runway segmented + result panel + FCOM
+  CAUTION) is hidden while the keypad is open. The user can swipe to
+  reveal it, or tap Done to dismiss the keypad. This mirrors the iOS
+  system-keyboard contract.
+- A reserved-slot-pattern (à la ADR-0019 for the Landing CAT/INOP
+  toggles) is **not** appropriate here — that pattern is for
+  *avoiding* layout shift on toggle changes. The keypad is an
+  overlay, not a stack member, and its open/close lifecycle is
+  user-driven, not state-derived. Reserving its space when closed
+  would waste ~338 pt of vertical real estate while the user isn't
+  typing.

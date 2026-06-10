@@ -1,149 +1,173 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Disclaimer renders title and body in dark theme 1`] = `
-<View
-  accessibilityLabel="Advisory only"
-  accessibilityRole="alert"
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "backgroundColor": "rgba(255, 176, 32, 0.08)",
-      "borderColor": "rgba(255, 176, 32, 0.3)",
-      "borderRadius": 10,
-      "borderWidth": 1,
-      "maxWidth": 380,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
 >
   <View
+    accessibilityLabel="Advisory only"
+    accessibilityRole="alert"
     style={
-      [
-        {
-          "alignItems": "stretch",
-          "flexDirection": "column",
-          "gap": 4,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
+      {
+        "backgroundColor": "rgba(255, 176, 32, 0.08)",
+        "borderColor": "rgba(255, 176, 32, 0.3)",
+        "borderRadius": 10,
+        "borderWidth": 1,
+        "maxWidth": 380,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      }
     }
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#FFB020",
-            "fontFamily": "System",
-            "fontSize": 11,
-            "fontWeight": "600",
-            "letterSpacing": 0.44,
-            "lineHeight": 16,
-            "textAlign": "auto",
-          },
-          {
-            "textTransform": "uppercase",
-          },
-        ]
-      }
-    >
-      ⚠  
-      Advisory only
-    </Text>
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 11,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 4,
+            "justifyContent": "flex-start",
           },
           undefined,
         ]
       }
     >
-      Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator procedures.
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#FFB020",
+              "fontFamily": "System",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 0.44,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            {
+              "textTransform": "uppercase",
+            },
+          ]
+        }
+      >
+        ⚠  
+        Advisory only
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 11,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator procedures.
+      </Text>
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Disclaimer renders title and body in light theme 1`] = `
-<View
-  accessibilityLabel="Advisory only"
-  accessibilityRole="alert"
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "backgroundColor": "#FEF6E7",
-      "borderColor": "#F0C674",
-      "borderRadius": 10,
-      "borderWidth": 1,
-      "maxWidth": 380,
-      "paddingHorizontal": 16,
-      "paddingVertical": 14,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
 >
   <View
+    accessibilityLabel="Advisory only"
+    accessibilityRole="alert"
     style={
-      [
-        {
-          "alignItems": "stretch",
-          "flexDirection": "column",
-          "gap": 4,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
+      {
+        "backgroundColor": "#FEF6E7",
+        "borderColor": "#F0C674",
+        "borderRadius": 10,
+        "borderWidth": 1,
+        "maxWidth": 380,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      }
     }
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#9A6700",
-            "fontFamily": "System",
-            "fontSize": 11,
-            "fontWeight": "600",
-            "letterSpacing": 0.44,
-            "lineHeight": 16,
-            "textAlign": "auto",
-          },
-          {
-            "textTransform": "uppercase",
-          },
-        ]
-      }
-    >
-      ⚠  
-      Advisory only
-    </Text>
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#4B5563",
-            "fontFamily": "System",
-            "fontSize": 11,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "auto",
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 4,
+            "justifyContent": "flex-start",
           },
           undefined,
         ]
       }
     >
-      Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator procedures.
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#9A6700",
+              "fontFamily": "System",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 0.44,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            {
+              "textTransform": "uppercase",
+            },
+          ]
+        }
+      >
+        ⚠  
+        Advisory only
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#4B5563",
+              "fontFamily": "System",
+              "fontSize": 11,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator procedures.
+      </Text>
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;

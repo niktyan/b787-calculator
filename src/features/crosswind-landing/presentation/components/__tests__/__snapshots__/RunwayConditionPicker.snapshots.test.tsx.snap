@@ -1,7 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored popover (660 pt high) 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <View
     accessibilityRole="button"
     accessibilityState={
@@ -97,7 +107,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
     >
       
     </Text>
-  </View>,
+  </View>
   <Modal
     animationType="none"
     onRequestClose={[Function]}
@@ -795,12 +805,22 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" landscape — anchored
         </View>
       </View>
     </View>
-  </Modal>,
-]
+  </Modal>
+</RNCSafeAreaProvider>
 `;
 
 exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred modal (~480 pt card) 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <View
     accessibilityRole="button"
     accessibilityState={
@@ -896,7 +916,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
     >
       
     </Text>
-  </View>,
+  </View>
   <Modal
     animationType="fade"
     onRequestClose={[Function]}
@@ -1590,12 +1610,22 @@ exports[`RunwayConditionPicker · open snapshots iPad 11" portrait — centred m
         </View>
       </View>
     </View>
-  </Modal>,
-]
+  </Modal>
+</RNCSafeAreaProvider>
 `;
 
 exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored popover (660 pt high) 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <View
     accessibilityRole="button"
     accessibilityState={
@@ -1691,7 +1721,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
     >
       
     </Text>
-  </View>,
+  </View>
   <Modal
     animationType="none"
     onRequestClose={[Function]}
@@ -2389,12 +2419,22 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" landscape — anchored
         </View>
       </View>
     </View>
-  </Modal>,
-]
+  </Modal>
+</RNCSafeAreaProvider>
 `;
 
 exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred modal (~480 pt card) 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <View
     accessibilityRole="button"
     accessibilityState={
@@ -2490,7 +2530,7 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
     >
       
     </Text>
-  </View>,
+  </View>
   <Modal
     animationType="fade"
     onRequestClose={[Function]}
@@ -3184,12 +3224,22 @@ exports[`RunwayConditionPicker · open snapshots iPad 13" portrait — centred m
         </View>
       </View>
     </View>
-  </Modal>,
-]
+  </Modal>
+</RNCSafeAreaProvider>
 `;
 
 exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred modal, fade 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <View
     accessibilityRole="button"
     accessibilityState={
@@ -3262,7 +3312,7 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
       Dry
     </Text>
     <Text />
-  </View>,
+  </View>
   <Modal
     animationType="fade"
     onRequestClose={[Function]}
@@ -3938,6 +3988,6 @@ exports[`RunwayConditionPicker · open snapshots iPhone portrait — centred mod
         </View>
       </View>
     </View>
-  </Modal>,
-]
+  </Modal>
+</RNCSafeAreaProvider>
 `;

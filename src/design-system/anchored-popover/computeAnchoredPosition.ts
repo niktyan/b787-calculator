@@ -138,3 +138,35 @@ export function computeAnchoredPosition(
   }
   return positionAboveOrBelow(anchor, screen, popover);
 }
+
+/**
+ * Bottom-dock positioning — pure helper for the iPhone-compact numeric
+ * keypad branch (ADR-0011 Iteration 4).
+ *
+ * Places the popover flush against the bottom edge of the safe-area
+ * inset and horizontally centred on the screen. Unlike
+ * `computeAnchoredPosition`, the anchor is NOT consulted — bottom-dock
+ * is a stable position that does not "follow" the active field. This
+ * matches the iOS system-keyboard contract on iPhone.
+ *
+ * Invariants (asserted by unit tests + host integration tests):
+ *   - `position.top + popover.height === screen.height - safeAreaBottom`
+ *     The popover's bottom edge sits exactly on the safe-area top.
+ *   - `position.left === (screen.width - popover.width) / 2`
+ *     Horizontally centred; with a full-width popover, `left === 0`.
+ *
+ * Out of scope: anchor-driven scrolling. The caller (CrosswindScreen)
+ * handles "keep active field visible above the dock" by wrapping the
+ * form in a ScrollView and adding paddingBottom when the keypad is
+ * open. See ADR-0011 Iteration 4.
+ */
+export function positionBottomDocked(
+  screen: ScreenSize,
+  popover: PopoverSize,
+  safeAreaBottom: number,
+): PopoverPosition {
+  return {
+    top: screen.height - popover.height - safeAreaBottom,
+    left: (screen.width - popover.width) / HALF,
+  };
+}

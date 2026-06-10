@@ -1,119 +1,143 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EmptyState renders title and description in dark theme 1`] = `
-<View
-  accessibilityLabel="No results yet"
-  accessibilityRole="text"
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "alignItems": "center",
-      "flex": 1,
-      "justifyContent": "center",
-      "padding": 24,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="empty"
 >
   <View
+    accessibilityLabel="No results yet"
+    accessibilityRole="text"
     style={
-      [
-        {
-          "alignItems": "center",
-          "flexDirection": "column",
-          "gap": 12,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 24,
+      }
     }
+    testID="empty"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#E6EDF3",
-            "fontFamily": "System",
-            "fontSize": 22,
-            "fontWeight": "600",
-            "letterSpacing": 0,
-            "lineHeight": 28,
-            "textAlign": "center",
+            "alignItems": "center",
+            "flexDirection": "column",
+            "gap": 12,
+            "justifyContent": "flex-start",
           },
           undefined,
         ]
       }
     >
-      No results yet
-    </Text>
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      Enter weight and CG to see the calculation.
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#E6EDF3",
+              "fontFamily": "System",
+              "fontSize": 22,
+              "fontWeight": "600",
+              "letterSpacing": 0,
+              "lineHeight": 28,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        No results yet
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Enter weight and CG to see the calculation.
+      </Text>
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`EmptyState renders title only in light theme 1`] = `
-<View
-  accessibilityLabel="Nothing here"
-  accessibilityRole="text"
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "alignItems": "center",
-      "flex": 1,
-      "justifyContent": "center",
-      "padding": 24,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
 >
   <View
+    accessibilityLabel="Nothing here"
+    accessibilityRole="text"
     style={
-      [
-        {
-          "alignItems": "center",
-          "flexDirection": "column",
-          "gap": 12,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 24,
+      }
     }
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#1F2937",
-            "fontFamily": "System",
-            "fontSize": 22,
-            "fontWeight": "600",
-            "letterSpacing": 0,
-            "lineHeight": 28,
-            "textAlign": "center",
+            "alignItems": "center",
+            "flexDirection": "column",
+            "gap": 12,
+            "justifyContent": "flex-start",
           },
           undefined,
         ]
       }
     >
-      Nothing here
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#1F2937",
+              "fontFamily": "System",
+              "fontSize": 22,
+              "fontWeight": "600",
+              "letterSpacing": 0,
+              "lineHeight": 28,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Nothing here
+      </Text>
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;

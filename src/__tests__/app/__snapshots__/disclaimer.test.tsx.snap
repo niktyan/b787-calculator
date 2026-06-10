@@ -1,159 +1,100 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Disclaimer route renders correctly in light theme 1`] = `
-<RNCSafeAreaView
-  edges={
-    {
-      "bottom": "additive",
-      "left": "additive",
-      "right": "additive",
-      "top": "additive",
-    }
-  }
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "backgroundColor": "#F4F6F9",
-      "flex": 1,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="disclaimer-screen"
 >
-  <View
-    style={
-      [
-        {
-          "flex": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 12,
-        },
-        undefined,
-      ]
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
     }
+    style={
+      {
+        "backgroundColor": "#F4F6F9",
+        "flex": 1,
+      }
+    }
+    testID="disclaimer-screen"
   >
     <View
       style={
         [
           {
-            "alignItems": "center",
-            "flexDirection": "column",
-            "gap": 16,
-            "justifyContent": "center",
-          },
-          {
             "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
           },
+          undefined,
         ]
       }
     >
-      <View
-        accessibilityLabel="B787 logo"
-        style={
-          {
-            "alignItems": "center",
-            "backgroundColor": "#00C2A8",
-            "borderRadius": 14,
-            "height": 56,
-            "justifyContent": "center",
-            "width": 56,
-          }
-        }
-        testID="disclaimer-logo"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#001A17",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "700",
-                "letterSpacing": 0,
-                "lineHeight": 28,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
-          }
-        >
-          B7
-        </Text>
-      </View>
       <View
         style={
           [
             {
               "alignItems": "center",
               "flexDirection": "column",
-              "gap": 4,
-              "justifyContent": "flex-start",
+              "gap": 16,
+              "justifyContent": "center",
             },
-            undefined,
+            {
+              "flex": 1,
+            },
           ]
         }
       >
-        <Text
-          allowFontScaling={true}
+        <View
+          accessibilityLabel="B787 logo"
           style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "System",
-                "fontSize": 18,
-                "fontWeight": "600",
-                "letterSpacing": -0.18,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
+            {
+              "alignItems": "center",
+              "backgroundColor": "#00C2A8",
+              "borderRadius": 14,
+              "height": 56,
+              "justifyContent": "center",
+              "width": 56,
+            }
           }
+          testID="disclaimer-logo"
         >
-          B787 Tools
-        </Text>
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#4B5563",
-                "fontFamily": "System",
-                "fontSize": 12,
-                "fontWeight": "400",
-                "letterSpacing": 0,
-                "lineHeight": 16,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
-          }
-        >
-          Electronic Performance Tools
-           · v
-          1.1.0
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Advisory only"
-        accessibilityRole="alert"
-        style={
-          {
-            "backgroundColor": "#FEF6E7",
-            "borderColor": "#F0C674",
-            "borderRadius": 10,
-            "borderWidth": 1,
-            "maxWidth": 380,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          }
-        }
-        testID="disclaimer-card"
-      >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#001A17",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "700",
+                  "letterSpacing": 0,
+                  "lineHeight": 28,
+                  "textAlign": "auto",
+                },
+                undefined,
+              ]
+            }
+          >
+            B7
+          </Text>
+        </View>
         <View
           style={
             [
               {
-                "alignItems": "stretch",
+                "alignItems": "center",
                 "flexDirection": "column",
                 "gap": 4,
                 "justifyContent": "flex-start",
@@ -167,22 +108,19 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
             style={
               [
                 {
-                  "color": "#9A6700",
+                  "color": "#1F2937",
                   "fontFamily": "System",
-                  "fontSize": 11,
+                  "fontSize": 18,
                   "fontWeight": "600",
-                  "letterSpacing": 0.44,
-                  "lineHeight": 16,
+                  "letterSpacing": -0.18,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                {
-                  "textTransform": "uppercase",
-                },
+                undefined,
               ]
             }
           >
-            ⚠  
-            Advisory only
+            B787 Tools
           </Text>
           <Text
             allowFontScaling={true}
@@ -191,7 +129,7 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
                 {
                   "color": "#4B5563",
                   "fontFamily": "System",
-                  "fontSize": 11,
+                  "fontSize": 12,
                   "fontWeight": "400",
                   "letterSpacing": 0,
                   "lineHeight": 16,
@@ -201,69 +139,239 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
               ]
             }
           >
-            Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+            Electronic Performance Tools
+             · v
+            1.1.0
           </Text>
         </View>
+        <View
+          accessibilityLabel="Advisory only"
+          accessibilityRole="alert"
+          style={
+            {
+              "backgroundColor": "#FEF6E7",
+              "borderColor": "#F0C674",
+              "borderRadius": 10,
+              "borderWidth": 1,
+              "maxWidth": 380,
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            }
+          }
+          testID="disclaimer-card"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "stretch",
+                  "flexDirection": "column",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#9A6700",
+                    "fontFamily": "System",
+                    "fontSize": 11,
+                    "fontWeight": "600",
+                    "letterSpacing": 0.44,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "textTransform": "uppercase",
+                  },
+                ]
+              }
+            >
+              ⚠  
+              Advisory only
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#4B5563",
+                    "fontFamily": "System",
+                    "fontSize": 11,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="I understand · Continue"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          testID="disclaimer-accept"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
+                },
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#001A17",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              I understand · Continue
+            </Text>
+          </View>
+        </View>
       </View>
+    </View>
+  </RNCSafeAreaView>
+</RNCSafeAreaProvider>
+`;
+
+exports[`Disclaimer route renders the brand block, the amber disclaimer card, and the accept button (dark) 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
+    }
+    style={
+      {
+        "backgroundColor": "#0A0E14",
+        "flex": 1,
+      }
+    }
+    testID="disclaimer-screen"
+  >
+    <View
+      style={
+        [
+          {
+            "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
+          },
+          undefined,
+        ]
+      }
+    >
       <View
-        accessibilityLabel="I understand · Continue"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "column",
+              "gap": 16,
+              "justifyContent": "center",
+            },
+            {
+              "flex": 1,
+            },
+          ]
         }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        testID="disclaimer-accept"
       >
         <View
+          accessibilityLabel="B787 logo"
           style={
-            [
-              {
-                "alignItems": "center",
-                "backgroundColor": "#00C2A8",
-                "borderColor": "#00C2A8",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "justifyContent": "center",
-                "minHeight": 44,
-                "paddingHorizontal": 16,
-                "paddingVertical": 8,
-              },
-              null,
-              {
-                "opacity": 1,
-                "transform": [
-                  {
-                    "scale": 1,
-                  },
-                ],
-              },
-            ]
+            {
+              "alignItems": "center",
+              "backgroundColor": "#00C2A8",
+              "borderRadius": 14,
+              "height": 56,
+              "justifyContent": "center",
+              "width": 56,
+            }
           }
+          testID="disclaimer-logo"
         >
           <Text
             allowFontScaling={true}
@@ -271,180 +379,25 @@ exports[`Disclaimer route renders correctly in light theme 1`] = `
               [
                 {
                   "color": "#001A17",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "700",
                   "letterSpacing": 0,
-                  "lineHeight": 22,
+                  "lineHeight": 28,
                   "textAlign": "auto",
                 },
                 undefined,
               ]
             }
           >
-            I understand · Continue
+            B7
           </Text>
         </View>
-      </View>
-    </View>
-  </View>
-</RNCSafeAreaView>
-`;
-
-exports[`Disclaimer route renders the brand block, the amber disclaimer card, and the accept button (dark) 1`] = `
-<RNCSafeAreaView
-  edges={
-    {
-      "bottom": "additive",
-      "left": "additive",
-      "right": "additive",
-      "top": "additive",
-    }
-  }
-  style={
-    {
-      "backgroundColor": "#0A0E14",
-      "flex": 1,
-    }
-  }
-  testID="disclaimer-screen"
->
-  <View
-    style={
-      [
-        {
-          "flex": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 12,
-        },
-        undefined,
-      ]
-    }
-  >
-    <View
-      style={
-        [
-          {
-            "alignItems": "center",
-            "flexDirection": "column",
-            "gap": 16,
-            "justifyContent": "center",
-          },
-          {
-            "flex": 1,
-          },
-        ]
-      }
-    >
-      <View
-        accessibilityLabel="B787 logo"
-        style={
-          {
-            "alignItems": "center",
-            "backgroundColor": "#00C2A8",
-            "borderRadius": 14,
-            "height": 56,
-            "justifyContent": "center",
-            "width": 56,
-          }
-        }
-        testID="disclaimer-logo"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#001A17",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "700",
-                "letterSpacing": 0,
-                "lineHeight": 28,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
-          }
-        >
-          B7
-        </Text>
-      </View>
-      <View
-        style={
-          [
-            {
-              "alignItems": "center",
-              "flexDirection": "column",
-              "gap": 4,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "System",
-                "fontSize": 18,
-                "fontWeight": "600",
-                "letterSpacing": -0.18,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
-          }
-        >
-          B787 Tools
-        </Text>
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#8B949E",
-                "fontFamily": "System",
-                "fontSize": 12,
-                "fontWeight": "400",
-                "letterSpacing": 0,
-                "lineHeight": 16,
-                "textAlign": "auto",
-              },
-              undefined,
-            ]
-          }
-        >
-          Electronic Performance Tools
-           · v
-          1.1.0
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Advisory only"
-        accessibilityRole="alert"
-        style={
-          {
-            "backgroundColor": "rgba(255, 176, 32, 0.08)",
-            "borderColor": "rgba(255, 176, 32, 0.3)",
-            "borderRadius": 10,
-            "borderWidth": 1,
-            "maxWidth": 380,
-            "paddingHorizontal": 16,
-            "paddingVertical": 14,
-          }
-        }
-        testID="disclaimer-card"
-      >
         <View
           style={
             [
               {
-                "alignItems": "stretch",
+                "alignItems": "center",
                 "flexDirection": "column",
                 "gap": 4,
                 "justifyContent": "flex-start",
@@ -458,22 +411,19 @@ exports[`Disclaimer route renders the brand block, the amber disclaimer card, an
             style={
               [
                 {
-                  "color": "#FFB020",
+                  "color": "#E6EDF3",
                   "fontFamily": "System",
-                  "fontSize": 11,
+                  "fontSize": 18,
                   "fontWeight": "600",
-                  "letterSpacing": 0.44,
-                  "lineHeight": 16,
+                  "letterSpacing": -0.18,
+                  "lineHeight": 22,
                   "textAlign": "auto",
                 },
-                {
-                  "textTransform": "uppercase",
-                },
+                undefined,
               ]
             }
           >
-            ⚠  
-            Advisory only
+            B787 Tools
           </Text>
           <Text
             allowFontScaling={true}
@@ -482,7 +432,7 @@ exports[`Disclaimer route renders the brand block, the amber disclaimer card, an
                 {
                   "color": "#8B949E",
                   "fontFamily": "System",
-                  "fontSize": 11,
+                  "fontSize": 12,
                   "fontWeight": "400",
                   "letterSpacing": 0,
                   "lineHeight": 16,
@@ -492,92 +442,166 @@ exports[`Disclaimer route renders the brand block, the amber disclaimer card, an
               ]
             }
           >
-            Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+            Electronic Performance Tools
+             · v
+            1.1.0
           </Text>
         </View>
-      </View>
-      <View
-        accessibilityLabel="I understand · Continue"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        testID="disclaimer-accept"
-      >
         <View
+          accessibilityLabel="Advisory only"
+          accessibilityRole="alert"
           style={
-            [
-              {
-                "alignItems": "center",
-                "backgroundColor": "#00C2A8",
-                "borderColor": "#00C2A8",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "justifyContent": "center",
-                "minHeight": 44,
-                "paddingHorizontal": 16,
-                "paddingVertical": 8,
-              },
-              null,
-              {
-                "opacity": 1,
-                "transform": [
-                  {
-                    "scale": 1,
-                  },
-                ],
-              },
-            ]
+            {
+              "backgroundColor": "rgba(255, 176, 32, 0.08)",
+              "borderColor": "rgba(255, 176, 32, 0.3)",
+              "borderRadius": 10,
+              "borderWidth": 1,
+              "maxWidth": 380,
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            }
           }
+          testID="disclaimer-card"
         >
-          <Text
-            allowFontScaling={true}
+          <View
             style={
               [
                 {
-                  "color": "#001A17",
-                  "fontFamily": "System",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
+                  "alignItems": "stretch",
+                  "flexDirection": "column",
+                  "gap": 4,
+                  "justifyContent": "flex-start",
                 },
                 undefined,
               ]
             }
           >
-            I understand · Continue
-          </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#FFB020",
+                    "fontFamily": "System",
+                    "fontSize": 11,
+                    "fontWeight": "600",
+                    "letterSpacing": 0.44,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "textTransform": "uppercase",
+                  },
+                ]
+              }
+            >
+              ⚠  
+              Advisory only
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#8B949E",
+                    "fontFamily": "System",
+                    "fontSize": 11,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Advisory only. Calculations provide conservative reference values for Boeing 787 operations. Final operational decisions must always be based on official Boeing FCOM/QRH and your operator's procedures. Not for primary navigation or operational use.
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityLabel="I understand · Continue"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          testID="disclaimer-accept"
+        >
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#00C2A8",
+                  "borderColor": "#00C2A8",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "justifyContent": "center",
+                  "minHeight": 44,
+                  "paddingHorizontal": 16,
+                  "paddingVertical": 8,
+                },
+                null,
+                {
+                  "opacity": 1,
+                  "transform": [
+                    {
+                      "scale": 1,
+                    },
+                  ],
+                },
+              ]
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#001A17",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              I understand · Continue
+            </Text>
+          </View>
         </View>
       </View>
     </View>
-  </View>
-</RNCSafeAreaView>
+  </RNCSafeAreaView>
+</RNCSafeAreaProvider>
 `;

@@ -56,6 +56,7 @@ export {
   NumericKeypadProvider,
   NumericKeypadHost,
   useNumericKeypad,
+  useNumericKeypadDockOffset,
 } from './NumericKeypad';
 export type {
   NumericKeypadProps,

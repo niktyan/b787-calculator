@@ -1,45 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MonoText inherits color overrides from props 1`] = `
-<Text
-  allowFontScaling={true}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "color": "#00C2A8",
-        "fontFamily": "Menlo",
-        "fontSize": 16,
-        "fontWeight": "500",
-        "letterSpacing": 0,
-        "lineHeight": 22,
-        "textAlign": "auto",
+        "flex": 1,
       },
       undefined,
     ]
   }
 >
-  42
-</Text>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#00C2A8",
+          "fontFamily": "Menlo",
+          "fontSize": 16,
+          "fontWeight": "500",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    42
+  </Text>
+</RNCSafeAreaProvider>
 `;
 
 exports[`MonoText renders numeric content with the mono typography variant 1`] = `
-<Text
-  allowFontScaling={true}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "color": "#E6EDF3",
-        "fontFamily": "Menlo",
-        "fontSize": 16,
-        "fontWeight": "500",
-        "letterSpacing": 0,
-        "lineHeight": 22,
-        "textAlign": "auto",
+        "flex": 1,
       },
       undefined,
     ]
   }
 >
-  170.5
-</Text>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "Menlo",
+          "fontSize": 16,
+          "fontWeight": "500",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    170.5
+  </Text>
+</RNCSafeAreaProvider>
 `;

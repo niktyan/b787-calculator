@@ -1,47 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Error route renders correctly in light theme 1`] = `
-<RNCSafeAreaView
-  edges={
-    {
-      "bottom": "additive",
-      "left": "additive",
-      "right": "additive",
-      "top": "additive",
-    }
-  }
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "backgroundColor": "#F4F6F9",
-      "flex": 1,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="error-screen"
 >
-  <View
-    style={
-      [
-        {
-          "flex": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 12,
-        },
-        undefined,
-      ]
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
     }
+    style={
+      {
+        "backgroundColor": "#F4F6F9",
+        "flex": 1,
+      }
+    }
+    testID="error-screen"
   >
     <View
       style={
         [
           {
-            "alignItems": "center",
-            "flexDirection": "column",
-            "gap": 24,
-            "justifyContent": "space-between",
-          },
-          {
             "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
           },
+          undefined,
         ]
       }
     >
@@ -51,296 +47,308 @@ exports[`Error route renders correctly in light theme 1`] = `
             {
               "alignItems": "center",
               "flexDirection": "column",
-              "gap": 12,
-              "justifyContent": "flex-start",
+              "gap": 24,
+              "justifyContent": "space-between",
             },
-            undefined,
+            {
+              "flex": 1,
+            },
           ]
         }
       >
-        <Text
-          allowFontScaling={true}
+        <View
           style={
             [
               {
-                "color": "#1F2937",
-                "fontFamily": "System",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "letterSpacing": 0,
-                "lineHeight": 34,
-                "textAlign": "center",
+                "alignItems": "center",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
               },
               undefined,
             ]
           }
         >
-          error.referenceDataUnavailable
-        </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "System",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "letterSpacing": 0,
+                  "lineHeight": 34,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            error.referenceDataUnavailable
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#4B5563",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            error.referenceDataDescription
+          </Text>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            accessibilityLabel="common.retry"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="error-retry"
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#00C2A8",
+                    "borderColor": "#00C2A8",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 8,
+                  },
+                  null,
+                  {
+                    "opacity": 1,
+                    "transform": [
+                      {
+                        "scale": 1,
+                      },
+                    ],
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#001A17",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                common.retry
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="error.contactSupport"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="error-contact"
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "borderColor": "#00C2A8",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 8,
+                  },
+                  null,
+                  {
+                    "opacity": 1,
+                    "transform": [
+                      {
+                        "scale": 1,
+                      },
+                    ],
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#006B5E",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                error.contactSupport
+              </Text>
+            </View>
+          </View>
+        </View>
         <Text
           allowFontScaling={true}
           style={
             [
               {
-                "color": "#4B5563",
+                "color": "#6B7280",
                 "fontFamily": "System",
-                "fontSize": 16,
+                "fontSize": 12,
                 "fontWeight": "400",
                 "letterSpacing": 0,
-                "lineHeight": 22,
+                "lineHeight": 16,
                 "textAlign": "center",
               },
               undefined,
             ]
           }
+          testID="error-version"
         >
-          error.referenceDataDescription
+          v
+          1.1.0
         </Text>
       </View>
-      <View
-        style={
-          [
-            {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "gap": 12,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
-        }
-      >
-        <View
-          accessibilityLabel="common.retry"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          testID="error-retry"
-        >
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "backgroundColor": "#00C2A8",
-                  "borderColor": "#00C2A8",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 8,
-                },
-                null,
-                {
-                  "opacity": 1,
-                  "transform": [
-                    {
-                      "scale": 1,
-                    },
-                  ],
-                },
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#001A17",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              common.retry
-            </Text>
-          </View>
-        </View>
-        <View
-          accessibilityLabel="error.contactSupport"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          testID="error-contact"
-        >
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "backgroundColor": "transparent",
-                  "borderColor": "#00C2A8",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 8,
-                },
-                null,
-                {
-                  "opacity": 1,
-                  "transform": [
-                    {
-                      "scale": 1,
-                    },
-                  ],
-                },
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#006B5E",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              error.contactSupport
-            </Text>
-          </View>
-        </View>
-      </View>
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#6B7280",
-              "fontFamily": "System",
-              "fontSize": 12,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-        testID="error-version"
-      >
-        v
-        1.1.0
-      </Text>
     </View>
-  </View>
-</RNCSafeAreaView>
+  </RNCSafeAreaView>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Error route renders title, description, retry, contact and version (dark) 1`] = `
-<RNCSafeAreaView
-  edges={
-    {
-      "bottom": "additive",
-      "left": "additive",
-      "right": "additive",
-      "top": "additive",
-    }
-  }
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "backgroundColor": "#0A0E14",
-      "flex": 1,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="error-screen"
 >
-  <View
-    style={
-      [
-        {
-          "flex": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 12,
-        },
-        undefined,
-      ]
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
     }
+    style={
+      {
+        "backgroundColor": "#0A0E14",
+        "flex": 1,
+      }
+    }
+    testID="error-screen"
   >
     <View
       style={
         [
           {
-            "alignItems": "center",
-            "flexDirection": "column",
-            "gap": 24,
-            "justifyContent": "space-between",
-          },
-          {
             "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
           },
+          undefined,
         ]
       }
     >
@@ -350,250 +358,266 @@ exports[`Error route renders title, description, retry, contact and version (dar
             {
               "alignItems": "center",
               "flexDirection": "column",
-              "gap": 12,
-              "justifyContent": "flex-start",
+              "gap": 24,
+              "justifyContent": "space-between",
             },
-            undefined,
+            {
+              "flex": 1,
+            },
           ]
         }
       >
-        <Text
-          allowFontScaling={true}
+        <View
           style={
             [
               {
-                "color": "#E6EDF3",
-                "fontFamily": "System",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "letterSpacing": 0,
-                "lineHeight": 34,
-                "textAlign": "center",
+                "alignItems": "center",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
               },
               undefined,
             ]
           }
         >
-          error.referenceDataUnavailable
-        </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "System",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "letterSpacing": 0,
+                  "lineHeight": 34,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            error.referenceDataUnavailable
+          </Text>
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
+            }
+          >
+            error.referenceDataDescription
+          </Text>
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            accessibilityLabel="common.retry"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="error-retry"
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#00C2A8",
+                    "borderColor": "#00C2A8",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 8,
+                  },
+                  null,
+                  {
+                    "opacity": 1,
+                    "transform": [
+                      {
+                        "scale": 1,
+                      },
+                    ],
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#001A17",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                common.retry
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="error.contactSupport"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="error-contact"
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "borderColor": "#00C2A8",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 8,
+                  },
+                  null,
+                  {
+                    "opacity": 1,
+                    "transform": [
+                      {
+                        "scale": 1,
+                      },
+                    ],
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#00C2A8",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                error.contactSupport
+              </Text>
+            </View>
+          </View>
+        </View>
         <Text
           allowFontScaling={true}
           style={
             [
               {
-                "color": "#8B949E",
+                "color": "#6E7681",
                 "fontFamily": "System",
-                "fontSize": 16,
+                "fontSize": 12,
                 "fontWeight": "400",
                 "letterSpacing": 0,
-                "lineHeight": 22,
+                "lineHeight": 16,
                 "textAlign": "center",
               },
               undefined,
             ]
           }
+          testID="error-version"
         >
-          error.referenceDataDescription
+          v
+          1.1.0
         </Text>
       </View>
-      <View
-        style={
-          [
-            {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "gap": 12,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
-        }
-      >
-        <View
-          accessibilityLabel="common.retry"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          testID="error-retry"
-        >
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "backgroundColor": "#00C2A8",
-                  "borderColor": "#00C2A8",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 8,
-                },
-                null,
-                {
-                  "opacity": 1,
-                  "transform": [
-                    {
-                      "scale": 1,
-                    },
-                  ],
-                },
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#001A17",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              common.retry
-            </Text>
-          </View>
-        </View>
-        <View
-          accessibilityLabel="error.contactSupport"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          testID="error-contact"
-        >
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "backgroundColor": "transparent",
-                  "borderColor": "#00C2A8",
-                  "borderRadius": 8,
-                  "borderWidth": 1,
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "paddingHorizontal": 16,
-                  "paddingVertical": 8,
-                },
-                null,
-                {
-                  "opacity": 1,
-                  "transform": [
-                    {
-                      "scale": 1,
-                    },
-                  ],
-                },
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#00C2A8",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              error.contactSupport
-            </Text>
-          </View>
-        </View>
-      </View>
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#6E7681",
-              "fontFamily": "System",
-              "fontSize": 12,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-        testID="error-version"
-      >
-        v
-        1.1.0
-      </Text>
     </View>
-  </View>
-</RNCSafeAreaView>
+  </RNCSafeAreaView>
+</RNCSafeAreaProvider>
 `;
