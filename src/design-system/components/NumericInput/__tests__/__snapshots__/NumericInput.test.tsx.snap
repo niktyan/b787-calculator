@@ -1,462 +1,498 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NumericInput renders empty integer field with placeholder in dark theme 1`] = `
-<View
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": false,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={false}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "gap": 4,
-    }
-  }
-  testID="weight"
->
-  <Text
-    allowFontScaling={true}
-    style={
-      [
-        {
-          "color": "#8B949E",
-          "fontFamily": "System",
-          "fontSize": 9,
-          "fontWeight": "600",
-          "letterSpacing": 0.54,
-          "lineHeight": 12,
-          "textAlign": "auto",
-        },
-        {
-          "textTransform": "uppercase",
-        },
-      ]
-    }
-  >
-    TOW actual
-  </Text>
-  <View
-    style={
+    [
       {
-        "backgroundColor": "rgba(0, 194, 168, 0.2)",
-        "borderRadius": 10,
-        "padding": 0,
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
       }
     }
-  >
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "backgroundColor": "#11161F",
-          "borderColor": "rgba(255, 255, 255, 0.08)",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "minHeight": 44,
-          "opacity": 1,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
       }
-    >
-      <TextInput
-        accessibilityLabel="TOW actual"
-        autoComplete="off"
-        autoCorrect={false}
-        caretHidden={true}
-        editable={false}
-        inputMode="decimal"
-        keyboardType="decimal-pad"
-        onChangeText={[Function]}
-        onSubmitEditing={[Function]}
-        placeholder="e.g. 170"
-        placeholderTextColor="#6E7681"
-        pointerEvents="none"
-        returnKeyType="done"
-        showSoftInputOnFocus={false}
-        spellCheck={false}
-        style={
-          {
-            "color": "#E6EDF3",
-            "flex": 1,
-            "fontFamily": "Menlo",
-            "fontSize": 16,
-          }
-        }
-        testID="weight-input"
-        textContentType="none"
-        value=""
-      />
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#6E7681",
-              "fontFamily": "Menlo",
-              "fontSize": 11,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-      >
-        t
-      </Text>
-    </View>
-  </View>
-  <View
+    }
     accessible={false}
-    importantForAccessibility="no-hide-descendants"
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       {
-        "justifyContent": "flex-start",
-        "minHeight": 20,
+        "gap": 4,
       }
     }
-    testID="weight-error-slot"
-  />
-</View>
-`;
-
-exports[`NumericInput renders empty integer field with placeholder in light theme 1`] = `
-<View
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": false,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={false}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  style={
-    {
-      "gap": 4,
-    }
-  }
-  testID="weight"
->
-  <Text
-    allowFontScaling={true}
-    style={
-      [
-        {
-          "color": "#4B5563",
-          "fontFamily": "System",
-          "fontSize": 9,
-          "fontWeight": "600",
-          "letterSpacing": 0.54,
-          "lineHeight": 12,
-          "textAlign": "auto",
-        },
-        {
-          "textTransform": "uppercase",
-        },
-      ]
-    }
-  >
-    TOW actual
-  </Text>
-  <View
-    style={
-      {
-        "backgroundColor": "rgba(0, 194, 168, 0.2)",
-        "borderRadius": 10,
-        "padding": 0,
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "backgroundColor": "#FFFFFF",
-          "borderColor": "rgba(0, 0, 0, 0.08)",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "minHeight": 44,
-          "opacity": 1,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        }
-      }
-    >
-      <TextInput
-        accessibilityLabel="TOW actual"
-        autoComplete="off"
-        autoCorrect={false}
-        caretHidden={true}
-        editable={false}
-        inputMode="decimal"
-        keyboardType="decimal-pad"
-        onChangeText={[Function]}
-        onSubmitEditing={[Function]}
-        placeholder="e.g. 170"
-        placeholderTextColor="#6B7280"
-        pointerEvents="none"
-        returnKeyType="done"
-        showSoftInputOnFocus={false}
-        spellCheck={false}
-        style={
-          {
-            "color": "#1F2937",
-            "flex": 1,
-            "fontFamily": "Menlo",
-            "fontSize": 16,
-          }
-        }
-        testID="weight-input"
-        textContentType="none"
-        value=""
-      />
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#6B7280",
-              "fontFamily": "Menlo",
-              "fontSize": 11,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-      >
-        t
-      </Text>
-    </View>
-  </View>
-  <View
-    accessible={false}
-    importantForAccessibility="no-hide-descendants"
-    style={
-      {
-        "justifyContent": "flex-start",
-        "minHeight": 20,
-      }
-    }
-    testID="weight-error-slot"
-  />
-</View>
-`;
-
-exports[`NumericInput renders populated field with value, unit and error 1`] = `
-<View
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": false,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={false}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  style={
-    {
-      "gap": 4,
-    }
-  }
-  testID="cg"
->
-  <Text
-    allowFontScaling={true}
-    style={
-      [
-        {
-          "color": "#8B949E",
-          "fontFamily": "System",
-          "fontSize": 9,
-          "fontWeight": "600",
-          "letterSpacing": 0.54,
-          "lineHeight": 12,
-          "textAlign": "auto",
-        },
-        {
-          "textTransform": "uppercase",
-        },
-      ]
-    }
-  >
-    CG
-  </Text>
-  <View
-    style={
-      {
-        "backgroundColor": "rgba(0, 194, 168, 0.2)",
-        "borderRadius": 10,
-        "padding": 0,
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "backgroundColor": "#11161F",
-          "borderColor": "#E5484D",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "minHeight": 44,
-          "opacity": 1,
-          "paddingHorizontal": 12,
-          "paddingVertical": 8,
-        }
-      }
-    >
-      <TextInput
-        accessibilityLabel="CG"
-        autoComplete="off"
-        autoCorrect={false}
-        caretHidden={true}
-        editable={false}
-        inputMode="decimal"
-        keyboardType="decimal-pad"
-        onChangeText={[Function]}
-        onSubmitEditing={[Function]}
-        placeholderTextColor="#6E7681"
-        pointerEvents="none"
-        returnKeyType="done"
-        showSoftInputOnFocus={false}
-        spellCheck={false}
-        style={
-          {
-            "color": "#E6EDF3",
-            "flex": 1,
-            "fontFamily": "Menlo",
-            "fontSize": 16,
-          }
-        }
-        testID="cg-input"
-        textContentType="none"
-        value="25.5"
-      />
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#6E7681",
-              "fontFamily": "Menlo",
-              "fontSize": 11,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-      >
-        %MAC
-      </Text>
-    </View>
-  </View>
-  <View
-    accessible={true}
-    importantForAccessibility="auto"
-    style={
-      {
-        "justifyContent": "flex-start",
-        "minHeight": 20,
-      }
-    }
-    testID="cg-error-slot"
+    testID="weight"
   >
     <Text
       allowFontScaling={true}
       style={
         [
           {
-            "color": "#E5484D",
+            "color": "#8B949E",
             "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
+            "fontSize": 9,
+            "fontWeight": "600",
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
             "textAlign": "auto",
           },
-          undefined,
+          {
+            "textTransform": "uppercase",
+          },
         ]
       }
-      testID="cg-error"
     >
-      Above maximum 35 %MAC
+      TOW actual
     </Text>
+    <View
+      style={
+        {
+          "backgroundColor": "rgba(0, 194, 168, 0.2)",
+          "borderRadius": 10,
+          "padding": 0,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#11161F",
+            "borderColor": "rgba(255, 255, 255, 0.08)",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "minHeight": 44,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <TextInput
+          accessibilityLabel="TOW actual"
+          autoComplete="off"
+          autoCorrect={false}
+          caretHidden={true}
+          editable={false}
+          inputMode="decimal"
+          keyboardType="decimal-pad"
+          onChangeText={[Function]}
+          onSubmitEditing={[Function]}
+          placeholder="e.g. 170"
+          placeholderTextColor="#6E7681"
+          pointerEvents="none"
+          returnKeyType="done"
+          showSoftInputOnFocus={false}
+          spellCheck={false}
+          style={
+            {
+              "color": "#E6EDF3",
+              "flex": 1,
+              "fontFamily": "Menlo",
+              "fontSize": 16,
+            }
+          }
+          testID="weight-input"
+          textContentType="none"
+          value=""
+        />
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6E7681",
+                "fontFamily": "Menlo",
+                "fontSize": 11,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          t
+        </Text>
+      </View>
+    </View>
+    <View
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      style={
+        {
+          "justifyContent": "flex-start",
+          "minHeight": 20,
+        }
+      }
+      testID="weight-error-slot"
+    />
   </View>
-</View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`NumericInput renders empty integer field with placeholder in light theme 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={false}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "gap": 4,
+      }
+    }
+    testID="weight"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#4B5563",
+            "fontFamily": "System",
+            "fontSize": 9,
+            "fontWeight": "600",
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
+            "textAlign": "auto",
+          },
+          {
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      TOW actual
+    </Text>
+    <View
+      style={
+        {
+          "backgroundColor": "rgba(0, 194, 168, 0.2)",
+          "borderRadius": 10,
+          "padding": 0,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#FFFFFF",
+            "borderColor": "rgba(0, 0, 0, 0.08)",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "minHeight": 44,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <TextInput
+          accessibilityLabel="TOW actual"
+          autoComplete="off"
+          autoCorrect={false}
+          caretHidden={true}
+          editable={false}
+          inputMode="decimal"
+          keyboardType="decimal-pad"
+          onChangeText={[Function]}
+          onSubmitEditing={[Function]}
+          placeholder="e.g. 170"
+          placeholderTextColor="#6B7280"
+          pointerEvents="none"
+          returnKeyType="done"
+          showSoftInputOnFocus={false}
+          spellCheck={false}
+          style={
+            {
+              "color": "#1F2937",
+              "flex": 1,
+              "fontFamily": "Menlo",
+              "fontSize": 16,
+            }
+          }
+          testID="weight-input"
+          textContentType="none"
+          value=""
+        />
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6B7280",
+                "fontFamily": "Menlo",
+                "fontSize": 11,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          t
+        </Text>
+      </View>
+    </View>
+    <View
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      style={
+        {
+          "justifyContent": "flex-start",
+          "minHeight": 20,
+        }
+      }
+      testID="weight-error-slot"
+    />
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`NumericInput renders populated field with value, unit and error 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={false}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "gap": 4,
+      }
+    }
+    testID="cg"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#8B949E",
+            "fontFamily": "System",
+            "fontSize": 9,
+            "fontWeight": "600",
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
+            "textAlign": "auto",
+          },
+          {
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      CG
+    </Text>
+    <View
+      style={
+        {
+          "backgroundColor": "rgba(0, 194, 168, 0.2)",
+          "borderRadius": 10,
+          "padding": 0,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#11161F",
+            "borderColor": "#E5484D",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "minHeight": 44,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <TextInput
+          accessibilityLabel="CG"
+          autoComplete="off"
+          autoCorrect={false}
+          caretHidden={true}
+          editable={false}
+          inputMode="decimal"
+          keyboardType="decimal-pad"
+          onChangeText={[Function]}
+          onSubmitEditing={[Function]}
+          placeholderTextColor="#6E7681"
+          pointerEvents="none"
+          returnKeyType="done"
+          showSoftInputOnFocus={false}
+          spellCheck={false}
+          style={
+            {
+              "color": "#E6EDF3",
+              "flex": 1,
+              "fontFamily": "Menlo",
+              "fontSize": 16,
+            }
+          }
+          testID="cg-input"
+          textContentType="none"
+          value="25.5"
+        />
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#6E7681",
+                "fontFamily": "Menlo",
+                "fontSize": 11,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          %MAC
+        </Text>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      importantForAccessibility="auto"
+      style={
+        {
+          "justifyContent": "flex-start",
+          "minHeight": 20,
+        }
+      }
+      testID="cg-error-slot"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#E5484D",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+        testID="cg-error"
+      >
+        Above maximum 35 %MAC
+      </Text>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
 `;

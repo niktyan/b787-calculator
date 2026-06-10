@@ -1,73 +1,119 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Text applies display variant with custom color and alignment 1`] = `
-<Text
-  allowFontScaling={false}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "color": "#00C2A8",
-        "fontFamily": "Menlo",
-        "fontSize": 48,
-        "fontWeight": "700",
-        "letterSpacing": -0.5,
-        "lineHeight": 56,
-        "textAlign": "center",
+        "flex": 1,
       },
       undefined,
     ]
   }
 >
-  56
-</Text>
+  <Text
+    allowFontScaling={false}
+    style={
+      [
+        {
+          "color": "#00C2A8",
+          "fontFamily": "Menlo",
+          "fontSize": 48,
+          "fontWeight": "700",
+          "letterSpacing": -0.5,
+          "lineHeight": 56,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    56
+  </Text>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Text renders body text by default in dark theme 1`] = `
-<Text
-  allowFontScaling={true}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "color": "#E6EDF3",
-        "fontFamily": "System",
-        "fontSize": 16,
-        "fontWeight": "400",
-        "letterSpacing": 0,
-        "lineHeight": 22,
-        "textAlign": "auto",
+        "flex": 1,
       },
       undefined,
     ]
   }
 >
-  hello
-</Text>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#E6EDF3",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    hello
+  </Text>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Text renders body text by default in light theme 1`] = `
-<Text
-  allowFontScaling={true}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "color": "#1F2937",
-        "fontFamily": "System",
-        "fontSize": 16,
-        "fontWeight": "400",
-        "letterSpacing": 0,
-        "lineHeight": 22,
-        "textAlign": "auto",
+        "flex": 1,
       },
       undefined,
     ]
   }
 >
-  hello
-</Text>
+  <Text
+    allowFontScaling={true}
+    style={
+      [
+        {
+          "color": "#1F2937",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "letterSpacing": 0,
+          "lineHeight": 22,
+          "textAlign": "auto",
+        },
+        undefined,
+      ]
+    }
+  >
+    hello
+  </Text>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Text renders heading1, heading2, caption, label, and mono variants 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <Text
     allowFontScaling={true}
     style={
@@ -86,7 +132,7 @@ exports[`Text renders heading1, heading2, caption, label, and mono variants 1`] 
     }
   >
     heading 1
-  </Text>,
+  </Text>
   <Text
     allowFontScaling={true}
     style={
@@ -105,7 +151,7 @@ exports[`Text renders heading1, heading2, caption, label, and mono variants 1`] 
     }
   >
     heading 2
-  </Text>,
+  </Text>
   <Text
     allowFontScaling={true}
     style={
@@ -124,7 +170,7 @@ exports[`Text renders heading1, heading2, caption, label, and mono variants 1`] 
     }
   >
     caption
-  </Text>,
+  </Text>
   <Text
     allowFontScaling={true}
     style={
@@ -143,7 +189,7 @@ exports[`Text renders heading1, heading2, caption, label, and mono variants 1`] 
     }
   >
     label
-  </Text>,
+  </Text>
   <Text
     allowFontScaling={true}
     style={
@@ -162,6 +208,6 @@ exports[`Text renders heading1, heading2, caption, label, and mono variants 1`] 
     }
   >
     mono
-  </Text>,
-]
+  </Text>
+</RNCSafeAreaProvider>
 `;

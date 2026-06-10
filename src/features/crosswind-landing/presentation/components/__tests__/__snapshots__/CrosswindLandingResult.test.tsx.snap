@@ -1,264 +1,300 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CrosswindLandingResult renders the centred number for idle state (default B787-8 manual dry → 37 KT) 1`] = `
-<View
-  layout={BaseAnimationMock {}}
-  testID="result"
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
 >
   <View
-    style={
-      {
-        "alignItems": "center",
-        "backgroundColor": "#11161F",
-        "borderColor": "rgba(255, 255, 255, 0.08)",
-        "borderRadius": 12,
-        "borderWidth": 1,
-        "flex": 0,
-        "gap": 8,
-        "justifyContent": "center",
-        "minHeight": 160,
-        "padding": 16,
-      }
-    }
-    testID="crosswind-landing-result-panel"
+    layout={BaseAnimationMock {}}
+    testID="result"
   >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#00C2A8",
-            "fontFamily": "System",
-            "fontSize": 9,
-            "fontWeight": "600",
-            "letterSpacing": 0.54,
-            "lineHeight": 12,
-            "textAlign": "auto",
-          },
-          {
-            "letterSpacing": 0.72,
-            "marginBottom": 16,
-            "textTransform": "uppercase",
-          },
-        ]
-      }
-    >
-      Max crosswind · Landing
-    </Text>
     <View
       style={
         {
-          "alignItems": "baseline",
-          "flexDirection": "row",
+          "alignItems": "center",
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 12,
+          "borderWidth": 1,
+          "flex": 0,
+          "gap": 8,
           "justifyContent": "center",
+          "minHeight": 160,
+          "padding": 16,
         }
       }
+      testID="crosswind-landing-result-panel"
     >
       <Text
-        accessibilityLabel="37 KT"
-        allowFontScaling={false}
+        allowFontScaling={true}
         style={
           [
             {
               "color": "#00C2A8",
-              "fontFamily": "Menlo",
-              "fontSize": 48,
-              "fontWeight": "700",
-              "letterSpacing": -0.5,
-              "lineHeight": 56,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-      >
-        37
-      </Text>
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#8B949E",
-              "fontFamily": "Menlo",
-              "fontSize": 24,
-              "fontWeight": "700",
-              "letterSpacing": -0.5,
-              "lineHeight": 28,
-              "textAlign": "auto",
-            },
-            {
-              "marginLeft": 8,
-            },
-          ]
-        }
-      >
-        KT
-      </Text>
-    </View>
-  </View>
-</View>
-`;
-
-exports[`CrosswindLandingResult renders the data-not-available caption for an unimplemented aircraft 1`] = `
-<View
-  layout={BaseAnimationMock {}}
->
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "backgroundColor": "#11161F",
-        "borderColor": "rgba(255, 255, 255, 0.08)",
-        "borderRadius": 12,
-        "borderWidth": 1,
-        "flex": 0,
-        "gap": 8,
-        "justifyContent": "center",
-        "minHeight": 160,
-        "padding": 16,
-      }
-    }
-    testID="crosswind-landing-result-panel-data-not-available"
-  >
-    <Text />
-    <View
-      style={
-        {
-          "maxWidth": 280,
-        }
-      }
-    >
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#8B949E",
               "fontFamily": "System",
-              "fontSize": 12,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 16,
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        No data available for the selected aircraft.
-      </Text>
-    </View>
-  </View>
-</View>
-`;
-
-exports[`CrosswindLandingResult renders the regular-size variant when isRegular={true} 1`] = `
-<View
-  layout={BaseAnimationMock {}}
-  testID="result"
->
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "backgroundColor": "#11161F",
-        "borderColor": "rgba(255, 255, 255, 0.08)",
-        "borderRadius": 12,
-        "borderWidth": 1,
-        "flex": 0,
-        "gap": 8,
-        "justifyContent": "center",
-        "minHeight": 280,
-        "padding": 16,
-      }
-    }
-    testID="crosswind-landing-result-panel"
-  >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#00C2A8",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "auto",
-          },
-          {
-            "fontWeight": "600",
-            "letterSpacing": 1,
-            "marginBottom": 16,
-            "textTransform": "uppercase",
-          },
-        ]
-      }
-    >
-      Max crosswind · Landing
-    </Text>
-    <View
-      style={
-        {
-          "alignItems": "baseline",
-          "flexDirection": "row",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="33 KT"
-        allowFontScaling={false}
-        style={
-          [
-            {
-              "color": "#00C2A8",
-              "fontFamily": "Menlo",
-              "fontSize": 72,
-              "fontWeight": "700",
-              "letterSpacing": -1,
-              "lineHeight": 80,
+              "fontSize": 9,
+              "fontWeight": "600",
+              "letterSpacing": 0.54,
+              "lineHeight": 12,
               "textAlign": "auto",
             },
             {
-              "fontSize": 96,
-              "lineHeight": 104,
+              "letterSpacing": 0.72,
+              "marginBottom": 16,
+              "textTransform": "uppercase",
             },
           ]
         }
       >
-        33
+        Max crosswind · Landing
       </Text>
-      <Text
-        allowFontScaling={true}
+      <View
         style={
-          [
-            {
-              "color": "#8B949E",
-              "fontFamily": "Menlo",
-              "fontSize": 36,
-              "fontWeight": "700",
-              "letterSpacing": 0,
-              "lineHeight": 40,
-              "textAlign": "auto",
-            },
+          {
+            "alignItems": "baseline",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="37 KT"
+          allowFontScaling={false}
+          style={
             [
+              {
+                "color": "#00C2A8",
+                "fontFamily": "Menlo",
+                "fontSize": 48,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 56,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          37
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#8B949E",
+                "fontFamily": "Menlo",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 28,
+                "textAlign": "auto",
+              },
               {
                 "marginLeft": 8,
               },
+            ]
+          }
+        >
+          KT
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`CrosswindLandingResult renders the data-not-available caption for an unimplemented aircraft 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    layout={BaseAnimationMock {}}
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 12,
+          "borderWidth": 1,
+          "flex": 0,
+          "gap": 8,
+          "justifyContent": "center",
+          "minHeight": 160,
+          "padding": 16,
+        }
+      }
+      testID="crosswind-landing-result-panel-data-not-available"
+    >
+      <Text />
+      <View
+        style={
+          {
+            "maxWidth": 280,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
               {
-                "fontSize": 48,
-                "lineHeight": 56,
+                "color": "#8B949E",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 16,
+                "textAlign": "center",
               },
-            ],
+              undefined,
+            ]
+          }
+        >
+          No data available for the selected aircraft.
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`CrosswindLandingResult renders the regular-size variant when isRegular={true} 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    layout={BaseAnimationMock {}}
+    testID="result"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#11161F",
+          "borderColor": "rgba(255, 255, 255, 0.08)",
+          "borderRadius": 12,
+          "borderWidth": 1,
+          "flex": 0,
+          "gap": 8,
+          "justifyContent": "center",
+          "minHeight": 280,
+          "padding": 16,
+        }
+      }
+      testID="crosswind-landing-result-panel"
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            {
+              "fontWeight": "600",
+              "letterSpacing": 1,
+              "marginBottom": 16,
+              "textTransform": "uppercase",
+            },
           ]
         }
       >
-        KT
+        Max crosswind · Landing
       </Text>
+      <View
+        style={
+          {
+            "alignItems": "baseline",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="33 KT"
+          allowFontScaling={false}
+          style={
+            [
+              {
+                "color": "#00C2A8",
+                "fontFamily": "Menlo",
+                "fontSize": 72,
+                "fontWeight": "700",
+                "letterSpacing": -1,
+                "lineHeight": 80,
+                "textAlign": "auto",
+              },
+              {
+                "fontSize": 96,
+                "lineHeight": 104,
+              },
+            ]
+          }
+        >
+          33
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#8B949E",
+                "fontFamily": "Menlo",
+                "fontSize": 36,
+                "fontWeight": "700",
+                "letterSpacing": 0,
+                "lineHeight": 40,
+                "textAlign": "auto",
+              },
+              [
+                {
+                  "marginLeft": 8,
+                },
+                {
+                  "fontSize": 48,
+                  "lineHeight": 56,
+                },
+              ],
+            ]
+          }
+        >
+          KT
+        </Text>
+      </View>
     </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;

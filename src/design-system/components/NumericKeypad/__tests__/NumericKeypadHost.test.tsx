@@ -1,7 +1,10 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
 import type { ReactElement } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import type { Metrics } from 'react-native-safe-area-context';
 
 import { ThemeProvider } from '../../../../core/theming';
+import { positionBottomDocked } from '../../../anchored-popover/computeAnchoredPosition';
 import { computeKeypadPosition, NumericKeypadHost } from '../NumericKeypadHost';
 import { NumericKeypadProvider } from '../NumericKeypadProvider';
 import { useNumericKeypadContext } from '../NumericKeypadContext';
@@ -15,12 +18,36 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
+// Drive `useWindowDimensions()` from per-test fixtures. Default is the
+// iPad-landscape size that exercises the wide branch (anchored popover);
+// individual tests override via `setWindowDimensions(...)` before render.
+// The `mock*` prefix is required so jest.mock's hoisted factory can
+// reference the binding (jest blocks non-`mock`-prefixed out-of-scope
+// names inside mock factories).
+let mockWindow = { width: 1024, height: 768, fontScale: 1, scale: 2 };
+
+function setWindowDimensions(width: number, height: number): void {
+  mockWindow = { ...mockWindow, width, height };
+}
+
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+  __esModule: true,
+  default: (): { width: number; height: number; fontScale: number; scale: number } => mockWindow,
+}));
+
 interface HarnessSetup {
   readonly tree: ReturnType<typeof render>;
   readonly sink: { value: NumericKeypadContextValue | null };
 }
 
-function renderHost(): HarnessSetup {
+// Default insets — overridden in bottom-dock tests where a non-zero
+// bottom mirrors a real iPhone home-indicator safe area.
+const ZERO_INSETS: Metrics = {
+  insets: { top: 0, right: 0, bottom: 0, left: 0 },
+  frame: { x: 0, y: 0, width: 0, height: 0 },
+};
+
+function renderHost(initialMetrics: Metrics = ZERO_INSETS): HarnessSetup {
   const sink: { value: NumericKeypadContextValue | null } = { value: null };
   function Tap(): ReactElement {
     const ctx = useNumericKeypadContext();
@@ -28,14 +55,23 @@ function renderHost(): HarnessSetup {
     return null as unknown as ReactElement;
   }
   const tree = render(
-    <ThemeProvider initialMode="dark">
-      <NumericKeypadProvider>
-        <Tap />
-        <NumericKeypadHost />
-      </NumericKeypadProvider>
-    </ThemeProvider>,
+    <SafeAreaProvider initialMetrics={initialMetrics}>
+      <ThemeProvider initialMode="dark">
+        <NumericKeypadProvider>
+          <Tap />
+          <NumericKeypadHost />
+        </NumericKeypadProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>,
   );
   return { tree, sink };
+}
+
+function withInsets(bottom: number): Metrics {
+  return {
+    insets: { top: 0, right: 0, bottom, left: 0 },
+    frame: { x: 0, y: 0, width: 0, height: 0 },
+  };
 }
 
 function valueRef(initial: string): { current: string } {
@@ -70,6 +106,14 @@ async function registerAndFlush(
 }
 
 describe('NumericKeypadHost', () => {
+  // Existing test suite defaults to iPad landscape (1024 × 768), which
+  // exercises the wide-screen anchored-popover branch. The bottom-dock
+  // describe block below overrides to iPhone widths before each test
+  // and resets afterwards.
+  beforeEach(() => {
+    setWindowDimensions(1024, 768);
+  });
+
   it('renders the popover hidden when no field is active', () => {
     const { tree } = renderHost();
     // Modal is rendered with visible=false; querying the keypad confirms
@@ -260,5 +304,162 @@ describe('computeKeypadPosition', () => {
       const position = computeKeypadPosition(anchor, screen, KEYPAD_SIZE);
       expect(position.top).toBe(144);
     });
+  });
+});
+
+// ADR-0011 Iteration 4 — bottom-dock on iPhone-compact.
+//
+// `positionBottomDocked` is a pure helper; the host wires it on
+// `screen.width < COMPACT_WIDTH_BREAKPOINT` and substitutes
+// `useSafeAreaInsets().bottom` for the inset arg. These tests exercise
+// the helper directly + the host-level integration (Modal popover top +
+// height vs. screen height − safe-area).
+describe('positionBottomDocked (ADR-0011 Iteration 4)', () => {
+  // iPhone 15 Pro logical size + home-indicator safe inset.
+  const IPHONE_15 = { width: 393, height: 852 };
+  const HOME_INDICATOR_INSET = 34;
+  const KEYPAD_COMPACT_FULL_WIDTH = { width: 393, height: 304 };
+
+  it('docks the popover so its bottom edge sits on the safe-area top', () => {
+    const pos = positionBottomDocked(IPHONE_15, KEYPAD_COMPACT_FULL_WIDTH, HOME_INDICATOR_INSET);
+    // top + height === screen.height - safeAreaBottom
+    expect(pos.top + KEYPAD_COMPACT_FULL_WIDTH.height).toBe(
+      IPHONE_15.height - HOME_INDICATOR_INSET,
+    );
+  });
+
+  it('places a full-width popover at left=0', () => {
+    const pos = positionBottomDocked(IPHONE_15, KEYPAD_COMPACT_FULL_WIDTH, HOME_INDICATOR_INSET);
+    expect(pos.left).toBe(0);
+  });
+
+  it('horizontally centres a narrower popover on the screen', () => {
+    const narrow = { width: 280, height: 304 };
+    const pos = positionBottomDocked(IPHONE_15, narrow, HOME_INDICATOR_INSET);
+    // (393 - 280) / 2 = 56.5
+    expect(pos.left).toBe((IPHONE_15.width - narrow.width) / 2);
+  });
+
+  it('ignores the anchor — same dock position regardless of field y', () => {
+    // The helper has no `anchor` argument by design. Two different
+    // logical scenarios (CG vs TOW active) produce identical dock
+    // positions because the only inputs are screen + popover + inset.
+    const dockFromCG = positionBottomDocked(
+      IPHONE_15,
+      KEYPAD_COMPACT_FULL_WIDTH,
+      HOME_INDICATOR_INSET,
+    );
+    const dockFromTOW = positionBottomDocked(
+      IPHONE_15,
+      KEYPAD_COMPACT_FULL_WIDTH,
+      HOME_INDICATOR_INSET,
+    );
+    expect(dockFromCG).toEqual(dockFromTOW);
+  });
+
+  it('handles safeAreaBottom=0 (older iPhones / test environment)', () => {
+    const pos = positionBottomDocked(IPHONE_15, KEYPAD_COMPACT_FULL_WIDTH, 0);
+    expect(pos.top + KEYPAD_COMPACT_FULL_WIDTH.height).toBe(IPHONE_15.height);
+  });
+});
+
+describe('NumericKeypadHost — bottom-dock integration on iPhone-compact', () => {
+  const IPHONE_PORTRAIT = { width: 393, height: 852 };
+  const HOME_INDICATOR_INSET = 34;
+  const KEYPAD_HEIGHT_COMPACT = 304;
+
+  // Helper: extracts the rendered popover's flat style. The inner
+  // Pressable is the second matching popover surface inside the host
+  // Modal — find it by walking from the backdrop.
+  function popoverStyle(tree: ReturnType<typeof render>): {
+    readonly top: number;
+    readonly left: number;
+    readonly width: number;
+    readonly height: number;
+    readonly borderTopLeftRadius?: number;
+    readonly borderTopRightRadius?: number;
+    readonly borderRadius?: number;
+    readonly borderTopWidth?: number;
+    readonly borderWidth?: number;
+  } {
+    const backdrop = tree.getByTestId('numeric-keypad-host-backdrop');
+    // The popover Pressable is the only direct child of the backdrop.
+    const popover = backdrop.children[0] as { props: { style: unknown } };
+    return popover.props.style as ReturnType<typeof popoverStyle>;
+  }
+
+  beforeEach(() => {
+    setWindowDimensions(IPHONE_PORTRAIT.width, IPHONE_PORTRAIT.height);
+  });
+
+  it('renders the keypad bottom-flush against the safe-area inset', async () => {
+    const { tree, sink } = renderHost(withInsets(HOME_INDICATOR_INSET));
+    await registerAndFlush(sink, fieldOn(valueRef(''), 'weight'));
+    const style = popoverStyle(tree);
+    // top + height === screen.height - safeAreaBottom
+    expect(style.top + style.height).toBe(IPHONE_PORTRAIT.height - HOME_INDICATOR_INSET);
+    expect(style.height).toBe(KEYPAD_HEIGHT_COMPACT);
+  });
+
+  it('keypad is full-width on iPhone (no horizontal margin)', async () => {
+    const { tree, sink } = renderHost(withInsets(HOME_INDICATOR_INSET));
+    await registerAndFlush(sink, fieldOn(valueRef(''), 'weight'));
+    const style = popoverStyle(tree);
+    expect(style.width).toBe(IPHONE_PORTRAIT.width);
+    expect(style.left).toBe(0);
+  });
+
+  it('rounds only the top corners (sheet-style anchor to the bottom edge)', async () => {
+    const { tree, sink } = renderHost(withInsets(HOME_INDICATOR_INSET));
+    await registerAndFlush(sink, fieldOn(valueRef(''), 'weight'));
+    const style = popoverStyle(tree);
+    // Top-rounded only on dock variant; the all-corners `borderRadius`
+    // from the anchored variant must not appear here.
+    expect(style.borderTopLeftRadius).toBeGreaterThan(0);
+    expect(style.borderTopRightRadius).toBeGreaterThan(0);
+    expect(style.borderRadius).toBeUndefined();
+    expect(style.borderTopWidth).toBeGreaterThan(0);
+    expect(style.borderWidth).toBeUndefined();
+  });
+
+  // Done button (the only interactive surface at the bottom of the
+  // keypad popover) sits one popover-padding above the popover's bottom
+  // edge. The popover bottom edge equals `screen.height - safeAreaBottom`
+  // by construction (ADR-0011 Iteration 4). This assertion is the
+  // regression net — if a future change drifts safe-area handling or
+  // KEYPAD_HEIGHT, the Done button no longer sits at the safe edge and
+  // the test fails loudly. Range is generous (60 pt) to absorb future
+  // padding tweaks without forcing a test update.
+  it('Done button bottom Y stays clamped near the safe-area edge', async () => {
+    const { tree, sink } = renderHost(withInsets(HOME_INDICATOR_INSET));
+    await registerAndFlush(sink, fieldOn(valueRef(''), 'weight'));
+    const style = popoverStyle(tree);
+    const popoverBottomY = style.top + style.height;
+    const safeEdge = IPHONE_PORTRAIT.height - HOME_INDICATOR_INSET;
+    // Not below the safe-area top (would cut into the home-indicator).
+    expect(popoverBottomY).toBeLessThan(safeEdge + 1);
+    // Not too far above the safe-area top (would leave a visible gap
+    // between the keypad and the bottom edge of the screen).
+    expect(popoverBottomY).toBeGreaterThan(safeEdge - 60);
+  });
+
+  it('shows the keypad even when the anchor has not resolved yet (dock ignores anchor)', () => {
+    // Unlike the wide-screen branch, the bottom-dock path is anchor-
+    // independent. Registering a field without flushing the anchor
+    // promise must still surface the keypad — the visibility gate
+    // collapses to `activeFieldId !== null` on compact.
+    const { tree, sink } = renderHost(withInsets(HOME_INDICATOR_INSET));
+    act(() => {
+      sink.value?.registerField(fieldOn(valueRef(''), 'weight'));
+    });
+    expect(tree.getByTestId('numeric-keypad')).toBeTruthy();
+  });
+
+  it('respects safeAreaBottom=0 (older iPhones without home indicator)', async () => {
+    const { tree, sink } = renderHost(withInsets(0));
+    await registerAndFlush(sink, fieldOn(valueRef(''), 'weight'));
+    const style = popoverStyle(tree);
+    // With no safe-area, the popover bottom sits exactly on the screen edge.
+    expect(style.top + style.height).toBe(IPHONE_PORTRAIT.height);
   });
 });

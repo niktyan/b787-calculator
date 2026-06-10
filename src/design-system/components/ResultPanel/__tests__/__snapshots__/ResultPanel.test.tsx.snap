@@ -1,605 +1,715 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ResultPanel renders empty state 1`] = `
-<View
-  accessibilityRole="summary"
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "backgroundColor": "#11161F",
-      "borderColor": "rgba(255, 255, 255, 0.08)",
-      "borderRadius": 12,
-      "borderWidth": 1,
-      "minHeight": 160,
-      "padding": 16,
-    }
-  }
-  testID="result"
->
-  <View
-    style={
-      [
-        {
-          "alignItems": "center",
-          "flexDirection": "column",
-          "gap": 8,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 22,
-            "fontWeight": "600",
-            "letterSpacing": 0,
-            "lineHeight": 28,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      Enter weight and CG to see result
-    </Text>
-  </View>
-</View>
-`;
-
-exports[`ResultPanel renders error state 1`] = `
-<View
-  accessibilityRole="summary"
-  style={
-    {
-      "backgroundColor": "#11161F",
-      "borderColor": "rgba(255, 255, 255, 0.08)",
-      "borderRadius": 12,
-      "borderWidth": 1,
-      "minHeight": 160,
-      "padding": 16,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
 >
   <View
+    accessibilityRole="summary"
     style={
-      [
-        {
-          "alignItems": "center",
-          "flexDirection": "column",
-          "gap": 8,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
+      {
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "minHeight": 160,
+        "padding": 16,
+      }
     }
+    testID="result"
   >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 22,
-            "fontWeight": "600",
-            "letterSpacing": 0,
-            "lineHeight": 28,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      Calculation unavailable
-    </Text>
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#6E7681",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      Reference data could not be loaded.
-    </Text>
-  </View>
-</View>
-`;
-
-exports[`ResultPanel renders idle state in light theme 1`] = `
-<View
-  accessibilityRole="summary"
-  style={
-    {
-      "backgroundColor": "#FFFFFF",
-      "borderColor": "rgba(0, 0, 0, 0.08)",
-      "borderRadius": 12,
-      "borderWidth": 1,
-      "minHeight": 160,
-      "padding": 16,
-    }
-  }
->
-  <View
-    style={
-      [
-        {
-          "alignItems": "stretch",
-          "flexDirection": "column",
-          "gap": 12,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#006B5E",
-            "fontFamily": "System",
-            "fontSize": 9,
-            "fontWeight": "600",
-            "letterSpacing": 0.54,
-            "lineHeight": 12,
-            "textAlign": "auto",
-          },
-          {
-            "letterSpacing": 0.72,
-            "textTransform": "uppercase",
-          },
-        ]
-      }
-    >
-      Max crosswind · Takeoff
-    </Text>
     <View
       style={
         [
           {
-            "alignItems": "baseline",
-            "flexDirection": "row",
-            "flexWrap": "nowrap",
-            "gap": 4,
-            "justifyContent": "center",
+            "alignItems": "center",
+            "flexDirection": "column",
+            "gap": 8,
+            "justifyContent": "flex-start",
           },
           undefined,
         ]
       }
     >
-      <Text
-        accessibilityLabel="27 KT"
-        allowFontScaling={false}
-        style={
-          [
-            {
-              "color": "#00C2A8",
-              "fontFamily": "Menlo",
-              "fontSize": 48,
-              "fontWeight": "700",
-              "letterSpacing": -0.5,
-              "lineHeight": 56,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-      >
-        27
-      </Text>
-      <Text
-        allowFontScaling={true}
-        style={
-          [
-            {
-              "color": "#4B5563",
-              "fontFamily": "Menlo",
-              "fontSize": 24,
-              "fontWeight": "700",
-              "letterSpacing": -0.5,
-              "lineHeight": 28,
-              "textAlign": "auto",
-            },
-            {
-              "marginLeft": 6,
-            },
-          ]
-        }
-      >
-        KT
-      </Text>
-    </View>
-  </View>
-</View>
-`;
-
-exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
-<View
-  accessibilityRole="summary"
-  style={
-    {
-      "backgroundColor": "#11161F",
-      "borderColor": "rgba(255, 255, 255, 0.08)",
-      "borderRadius": 12,
-      "borderWidth": 1,
-      "minHeight": 160,
-      "padding": 16,
-    }
-  }
-  testID="result"
->
-  <View
-    style={
-      [
-        {
-          "alignItems": "stretch",
-          "flexDirection": "column",
-          "gap": 12,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#00C2A8",
-            "fontFamily": "System",
-            "fontSize": 9,
-            "fontWeight": "600",
-            "letterSpacing": 0.54,
-            "lineHeight": 12,
-            "textAlign": "auto",
-          },
-          {
-            "letterSpacing": 0.72,
-            "textTransform": "uppercase",
-          },
-        ]
-      }
-    >
-      Max crosswind · Takeoff
-    </Text>
-    <View
-      style={
-        [
-          {
-            "alignItems": "baseline",
-            "flexDirection": "row",
-            "flexWrap": "nowrap",
-            "gap": 4,
-            "justifyContent": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      <Text
-        accessibilityLabel="27 KT"
-        allowFontScaling={false}
-        style={
-          [
-            {
-              "color": "#00C2A8",
-              "fontFamily": "Menlo",
-              "fontSize": 48,
-              "fontWeight": "700",
-              "letterSpacing": -0.5,
-              "lineHeight": 56,
-              "textAlign": "auto",
-            },
-            undefined,
-          ]
-        }
-      >
-        27
-      </Text>
       <Text
         allowFontScaling={true}
         style={
           [
             {
               "color": "#8B949E",
-              "fontFamily": "Menlo",
-              "fontSize": 24,
-              "fontWeight": "700",
-              "letterSpacing": -0.5,
+              "fontFamily": "System",
+              "fontSize": 22,
+              "fontWeight": "600",
+              "letterSpacing": 0,
               "lineHeight": 28,
-              "textAlign": "auto",
+              "textAlign": "center",
             },
-            {
-              "marginLeft": 6,
-            },
+            undefined,
           ]
         }
       >
-        KT
+        Enter weight and CG to see result
       </Text>
     </View>
-    <Text
-      allowFontScaling={true}
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`ResultPanel renders error state 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityRole="summary"
+    style={
+      {
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "minHeight": 160,
+        "padding": 16,
+      }
+    }
+  >
+    <View
       style={
         [
           {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 12,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 16,
-            "textAlign": "center",
+            "alignItems": "center",
+            "flexDirection": "column",
+            "gap": 8,
+            "justifyContent": "flex-start",
           },
           undefined,
         ]
       }
     >
-      Computed for current inputs
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 22,
+              "fontWeight": "600",
+              "letterSpacing": 0,
+              "lineHeight": 28,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Calculation unavailable
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#6E7681",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Reference data could not be loaded.
+      </Text>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`ResultPanel renders idle state in light theme 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityRole="summary"
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "rgba(0, 0, 0, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "minHeight": 160,
+        "padding": 16,
+      }
+    }
+  >
     <View
       style={
-        {
-          "borderTopColor": "rgba(255, 255, 255, 0.08)",
-          "borderTopWidth": 1,
-          "paddingTop": 12,
-        }
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 12,
+            "justifyContent": "flex-start",
+          },
+          undefined,
+        ]
       }
     >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#006B5E",
+              "fontFamily": "System",
+              "fontSize": 9,
+              "fontWeight": "600",
+              "letterSpacing": 0.54,
+              "lineHeight": 12,
+              "textAlign": "auto",
+            },
+            {
+              "letterSpacing": 0.72,
+              "textTransform": "uppercase",
+            },
+          ]
+        }
+      >
+        Max crosswind · Takeoff
+      </Text>
       <View
         style={
           [
             {
-              "alignItems": "center",
+              "alignItems": "baseline",
               "flexDirection": "row",
-              "flexWrap": "wrap",
-              "gap": 8,
-              "justifyContent": "flex-start",
+              "flexWrap": "nowrap",
+              "gap": 4,
+              "justifyContent": "center",
             },
             undefined,
           ]
         }
       >
-        <View
+        <Text
+          accessibilityLabel="27 KT"
+          allowFontScaling={false}
           style={
-            {
-              "flexBasis": "48%",
-              "gap": 0,
-            }
+            [
+              {
+                "color": "#00C2A8",
+                "fontFamily": "Menlo",
+                "fontSize": 48,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 56,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
           }
         >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#6E7681",
-                  "fontFamily": "System",
-                  "fontSize": 9,
-                  "fontWeight": "600",
-                  "letterSpacing": 0.54,
-                  "lineHeight": 12,
-                  "textAlign": "auto",
-                },
-                {
-                  "letterSpacing": 0.36,
-                  "textTransform": "uppercase",
-                },
-              ]
-            }
-          >
-            Weight
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "marginTop": 2,
-                },
-              ]
-            }
-          >
-            170 t
-          </Text>
-        </View>
-        <View
+          27
+        </Text>
+        <Text
+          allowFontScaling={true}
           style={
-            {
-              "flexBasis": "48%",
-              "gap": 0,
-            }
+            [
+              {
+                "color": "#4B5563",
+                "fontFamily": "Menlo",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 28,
+                "textAlign": "auto",
+              },
+              {
+                "marginLeft": 6,
+              },
+            ]
           }
         >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#6E7681",
-                  "fontFamily": "System",
-                  "fontSize": 9,
-                  "fontWeight": "600",
-                  "letterSpacing": 0.54,
-                  "lineHeight": 12,
-                  "textAlign": "auto",
-                },
-                {
-                  "letterSpacing": 0.36,
-                  "textTransform": "uppercase",
-                },
-              ]
-            }
-          >
-            CG
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "marginTop": 2,
-                },
-              ]
-            }
-          >
-            25.5 %MAC
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "flexBasis": "48%",
-              "gap": 0,
-            }
-          }
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#6E7681",
-                  "fontFamily": "System",
-                  "fontSize": 9,
-                  "fontWeight": "600",
-                  "letterSpacing": 0.54,
-                  "lineHeight": 12,
-                  "textAlign": "auto",
-                },
-                {
-                  "letterSpacing": 0.36,
-                  "textTransform": "uppercase",
-                },
-              ]
-            }
-          >
-            Runway
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "marginTop": 2,
-                },
-              ]
-            }
-          >
-            Dry
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "flexBasis": "48%",
-              "gap": 0,
-            }
-          }
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#6E7681",
-                  "fontFamily": "System",
-                  "fontSize": 9,
-                  "fontWeight": "600",
-                  "letterSpacing": 0.54,
-                  "lineHeight": 12,
-                  "textAlign": "auto",
-                },
-                {
-                  "letterSpacing": 0.36,
-                  "textTransform": "uppercase",
-                },
-              ]
-            }
-          >
-            RWYCC
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "Menlo",
-                  "fontSize": 11,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "marginTop": 2,
-                },
-              ]
-            }
-          >
-            6
-          </Text>
-        </View>
+          KT
+        </Text>
       </View>
     </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityRole="summary"
+    style={
+      {
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "minHeight": 160,
+        "padding": 16,
+      }
+    }
+    testID="result"
+  >
     <View
       style={
-        {
-          "backgroundColor": "#0D1117",
-          "borderColor": "rgba(255, 255, 255, 0.08)",
-          "borderRadius": 4,
-          "borderWidth": 1,
-          "paddingHorizontal": 6,
-          "paddingVertical": 2,
-          "position": "absolute",
-          "right": 8,
-          "top": 8,
+        [
+          {
+            "alignItems": "stretch",
+            "flexDirection": "column",
+            "gap": 12,
+            "justifyContent": "flex-start",
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "System",
+              "fontSize": 9,
+              "fontWeight": "600",
+              "letterSpacing": 0.54,
+              "lineHeight": 12,
+              "textAlign": "auto",
+            },
+            {
+              "letterSpacing": 0.72,
+              "textTransform": "uppercase",
+            },
+          ]
         }
+      >
+        Max crosswind · Takeoff
+      </Text>
+      <View
+        style={
+          [
+            {
+              "alignItems": "baseline",
+              "flexDirection": "row",
+              "flexWrap": "nowrap",
+              "gap": 4,
+              "justifyContent": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="27 KT"
+          allowFontScaling={false}
+          style={
+            [
+              {
+                "color": "#00C2A8",
+                "fontFamily": "Menlo",
+                "fontSize": 48,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 56,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          27
+        </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#8B949E",
+                "fontFamily": "Menlo",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "letterSpacing": -0.5,
+                "lineHeight": 28,
+                "textAlign": "auto",
+              },
+              {
+                "marginLeft": 6,
+              },
+            ]
+          }
+        >
+          KT
+        </Text>
+      </View>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Computed for current inputs
+      </Text>
+      <View
+        style={
+          {
+            "borderTopColor": "rgba(255, 255, 255, 0.08)",
+            "borderTopWidth": 1,
+            "paddingTop": 12,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 8,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "flexBasis": "48%",
+                "gap": 0,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#6E7681",
+                    "fontFamily": "System",
+                    "fontSize": 9,
+                    "fontWeight": "600",
+                    "letterSpacing": 0.54,
+                    "lineHeight": 12,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "letterSpacing": 0.36,
+                    "textTransform": "uppercase",
+                  },
+                ]
+              }
+            >
+              Weight
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "Menlo",
+                    "fontSize": 11,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "marginTop": 2,
+                  },
+                ]
+              }
+            >
+              170 t
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexBasis": "48%",
+                "gap": 0,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#6E7681",
+                    "fontFamily": "System",
+                    "fontSize": 9,
+                    "fontWeight": "600",
+                    "letterSpacing": 0.54,
+                    "lineHeight": 12,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "letterSpacing": 0.36,
+                    "textTransform": "uppercase",
+                  },
+                ]
+              }
+            >
+              CG
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "Menlo",
+                    "fontSize": 11,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "marginTop": 2,
+                  },
+                ]
+              }
+            >
+              25.5 %MAC
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexBasis": "48%",
+                "gap": 0,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#6E7681",
+                    "fontFamily": "System",
+                    "fontSize": 9,
+                    "fontWeight": "600",
+                    "letterSpacing": 0.54,
+                    "lineHeight": 12,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "letterSpacing": 0.36,
+                    "textTransform": "uppercase",
+                  },
+                ]
+              }
+            >
+              Runway
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "Menlo",
+                    "fontSize": 11,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "marginTop": 2,
+                  },
+                ]
+              }
+            >
+              Dry
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexBasis": "48%",
+                "gap": 0,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#6E7681",
+                    "fontFamily": "System",
+                    "fontSize": 9,
+                    "fontWeight": "600",
+                    "letterSpacing": 0.54,
+                    "lineHeight": 12,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "letterSpacing": 0.36,
+                    "textTransform": "uppercase",
+                  },
+                ]
+              }
+            >
+              RWYCC
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "Menlo",
+                    "fontSize": 11,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "marginTop": 2,
+                  },
+                ]
+              }
+            >
+              6
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "backgroundColor": "#0D1117",
+            "borderColor": "rgba(255, 255, 255, 0.08)",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "paddingHorizontal": 6,
+            "paddingVertical": 2,
+            "position": "absolute",
+            "right": 8,
+            "top": 8,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#8B949E",
+                "fontFamily": "Menlo",
+                "fontSize": 8,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 12,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          Reference: 787 FCOM
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNCSafeAreaProvider>
+`;
+
+exports[`ResultPanel renders out-of-envelope state 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityRole="summary"
+    style={
+      {
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "minHeight": 160,
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "column",
+            "gap": 8,
+            "justifyContent": "flex-start",
+          },
+          undefined,
+        ]
       }
     >
       <Text
@@ -608,70 +718,20 @@ exports[`ResultPanel renders idle state with full metadata in dark theme 1`] = `
           [
             {
               "color": "#8B949E",
-              "fontFamily": "Menlo",
-              "fontSize": 8,
-              "fontWeight": "400",
+              "fontFamily": "System",
+              "fontSize": 22,
+              "fontWeight": "600",
               "letterSpacing": 0,
-              "lineHeight": 12,
-              "textAlign": "auto",
+              "lineHeight": 28,
+              "textAlign": "center",
             },
             undefined,
           ]
         }
       >
-        Reference: 787 FCOM
+        Weight 95 t is below minimum 110 t. Adjust input.
       </Text>
     </View>
   </View>
-</View>
-`;
-
-exports[`ResultPanel renders out-of-envelope state 1`] = `
-<View
-  accessibilityRole="summary"
-  style={
-    {
-      "backgroundColor": "#11161F",
-      "borderColor": "rgba(255, 255, 255, 0.08)",
-      "borderRadius": 12,
-      "borderWidth": 1,
-      "minHeight": 160,
-      "padding": 16,
-    }
-  }
->
-  <View
-    style={
-      [
-        {
-          "alignItems": "center",
-          "flexDirection": "column",
-          "gap": 8,
-          "justifyContent": "flex-start",
-        },
-        undefined,
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={true}
-      style={
-        [
-          {
-            "color": "#8B949E",
-            "fontFamily": "System",
-            "fontSize": 22,
-            "fontWeight": "600",
-            "letterSpacing": 0,
-            "lineHeight": 28,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      Weight 95 t is below minimum 110 t. Adjust input.
-    </Text>
-  </View>
-</View>
+</RNCSafeAreaProvider>
 `;

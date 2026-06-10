@@ -1,61 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Stack renders children with default gap 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "alignItems": "stretch",
-        "flexDirection": "column",
-        "gap": 12,
-        "justifyContent": "flex-start",
+        "flex": 1,
       },
       undefined,
     ]
   }
-  testID="stack"
 >
   <View
-    testID="child-a"
+    style={
+      [
+        {
+          "alignItems": "stretch",
+          "flexDirection": "column",
+          "gap": 12,
+          "justifyContent": "flex-start",
+        },
+        undefined,
+      ]
+    }
+    testID="stack"
   >
-    <Text>
-      A
-    </Text>
+    <View
+      testID="child-a"
+    >
+      <Text>
+        A
+      </Text>
+    </View>
+    <View
+      testID="child-b"
+    >
+      <Text>
+        B
+      </Text>
+    </View>
   </View>
-  <View
-    testID="child-b"
-  >
-    <Text>
-      B
-    </Text>
-  </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Stack respects custom gap, align and justify 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
     [
       {
-        "alignItems": "center",
-        "flexDirection": "column",
-        "gap": 24,
-        "justifyContent": "space-between",
+        "flex": 1,
       },
       undefined,
     ]
   }
-  testID="stack"
 >
-  <View>
-    <Text>
-      A
-    </Text>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "column",
+          "gap": 24,
+          "justifyContent": "space-between",
+        },
+        undefined,
+      ]
+    }
+    testID="stack"
+  >
+    <View>
+      <Text>
+        A
+      </Text>
+    </View>
+    <View>
+      <Text>
+        B
+      </Text>
+    </View>
   </View>
-  <View>
-    <Text>
-      B
-    </Text>
-  </View>
-</View>
+</RNCSafeAreaProvider>
 `;

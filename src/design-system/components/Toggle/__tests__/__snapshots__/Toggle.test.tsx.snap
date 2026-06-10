@@ -1,216 +1,252 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Toggle renders OFF state in dark theme 1`] = `
-<View
-  accessibilityLabel="Show source"
-  accessibilityRole="switch"
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": false,
-      "disabled": false,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "alignItems": "center",
-      "justifyContent": "center",
-      "minHeight": 44,
-      "minWidth": 44,
-      "opacity": 1,
-      "padding": 4,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="t"
 >
   <View
-    style={
+    accessibilityLabel="Show source"
+    accessibilityRole="switch"
+    accessibilityState={
       {
-        "backgroundColor": "#6E7681",
-        "borderRadius": 13,
-        "height": 26,
-        "width": 44,
+        "busy": undefined,
+        "checked": false,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
       }
     }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "minHeight": 44,
+        "minWidth": 44,
+        "opacity": 1,
+        "padding": 4,
+      }
+    }
+    testID="t"
   >
     <View
       style={
         {
-          "backgroundColor": "#11161F",
-          "borderRadius": 11,
-          "height": 22,
-          "left": 2,
-          "position": "absolute",
-          "top": 2,
-          "width": 22,
+          "backgroundColor": "#6E7681",
+          "borderRadius": 13,
+          "height": 26,
+          "width": 44,
         }
       }
-    />
+    >
+      <View
+        style={
+          {
+            "backgroundColor": "#11161F",
+            "borderRadius": 11,
+            "height": 22,
+            "left": 2,
+            "position": "absolute",
+            "top": 2,
+            "width": 22,
+          }
+        }
+      />
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Toggle renders ON state in light theme 1`] = `
-<View
-  accessibilityLabel="Show source"
-  accessibilityRole="switch"
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": true,
-      "disabled": false,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "alignItems": "center",
-      "justifyContent": "center",
-      "minHeight": 44,
-      "minWidth": 44,
-      "opacity": 1,
-      "padding": 4,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="t"
 >
   <View
-    style={
+    accessibilityLabel="Show source"
+    accessibilityRole="switch"
+    accessibilityState={
       {
-        "backgroundColor": "#00C2A8",
-        "borderRadius": 13,
-        "height": 26,
-        "width": 44,
+        "busy": undefined,
+        "checked": true,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
       }
     }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "minHeight": 44,
+        "minWidth": 44,
+        "opacity": 1,
+        "padding": 4,
+      }
+    }
+    testID="t"
   >
     <View
       style={
         {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": 11,
-          "height": 22,
-          "left": 20,
-          "position": "absolute",
-          "top": 2,
-          "width": 22,
+          "backgroundColor": "#00C2A8",
+          "borderRadius": 13,
+          "height": 26,
+          "width": 44,
         }
       }
-    />
+    >
+      <View
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 11,
+            "height": 22,
+            "left": 20,
+            "position": "absolute",
+            "top": 2,
+            "width": 22,
+          }
+        }
+      />
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Toggle renders disabled state 1`] = `
-<View
-  accessibilityLabel="Wind units"
-  accessibilityRole="switch"
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": true,
-      "disabled": true,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "alignItems": "center",
-      "justifyContent": "center",
-      "minHeight": 44,
-      "minWidth": 44,
-      "opacity": 0.5,
-      "padding": 4,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
 >
   <View
+    accessibilityLabel="Wind units"
+    accessibilityRole="switch"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": true,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       {
-        "backgroundColor": "#00C2A8",
-        "borderRadius": 13,
-        "height": 26,
-        "width": 44,
+        "alignItems": "center",
+        "justifyContent": "center",
+        "minHeight": 44,
+        "minWidth": 44,
+        "opacity": 0.5,
+        "padding": 4,
       }
     }
   >
     <View
       style={
         {
-          "backgroundColor": "#11161F",
-          "borderRadius": 11,
-          "height": 22,
-          "left": 20,
-          "position": "absolute",
-          "top": 2,
-          "width": 22,
+          "backgroundColor": "#00C2A8",
+          "borderRadius": 13,
+          "height": 26,
+          "width": 44,
         }
       }
-    />
+    >
+      <View
+        style={
+          {
+            "backgroundColor": "#11161F",
+            "borderRadius": 11,
+            "height": 22,
+            "left": 20,
+            "position": "absolute",
+            "top": 2,
+            "width": 22,
+          }
+        }
+      />
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;

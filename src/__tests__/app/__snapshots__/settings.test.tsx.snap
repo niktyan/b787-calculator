@@ -1,48 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
-<RNCSafeAreaView
-  edges={
-    {
-      "bottom": "additive",
-      "left": "additive",
-      "right": "additive",
-      "top": "additive",
-    }
-  }
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "backgroundColor": "#0A0E14",
-      "flex": 1,
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="settings-screen"
 >
-  <View
-    style={
-      [
-        {
-          "flex": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 12,
-        },
-        undefined,
-      ]
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
     }
+    style={
+      {
+        "backgroundColor": "#0A0E14",
+        "flex": 1,
+      }
+    }
+    testID="settings-screen"
   >
     <View
       style={
         [
           {
-            "alignItems": "stretch",
-            "flexDirection": "column",
-            "gap": 12,
-            "justifyContent": "flex-start",
+            "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
           },
-          {
-            "flex": 0,
-            "paddingHorizontal": 0,
-          },
+          undefined,
         ]
       }
     >
@@ -55,7 +50,10 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
               "gap": 12,
               "justifyContent": "flex-start",
             },
-            undefined,
+            {
+              "flex": 0,
+              "paddingHorizontal": 0,
+            },
           ]
         }
       >
@@ -65,7 +63,7 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
               {
                 "alignItems": "stretch",
                 "flexDirection": "column",
-                "gap": 8,
+                "gap": 12,
                 "justifyContent": "flex-start",
               },
               undefined,
@@ -76,9 +74,8 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
             style={
               [
                 {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
+                  "alignItems": "stretch",
+                  "flexDirection": "column",
                   "gap": 8,
                   "justifyContent": "flex-start",
                 },
@@ -87,224 +84,32 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
             }
           >
             <View
-              accessibilityLabel="B787 logo"
-              style={
-                {
-                  "alignItems": "center",
-                  "backgroundColor": "#003C36",
-                  "borderRadius": 6,
-                  "height": 28,
-                  "justifyContent": "center",
-                  "width": 28,
-                }
-              }
-              testID="settings-logo"
-            >
-              <Text
-                allowFontScaling={true}
-                style={
-                  [
-                    {
-                      "color": "#00C2A8",
-                      "fontFamily": "Menlo",
-                      "fontSize": 16,
-                      "fontWeight": "500",
-                      "letterSpacing": 0,
-                      "lineHeight": 22,
-                      "textAlign": "auto",
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                B7
-              </Text>
-            </View>
-            <Text
-              allowFontScaling={true}
               style={
                 [
                   {
-                    "color": "#E6EDF3",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 8,
+                    "justifyContent": "flex-start",
                   },
-                  {
-                    "fontSize": 16,
-                  },
+                  undefined,
                 ]
               }
             >
-              settings.title
-            </Text>
-          </View>
-          <View
-            accessibilityRole="tablist"
-            style={
-              [
-                {
-                  "flexDirection": "row",
-                  "gap": 4,
-                },
-                {
-                  "alignSelf": "stretch",
-                },
-              ]
-            }
-            testID="settings-tabs"
-          >
-            <View
-              accessibilityLabel="mainMenu.tabModules"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
-                  "selected": false,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="settings-tabs-modules"
-            >
               <View
+                accessibilityLabel="B787 logo"
                 style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
-                    },
-                    null,
-                    {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#8B949E",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "letterSpacing": 0,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 12,
-                      },
-                    ]
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#003C36",
+                    "borderRadius": 6,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
                   }
-                >
-                  mainMenu.tabModules
-                </Text>
-              </View>
-            </View>
-            <View
-              accessibilityLabel="mainMenu.tabSettings"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
-                  "selected": true,
                 }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="settings-tabs-settings"
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
-                    },
-                    {
-                      "backgroundColor": "#003C36",
-                    },
-                    {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
-                    },
-                  ]
-                }
+                testID="settings-logo"
               >
                 <Text
                   allowFontScaling={true}
@@ -312,945 +117,325 @@ exports[`Settings route renders correctly in dark theme (snapshot) 1`] = `
                     [
                       {
                         "color": "#00C2A8",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                        "fontWeight": "500",
                         "letterSpacing": 0,
-                        "lineHeight": 16,
+                        "lineHeight": 22,
                         "textAlign": "auto",
                       },
-                      {
-                        "fontSize": 12,
-                      },
+                      undefined,
                     ]
                   }
                 >
-                  mainMenu.tabSettings
+                  B7
                 </Text>
               </View>
-            </View>
-            <View
-              accessibilityLabel="mainMenu.tabAbout"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
-                  "selected": false,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="settings-tabs-about"
-            >
-              <View
+              <Text
+                allowFontScaling={true}
                 style={
                   [
                     {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
+                      "color": "#E6EDF3",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
                     },
-                    null,
                     {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
+                      "fontSize": 16,
                     },
                   ]
                 }
               >
-                <Text
-                  allowFontScaling={true}
+                settings.title
+              </Text>
+            </View>
+            <View
+              accessibilityRole="tablist"
+              style={
+                [
+                  {
+                    "flexDirection": "row",
+                    "gap": 4,
+                  },
+                  {
+                    "alignSelf": "stretch",
+                  },
+                ]
+              }
+              testID="settings-tabs"
+            >
+              <View
+                accessibilityLabel="mainMenu.tabModules"
+                accessibilityRole="tab"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": false,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+                testID="settings-tabs-modules"
+              >
+                <View
                   style={
                     [
                       {
-                        "color": "#8B949E",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "letterSpacing": 0,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "minHeight": 44,
+                        "paddingHorizontal": 10,
+                        "paddingVertical": 5,
                       },
+                      null,
                       {
-                        "fontSize": 12,
+                        "opacity": 1,
+                        "transform": [
+                          {
+                            "scale": 1,
+                          },
+                        ],
                       },
                     ]
                   }
                 >
-                  mainMenu.tabAbout
-                </Text>
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#8B949E",
+                          "fontFamily": "System",
+                          "fontSize": 12,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    mainMenu.tabModules
+                  </Text>
+                </View>
               </View>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            {
-              "backgroundColor": "rgba(255, 255, 255, 0.08)",
-              "height": 1,
-            }
-          }
-        />
-      </View>
-      <View
-        style={
-          [
-            {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "gap": 8,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
-        }
-        testID="settings-section-modules"
-      >
-        <Text
-          accessibilityLabel="settings.modulesSectionTitle"
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#8B949E",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "fontSize": 12,
-                "fontWeight": "600",
-                "letterSpacing": 1,
-              },
-            ]
-          }
-        >
-          SETTINGS.MODULESSECTIONTITLE
-        </Text>
-        <View
-          style={
-            {
-              "gap": 8,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "backgroundColor": "#11161F",
-                "borderColor": "rgba(255, 255, 255, 0.08)",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "flexDirection": "row",
-                "justifyContent": "space-between",
-                "minHeight": 44,
-                "paddingHorizontal": 12,
-                "paddingVertical": 8,
-              }
-            }
-            testID="settings-row-module-crosswind-takeoff"
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#E6EDF3",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  {
-                    "fontSize": 12,
-                    "fontWeight": "500",
-                  },
-                ]
-              }
-            >
-              Crosswind · Takeoff
-            </Text>
-            <View
-              accessibilityLabel="Crosswind · Takeoff"
-              accessibilityRole="switch"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": true,
-                  "disabled": false,
-                  "expanded": undefined,
-                  "selected": undefined,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "minWidth": 44,
-                  "opacity": 1,
-                  "padding": 4,
-                }
-              }
-              testID="settings-row-module-crosswind-takeoff-toggle"
-            >
               <View
-                style={
+                accessibilityLabel="mainMenu.tabSettings"
+                accessibilityRole="tab"
+                accessibilityState={
                   {
-                    "backgroundColor": "#00C2A8",
-                    "borderRadius": 13,
-                    "height": 26,
-                    "width": 44,
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": true,
                   }
                 }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+                testID="settings-tabs-settings"
               >
                 <View
                   style={
-                    {
-                      "backgroundColor": "#11161F",
-                      "borderRadius": 11,
-                      "height": 22,
-                      "left": 20,
-                      "position": "absolute",
-                      "top": 2,
-                      "width": 22,
-                    }
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "minHeight": 44,
+                        "paddingHorizontal": 10,
+                        "paddingVertical": 5,
+                      },
+                      {
+                        "backgroundColor": "#003C36",
+                      },
+                      {
+                        "opacity": 1,
+                        "transform": [
+                          {
+                            "scale": 1,
+                          },
+                        ],
+                      },
+                    ]
                   }
-                />
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#00C2A8",
+                          "fontFamily": "System",
+                          "fontSize": 12,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    mainMenu.tabSettings
+                  </Text>
+                </View>
+              </View>
+              <View
+                accessibilityLabel="mainMenu.tabAbout"
+                accessibilityRole="tab"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": false,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+                testID="settings-tabs-about"
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "minHeight": 44,
+                        "paddingHorizontal": 10,
+                        "paddingVertical": 5,
+                      },
+                      null,
+                      {
+                        "opacity": 1,
+                        "transform": [
+                          {
+                            "scale": 1,
+                          },
+                        ],
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#8B949E",
+                          "fontFamily": "System",
+                          "fontSize": 12,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    mainMenu.tabAbout
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
           <View
             style={
               {
-                "alignItems": "center",
-                "backgroundColor": "#11161F",
-                "borderColor": "rgba(255, 255, 255, 0.08)",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "flexDirection": "row",
-                "justifyContent": "space-between",
-                "minHeight": 44,
-                "paddingHorizontal": 12,
-                "paddingVertical": 8,
+                "backgroundColor": "rgba(255, 255, 255, 0.08)",
+                "height": 1,
               }
             }
-            testID="settings-row-module-crosswind-landing"
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#E6EDF3",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  {
-                    "fontSize": 12,
-                    "fontWeight": "500",
-                  },
-                ]
-              }
-            >
-              Crosswind · Landing
-            </Text>
-            <View
-              accessibilityLabel="Crosswind · Landing"
-              accessibilityRole="switch"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": true,
-                  "disabled": false,
-                  "expanded": undefined,
-                  "selected": undefined,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "minWidth": 44,
-                  "opacity": 1,
-                  "padding": 4,
-                }
-              }
-              testID="settings-row-module-crosswind-landing-toggle"
-            >
-              <View
-                style={
-                  {
-                    "backgroundColor": "#00C2A8",
-                    "borderRadius": 13,
-                    "height": 26,
-                    "width": 44,
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#11161F",
-                      "borderRadius": 11,
-                      "height": 22,
-                      "left": 20,
-                      "position": "absolute",
-                      "top": 2,
-                      "width": 22,
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "backgroundColor": "#11161F",
-                "borderColor": "rgba(255, 255, 255, 0.08)",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "flexDirection": "row",
-                "justifyContent": "space-between",
-                "minHeight": 44,
-                "paddingHorizontal": 12,
-                "paddingVertical": 8,
-              }
-            }
-            testID="settings-row-module-recent"
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#E6EDF3",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  {
-                    "fontSize": 12,
-                    "fontWeight": "500",
-                  },
-                ]
-              }
-            >
-              Recent Calculations
-            </Text>
-            <View
-              accessibilityLabel="Recent Calculations"
-              accessibilityRole="switch"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": true,
-                  "disabled": false,
-                  "expanded": undefined,
-                  "selected": undefined,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "minWidth": 44,
-                  "opacity": 1,
-                  "padding": 4,
-                }
-              }
-              testID="settings-row-module-recent-toggle"
-            >
-              <View
-                style={
-                  {
-                    "backgroundColor": "#00C2A8",
-                    "borderRadius": 13,
-                    "height": 26,
-                    "width": 44,
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#11161F",
-                      "borderRadius": 11,
-                      "height": 22,
-                      "left": 20,
-                      "position": "absolute",
-                      "top": 2,
-                      "width": 22,
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
+          />
         </View>
-      </View>
-      <View
-        style={
-          {
-            "gap": 8,
-          }
-        }
-      >
-        <View
-          accessibilityLabel="settings.language"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-language"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.language
-          </Text>
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
-                  "gap": 4,
-                  "justifyContent": "flex-start",
-                },
-                undefined,
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#8B949E",
-                    "fontFamily": "Menlo",
-                    "fontSize": 16,
-                    "fontWeight": "500",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
-                  },
-                  {
-                    "fontSize": 11,
-                  },
-                ]
-              }
-            >
-              settings.languageEnglish
-            </Text>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6E7681",
-                    "fontSize": 18,
-                  },
-                  undefined,
-                  {
-                    "fontFamily": "ionicons",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-              testID="settings-row-language-chevron"
-            >
-              
-            </Text>
-          </View>
-        </View>
-        <View
-          accessibilityLabel="settings.theme"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-theme"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.theme
-          </Text>
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
-                  "gap": 4,
-                  "justifyContent": "flex-start",
-                },
-                undefined,
-              ]
-            }
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#8B949E",
-                    "fontFamily": "Menlo",
-                    "fontSize": 16,
-                    "fontWeight": "500",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
-                  },
-                  {
-                    "fontSize": 11,
-                  },
-                ]
-              }
-            >
-              settings.themeDark
-            </Text>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6E7681",
-                    "fontSize": 18,
-                  },
-                  undefined,
-                  {
-                    "fontFamily": "ionicons",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-              testID="settings-row-theme-chevron"
-            >
-              
-            </Text>
-          </View>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-weight-units"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.weightUnits
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#8B949E",
-                  "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 11,
-                },
-              ]
-            }
-          >
-            Tons (t)
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-wind-units"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#E6EDF3",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.windUnits
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#8B949E",
-                  "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 11,
-                },
-              ]
-            }
-          >
-            Knots (KT)
-          </Text>
-        </View>
-      </View>
-    </View>
-  </View>
-</RNCSafeAreaView>
-`;
-
-exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
-<RNCSafeAreaView
-  edges={
-    {
-      "bottom": "additive",
-      "left": "additive",
-      "right": "additive",
-      "top": "additive",
-    }
-  }
-  style={
-    {
-      "backgroundColor": "#F4F6F9",
-      "flex": 1,
-    }
-  }
-  testID="settings-screen"
->
-  <View
-    style={
-      [
-        {
-          "flex": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 12,
-        },
-        undefined,
-      ]
-    }
-  >
-    <View
-      style={
-        [
-          {
-            "alignItems": "stretch",
-            "flexDirection": "column",
-            "gap": 12,
-            "justifyContent": "flex-start",
-          },
-          {
-            "flex": 0,
-            "paddingHorizontal": 0,
-          },
-        ]
-      }
-    >
-      <View
-        style={
-          [
-            {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "gap": 12,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
-        }
-      >
         <View
           style={
             [
@@ -1263,14 +448,838 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
               undefined,
             ]
           }
+          testID="settings-section-modules"
+        >
+          <Text
+            accessibilityLabel="settings.modulesSectionTitle"
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#8B949E",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "letterSpacing": 1,
+                },
+              ]
+            }
+          >
+            SETTINGS.MODULESSECTIONTITLE
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#11161F",
+                  "borderColor": "rgba(255, 255, 255, 0.08)",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "minHeight": 44,
+                  "paddingHorizontal": 12,
+                  "paddingVertical": 8,
+                }
+              }
+              testID="settings-row-module-crosswind-takeoff"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#E6EDF3",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                    },
+                  ]
+                }
+              >
+                Crosswind · Takeoff
+              </Text>
+              <View
+                accessibilityLabel="Crosswind · Takeoff"
+                accessibilityRole="switch"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": true,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "minWidth": 44,
+                    "opacity": 1,
+                    "padding": 4,
+                  }
+                }
+                testID="settings-row-module-crosswind-takeoff-toggle"
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#00C2A8",
+                      "borderRadius": 13,
+                      "height": 26,
+                      "width": 44,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#11161F",
+                        "borderRadius": 11,
+                        "height": 22,
+                        "left": 20,
+                        "position": "absolute",
+                        "top": 2,
+                        "width": 22,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#11161F",
+                  "borderColor": "rgba(255, 255, 255, 0.08)",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "minHeight": 44,
+                  "paddingHorizontal": 12,
+                  "paddingVertical": 8,
+                }
+              }
+              testID="settings-row-module-crosswind-landing"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#E6EDF3",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                    },
+                  ]
+                }
+              >
+                Crosswind · Landing
+              </Text>
+              <View
+                accessibilityLabel="Crosswind · Landing"
+                accessibilityRole="switch"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": true,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "minWidth": 44,
+                    "opacity": 1,
+                    "padding": 4,
+                  }
+                }
+                testID="settings-row-module-crosswind-landing-toggle"
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#00C2A8",
+                      "borderRadius": 13,
+                      "height": 26,
+                      "width": 44,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#11161F",
+                        "borderRadius": 11,
+                        "height": 22,
+                        "left": 20,
+                        "position": "absolute",
+                        "top": 2,
+                        "width": 22,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#11161F",
+                  "borderColor": "rgba(255, 255, 255, 0.08)",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "minHeight": 44,
+                  "paddingHorizontal": 12,
+                  "paddingVertical": 8,
+                }
+              }
+              testID="settings-row-module-recent"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#E6EDF3",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                    },
+                  ]
+                }
+              >
+                Recent Calculations
+              </Text>
+              <View
+                accessibilityLabel="Recent Calculations"
+                accessibilityRole="switch"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": true,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "minWidth": 44,
+                    "opacity": 1,
+                    "padding": 4,
+                  }
+                }
+                testID="settings-row-module-recent-toggle"
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#00C2A8",
+                      "borderRadius": 13,
+                      "height": 26,
+                      "width": 44,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#11161F",
+                        "borderRadius": 11,
+                        "height": 22,
+                        "left": 20,
+                        "position": "absolute",
+                        "top": 2,
+                        "width": 22,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "gap": 8,
+            }
+          }
+        >
+          <View
+            accessibilityLabel="settings.language"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "minHeight": 44,
+                "paddingHorizontal": 12,
+                "paddingVertical": 8,
+              }
+            }
+            testID="settings-row-language"
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 12,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              settings.language
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "Menlo",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 11,
+                    },
+                  ]
+                }
+              >
+                settings.languageEnglish
+              </Text>
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#6E7681",
+                      "fontSize": 18,
+                    },
+                    undefined,
+                    {
+                      "fontFamily": "ionicons",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+                testID="settings-row-language-chevron"
+              >
+                
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="settings.theme"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "minHeight": 44,
+                "paddingHorizontal": 12,
+                "paddingVertical": 8,
+              }
+            }
+            testID="settings-row-theme"
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 12,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              settings.theme
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#8B949E",
+                      "fontFamily": "Menlo",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 11,
+                    },
+                  ]
+                }
+              >
+                settings.themeDark
+              </Text>
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#6E7681",
+                      "fontSize": 18,
+                    },
+                    undefined,
+                    {
+                      "fontFamily": "ionicons",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+                testID="settings-row-theme-chevron"
+              >
+                
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "minHeight": 44,
+                "paddingHorizontal": 12,
+                "paddingVertical": 8,
+              }
+            }
+            testID="settings-row-weight-units"
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 12,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              settings.weightUnits
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#8B949E",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              Tons (t)
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "minHeight": 44,
+                "paddingHorizontal": 12,
+                "paddingVertical": 8,
+              }
+            }
+            testID="settings-row-wind-units"
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#E6EDF3",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 12,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              settings.windUnits
+            </Text>
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#8B949E",
+                    "fontFamily": "Menlo",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "letterSpacing": 0,
+                    "lineHeight": 22,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 11,
+                  },
+                ]
+              }
+            >
+              Knots (KT)
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>
+</RNCSafeAreaProvider>
+`;
+
+exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <RNCSafeAreaView
+    edges={
+      {
+        "bottom": "additive",
+        "left": "additive",
+        "right": "additive",
+        "top": "additive",
+      }
+    }
+    style={
+      {
+        "backgroundColor": "#F4F6F9",
+        "flex": 1,
+      }
+    }
+    testID="settings-screen"
+  >
+    <View
+      style={
+        [
+          {
+            "flex": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 12,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "gap": 12,
+              "justifyContent": "flex-start",
+            },
+            {
+              "flex": 0,
+              "paddingHorizontal": 0,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 12,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
         >
           <View
             style={
               [
                 {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
+                  "alignItems": "stretch",
+                  "flexDirection": "column",
                   "gap": 8,
                   "justifyContent": "flex-start",
                 },
@@ -1279,25 +1288,829 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
             }
           >
             <View
-              accessibilityLabel="B787 logo"
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 8,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityLabel="B787 logo"
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "#DEF7F3",
+                    "borderRadius": 6,
+                    "height": 28,
+                    "justifyContent": "center",
+                    "width": 28,
+                  }
+                }
+                testID="settings-logo"
+              >
+                <Text
+                  allowFontScaling={true}
+                  style={
+                    [
+                      {
+                        "color": "#00C2A8",
+                        "fontFamily": "Menlo",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "letterSpacing": 0,
+                        "lineHeight": 22,
+                        "textAlign": "auto",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  B7
+                </Text>
+              </View>
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#1F2937",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 16,
+                    },
+                  ]
+                }
+              >
+                settings.title
+              </Text>
+            </View>
+            <View
+              accessibilityRole="tablist"
+              style={
+                [
+                  {
+                    "flexDirection": "row",
+                    "gap": 4,
+                  },
+                  {
+                    "alignSelf": "stretch",
+                  },
+                ]
+              }
+              testID="settings-tabs"
+            >
+              <View
+                accessibilityLabel="mainMenu.tabModules"
+                accessibilityRole="tab"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": false,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+                testID="settings-tabs-modules"
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "minHeight": 44,
+                        "paddingHorizontal": 10,
+                        "paddingVertical": 5,
+                      },
+                      null,
+                      {
+                        "opacity": 1,
+                        "transform": [
+                          {
+                            "scale": 1,
+                          },
+                        ],
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#4B5563",
+                          "fontFamily": "System",
+                          "fontSize": 12,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    mainMenu.tabModules
+                  </Text>
+                </View>
+              </View>
+              <View
+                accessibilityLabel="mainMenu.tabSettings"
+                accessibilityRole="tab"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": true,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+                testID="settings-tabs-settings"
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "minHeight": 44,
+                        "paddingHorizontal": 10,
+                        "paddingVertical": 5,
+                      },
+                      {
+                        "backgroundColor": "#DEF7F3",
+                      },
+                      {
+                        "opacity": 1,
+                        "transform": [
+                          {
+                            "scale": 1,
+                          },
+                        ],
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#006B5E",
+                          "fontFamily": "System",
+                          "fontSize": 12,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    mainMenu.tabSettings
+                  </Text>
+                </View>
+              </View>
+              <View
+                accessibilityLabel="mainMenu.tabAbout"
+                accessibilityRole="tab"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": false,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+                testID="settings-tabs-about"
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 10,
+                        "justifyContent": "center",
+                        "minHeight": 44,
+                        "paddingHorizontal": 10,
+                        "paddingVertical": 5,
+                      },
+                      null,
+                      {
+                        "opacity": 1,
+                        "transform": [
+                          {
+                            "scale": 1,
+                          },
+                        ],
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    allowFontScaling={true}
+                    style={
+                      [
+                        {
+                          "color": "#4B5563",
+                          "fontFamily": "System",
+                          "fontSize": 12,
+                          "fontWeight": "400",
+                          "letterSpacing": 0,
+                          "lineHeight": 16,
+                          "textAlign": "auto",
+                        },
+                        {
+                          "fontSize": 12,
+                        },
+                      ]
+                    }
+                  >
+                    mainMenu.tabAbout
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "backgroundColor": "rgba(0, 0, 0, 0.08)",
+                "height": 1,
+              }
+            }
+          />
+        </View>
+        <View
+          style={
+            [
+              {
+                "alignItems": "stretch",
+                "flexDirection": "column",
+                "gap": 8,
+                "justifyContent": "flex-start",
+              },
+              undefined,
+            ]
+          }
+          testID="settings-section-modules"
+        >
+          <Text
+            accessibilityLabel="settings.modulesSectionTitle"
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#4B5563",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "letterSpacing": 1,
+                },
+              ]
+            }
+          >
+            SETTINGS.MODULESSECTIONTITLE
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <View
               style={
                 {
                   "alignItems": "center",
-                  "backgroundColor": "#DEF7F3",
-                  "borderRadius": 6,
-                  "height": 28,
-                  "justifyContent": "center",
-                  "width": 28,
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "rgba(0, 0, 0, 0.08)",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "minHeight": 44,
+                  "paddingHorizontal": 12,
+                  "paddingVertical": 8,
                 }
               }
-              testID="settings-logo"
+              testID="settings-row-module-crosswind-takeoff"
             >
               <Text
                 allowFontScaling={true}
                 style={
                   [
                     {
-                      "color": "#00C2A8",
+                      "color": "#1F2937",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                    },
+                  ]
+                }
+              >
+                Crosswind · Takeoff
+              </Text>
+              <View
+                accessibilityLabel="Crosswind · Takeoff"
+                accessibilityRole="switch"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": true,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "minWidth": 44,
+                    "opacity": 1,
+                    "padding": 4,
+                  }
+                }
+                testID="settings-row-module-crosswind-takeoff-toggle"
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#00C2A8",
+                      "borderRadius": 13,
+                      "height": 26,
+                      "width": 44,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#FFFFFF",
+                        "borderRadius": 11,
+                        "height": 22,
+                        "left": 20,
+                        "position": "absolute",
+                        "top": 2,
+                        "width": 22,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "rgba(0, 0, 0, 0.08)",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "minHeight": 44,
+                  "paddingHorizontal": 12,
+                  "paddingVertical": 8,
+                }
+              }
+              testID="settings-row-module-crosswind-landing"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#1F2937",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                    },
+                  ]
+                }
+              >
+                Crosswind · Landing
+              </Text>
+              <View
+                accessibilityLabel="Crosswind · Landing"
+                accessibilityRole="switch"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": true,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "minWidth": 44,
+                    "opacity": 1,
+                    "padding": 4,
+                  }
+                }
+                testID="settings-row-module-crosswind-landing-toggle"
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#00C2A8",
+                      "borderRadius": 13,
+                      "height": 26,
+                      "width": 44,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#FFFFFF",
+                        "borderRadius": 11,
+                        "height": 22,
+                        "left": 20,
+                        "position": "absolute",
+                        "top": 2,
+                        "width": 22,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "backgroundColor": "#FFFFFF",
+                  "borderColor": "rgba(0, 0, 0, 0.08)",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "minHeight": 44,
+                  "paddingHorizontal": 12,
+                  "paddingVertical": 8,
+                }
+              }
+              testID="settings-row-module-recent"
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#1F2937",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "lineHeight": 16,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                    },
+                  ]
+                }
+              >
+                Recent Calculations
+              </Text>
+              <View
+                accessibilityLabel="Recent Calculations"
+                accessibilityRole="switch"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": true,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "minHeight": 44,
+                    "minWidth": 44,
+                    "opacity": 1,
+                    "padding": 4,
+                  }
+                }
+                testID="settings-row-module-recent-toggle"
+              >
+                <View
+                  style={
+                    {
+                      "backgroundColor": "#00C2A8",
+                      "borderRadius": 13,
+                      "height": 26,
+                      "width": 44,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#FFFFFF",
+                        "borderRadius": 11,
+                        "height": 22,
+                        "left": 20,
+                        "position": "absolute",
+                        "top": 2,
+                        "width": 22,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            {
+              "gap": 8,
+            }
+          }
+        >
+          <View
+            accessibilityLabel="settings.language"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "minHeight": 44,
+                "paddingHorizontal": 12,
+                "paddingVertical": 8,
+              }
+            }
+            testID="settings-row-language"
+          >
+            <Text
+              allowFontScaling={true}
+              style={
+                [
+                  {
+                    "color": "#1F2937",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
+                  },
+                  {
+                    "fontSize": 12,
+                    "fontWeight": "500",
+                  },
+                ]
+              }
+            >
+              settings.language
+            </Text>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#4B5563",
                       "fontFamily": "Menlo",
                       "fontSize": 16,
                       "fontWeight": "500",
@@ -1305,364 +2118,70 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                       "lineHeight": 22,
                       "textAlign": "auto",
                     },
-                    undefined,
+                    {
+                      "fontSize": 11,
+                    },
                   ]
                 }
               >
-                B7
+                settings.languageEnglish
+              </Text>
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#6B7280",
+                      "fontSize": 18,
+                    },
+                    undefined,
+                    {
+                      "fontFamily": "ionicons",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+                testID="settings-row-language-chevron"
+              >
+                
               </Text>
             </View>
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#1F2937",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 22,
-                    "textAlign": "auto",
-                  },
-                  {
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              settings.title
-            </Text>
           </View>
           <View
-            accessibilityRole="tablist"
-            style={
-              [
-                {
-                  "flexDirection": "row",
-                  "gap": 4,
-                },
-                {
-                  "alignSelf": "stretch",
-                },
-              ]
-            }
-            testID="settings-tabs"
-          >
-            <View
-              accessibilityLabel="mainMenu.tabModules"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
-                  "selected": false,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="settings-tabs-modules"
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
-                    },
-                    null,
-                    {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#4B5563",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "letterSpacing": 0,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  mainMenu.tabModules
-                </Text>
-              </View>
-            </View>
-            <View
-              accessibilityLabel="mainMenu.tabSettings"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
-                  "selected": true,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="settings-tabs-settings"
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
-                    },
-                    {
-                      "backgroundColor": "#DEF7F3",
-                    },
-                    {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#006B5E",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "letterSpacing": 0,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  mainMenu.tabSettings
-                </Text>
-              </View>
-            </View>
-            <View
-              accessibilityLabel="mainMenu.tabAbout"
-              accessibilityRole="tab"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": undefined,
-                  "disabled": undefined,
-                  "expanded": undefined,
-                  "selected": false,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "flex": 1,
-                }
-              }
-              testID="settings-tabs-about"
-            >
-              <View
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "borderRadius": 10,
-                      "justifyContent": "center",
-                      "minHeight": 44,
-                      "paddingHorizontal": 10,
-                      "paddingVertical": 5,
-                    },
-                    null,
-                    {
-                      "opacity": 1,
-                      "transform": [
-                        {
-                          "scale": 1,
-                        },
-                      ],
-                    },
-                  ]
-                }
-              >
-                <Text
-                  allowFontScaling={true}
-                  style={
-                    [
-                      {
-                        "color": "#4B5563",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "letterSpacing": 0,
-                        "lineHeight": 16,
-                        "textAlign": "auto",
-                      },
-                      {
-                        "fontSize": 12,
-                      },
-                    ]
-                  }
-                >
-                  mainMenu.tabAbout
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          style={
-            {
-              "backgroundColor": "rgba(0, 0, 0, 0.08)",
-              "height": 1,
-            }
-          }
-        />
-      </View>
-      <View
-        style={
-          [
-            {
-              "alignItems": "stretch",
-              "flexDirection": "column",
-              "gap": 8,
-              "justifyContent": "flex-start",
-            },
-            undefined,
-          ]
-        }
-        testID="settings-section-modules"
-      >
-        <Text
-          accessibilityLabel="settings.modulesSectionTitle"
-          allowFontScaling={true}
-          style={
-            [
+            accessibilityLabel="settings.theme"
+            accessibilityRole="button"
+            accessibilityState={
               {
-                "color": "#4B5563",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "fontSize": 12,
-                "fontWeight": "600",
-                "letterSpacing": 1,
-              },
-            ]
-          }
-        >
-          SETTINGS.MODULESSECTIONTITLE
-        </Text>
-        <View
-          style={
-            {
-              "gap": 8,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
             }
-          }
-        >
-          <View
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               {
                 "alignItems": "center",
@@ -1677,7 +2196,7 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                 "paddingVertical": 8,
               }
             }
-            testID="settings-row-module-crosswind-takeoff"
+            testID="settings-row-theme"
           >
             <Text
               allowFontScaling={true}
@@ -1699,76 +2218,65 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              Crosswind · Takeoff
+              settings.theme
             </Text>
             <View
-              accessibilityLabel="Crosswind · Takeoff"
-              accessibilityRole="switch"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": true,
-                  "disabled": false,
-                  "expanded": undefined,
-                  "selected": undefined,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
               style={
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "minWidth": 44,
-                  "opacity": 1,
-                  "padding": 4,
-                }
-              }
-              testID="settings-row-module-crosswind-takeoff-toggle"
-            >
-              <View
-                style={
+                [
                   {
-                    "backgroundColor": "#00C2A8",
-                    "borderRadius": 13,
-                    "height": 26,
-                    "width": 44,
-                  }
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexWrap": "nowrap",
+                    "gap": 4,
+                    "justifyContent": "flex-start",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={true}
+                style={
+                  [
+                    {
+                      "color": "#4B5563",
+                      "fontFamily": "Menlo",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "letterSpacing": 0,
+                      "lineHeight": 22,
+                      "textAlign": "auto",
+                    },
+                    {
+                      "fontSize": 11,
+                    },
+                  ]
                 }
               >
-                <View
-                  style={
+                settings.themeLight
+              </Text>
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
                     {
-                      "backgroundColor": "#FFFFFF",
-                      "borderRadius": 11,
-                      "height": 22,
-                      "left": 20,
-                      "position": "absolute",
-                      "top": 2,
-                      "width": 22,
-                    }
-                  }
-                />
-              </View>
+                      "color": "#6B7280",
+                      "fontSize": 18,
+                    },
+                    undefined,
+                    {
+                      "fontFamily": "ionicons",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+                testID="settings-row-theme-chevron"
+              >
+                
+              </Text>
             </View>
           </View>
           <View
@@ -1786,7 +2294,7 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                 "paddingVertical": 8,
               }
             }
-            testID="settings-row-module-crosswind-landing"
+            testID="settings-row-weight-units"
           >
             <Text
               allowFontScaling={true}
@@ -1808,280 +2316,8 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              Crosswind · Landing
+              settings.weightUnits
             </Text>
-            <View
-              accessibilityLabel="Crosswind · Landing"
-              accessibilityRole="switch"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": true,
-                  "disabled": false,
-                  "expanded": undefined,
-                  "selected": undefined,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "minWidth": 44,
-                  "opacity": 1,
-                  "padding": 4,
-                }
-              }
-              testID="settings-row-module-crosswind-landing-toggle"
-            >
-              <View
-                style={
-                  {
-                    "backgroundColor": "#00C2A8",
-                    "borderRadius": 13,
-                    "height": 26,
-                    "width": 44,
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderRadius": 11,
-                      "height": 22,
-                      "left": 20,
-                      "position": "absolute",
-                      "top": 2,
-                      "width": 22,
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "backgroundColor": "#FFFFFF",
-                "borderColor": "rgba(0, 0, 0, 0.08)",
-                "borderRadius": 8,
-                "borderWidth": 1,
-                "flexDirection": "row",
-                "justifyContent": "space-between",
-                "minHeight": 44,
-                "paddingHorizontal": 12,
-                "paddingVertical": 8,
-              }
-            }
-            testID="settings-row-module-recent"
-          >
-            <Text
-              allowFontScaling={true}
-              style={
-                [
-                  {
-                    "color": "#1F2937",
-                    "fontFamily": "System",
-                    "fontSize": 12,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "lineHeight": 16,
-                    "textAlign": "auto",
-                  },
-                  {
-                    "fontSize": 12,
-                    "fontWeight": "500",
-                  },
-                ]
-              }
-            >
-              Recent Calculations
-            </Text>
-            <View
-              accessibilityLabel="Recent Calculations"
-              accessibilityRole="switch"
-              accessibilityState={
-                {
-                  "busy": undefined,
-                  "checked": true,
-                  "disabled": false,
-                  "expanded": undefined,
-                  "selected": undefined,
-                }
-              }
-              accessibilityValue={
-                {
-                  "max": undefined,
-                  "min": undefined,
-                  "now": undefined,
-                  "text": undefined,
-                }
-              }
-              accessible={true}
-              collapsable={false}
-              focusable={true}
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                {
-                  "alignItems": "center",
-                  "justifyContent": "center",
-                  "minHeight": 44,
-                  "minWidth": 44,
-                  "opacity": 1,
-                  "padding": 4,
-                }
-              }
-              testID="settings-row-module-recent-toggle"
-            >
-              <View
-                style={
-                  {
-                    "backgroundColor": "#00C2A8",
-                    "borderRadius": 13,
-                    "height": 26,
-                    "width": 44,
-                  }
-                }
-              >
-                <View
-                  style={
-                    {
-                      "backgroundColor": "#FFFFFF",
-                      "borderRadius": 11,
-                      "height": 22,
-                      "left": 20,
-                      "position": "absolute",
-                      "top": 2,
-                      "width": 22,
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        style={
-          {
-            "gap": 8,
-          }
-        }
-      >
-        <View
-          accessibilityLabel="settings.language"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-language"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.language
-          </Text>
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
-                  "gap": 4,
-                  "justifyContent": "flex-start",
-                },
-                undefined,
-              ]
-            }
-          >
             <Text
               allowFontScaling={true}
               style={
@@ -2101,116 +2337,48 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              settings.languageEnglish
+              Tons (t)
             </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "minHeight": 44,
+                "paddingHorizontal": 12,
+                "paddingVertical": 8,
+              }
+            }
+            testID="settings-row-wind-units"
+          >
             <Text
-              allowFontScaling={false}
-              selectable={false}
+              allowFontScaling={true}
               style={
                 [
                   {
-                    "color": "#6B7280",
-                    "fontSize": 18,
+                    "color": "#1F2937",
+                    "fontFamily": "System",
+                    "fontSize": 12,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "lineHeight": 16,
+                    "textAlign": "auto",
                   },
-                  undefined,
                   {
-                    "fontFamily": "ionicons",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "fontSize": 12,
+                    "fontWeight": "500",
                   },
-                  {},
                 ]
               }
-              testID="settings-row-language-chevron"
             >
-              
+              settings.windUnits
             </Text>
-          </View>
-        </View>
-        <View
-          accessibilityLabel="settings.theme"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-theme"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.theme
-          </Text>
-          <View
-            style={
-              [
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "flexWrap": "nowrap",
-                  "gap": 4,
-                  "justifyContent": "flex-start",
-                },
-                undefined,
-              ]
-            }
-          >
             <Text
               allowFontScaling={true}
               style={
@@ -2230,156 +2398,12 @@ exports[`Settings route renders correctly in light theme (snapshot) 1`] = `
                 ]
               }
             >
-              settings.themeLight
-            </Text>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6B7280",
-                    "fontSize": 18,
-                  },
-                  undefined,
-                  {
-                    "fontFamily": "ionicons",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-              testID="settings-row-theme-chevron"
-            >
-              
+              Knots (KT)
             </Text>
           </View>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-weight-units"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.weightUnits
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#4B5563",
-                  "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 11,
-                },
-              ]
-            }
-          >
-            Tons (t)
-          </Text>
-        </View>
-        <View
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "minHeight": 44,
-              "paddingHorizontal": 12,
-              "paddingVertical": 8,
-            }
-          }
-          testID="settings-row-wind-units"
-        >
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#1F2937",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "letterSpacing": 0,
-                  "lineHeight": 16,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 12,
-                  "fontWeight": "500",
-                },
-              ]
-            }
-          >
-            settings.windUnits
-          </Text>
-          <Text
-            allowFontScaling={true}
-            style={
-              [
-                {
-                  "color": "#4B5563",
-                  "fontFamily": "Menlo",
-                  "fontSize": 16,
-                  "fontWeight": "500",
-                  "letterSpacing": 0,
-                  "lineHeight": 22,
-                  "textAlign": "auto",
-                },
-                {
-                  "fontSize": 11,
-                },
-              ]
-            }
-          >
-            Knots (KT)
-          </Text>
         </View>
       </View>
     </View>
-  </View>
-</RNCSafeAreaView>
+  </RNCSafeAreaView>
+</RNCSafeAreaProvider>
 `;

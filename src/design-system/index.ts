@@ -60,6 +60,7 @@ export {
   NumericKeypadProvider,
   NumericKeypadHost,
   useNumericKeypad,
+  useNumericKeypadDockOffset,
   // Settings/About list rows
   NavigableSettingsRow,
   ToggleSettingsRow,

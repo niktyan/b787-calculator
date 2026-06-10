@@ -1,261 +1,307 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Button renders disabled state with accessibility flag 1`] = `
-<View
-  accessibilityLabel="Confirm"
-  accessibilityRole="button"
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": true,
-      "expanded": undefined,
-      "selected": undefined,
-    }
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  testID="btn"
 >
   <View
-    style={
-      [
-        {
-          "alignItems": "center",
-          "backgroundColor": "#00C2A8",
-          "borderColor": "#00C2A8",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 16,
-          "paddingVertical": 8,
-        },
-        {
-          "opacity": 0.5,
-        },
-        {
-          "opacity": 1,
-          "transform": [
-            {
-              "scale": 1,
-            },
-          ],
-        },
-      ]
+    accessibilityLabel="Confirm"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": true,
+        "expanded": undefined,
+        "selected": undefined,
+      }
     }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    testID="btn"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#001A17",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "backgroundColor": "#00C2A8",
+            "borderColor": "#00C2A8",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 16,
+            "paddingVertical": 8,
           },
-          undefined,
+          {
+            "opacity": 0.5,
+          },
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Confirm
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Confirm
+      </Text>
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Button renders primary variant in dark theme 1`] = `
-<View
-  accessibilityLabel="Continue"
-  accessibilityRole="button"
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": false,
-      "expanded": undefined,
-      "selected": undefined,
-    }
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  testID="btn"
 >
   <View
-    style={
-      [
-        {
-          "alignItems": "center",
-          "backgroundColor": "#00C2A8",
-          "borderColor": "#00C2A8",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 16,
-          "paddingVertical": 8,
-        },
-        null,
-        {
-          "opacity": 1,
-          "transform": [
-            {
-              "scale": 1,
-            },
-          ],
-        },
-      ]
+    accessibilityLabel="Continue"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
     }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    testID="btn"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#001A17",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "backgroundColor": "#00C2A8",
+            "borderColor": "#00C2A8",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 16,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Continue
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Continue
+      </Text>
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Button renders primary variant in light theme 1`] = `
-<View
-  accessibilityLabel="Continue"
-  accessibilityRole="button"
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": false,
-      "expanded": undefined,
-      "selected": undefined,
-    }
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  testID="btn"
 >
   <View
-    style={
-      [
-        {
-          "alignItems": "center",
-          "backgroundColor": "#00C2A8",
-          "borderColor": "#00C2A8",
-          "borderRadius": 8,
-          "borderWidth": 1,
-          "justifyContent": "center",
-          "minHeight": 44,
-          "paddingHorizontal": 16,
-          "paddingVertical": 8,
-        },
-        null,
-        {
-          "opacity": 1,
-          "transform": [
-            {
-              "scale": 1,
-            },
-          ],
-        },
-      ]
+    accessibilityLabel="Continue"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
     }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    testID="btn"
   >
-    <Text
-      allowFontScaling={true}
+    <View
       style={
         [
           {
-            "color": "#001A17",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "letterSpacing": 0,
-            "lineHeight": 22,
-            "textAlign": "auto",
+            "alignItems": "center",
+            "backgroundColor": "#00C2A8",
+            "borderColor": "#00C2A8",
+            "borderRadius": 8,
+            "borderWidth": 1,
+            "justifyContent": "center",
+            "minHeight": 44,
+            "paddingHorizontal": 16,
+            "paddingVertical": 8,
           },
-          undefined,
+          null,
+          {
+            "opacity": 1,
+            "transform": [
+              {
+                "scale": 1,
+              },
+            ],
+          },
         ]
       }
     >
-      Continue
-    </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#001A17",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 22,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        Continue
+      </Text>
+    </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`Button renders secondary and ghost variants 1`] = `
-[
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
   <View
     accessibilityLabel="Cancel"
     accessibilityRole="button"
@@ -335,7 +381,7 @@ exports[`Button renders secondary and ghost variants 1`] = `
         Cancel
       </Text>
     </View>
-  </View>,
+  </View>
   <View
     accessibilityLabel="Skip"
     accessibilityRole="button"
@@ -415,6 +461,6 @@ exports[`Button renders secondary and ghost variants 1`] = `
         Skip
       </Text>
     </View>
-  </View>,
-]
+  </View>
+</RNCSafeAreaProvider>
 `;

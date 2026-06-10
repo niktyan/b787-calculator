@@ -116,6 +116,10 @@ module.exports = [
     rules: {
       'no-magic-numbers': 'off',
       'max-lines-per-function': 'off',
+      // Test files often pin many cases for the same module — a 300-line
+      // cap pushes legitimate coverage into separate files for no
+      // architectural benefit. Production code keeps the cap.
+      'max-lines': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       // jest.requireActual and the React test renderer's toJSON() are typed as
       // `any`; the unsafe-* rules flag every snapshot assertion. Test files are

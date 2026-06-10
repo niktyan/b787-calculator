@@ -1,2059 +1,2083 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NumericKeypad renders compact layout snapshot (dark theme) 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "width": "100%",
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="kp"
 >
   <View
     style={
       {
-        "gap": 8,
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 8,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="1"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-1"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          1
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="2"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-2"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          2
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="3"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-3"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          3
-        </Text>
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 8,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="4"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-4"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          4
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="5"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-5"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          5
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="6"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-6"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          6
-        </Text>
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 8,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="7"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-7"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          7
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="8"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-8"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          8
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="9"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-9"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          9
-        </Text>
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 8,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="keypad.decimalSeparator"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-."
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          .
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="0"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-0"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#E6EDF3",
-                "fontFamily": "Menlo",
-                "fontSize": 22,
-                "fontWeight": "600",
-                "lineHeight": 28,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          0
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="keypad.backspace"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#11161F",
-              "borderColor": "rgba(255, 255, 255, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 48,
-            },
-          ]
-        }
-        testID="kp-key-backspace"
-      >
-        <Text />
-      </View>
-    </View>
-  </View>
-  <View
-    accessibilityLabel="keypad.done"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      {
-        "alignSelf": "stretch",
-        "marginTop": 8,
         "width": "100%",
       }
     }
-    testID="kp-done"
+    testID="kp"
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "backgroundColor": "#00C2A8",
-            "borderColor": "#00C2A8",
-            "borderRadius": 8,
-            "borderWidth": 1,
-            "justifyContent": "center",
-            "minHeight": 44,
-            "paddingHorizontal": 16,
-            "paddingVertical": 8,
-          },
-          null,
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "scale": 1,
-              },
-            ],
-          },
-        ]
+        {
+          "gap": 8,
+        }
       }
     >
-      <Text
-        allowFontScaling={true}
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="1"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-1"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            1
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="2"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-2"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            2
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="3"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-3"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            3
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="4"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-4"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            4
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="5"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-5"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            5
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="6"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-6"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            6
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="7"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-7"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            7
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="8"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-8"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            8
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="9"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-9"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            9
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 8,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="keypad.decimalSeparator"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-."
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            .
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="0"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-0"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#E6EDF3",
+                  "fontFamily": "Menlo",
+                  "fontSize": 22,
+                  "fontWeight": "600",
+                  "lineHeight": 28,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            0
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="keypad.backspace"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#11161F",
+                "borderColor": "rgba(255, 255, 255, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 48,
+              },
+            ]
+          }
+          testID="kp-key-backspace"
+        >
+          <Text />
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="keypad.done"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignSelf": "stretch",
+          "marginTop": 8,
+          "width": "100%",
+        }
+      }
+      testID="kp-done"
+    >
+      <View
         style={
           [
             {
-              "color": "#001A17",
-              "fontFamily": "System",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 22,
-              "textAlign": "auto",
+              "alignItems": "center",
+              "backgroundColor": "#00C2A8",
+              "borderColor": "#00C2A8",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "justifyContent": "center",
+              "minHeight": 44,
+              "paddingHorizontal": 16,
+              "paddingVertical": 8,
             },
-            undefined,
+            null,
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "scale": 1,
+                },
+              ],
+            },
           ]
         }
       >
-        keypad.done
-      </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          keypad.done
+        </Text>
+      </View>
     </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;
 
 exports[`NumericKeypad renders regular layout snapshot (light theme) 1`] = `
-<View
+<RNCSafeAreaProvider
+  onInsetsChange={[Function]}
   style={
-    {
-      "width": "100%",
-    }
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
   }
-  testID="kp"
 >
   <View
     style={
       {
-        "gap": 12,
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="1"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-1"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          1
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="2"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-2"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          2
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="3"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-3"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          3
-        </Text>
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="4"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-4"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          4
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="5"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-5"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          5
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="6"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-6"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          6
-        </Text>
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="7"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-7"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          7
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="8"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-8"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          8
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="9"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-9"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          9
-        </Text>
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-        }
-      }
-    >
-      <View
-        accessibilityLabel="keypad.decimalSeparator"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-."
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          .
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="0"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-0"
-      >
-        <Text
-          allowFontScaling={true}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0,
-                "lineHeight": 22,
-                "textAlign": "auto",
-              },
-              {
-                "color": "#1F2937",
-                "fontFamily": "Menlo",
-                "fontSize": 28,
-                "fontWeight": "600",
-                "lineHeight": 36,
-                "textAlign": "center",
-              },
-            ]
-          }
-        >
-          0
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="keypad.backspace"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": undefined,
-            "expanded": undefined,
-            "selected": undefined,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          [
-            {
-              "alignItems": "center",
-              "backgroundColor": "#FFFFFF",
-              "borderColor": "rgba(0, 0, 0, 0.08)",
-              "borderRadius": 8,
-              "borderWidth": 1,
-              "flex": 1,
-              "justifyContent": "center",
-              "minHeight": 56,
-            },
-          ]
-        }
-        testID="kp-key-backspace"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#1F2937",
-                "fontSize": 28,
-              },
-              undefined,
-              {
-                "fontFamily": "material",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </View>
-    </View>
-  </View>
-  <View
-    accessibilityLabel="keypad.done"
-    accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": false,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
-    collapsable={false}
-    focusable={true}
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      {
-        "alignSelf": "stretch",
-        "marginTop": 12,
         "width": "100%",
       }
     }
-    testID="kp-done"
+    testID="kp"
   >
     <View
       style={
-        [
-          {
-            "alignItems": "center",
-            "backgroundColor": "#00C2A8",
-            "borderColor": "#00C2A8",
-            "borderRadius": 8,
-            "borderWidth": 1,
-            "justifyContent": "center",
-            "minHeight": 44,
-            "paddingHorizontal": 16,
-            "paddingVertical": 8,
-          },
-          null,
-          {
-            "opacity": 1,
-            "transform": [
-              {
-                "scale": 1,
-              },
-            ],
-          },
-        ]
+        {
+          "gap": 12,
+        }
       }
     >
-      <Text
-        allowFontScaling={true}
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="1"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-1"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            1
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="2"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-2"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            2
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="3"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-3"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            3
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="4"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-4"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            4
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="5"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-5"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            5
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="6"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-6"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            6
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="7"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-7"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            7
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="8"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-8"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            8
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="9"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-9"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            9
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="keypad.decimalSeparator"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-."
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            .
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="0"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-0"
+        >
+          <Text
+            allowFontScaling={true}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "letterSpacing": 0,
+                  "lineHeight": 22,
+                  "textAlign": "auto",
+                },
+                {
+                  "color": "#1F2937",
+                  "fontFamily": "Menlo",
+                  "fontSize": 28,
+                  "fontWeight": "600",
+                  "lineHeight": 36,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            0
+          </Text>
+        </View>
+        <View
+          accessibilityLabel="keypad.backspace"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "rgba(0, 0, 0, 0.08)",
+                "borderRadius": 8,
+                "borderWidth": 1,
+                "flex": 1,
+                "justifyContent": "center",
+                "minHeight": 56,
+              },
+            ]
+          }
+          testID="kp-key-backspace"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2937",
+                  "fontSize": 28,
+                },
+                undefined,
+                {
+                  "fontFamily": "material",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="keypad.done"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignSelf": "stretch",
+          "marginTop": 12,
+          "width": "100%",
+        }
+      }
+      testID="kp-done"
+    >
+      <View
         style={
           [
             {
-              "color": "#001A17",
-              "fontFamily": "System",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "letterSpacing": 0,
-              "lineHeight": 22,
-              "textAlign": "auto",
+              "alignItems": "center",
+              "backgroundColor": "#00C2A8",
+              "borderColor": "#00C2A8",
+              "borderRadius": 8,
+              "borderWidth": 1,
+              "justifyContent": "center",
+              "minHeight": 44,
+              "paddingHorizontal": 16,
+              "paddingVertical": 8,
             },
-            undefined,
+            null,
+            {
+              "opacity": 1,
+              "transform": [
+                {
+                  "scale": 1,
+                },
+              ],
+            },
           ]
         }
       >
-        keypad.done
-      </Text>
+        <Text
+          allowFontScaling={true}
+          style={
+            [
+              {
+                "color": "#001A17",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "letterSpacing": 0,
+                "lineHeight": 22,
+                "textAlign": "auto",
+              },
+              undefined,
+            ]
+          }
+        >
+          keypad.done
+        </Text>
+      </View>
     </View>
   </View>
-</View>
+</RNCSafeAreaProvider>
 `;

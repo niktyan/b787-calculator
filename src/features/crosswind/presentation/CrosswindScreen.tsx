@@ -17,7 +17,7 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 import { useTheme, useTranslation } from '../../../core';
@@ -30,6 +30,7 @@ import {
   Stack,
   Text,
   tokens,
+  useNumericKeypadDockOffset,
 } from '../../../design-system';
 import { createCrosswindRepository } from '../data';
 import type { CrosswindDataFile } from '../data/schema';
@@ -137,20 +138,62 @@ function CrosswindScreenLoaded({ data }: ScreenLoadedProps): ReactNode {
             onReset={handleReset}
             isRegular={isRegular}
           />
-          {isTwoColumn ? (
-            <Row align="stretch" gap="lg" style={styles.fillHeight}>
-              <View style={styles.column}>{inputForm}</View>
-              <View style={styles.column}>{resultPanel}</View>
-            </Row>
-          ) : (
-            <Stack gap="lg" style={isRegular ? styles.fillHeight : undefined}>
-              {inputForm}
-              {resultPanel}
-            </Stack>
-          )}
+          <CrosswindBody
+            inputForm={inputForm}
+            resultPanel={resultPanel}
+            isRegular={isRegular}
+            isTwoColumn={isTwoColumn}
+          />
         </Stack>
       </KeyboardDismissView>
     </Screen>
+  );
+}
+
+interface CrosswindBodyProps {
+  readonly inputForm: ReactNode;
+  readonly resultPanel: ReactNode;
+  readonly isRegular: boolean;
+  readonly isTwoColumn: boolean;
+}
+
+// Splits the layout out of CrosswindScreenLoaded so the parent stays
+// under the 80-line per-function cap. iPad-landscape (`isTwoColumn`)
+// keeps the side-by-side Row; everything else stacks vertically inside
+// a ScrollView that reserves `dockOffset` of bottom space while the
+// iPhone-compact keypad is open (ADR-0011 Iteration 4).
+function CrosswindBody({
+  inputForm,
+  resultPanel,
+  isRegular,
+  isTwoColumn,
+}: CrosswindBodyProps): ReactNode {
+  const dockOffset = useNumericKeypadDockOffset();
+  const scrollContentStyle = useMemo<ViewStyle>(
+    () => ({ flexGrow: 1, paddingBottom: dockOffset }),
+    [dockOffset],
+  );
+  if (isTwoColumn) {
+    return (
+      <Row align="stretch" gap="lg" style={styles.fillHeight}>
+        <View style={styles.column}>{inputForm}</View>
+        <View style={styles.column}>{resultPanel}</View>
+      </Row>
+    );
+  }
+  return (
+    <ScrollView
+      contentContainerStyle={scrollContentStyle}
+      keyboardShouldPersistTaps="always"
+      showsVerticalScrollIndicator={false}
+      style={styles.fillHeight}
+      testID="crosswind-scroll"
+    >
+      <Stack gap="lg" style={isRegular ? styles.fillHeight : undefined}>
+        {inputForm}
+        {resultPanel}
+      </Stack>
+    </ScrollView>
   );
 }
 

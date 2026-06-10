@@ -2,15 +2,21 @@ import { useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Modal, Pressable, StyleSheet, useWindowDimensions } from 'react-native';
 import type { ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTranslation } from '../../../core';
 import { useTheme } from '../../../core/theming';
-import { computeAnchoredPosition } from '../../anchored-popover/computeAnchoredPosition';
+import {
+  COMPACT_WIDTH_BREAKPOINT,
+  computeAnchoredPosition,
+  positionBottomDocked,
+} from '../../anchored-popover/computeAnchoredPosition';
 import type { PopoverPosition } from '../../anchored-popover/computeAnchoredPosition';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
 import { NumericKeypad } from './NumericKeypad';
 import { useNumericKeypadContext } from './NumericKeypadContext';
+import { KEYPAD_HEIGHT_COMPACT, KEYPAD_HEIGHT_REGULAR } from './NumericKeypadHostMetrics';
 
 const HOST_TEST_ID = 'numeric-keypad-host';
 const KEYPAD_TEST_ID = 'numeric-keypad';
@@ -26,13 +32,16 @@ const KEYPAD_TEST_ID = 'numeric-keypad';
 //   compact: 24 + 4×48 + 3×8 + 8 + 44 = 292  →  +12 buffer = 304
 //   regular: 24 + 4×56 + 3×12 + 12 + 44 = 340  →  +12 buffer = 352
 const KEYPAD_WIDTH = 280;
-const KEYPAD_HEIGHT_COMPACT = 304;
-const KEYPAD_HEIGHT_REGULAR = 352;
 const KEYPAD_BORDER_WIDTH = 1;
 const KEYPAD_SHADOW_OFFSET_Y = 4;
 const KEYPAD_SHADOW_OPACITY = 0.25;
 const KEYPAD_SHADOW_RADIUS = 12;
 const KEYPAD_ELEVATION = 8;
+// Bottom-dock variant (ADR-0011 Iteration 4) draws the popover flush
+// against the bottom safe-area inset on iPhone-compact widths. Negative
+// shadow offset lifts the cast shadow above the top edge (where the
+// popover meets the form), mirroring the iOS system keyboard.
+const BOTTOM_DOCK_SHADOW_OFFSET_Y = -KEYPAD_SHADOW_OFFSET_Y;
 
 // Re-export under the keypad's original name so existing unit tests keep
 // importing `computeKeypadPosition` without an at-shore rewrite. F2 visual
@@ -47,32 +56,49 @@ interface Styles {
   readonly popover: ViewStyle;
 }
 
-function buildStyles(args: {
+interface BuildStylesArgs {
   readonly palette: ColorPalette;
   readonly position: Position;
+  readonly width: number;
   readonly height: number;
-}): Styles {
-  const { palette, position, height } = args;
+  readonly bottomDocked: boolean;
+}
+
+function buildStyles({ palette, position, width, height, bottomDocked }: BuildStylesArgs): Styles {
+  const cornerRadii = bottomDocked
+    ? {
+        borderTopLeftRadius: tokens.radii.lg,
+        borderTopRightRadius: tokens.radii.lg,
+      }
+    : { borderRadius: tokens.radii.lg };
+  // Bottom-dock has no left/right/bottom border (it's flush against the
+  // safe-area edge); the top border + cast shadow give the only seam.
+  const borders = bottomDocked
+    ? { borderTopWidth: KEYPAD_BORDER_WIDTH }
+    : { borderWidth: KEYPAD_BORDER_WIDTH };
   return StyleSheet.create({
     backdrop: {
       flex: 1,
     },
     popover: {
+      ...cornerRadii,
+      ...borders,
       backgroundColor: palette.bgCard,
       borderColor: palette.border,
-      borderRadius: tokens.radii.lg,
-      borderWidth: KEYPAD_BORDER_WIDTH,
       elevation: KEYPAD_ELEVATION,
       height,
       left: position.left,
       padding: tokens.spacing.md,
       position: 'absolute',
       shadowColor: palette.overlay,
-      shadowOffset: { width: 0, height: KEYPAD_SHADOW_OFFSET_Y },
+      shadowOffset: {
+        width: 0,
+        height: bottomDocked ? BOTTOM_DOCK_SHADOW_OFFSET_Y : KEYPAD_SHADOW_OFFSET_Y,
+      },
       shadowOpacity: KEYPAD_SHADOW_OPACITY,
       shadowRadius: KEYPAD_SHADOW_RADIUS,
       top: position.top,
-      width: KEYPAD_WIDTH,
+      width,
     },
   });
 }
@@ -84,28 +110,60 @@ export function NumericKeypadHost(): ReactNode {
   const { theme } = useTheme();
   const palette = tokens.colors[theme.resolved];
   const screen = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   const keypadHeight = activeIsRegular ? KEYPAD_HEIGHT_REGULAR : KEYPAD_HEIGHT_COMPACT;
+  // ADR-0011 Iteration 4: iPhone-compact uses a bottom-docked,
+  // full-width sheet that mirrors the iOS system keyboard. iPad
+  // (>= 768 pt) keeps the anchored-popover behaviour from Iteration 2.
+  const bottomDocked = screen.width < COMPACT_WIDTH_BREAKPOINT;
+  const keypadWidth = bottomDocked ? screen.width : KEYPAD_WIDTH;
 
   const position = useMemo<Position | null>(() => {
+    if (bottomDocked) {
+      return positionBottomDocked(
+        { width: screen.width, height: screen.height },
+        { width: keypadWidth, height: keypadHeight },
+        insets.bottom,
+      );
+    }
     if (activeAnchor === null) {
       return null;
     }
     return computeAnchoredPosition(
       activeAnchor,
       { width: screen.width, height: screen.height },
-      { width: KEYPAD_WIDTH, height: keypadHeight },
+      { width: keypadWidth, height: keypadHeight },
     );
-  }, [activeAnchor, screen.width, screen.height, keypadHeight]);
+  }, [
+    activeAnchor,
+    bottomDocked,
+    insets.bottom,
+    keypadHeight,
+    keypadWidth,
+    screen.height,
+    screen.width,
+  ]);
 
   const styles = useMemo<Styles | null>(() => {
     if (position === null) {
       return null;
     }
-    return buildStyles({ palette, position, height: keypadHeight });
-  }, [palette, position, keypadHeight]);
+    return buildStyles({
+      palette,
+      position,
+      width: keypadWidth,
+      height: keypadHeight,
+      bottomDocked,
+    });
+  }, [bottomDocked, keypadHeight, keypadWidth, palette, position]);
 
-  const visible = activeFieldId !== null && activeAnchor !== null && styles !== null;
+  // On compact the anchor is not consulted — the dock is always at the
+  // bottom — so the visibility gate is purely `activeFieldId !== null`.
+  // On wide (anchored) the existing `activeAnchor !== null` gate is
+  // preserved so the popover only appears once geometry is known.
+  const visible =
+    activeFieldId !== null && styles !== null && (bottomDocked || activeAnchor !== null);
 
   return (
     <Modal
