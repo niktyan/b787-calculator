@@ -11,7 +11,7 @@ import {
   computeAnchoredPosition,
   positionBottomDocked,
 } from '../../anchored-popover/computeAnchoredPosition';
-import type { PopoverPosition } from '../../anchored-popover/computeAnchoredPosition';
+import type { AnchorRect, PopoverPosition } from '../../anchored-popover/computeAnchoredPosition';
 import { tokens } from '../../tokens';
 import type { ColorPalette } from '../../tokens';
 import { NumericKeypad } from './NumericKeypad';
@@ -50,6 +50,29 @@ const BOTTOM_DOCK_SHADOW_OFFSET_Y = -KEYPAD_SHADOW_OFFSET_Y;
 export { computeAnchoredPosition as computeKeypadPosition } from '../../anchored-popover/computeAnchoredPosition';
 
 type Position = PopoverPosition;
+
+interface ResolvePositionArgs {
+  readonly bottomDocked: boolean;
+  readonly activeAnchor: AnchorRect | null;
+  readonly screen: { readonly width: number; readonly height: number };
+  readonly keypadSize: { readonly width: number; readonly height: number };
+  readonly insetBottom: number;
+}
+
+// Pure position dispatch — bottom-dock on iPhone-compact (ADR-0011
+// Iteration 4) vs anchored popover on iPad (Iteration 2). Extracted
+// from the host's useMemo so the component stays inside the 80-line
+// function cap.
+function resolvePosition(args: ResolvePositionArgs): Position | null {
+  const { bottomDocked, activeAnchor, screen, keypadSize, insetBottom } = args;
+  if (bottomDocked) {
+    return positionBottomDocked(screen, keypadSize, insetBottom);
+  }
+  if (activeAnchor === null) {
+    return null;
+  }
+  return computeAnchoredPosition(activeAnchor, screen, keypadSize);
+}
 
 interface Styles {
   readonly backdrop: ViewStyle;
@@ -119,31 +142,25 @@ export function NumericKeypadHost(): ReactNode {
   const bottomDocked = screen.width < COMPACT_WIDTH_BREAKPOINT;
   const keypadWidth = bottomDocked ? screen.width : KEYPAD_WIDTH;
 
-  const position = useMemo<Position | null>(() => {
-    if (bottomDocked) {
-      return positionBottomDocked(
-        { width: screen.width, height: screen.height },
-        { width: keypadWidth, height: keypadHeight },
-        insets.bottom,
-      );
-    }
-    if (activeAnchor === null) {
-      return null;
-    }
-    return computeAnchoredPosition(
+  const position = useMemo<Position | null>(
+    () =>
+      resolvePosition({
+        bottomDocked,
+        activeAnchor,
+        screen: { width: screen.width, height: screen.height },
+        keypadSize: { width: keypadWidth, height: keypadHeight },
+        insetBottom: insets.bottom,
+      }),
+    [
       activeAnchor,
-      { width: screen.width, height: screen.height },
-      { width: keypadWidth, height: keypadHeight },
-    );
-  }, [
-    activeAnchor,
-    bottomDocked,
-    insets.bottom,
-    keypadHeight,
-    keypadWidth,
-    screen.height,
-    screen.width,
-  ]);
+      bottomDocked,
+      insets.bottom,
+      keypadHeight,
+      keypadWidth,
+      screen.height,
+      screen.width,
+    ],
+  );
 
   const styles = useMemo<Styles | null>(() => {
     if (position === null) {
