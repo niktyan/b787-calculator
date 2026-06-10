@@ -4,6 +4,32 @@ All notable changes to **B787 Tools** (formerly B787 Calculator) are recorded he
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-06-11
+
+### Added
+
+- Crosswind Takeoff: FCOM CAUTION advisory line displayed under result
+  panel (ADR-0020). Verbatim FCOM B787 Tab.2.29.2 text about reducing
+  crosswind by 5 KT when thrust >40% N1 at brake release for static
+  takeoff.
+
+### Changed
+
+- Crosswind Takeoff: runway condition control switched from segmented
+  control to dropdown picker matching the Landing module pattern
+  (ADR-0021). Adaptive presentation: anchored popover on iPad landscape,
+  centred modal on iPhone + iPad portrait. 6-option taxonomy unchanged.
+- Numeric keypad on iPhone: switched from anchored-popover to
+  bottom-docked sheet for more natural input UX (ADR-0011 §Iteration 4).
+  iPad keypad behavior unchanged.
+
+### Fixed
+
+- RunwayConditionPicker promoted from feature-local to design-system
+  primitive (ADR-0021).
+- NumericKeypadHost layout extracted into pure helper to satisfy
+  max-lines-per-function lint.
+
 ## [1.1.1] - 2026-05-28
 
 ### Changed

@@ -2,7 +2,7 @@
   "expo": {
     "name": "B787 Tools",
     "slug": "b787-calculator",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "b787calculator",
@@ -11,7 +11,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.niktyan.b787calculator",
-      "buildNumber": "10",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
