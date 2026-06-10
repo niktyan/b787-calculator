@@ -45,6 +45,7 @@
     "resultEmpty": "Enter weight and CG to see result",
     "emptyIconLabel": "Information",
     "resultStatusLabel": "Max crosswind · Takeoff",
+    "cautionText": "CAUTION: Reduce all takeoff crosswind guidelines by 5 knots if thrust is above 40% N1 at brake release for takeoff roll (not rolling takeoff).",
     "outOfOperationalEnvelope": "Out of operational envelope — adjust inputs",
     "weightPlaceholder": "e.g. 170",
     "cgPlaceholder": "e.g. 25.5",

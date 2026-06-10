@@ -14,9 +14,10 @@
  *     larger minHeight floor; on iPhone it uses the compact floor.
  *
  * States:
- *   • idle:               status label + value + KT (clean — no warning
- *                         chip; per ADR-0012 envelope violations are
- *                         surfaced as `out-of-envelope` instead).
+ *   • idle:               status label + value + KT + FCOM CAUTION
+ *                         caption (ADR-0020; suppressed in every non-
+ *                         idle state). Envelope violations route to
+ *                         `out-of-envelope` per ADR-0012.
  *   • empty:              info-outline + caption ("Enter weight and CG …")
  *   • out-of-envelope:    info-outline + reason caption — covers both
  *                         lookup misses (NoLookupData) AND operational-
@@ -154,12 +155,13 @@ function ValueRow({ value, isRegular }: ValueRowProps): ReactNode {
 interface IdleViewProps {
   readonly output: CrosswindCalculationOutput;
   readonly statusLabel: string;
+  readonly cautionText: string;
   readonly isRegular: boolean;
   readonly fillHeight: boolean;
 }
 
 function IdleView(props: IdleViewProps): ReactNode {
-  const { output, statusLabel, isRegular, fillHeight } = props;
+  const { output, statusLabel, cautionText, isRegular, fillHeight } = props;
   const statusVariant: TextVariant = isRegular ? 'body' : 'microUppercase';
   const statusStyle = isRegular ? STATUS_STYLE_REGULAR : STATUS_STYLE_COMPACT;
   return (
@@ -168,6 +170,11 @@ function IdleView(props: IdleViewProps): ReactNode {
         {statusLabel}
       </Text>
       <ValueRow value={output.maxCrosswindKnots} isRegular={isRegular} />
+      <View style={[captionMaxWidth(isRegular), styles.cautionWrapper]}>
+        <Text variant="body" color="textSecondary" align="center" testID="crosswind-result-caution">
+          {cautionText}
+        </Text>
+      </View>
     </CardSurface>
   );
 }
@@ -323,11 +330,13 @@ function renderContent(
       isRegular={isRegular}
       fillHeight={fillHeight}
       statusLabel={t('crosswind.resultStatusLabel')}
+      cautionText={t('crosswind.cautionText')}
     />
   );
 }
 
 const styles = StyleSheet.create({
+  cautionWrapper: { marginTop: tokens.spacing.md },
   fillHeight: {
     flex: 1,
   },
