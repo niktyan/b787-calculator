@@ -44,3 +44,4 @@ ADR не нужен для:
 | 0017 | Crosswind output rounding policy (ROUNDDOWN to 0.1 KT at boundary) | Accepted |
 | 0018 | Landing runway condition taxonomy v2 (7 values; Good split) | Accepted |
 | 0019 | Static Landing layout (no scroll, reserved Autoland slot) | Accepted |
+| 0020 | Takeoff CAUTION advisory line | Accepted |

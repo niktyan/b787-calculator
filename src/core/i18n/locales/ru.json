@@ -45,6 +45,7 @@
     "resultEmpty": "Введите вес и центровку, чтобы увидеть результат",
     "emptyIconLabel": "Информация",
     "resultStatusLabel": "Max crosswind · Takeoff",
+    "cautionText": "CAUTION: Reduce all takeoff crosswind guidelines by 5 knots if thrust is above 40% N1 at brake release for takeoff roll (not rolling takeoff).",
     "outOfOperationalEnvelope": "Вне допустимого диапазона — измените вводимые значения",
     "weightPlaceholder": "напр. 170",
     "cgPlaceholder": "напр. 25.5",

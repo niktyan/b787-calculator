@@ -1,5 +1,271 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CrosswindResult ADR-0020 FCOM CAUTION advisory line paints the CAUTION caption with the dark-theme textSecondary token 1`] = `
+<View
+  layout={BaseAnimationMock {}}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#11161F",
+        "borderColor": "rgba(255, 255, 255, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "flex": 0,
+        "gap": 8,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 16,
+      }
+    }
+    testID="crosswind-result-panel"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#00C2A8",
+            "fontFamily": "System",
+            "fontSize": 9,
+            "fontWeight": "600",
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
+            "textAlign": "auto",
+          },
+          {
+            "letterSpacing": 0.72,
+            "marginBottom": 16,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      Max crosswind · Takeoff
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "baseline",
+          "flexDirection": "row",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="33.0 KT"
+        allowFontScaling={false}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "Menlo",
+              "fontSize": 48,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
+              "lineHeight": 56,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        33.0
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "Menlo",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
+              "lineHeight": 28,
+              "textAlign": "auto",
+            },
+            {
+              "marginLeft": 8,
+            },
+          ]
+        }
+      >
+        KT
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "maxWidth": 280,
+          },
+          {
+            "marginTop": 12,
+          },
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        numberOfLines={3}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        testID="crosswind-result-caution"
+      >
+        CAUTION: Reduce all takeoff crosswind guidelines by 5 knots if thrust is above 40% N1 at brake release for takeoff roll (not rolling takeoff).
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`CrosswindResult ADR-0020 FCOM CAUTION advisory line paints the CAUTION caption with the light-theme textSecondary token 1`] = `
+<View
+  layout={BaseAnimationMock {}}
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderColor": "rgba(0, 0, 0, 0.08)",
+        "borderRadius": 12,
+        "borderWidth": 1,
+        "flex": 0,
+        "gap": 8,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 16,
+      }
+    }
+    testID="crosswind-result-panel"
+  >
+    <Text
+      allowFontScaling={true}
+      style={
+        [
+          {
+            "color": "#006B5E",
+            "fontFamily": "System",
+            "fontSize": 9,
+            "fontWeight": "600",
+            "letterSpacing": 0.54,
+            "lineHeight": 12,
+            "textAlign": "auto",
+          },
+          {
+            "letterSpacing": 0.72,
+            "marginBottom": 16,
+            "textTransform": "uppercase",
+          },
+        ]
+      }
+    >
+      Max crosswind · Takeoff
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "baseline",
+          "flexDirection": "row",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <Text
+        accessibilityLabel="33.0 KT"
+        allowFontScaling={false}
+        style={
+          [
+            {
+              "color": "#00C2A8",
+              "fontFamily": "Menlo",
+              "fontSize": 48,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
+              "lineHeight": 56,
+              "textAlign": "auto",
+            },
+            undefined,
+          ]
+        }
+      >
+        33.0
+      </Text>
+      <Text
+        allowFontScaling={true}
+        style={
+          [
+            {
+              "color": "#4B5563",
+              "fontFamily": "Menlo",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "letterSpacing": -0.5,
+              "lineHeight": 28,
+              "textAlign": "auto",
+            },
+            {
+              "marginLeft": 8,
+            },
+          ]
+        }
+      >
+        KT
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "maxWidth": 280,
+          },
+          {
+            "marginTop": 12,
+          },
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        numberOfLines={3}
+        style={
+          [
+            {
+              "color": "#4B5563",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        testID="crosswind-result-caution"
+      >
+        CAUTION: Reduce all takeoff crosswind guidelines by 5 knots if thrust is above 40% N1 at brake release for takeoff roll (not rolling takeoff).
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`CrosswindResult renders the centred number with one decimal place (ADR-0017: 33 → "33.0") 1`] = `
 <View
   layout={BaseAnimationMock {}}
@@ -94,6 +360,40 @@ exports[`CrosswindResult renders the centred number with one decimal place (ADR-
         }
       >
         KT
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "maxWidth": 280,
+          },
+          {
+            "marginTop": 12,
+          },
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        numberOfLines={3}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        testID="crosswind-result-caution"
+      >
+        CAUTION: Reduce all takeoff crosswind guidelines by 5 knots if thrust is above 40% N1 at brake release for takeoff roll (not rolling takeoff).
       </Text>
     </View>
   </View>
@@ -331,6 +631,40 @@ exports[`CrosswindResult renders the iPad-regular variant when isRegular={true} 
         }
       >
         KT
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "maxWidth": 380,
+          },
+          {
+            "marginTop": 12,
+          },
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={true}
+        numberOfLines={3}
+        style={
+          [
+            {
+              "color": "#8B949E",
+              "fontFamily": "System",
+              "fontSize": 12,
+              "fontWeight": "400",
+              "letterSpacing": 0,
+              "lineHeight": 16,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        testID="crosswind-result-caution"
+      >
+        CAUTION: Reduce all takeoff crosswind guidelines by 5 knots if thrust is above 40% N1 at brake release for takeoff roll (not rolling takeoff).
       </Text>
     </View>
   </View>

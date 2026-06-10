@@ -47,6 +47,11 @@ function idleOutput(value: number): CrosswindCalculationOutput {
   };
 }
 
+// Verbatim FCOM B787 Tab.2.29.2 footer — kept in sync with
+// `src/core/i18n/locales/en.json` / `ru.json` `crosswind.cautionText`.
+const FCOM_CAUTION_TEXT =
+  'CAUTION: Reduce all takeoff crosswind guidelines by 5 knots if thrust is above 40% N1 at brake release for takeoff roll (not rolling takeoff).';
+
 describe('CrosswindResult', () => {
   it('renders the centred number with one decimal place (ADR-0017: 33 → "33.0")', () => {
     const state: CrosswindUIState = {
@@ -139,5 +144,102 @@ describe('CrosswindResult', () => {
     expect(tree.getByText('33.0')).toBeTruthy();
     tree.rerender(<CrosswindResult state={{ kind: 'idle', output: idleOutput(28) }} />);
     expect(tree.getByText('28.0')).toBeTruthy();
+  });
+
+  // ADR-0020 — FCOM CAUTION advisory line under the takeoff result.
+  describe('ADR-0020 FCOM CAUTION advisory line', () => {
+    it('renders the verbatim FCOM CAUTION caption under the value in idle state', () => {
+      const state: CrosswindUIState = {
+        kind: 'idle',
+        output: idleOutput(33),
+      };
+      const tree = renderWithTheme(<CrosswindResult state={state} />);
+      const caution = tree.getByTestId('crosswind-result-caution');
+      expect(caution).toBeTruthy();
+      // Text content must match FCOM B787 Tab.2.29.2 footer byte-for-byte.
+      // The Text component falls back to its children for the VoiceOver
+      // readout when no explicit accessibilityLabel is supplied, so the
+      // advisory caveat reaches screen-reader users in full.
+      expect(caution.props.children).toBe(FCOM_CAUTION_TEXT);
+    });
+
+    it('renders the CAUTION caption on the iPad-regular variant too', () => {
+      const state: CrosswindUIState = {
+        kind: 'idle',
+        output: idleOutput(33),
+      };
+      const tree = renderWithTheme(<CrosswindResult state={state} isRegular />);
+      const caution = tree.getByTestId('crosswind-result-caution');
+      expect(caution).toBeTruthy();
+      expect(caution.props.children).toBe(FCOM_CAUTION_TEXT);
+    });
+
+    it('suppresses the CAUTION caption when the result panel is in out-of-envelope state', () => {
+      // ADR-0020 §1: the CAUTION line is bound to the idle (real-result)
+      // path. Showing it next to a "no result" caption would imply the
+      // FCOM caveat applies to the non-result, which is misleading.
+      const state: CrosswindUIState = {
+        kind: 'out-of-envelope',
+        reason: 'Out of operational envelope — adjust inputs',
+      };
+      const tree = renderWithTheme(<CrosswindResult state={state} />);
+      expect(tree.queryByTestId('crosswind-result-caution')).toBeNull();
+    });
+
+    it('suppresses the CAUTION caption in empty / data-not-available / error states', () => {
+      const empty = renderWithTheme(<CrosswindResult state={{ kind: 'empty' }} />);
+      expect(empty.queryByTestId('crosswind-result-caution')).toBeNull();
+
+      const dataMissing = renderWithTheme(
+        <CrosswindResult
+          state={{
+            kind: 'data-not-available',
+            description: 'No data available for the selected aircraft.',
+          }}
+        />,
+      );
+      expect(dataMissing.queryByTestId('crosswind-result-caution')).toBeNull();
+
+      const errored = renderWithTheme(
+        <CrosswindResult
+          state={{
+            kind: 'error',
+            headline: 'Calculation unavailable',
+            description: 'Verify inputs and try again.',
+          }}
+        />,
+      );
+      expect(errored.queryByTestId('crosswind-result-caution')).toBeNull();
+    });
+
+    it('paints the CAUTION caption with the light-theme textSecondary token', () => {
+      const state: CrosswindUIState = {
+        kind: 'idle',
+        output: idleOutput(33),
+      };
+      const tree = renderWithTheme(<CrosswindResult state={state} />, { mode: 'light' });
+      const caution = tree.getByTestId('crosswind-result-caution');
+      // tokens.colors.light.textSecondary = '#4B5563'
+      const flat = Array.isArray(caution.props.style)
+        ? Object.assign({}, ...caution.props.style.filter(Boolean))
+        : caution.props.style;
+      expect(flat.color).toBe('#4B5563');
+      expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    it('paints the CAUTION caption with the dark-theme textSecondary token', () => {
+      const state: CrosswindUIState = {
+        kind: 'idle',
+        output: idleOutput(33),
+      };
+      const tree = renderWithTheme(<CrosswindResult state={state} />, { mode: 'dark' });
+      const caution = tree.getByTestId('crosswind-result-caution');
+      // tokens.colors.dark.textSecondary = '#8B949E'
+      const flat = Array.isArray(caution.props.style)
+        ? Object.assign({}, ...caution.props.style.filter(Boolean))
+        : caution.props.style;
+      expect(flat.color).toBe('#8B949E');
+      expect(tree.toJSON()).toMatchSnapshot();
+    });
   });
 });
